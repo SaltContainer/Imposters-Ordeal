@@ -312,7 +312,7 @@ namespace ImpostersOrdeal
                 out Dictionary<string, string> menuSprites,
                 out Dictionary<string, string> largeSprites,
                 out Dictionary<string, string> dpSprites);
-            UpdateDprBin(assetBundleNames, largeSprites, dpSprites, out Dictionary<string, string> assetBundlePaths);
+            //UpdateDprBin(assetBundleNames, largeSprites, dpSprites, out Dictionary<string, string> assetBundlePaths);
             UpdateAudioBank(uniqueIDs, out (uint, uint) sourceID);
 
             UpdateAddPersonalTable(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo);
@@ -321,9 +321,9 @@ namespace ImpostersOrdeal
             UpdateCommonMsbt(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, speciesName, formName);
             UpdateUgData(srcMonsNo, dstMonsNo, dstFormNo);
             UpdateContestData(srcMonsNo, dstMonsNo, dstFormNo);
-            DuplicateIcons(menuSprites, largeSprites, dpSprites);
+            //DuplicateIcons(menuSprites, largeSprites, dpSprites);
             DuplicateAudioSource(sourceID.Item1, sourceID.Item2);
-            DuplicateAssetBundles(assetBundlePaths);
+            //DuplicateAssetBundles(assetBundlePaths);
             gameData.SetModified(GameDataSet.DataField.ContestResultMotion);
             gameData.SetModified(GameDataSet.DataField.UIMasterdatas);
             gameData.SetModified(GameDataSet.DataField.AddPersonalTable);
@@ -332,7 +332,7 @@ namespace ImpostersOrdeal
             gameData.SetModified(GameDataSet.DataField.MessageFileSets);
             gameData.SetModified(GameDataSet.DataField.PersonalEntries);
             gameData.SetModified(GameDataSet.DataField.UgPokemonData);
-            gameData.SetModified(GameDataSet.DataField.DprBin);
+            //gameData.SetModified(GameDataSet.DataField.DprBin);
             gameData.SetModified(GameDataSet.DataField.AudioData);
         }
 
@@ -940,7 +940,8 @@ namespace ImpostersOrdeal
                     dstPIC.AssetBundleName = assetBundleNames.Find(p => p.Item1 == srcPIC.AssetBundleName).Item2;
                 else
                 {
-                    dstPIC.AssetBundleName = GenAssetBundleName(uniqueIDPair.Item2, srcPIC.AssetBundleName.Length, true);
+                    //dstPIC.AssetBundleName = GenAssetBundleName(uniqueIDPair.Item2, srcPIC.AssetBundleName.Length, true);
+                    dstPIC.AssetBundleName = "pm0132_00_01";
                     assetBundleNames.Add((srcPIC.AssetBundleName, dstPIC.AssetBundleName));
                 }
             }
@@ -1025,7 +1026,7 @@ namespace ImpostersOrdeal
                 int srcUniqueID = uniqueIDPair.Item1;
                 int dstUniqueID = uniqueIDPair.Item2;
 
-                UIMasterdatas.PokemonIcon pokemonIcon = gameData.uiPokemonIcon.Find(o => o.uniqueID == srcUniqueID);
+                UIMasterdatas.PokemonIcon pokemonIcon = gameData.uiPokemonIcon.Find(o => o.uniqueID == 1320021);
                 UIMasterdatas.PokemonIcon newPokemonIcon = (UIMasterdatas.PokemonIcon)pokemonIcon.Clone();
                 newPokemonIcon.uniqueID = dstUniqueID;
                 string menuSprite = pokemonIcon.assetName;
