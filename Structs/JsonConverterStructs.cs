@@ -97,7 +97,7 @@ namespace ImpostersOrdeal
         {
             public TrainerReadOnly readOnly;
             public int trainerTypeID;
-            public int colorID;
+            public byte colorID;
             public byte fightType;
             public int arenaID;
             public int effectID;

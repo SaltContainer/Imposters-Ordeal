@@ -58,6 +58,11 @@ namespace ImpostersOrdeal
             items = gameData.items.Select(o => o.GetName()).ToList();
 
             InitializeComponent();
+
+            // Restrict colorID range
+            colorIDNumericUpDown.Minimum = 0;
+            colorIDNumericUpDown.Maximum = 255;
+
             tpef = new(this);
             tsef = new(this);
 
@@ -110,7 +115,7 @@ namespace ImpostersOrdeal
 
             trainerTypeComboBox.SelectedIndex = trainerTypeToCC[t.trainerTypeID];
             trainerNameComboBox.SelectedItem = labelToTrainerName[t.nameLabel];
-            colorIDNumericUpDown.Value = t.colorID;
+            colorIDNumericUpDown.Value = (int)t.colorID;
             arenaIDNumericUpDown.Value = t.arenaID;
             effectIDNumericUpDown.Value = t.effectID;
 
@@ -136,7 +141,7 @@ namespace ImpostersOrdeal
         private void CommitEdit(object sender, EventArgs e)
         {
             t.trainerTypeID = trainerTypeNames.Keys.ToArray()[trainerTypeComboBox.SelectedIndex];
-            t.colorID = (int)colorIDNumericUpDown.Value;
+            t.colorID = (byte)colorIDNumericUpDown.Value;
             t.arenaID = (int)arenaIDNumericUpDown.Value;
             t.effectID = (int)effectIDNumericUpDown.Value;
 

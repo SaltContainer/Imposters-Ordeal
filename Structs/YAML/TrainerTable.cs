@@ -87,7 +87,7 @@ namespace ImpostersOrdeal
         public int TypeID { get; set; }
 
         [YamlMember("ColorID", 1)]
-        public int ColorID { get; set; }
+        public byte ColorID { get; set; }
 
         [YamlMember("FightType", 2)]
         public byte FightType { get; set; }
