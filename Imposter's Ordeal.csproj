@@ -10,6 +10,9 @@
     <UpgradeBackupLocation>C:\Users\Lukas\Desktop\BDSP\Imposters-Ordeal-master\Backup\</UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
     <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AssetsTools.NET" Version="2.0.9" />
