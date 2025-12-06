@@ -93,20 +93,20 @@ namespace ImpostersOrdeal
         private static async Task ParseContestMasterDatas()
         {
             gameData.contestResultMotion = new();
-            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.ContestMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "ContestConfigDatas");
+            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.ContestMasterdatas]).Find(m => m["m_Name"].AsString == "ContestConfigDatas");
 
-            AssetTypeValueField[] resultMotionSheet = monoBehaviour["ResultMotion"].children[0].children;
-            for (int i = 0; i < resultMotionSheet.Length; i++)
+            var resultMotionSheet = monoBehaviour["ResultMotion.Array"];
+            foreach (var resultMotion in resultMotionSheet)
             {
                 ResultMotion rm = new()
                 {
-                    validFlag = resultMotionSheet[i]["valid_flag"].GetValue().value.asUInt8,
-                    id = resultMotionSheet[i]["id"].GetValue().value.asUInt16,
-                    monsNo = resultMotionSheet[i]["monsNo"].GetValue().AsInt(),
-                    winAnim = resultMotionSheet[i]["winAnim"].GetValue().AsUInt(),
-                    loseAnim = resultMotionSheet[i]["loseAnim"].GetValue().AsUInt(),
-                    waitAnim = resultMotionSheet[i]["waitAnim"].GetValue().AsUInt(),
-                    duration = resultMotionSheet[i]["duration"].GetValue().AsFloat()
+                    validFlag = resultMotionSheet["valid_flag"].AsByte,
+                    id = resultMotionSheet["id"].AsUShort,
+                    monsNo = resultMotionSheet["monsNo"].AsInt,
+                    winAnim = resultMotionSheet["winAnim"].AsUInt,
+                    loseAnim = resultMotionSheet["loseAnim"].AsUInt,
+                    waitAnim = resultMotionSheet["waitAnim"].AsUInt,
+                    duration = resultMotionSheet["duration"].AsFloat
                 };
                 gameData.contestResultMotion.Add(rm);
             }
@@ -178,9 +178,9 @@ namespace ImpostersOrdeal
             string fullFileName = FormatMessageFileNameForLanguage(fileName, language, isKanji);
             PathEnum pathForLanguage = GetMessageBundlePathForLanguage(language, isKanji);
 
-            var baseField = (await monoBehaviourCollection[PathEnum.CommonMsbt]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == fullFileName) ??
-                            (await monoBehaviourCollection[pathForLanguage]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == fullFileName);
-            return baseField?.children[8].children[0].children ?? Array.Empty<AssetTypeValueField>();
+            var baseField = (await monoBehaviourCollection[PathEnum.CommonMsbt]).Find(m => m["m_Name"].AsString == fullFileName) ??
+                            (await monoBehaviourCollection[pathForLanguage]).Find(m => m["m_Name"].AsString == fullFileName);
+            return baseField?["labelDataArray.Array"].Children.ToArray() ?? Array.Empty<AssetTypeValueField>();
         }
 
         /// <summary>
@@ -191,9 +191,9 @@ namespace ImpostersOrdeal
             string fullFileName = FormatMessageFileNameForLanguage(fileName, language, isKanji);
             PathEnum pathForLanguage = GetMessageBundlePathForLanguage(language, isKanji);
             
-            var baseField = fileManager.GetMonoBehaviours(PathEnum.CommonMsbt).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == fullFileName) ??
-                            fileManager.GetMonoBehaviours(pathForLanguage).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == fullFileName);
-            return baseField?.children[8].children[0].children ?? Array.Empty<AssetTypeValueField>();
+            var baseField = fileManager.GetMonoBehaviours(PathEnum.CommonMsbt).Find(m => m["m_Name"].AsString == fullFileName) ??
+                            fileManager.GetMonoBehaviours(pathForLanguage).Find(m => m["m_Name"].AsString == fullFileName);
+            return baseField?["labelDataArray.Array"].Children.ToArray() ?? Array.Empty<AssetTypeValueField>();
         }
 
         /// <summary>
@@ -202,23 +202,23 @@ namespace ImpostersOrdeal
         private static async Task ParseTrainerTypes()
         {
             gameData.trainerTypes = new();
-            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "TrainerTable");
+            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => m["m_Name"].AsString == "TrainerTable");
 
             AssetTypeValueField[] nameFields = await FindLabelArrayOfMessageFileAsync("dp_trainers_type", Language.English);
             Dictionary<string, string> trainerTypeNames = new();
             foreach (AssetTypeValueField label in nameFields)
-                if (label.children[6].children[0].childrenCount > 0)
-                    trainerTypeNames[label.children[2].GetValue().AsString()] = label.children[6].children[0].children[0].children[4].GetValue().AsString();
+                if (label["wordDataArray.Array"].Children.Count > 0)
+                    trainerTypeNames[label["labelName"].AsString] = label["wordDataArray.Array"][0]["str"].AsString;
 
-            AssetTypeValueField[] trainerTypeFields = monoBehaviour.children[4].children[0].children;
-            for (int trainerTypeIdx = 0; trainerTypeIdx < trainerTypeFields.Length; trainerTypeIdx++)
+            var trainerTypeFields = monoBehaviour["TrainerType.Array"].Children;
+            for (int trainerTypeIdx = 0; trainerTypeIdx < trainerTypeFields.Count; trainerTypeIdx++)
             {
-                if (trainerTypeFields[trainerTypeIdx].children[0].GetValue().AsInt() == -1)
+                if (trainerTypeFields[trainerTypeIdx]["TrainerID"].AsInt == -1)
                     continue;
 
                 TrainerType trainerType = new();
                 trainerType.trainerTypeID = trainerTypeIdx;
-                trainerType.label = trainerTypeFields[trainerTypeIdx].children[1].GetValue().AsString();
+                trainerType.label = trainerTypeFields[trainerTypeIdx]["LabelTrType"].AsString;
 
                 trainerType.name = !trainerTypeNames.ContainsKey(trainerType.label) ? "" : trainerTypeNames[trainerType.label];
 
@@ -238,7 +238,7 @@ namespace ImpostersOrdeal
             {
                 Nature nature = new();
                 nature.natureID = natureID;
-                nature.name = Encoding.UTF8.GetString(natureFields[natureID].children[6].children[0].children[0].children[4].value.value.asString);
+                nature.name = natureFields[natureID]["wordDataArray.Array"][0]["str"].AsString;
 
                 gameData.natures.Add(nature);
             }
@@ -270,7 +270,7 @@ namespace ImpostersOrdeal
             {
                 Typing typing = new();
                 typing.typingID = typingID;
-                typing.name = Encoding.UTF8.GetString(typingFields[typingID].children[6].children[0].children[0].children[4].value.value.asString);
+                typing.name = typingFields[typingID]["wordDataArray.Array"][0]["str"].AsString;
 
                 gameData.typings.Add(typing);
             }
@@ -288,7 +288,7 @@ namespace ImpostersOrdeal
             {
                 Ability ability = new();
                 ability.abilityID = abilityID;
-                ability.name = Encoding.UTF8.GetString(abilityFields[abilityID].children[6].children[0].children[0].children[4].value.value.asString);
+                ability.name = abilityFields[abilityID]["wordDataArray.Array"][0]["str"].AsString;
 
                 gameData.abilities.Add(ability);
             }
@@ -306,30 +306,30 @@ namespace ImpostersOrdeal
             gameData.ugPokemonData = new();
             List<AssetTypeValueField> monoBehaviours = await monoBehaviourCollection[PathEnum.Ugdata];
 
-            AssetTypeValueField[] ugAreaFields = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "UgRandMark").children[4].children[0].children;
-            for (int ugAreaIdx = 0; ugAreaIdx < ugAreaFields.Length; ugAreaIdx++)
+            var ugAreaFields = monoBehaviours.Find(m => m["m_Name"].AsString == "UgRandMark")["table.Array"].Children;
+            for (int ugAreaIdx = 0; ugAreaIdx < ugAreaFields.Count; ugAreaIdx++)
             {
                 UgArea ugArea = new();
-                ugArea.id = ugAreaFields[ugAreaIdx]["id"].GetValue().AsInt();
-                ugArea.fileName = ugAreaFields[ugAreaIdx]["FileName"].GetValue().AsString();
+                ugArea.id = ugAreaFields[ugAreaIdx]["id"].AsInt;
+                ugArea.fileName = ugAreaFields[ugAreaIdx]["FileName"].AsString;
 
                 gameData.ugAreas.Add(ugArea);
             }
 
-            List<AssetTypeValueField> ugEncounterFiles = monoBehaviours.Where(m => Encoding.Default.GetString(m.children[3].value.value.asString).StartsWith("UgEncount_")).ToList();
+            List<AssetTypeValueField> ugEncounterFiles = monoBehaviours.Where(m => m["m_Name"].AsString.StartsWith("UgEncount_")).ToList();
             for (int ugEncounterFileIdx = 0; ugEncounterFileIdx < ugEncounterFiles.Count; ugEncounterFileIdx++)
             {
                 UgEncounterFile ugEncounterFile = new();
-                ugEncounterFile.mName = Encoding.Default.GetString(ugEncounterFiles[ugEncounterFileIdx].children[3].value.value.asString);
+                ugEncounterFile.mName = ugEncounterFiles[ugEncounterFileIdx]["m_Name"].AsString;
 
                 ugEncounterFile.ugEncounters = new();
-                AssetTypeValueField[] ugMonFields = ugEncounterFiles[ugEncounterFileIdx].children[4].children[0].children;
-                for (int ugMonIdx = 0; ugMonIdx < ugMonFields.Length; ugMonIdx++)
+                var ugMonFields = ugEncounterFiles[ugEncounterFileIdx]["table.Array"].Children;
+                for (int ugMonIdx = 0; ugMonIdx < ugMonFields.Count; ugMonIdx++)
                 {
                     UgEncounter ugEncounter = new();
-                    ugEncounter.dexID = ugMonFields[ugMonIdx].children[0].value.value.asInt32;
-                    ugEncounter.version = ugMonFields[ugMonIdx].children[1].value.value.asInt32;
-                    ugEncounter.zukanFlag = ugMonFields[ugMonIdx].children[2].value.value.asInt32;
+                    ugEncounter.dexID = ugMonFields[ugMonIdx]["monsno"].AsInt;
+                    ugEncounter.version = ugMonFields[ugMonIdx]["version"].AsInt;
+                    ugEncounter.zukanFlag = ugMonFields[ugMonIdx]["zukanflag"].AsInt;
 
                     ugEncounterFile.ugEncounters.Add(ugEncounter);
                 }
@@ -337,54 +337,54 @@ namespace ImpostersOrdeal
                 gameData.ugEncounterFiles.Add(ugEncounterFile);
             }
 
-            AssetTypeValueField[] ugEncounterLevelFields = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "UgEncountLevel").children[4].children[0].children;
-            for (int ugEncouterLevelIdx = 0; ugEncouterLevelIdx < ugEncounterLevelFields.Length; ugEncouterLevelIdx++)
+            var ugEncounterLevelFields = monoBehaviours.Find(m => m["m_Name"].AsString == "UgEncountLevel")["Data.Array"].Children;
+            for (int ugEncouterLevelIdx = 0; ugEncouterLevelIdx < ugEncounterLevelFields.Count; ugEncouterLevelIdx++)
             {
                 UgEncounterLevelSet ugLevels = new();
-                ugLevels.minLv = ugEncounterLevelFields[ugEncouterLevelIdx].children[0].value.value.asInt32;
-                ugLevels.maxLv = ugEncounterLevelFields[ugEncouterLevelIdx].children[1].value.value.asInt32;
+                ugLevels.minLv = ugEncounterLevelFields[ugEncouterLevelIdx]["MinLv"].AsInt;
+                ugLevels.maxLv = ugEncounterLevelFields[ugEncouterLevelIdx]["MaxLv"].AsInt;
 
                 gameData.ugEncounterLevelSets.Add(ugLevels);
             }
 
-            AssetTypeValueField[] ugSpecialEncounterFields = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "UgSpecialPokemon").children[4].children[0].children;
-            for (int ugSpecialEncounterIdx = 0; ugSpecialEncounterIdx < ugSpecialEncounterFields.Length; ugSpecialEncounterIdx++)
+            var ugSpecialEncounterFields = monoBehaviours.Find(m => m["m_Name"].AsString == "UgSpecialPokemon")["Sheet1.Array"].Children;
+            for (int ugSpecialEncounterIdx = 0; ugSpecialEncounterIdx < ugSpecialEncounterFields.Count; ugSpecialEncounterIdx++)
             {
                 UgSpecialEncounter ugSpecialEncounter = new();
-                ugSpecialEncounter.id = ugSpecialEncounterFields[ugSpecialEncounterIdx]["id"].GetValue().AsInt();
-                ugSpecialEncounter.dexID = ugSpecialEncounterFields[ugSpecialEncounterIdx]["monsno"].GetValue().AsInt();
-                ugSpecialEncounter.version = ugSpecialEncounterFields[ugSpecialEncounterIdx]["version"].GetValue().AsInt();
-                ugSpecialEncounter.dRate = ugSpecialEncounterFields[ugSpecialEncounterIdx]["Dspecialrate"].GetValue().AsInt();
-                ugSpecialEncounter.pRate = ugSpecialEncounterFields[ugSpecialEncounterIdx]["Pspecialrate"].GetValue().AsInt();
+                ugSpecialEncounter.id = ugSpecialEncounterFields[ugSpecialEncounterIdx]["id"].AsInt;
+                ugSpecialEncounter.dexID = ugSpecialEncounterFields[ugSpecialEncounterIdx]["monsno"].AsInt;
+                ugSpecialEncounter.version = ugSpecialEncounterFields[ugSpecialEncounterIdx]["version"].AsInt;
+                ugSpecialEncounter.dRate = ugSpecialEncounterFields[ugSpecialEncounterIdx]["Dspecialrate"].AsInt;
+                ugSpecialEncounter.pRate = ugSpecialEncounterFields[ugSpecialEncounterIdx]["Pspecialrate"].AsInt;
 
                 gameData.ugSpecialEncounters.Add(ugSpecialEncounter);
             }
 
-            AssetTypeValueField[] ugPokemonDataFields = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "UgPokemonData").children[4].children[0].children;
-            for (int ugPokemonDataIdx = 0; ugPokemonDataIdx < ugPokemonDataFields.Length; ugPokemonDataIdx++)
+            var ugPokemonDataFields = monoBehaviours.Find(m => m["m_Name"].AsString == "UgPokemonData")["table.Array"].Children;
+            for (int ugPokemonDataIdx = 0; ugPokemonDataIdx < ugPokemonDataFields.Count; ugPokemonDataIdx++)
             {
                 UgPokemonData ugPokemonData = new();
-                ugPokemonData.monsno = ugPokemonDataFields[ugPokemonDataIdx]["monsno"].GetValue().AsInt();
-                ugPokemonData.type1ID = ugPokemonDataFields[ugPokemonDataIdx]["type1ID"].GetValue().AsInt();
-                ugPokemonData.type2ID = ugPokemonDataFields[ugPokemonDataIdx]["type2ID"].GetValue().AsInt();
-                ugPokemonData.size = ugPokemonDataFields[ugPokemonDataIdx]["size"].GetValue().AsInt();
-                ugPokemonData.movetype = ugPokemonDataFields[ugPokemonDataIdx]["movetype"].GetValue().AsInt();
+                ugPokemonData.monsno = ugPokemonDataFields[ugPokemonDataIdx]["monsno"].AsInt;
+                ugPokemonData.type1ID = ugPokemonDataFields[ugPokemonDataIdx]["type1ID"].AsInt;
+                ugPokemonData.type2ID = ugPokemonDataFields[ugPokemonDataIdx]["type2ID"].AsInt;
+                ugPokemonData.size = ugPokemonDataFields[ugPokemonDataIdx]["size"].AsInt;
+                ugPokemonData.movetype = ugPokemonDataFields[ugPokemonDataIdx]["movetype"].AsInt;
                 ugPokemonData.reactioncode = new int[2];
                 for (int i = 0; i < ugPokemonData.reactioncode.Length; i++)
-                    ugPokemonData.reactioncode[i] = ugPokemonDataFields[ugPokemonDataIdx]["reactioncode"][0][i].GetValue().AsInt();
+                    ugPokemonData.reactioncode[i] = ugPokemonDataFields[ugPokemonDataIdx]["reactioncode.Array"][i].AsInt;
                 ugPokemonData.moveRate = new int[2];
                 for (int i = 0; i < ugPokemonData.moveRate.Length; i++)
-                    ugPokemonData.moveRate[i] = ugPokemonDataFields[ugPokemonDataIdx]["move_rate"][0][i].GetValue().AsInt();
+                    ugPokemonData.moveRate[i] = ugPokemonDataFields[ugPokemonDataIdx]["move_rate.Array"][i].AsInt;
                 ugPokemonData.submoveRate = new int[5];
                 for (int i = 0; i < ugPokemonData.submoveRate.Length; i++)
-                    ugPokemonData.submoveRate[i] = ugPokemonDataFields[ugPokemonDataIdx]["submove_rate"][0][i].GetValue().AsInt();
+                    ugPokemonData.submoveRate[i] = ugPokemonDataFields[ugPokemonDataIdx]["submove_rate.Array"][i].AsInt;
                 ugPokemonData.reaction = new int[5];
                 for (int i = 0; i < ugPokemonData.reaction.Length; i++)
-                    ugPokemonData.reaction[i] = ugPokemonDataFields[ugPokemonDataIdx]["reaction"][0][i].GetValue().AsInt();
+                    ugPokemonData.reaction[i] = ugPokemonDataFields[ugPokemonDataIdx]["reaction.Array"][i].AsInt;
                 ugPokemonData.flagrate = new int[6];
                 for (int i = 0; i < ugPokemonData.flagrate.Length; i++)
-                    ugPokemonData.flagrate[i] = ugPokemonDataFields[ugPokemonDataIdx]["flagrate"][0][i].GetValue().AsInt();
-                ugPokemonData.rateup = ugPokemonDataFields[ugPokemonDataIdx]["rateup"].GetValue().AsInt();
+                    ugPokemonData.flagrate[i] = ugPokemonDataFields[ugPokemonDataIdx]["flagrate.Array"][i].AsInt;
+                ugPokemonData.rateup = ugPokemonDataFields[ugPokemonDataIdx]["rateup"].AsInt;
 
                 gameData.ugPokemonData.Add(ugPokemonData);
             }
@@ -396,69 +396,235 @@ namespace ImpostersOrdeal
         private static async Task ParseTrainers()
         {
             gameData.trainers = new();
-            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "TrainerTable");
+            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => m["m_Name"].AsString == "TrainerTable");
 
             AssetTypeValueField[] nameFields = await FindLabelArrayOfMessageFileAsync("dp_trainers_name", Language.English);
             Dictionary<string, string> trainerNames = new();
             gameData.trainerNames = trainerNames;
             foreach (AssetTypeValueField label in nameFields)
-                if (label.children[6].children[0].childrenCount > 0)
-                    trainerNames[label.children[2].GetValue().AsString()] = label.children[6].children[0].children[0].children[4].GetValue().AsString();
+                if (label["wordDataArray.Array"].Children.Count > 0)
+                    trainerNames[label["labelName"].AsString] = label["wordDataArray.Array"][0]["str"].AsString;
 
-            AssetTypeValueField[] trainerFields = monoBehaviour.children[5].children[0].children;
-            AssetTypeValueField[] trainerPokemonFields = monoBehaviour.children[6].children[0].children;
-            for (int trainerIdx = 0; trainerIdx < Math.Min(trainerFields.Length, trainerPokemonFields.Length); trainerIdx++)
+            var trainerFields = monoBehaviour["TrainerData.Array"].Children;
+            var trainerPokemonFields = monoBehaviour["TrainerPoke.Array"].Children;
+            for (int trainerIdx = 0; trainerIdx < Math.Min(trainerFields.Count, trainerPokemonFields.Count); trainerIdx++)
             {
                 Trainer trainer = new();
-                trainer.trainerTypeID = trainerFields[trainerIdx].children[0].value.value.asInt32;
-                trainer.colorID = trainerFields[trainerIdx].children[1].value.value.asUInt8;
-                trainer.fightType = trainerFields[trainerIdx].children[2].value.value.asUInt8;
-                trainer.arenaID = trainerFields[trainerIdx].children[3].value.value.asInt32;
-                trainer.effectID = trainerFields[trainerIdx].children[4].value.value.asInt32;
-                trainer.gold = trainerFields[trainerIdx].children[5].value.value.asUInt8;
-                trainer.useItem1 = trainerFields[trainerIdx].children[6].value.value.asUInt16;
-                trainer.useItem2 = trainerFields[trainerIdx].children[7].value.value.asUInt16;
-                trainer.useItem3 = trainerFields[trainerIdx].children[8].value.value.asUInt16;
-                trainer.useItem4 = trainerFields[trainerIdx].children[9].value.value.asUInt16;
-                trainer.hpRecoverFlag = trainerFields[trainerIdx].children[10].value.value.asUInt8;
-                trainer.giftItem = trainerFields[trainerIdx].children[11].value.value.asUInt16;
-                trainer.nameLabel = trainerFields[trainerIdx].children[12].GetValue().AsString();
-                trainer.aiBit = trainerFields[trainerIdx].children[19].value.value.asUInt32;
+                trainer.trainerTypeID = trainerFields[trainerIdx]["TypeID"].AsInt;
+                trainer.colorID = trainerFields[trainerIdx]["ColorID"].AsByte;
+                trainer.fightType = trainerFields[trainerIdx]["FightType"].AsByte;
+                trainer.arenaID = trainerFields[trainerIdx]["ArenaID"].AsInt;
+                trainer.effectID = trainerFields[trainerIdx]["EffectID"].AsInt;
+                trainer.gold = trainerFields[trainerIdx]["Gold"].AsByte;
+                trainer.useItem1 = trainerFields[trainerIdx]["UseItem1"].AsUShort;
+                trainer.useItem2 = trainerFields[trainerIdx]["UseItem2"].AsUShort;
+                trainer.useItem3 = trainerFields[trainerIdx]["UseItem3"].AsUShort;
+                trainer.useItem4 = trainerFields[trainerIdx]["UseItem4"].AsUShort;
+                trainer.hpRecoverFlag = trainerFields[trainerIdx]["HpRecoverFlag"].AsByte;
+                trainer.giftItem = trainerFields[trainerIdx]["GiftItem"].AsUShort;
+                trainer.nameLabel = trainerFields[trainerIdx]["NameLabel"].AsString;
+                trainer.aiBit = trainerFields[trainerIdx]["AIBit"].AsUInt;
                 trainer.trainerID = trainerIdx;
                 trainer.name = trainerNames[trainer.nameLabel];
 
                 //Parse trainer pokemon
                 trainer.trainerPokemon = new();
-                AssetTypeValueField[] pokemonFields = trainerPokemonFields[trainerIdx].children;
-                for (int pokemonIdx = 1; pokemonIdx < pokemonFields.Length && pokemonFields[pokemonIdx].value.value.asUInt16 != 0; pokemonIdx += 26)
+                var pokemonFields = trainerPokemonFields[trainerIdx];
+
+                if (pokemonFields["P1MonsNo"].AsUShort != 0)
                 {
                     TrainerPokemon pokemon = new();
-                    pokemon.dexID = pokemonFields[pokemonIdx + 0].value.value.asUInt16;
-                    pokemon.formID = pokemonFields[pokemonIdx + 1].value.value.asUInt16;
-                    pokemon.isRare = pokemonFields[pokemonIdx + 2].value.value.asUInt8;
-                    pokemon.level = pokemonFields[pokemonIdx + 3].value.value.asUInt8;
-                    pokemon.sex = pokemonFields[pokemonIdx + 4].value.value.asUInt8;
-                    pokemon.natureID = pokemonFields[pokemonIdx + 5].value.value.asUInt8;
-                    pokemon.abilityID = pokemonFields[pokemonIdx + 6].value.value.asUInt16;
-                    pokemon.moveID1 = pokemonFields[pokemonIdx + 7].value.value.asUInt16;
-                    pokemon.moveID2 = pokemonFields[pokemonIdx + 8].value.value.asUInt16;
-                    pokemon.moveID3 = pokemonFields[pokemonIdx + 9].value.value.asUInt16;
-                    pokemon.moveID4 = pokemonFields[pokemonIdx + 10].value.value.asUInt16;
-                    pokemon.itemID = pokemonFields[pokemonIdx + 11].value.value.asUInt16;
-                    pokemon.ballID = pokemonFields[pokemonIdx + 12].value.value.asUInt8;
-                    pokemon.seal = pokemonFields[pokemonIdx + 13].value.value.asInt32;
-                    pokemon.hpIV = pokemonFields[pokemonIdx + 14].value.value.asUInt8;
-                    pokemon.atkIV = pokemonFields[pokemonIdx + 15].value.value.asUInt8;
-                    pokemon.defIV = pokemonFields[pokemonIdx + 16].value.value.asUInt8;
-                    pokemon.spAtkIV = pokemonFields[pokemonIdx + 17].value.value.asUInt8;
-                    pokemon.spDefIV = pokemonFields[pokemonIdx + 18].value.value.asUInt8;
-                    pokemon.spdIV = pokemonFields[pokemonIdx + 19].value.value.asUInt8;
-                    pokemon.hpEV = pokemonFields[pokemonIdx + 20].value.value.asUInt8;
-                    pokemon.atkEV = pokemonFields[pokemonIdx + 21].value.value.asUInt8;
-                    pokemon.defEV = pokemonFields[pokemonIdx + 22].value.value.asUInt8;
-                    pokemon.spAtkEV = pokemonFields[pokemonIdx + 23].value.value.asUInt8;
-                    pokemon.spDefEV = pokemonFields[pokemonIdx + 24].value.value.asUInt8;
-                    pokemon.spdEV = pokemonFields[pokemonIdx + 25].value.value.asUInt8;
+                    pokemon.dexID = pokemonFields["P1MonsNo"].AsUShort;
+                    pokemon.formID = pokemonFields["P1FormNo"].AsUShort;
+                    pokemon.isRare = pokemonFields["P1IsRare"].AsByte;
+                    pokemon.level = pokemonFields["P1Level"].AsByte;
+                    pokemon.sex = pokemonFields["P1Sex"].AsByte;
+                    pokemon.natureID = pokemonFields["P1Seikaku"].AsByte;
+                    pokemon.abilityID = pokemonFields["P1Tokusei"].AsUShort;
+                    pokemon.moveID1 = pokemonFields["P1Waza1"].AsUShort;
+                    pokemon.moveID2 = pokemonFields["P1Waza2"].AsUShort;
+                    pokemon.moveID3 = pokemonFields["P1Waza3"].AsUShort;
+                    pokemon.moveID4 = pokemonFields["P1Waza4"].AsUShort;
+                    pokemon.itemID = pokemonFields["P1Item"].AsUShort;
+                    pokemon.ballID = pokemonFields["P1Ball"].AsByte;
+                    pokemon.seal = pokemonFields["P1Seal"].AsInt;
+                    pokemon.hpIV = pokemonFields["P1TalentHp"].AsByte;
+                    pokemon.atkIV = pokemonFields["P1TalentAtk"].AsByte;
+                    pokemon.defIV = pokemonFields["P1TalentDef"].AsByte;
+                    pokemon.spAtkIV = pokemonFields["P1TalentSpAtk"].AsByte;
+                    pokemon.spDefIV = pokemonFields["P1TalentSpDef"].AsByte;
+                    pokemon.spdIV = pokemonFields["P1TalentAgi"].AsByte;
+                    pokemon.hpEV = pokemonFields["P1EffortHp"].AsByte;
+                    pokemon.atkEV = pokemonFields["P1EffortAtk"].AsByte;
+                    pokemon.defEV = pokemonFields["P1EffortDef"].AsByte;
+                    pokemon.spAtkEV = pokemonFields["P1EffortSpAtk"].AsByte;
+                    pokemon.spDefEV = pokemonFields["P1EffortSpDef"].AsByte;
+                    pokemon.spdEV = pokemonFields["P1EffortAgi"].AsByte;
+
+                    trainer.trainerPokemon.Add(pokemon);
+                }
+
+                if (pokemonFields["P2MonsNo"].AsUShort != 0)
+                {
+                    TrainerPokemon pokemon = new();
+                    pokemon.dexID = pokemonFields["P2MonsNo"].AsUShort;
+                    pokemon.formID = pokemonFields["P2FormNo"].AsUShort;
+                    pokemon.isRare = pokemonFields["P2IsRare"].AsByte;
+                    pokemon.level = pokemonFields["P2Level"].AsByte;
+                    pokemon.sex = pokemonFields["P2Sex"].AsByte;
+                    pokemon.natureID = pokemonFields["P2Seikaku"].AsByte;
+                    pokemon.abilityID = pokemonFields["P2Tokusei"].AsUShort;
+                    pokemon.moveID1 = pokemonFields["P2Waza1"].AsUShort;
+                    pokemon.moveID2 = pokemonFields["P2Waza2"].AsUShort;
+                    pokemon.moveID3 = pokemonFields["P2Waza3"].AsUShort;
+                    pokemon.moveID4 = pokemonFields["P2Waza4"].AsUShort;
+                    pokemon.itemID = pokemonFields["P2Item"].AsUShort;
+                    pokemon.ballID = pokemonFields["P2Ball"].AsByte;
+                    pokemon.seal = pokemonFields["P2Seal"].AsInt;
+                    pokemon.hpIV = pokemonFields["P2TalentHp"].AsByte;
+                    pokemon.atkIV = pokemonFields["P2TalentAtk"].AsByte;
+                    pokemon.defIV = pokemonFields["P2TalentDef"].AsByte;
+                    pokemon.spAtkIV = pokemonFields["P2TalentSpAtk"].AsByte;
+                    pokemon.spDefIV = pokemonFields["P2TalentSpDef"].AsByte;
+                    pokemon.spdIV = pokemonFields["P2TalentAgi"].AsByte;
+                    pokemon.hpEV = pokemonFields["P2EffortHp"].AsByte;
+                    pokemon.atkEV = pokemonFields["P2EffortAtk"].AsByte;
+                    pokemon.defEV = pokemonFields["P2EffortDef"].AsByte;
+                    pokemon.spAtkEV = pokemonFields["P2EffortSpAtk"].AsByte;
+                    pokemon.spDefEV = pokemonFields["P2EffortSpDef"].AsByte;
+                    pokemon.spdEV = pokemonFields["P2EffortAgi"].AsByte;
+
+                    trainer.trainerPokemon.Add(pokemon);
+                }
+
+                if (pokemonFields["P3MonsNo"].AsUShort != 0)
+                {
+                    TrainerPokemon pokemon = new();
+                    pokemon.dexID = pokemonFields["P3MonsNo"].AsUShort;
+                    pokemon.formID = pokemonFields["P3FormNo"].AsUShort;
+                    pokemon.isRare = pokemonFields["P3IsRare"].AsByte;
+                    pokemon.level = pokemonFields["P3Level"].AsByte;
+                    pokemon.sex = pokemonFields["P3Sex"].AsByte;
+                    pokemon.natureID = pokemonFields["P3Seikaku"].AsByte;
+                    pokemon.abilityID = pokemonFields["P3Tokusei"].AsUShort;
+                    pokemon.moveID1 = pokemonFields["P3Waza1"].AsUShort;
+                    pokemon.moveID2 = pokemonFields["P3Waza2"].AsUShort;
+                    pokemon.moveID3 = pokemonFields["P3Waza3"].AsUShort;
+                    pokemon.moveID4 = pokemonFields["P3Waza4"].AsUShort;
+                    pokemon.itemID = pokemonFields["P3Item"].AsUShort;
+                    pokemon.ballID = pokemonFields["P3Ball"].AsByte;
+                    pokemon.seal = pokemonFields["P3Seal"].AsInt;
+                    pokemon.hpIV = pokemonFields["P3TalentHp"].AsByte;
+                    pokemon.atkIV = pokemonFields["P3TalentAtk"].AsByte;
+                    pokemon.defIV = pokemonFields["P3TalentDef"].AsByte;
+                    pokemon.spAtkIV = pokemonFields["P3TalentSpAtk"].AsByte;
+                    pokemon.spDefIV = pokemonFields["P3TalentSpDef"].AsByte;
+                    pokemon.spdIV = pokemonFields["P3TalentAgi"].AsByte;
+                    pokemon.hpEV = pokemonFields["P3EffortHp"].AsByte;
+                    pokemon.atkEV = pokemonFields["P3EffortAtk"].AsByte;
+                    pokemon.defEV = pokemonFields["P3EffortDef"].AsByte;
+                    pokemon.spAtkEV = pokemonFields["P3EffortSpAtk"].AsByte;
+                    pokemon.spDefEV = pokemonFields["P3EffortSpDef"].AsByte;
+                    pokemon.spdEV = pokemonFields["P3EffortAgi"].AsByte;
+
+                    trainer.trainerPokemon.Add(pokemon);
+                }
+
+                if (pokemonFields["P4MonsNo"].AsUShort != 0)
+                {
+                    TrainerPokemon pokemon = new();
+                    pokemon.dexID = pokemonFields["P4MonsNo"].AsUShort;
+                    pokemon.formID = pokemonFields["P4FormNo"].AsUShort;
+                    pokemon.isRare = pokemonFields["P4IsRare"].AsByte;
+                    pokemon.level = pokemonFields["P4Level"].AsByte;
+                    pokemon.sex = pokemonFields["P4Sex"].AsByte;
+                    pokemon.natureID = pokemonFields["P4Seikaku"].AsByte;
+                    pokemon.abilityID = pokemonFields["P4Tokusei"].AsUShort;
+                    pokemon.moveID1 = pokemonFields["P4Waza1"].AsUShort;
+                    pokemon.moveID2 = pokemonFields["P4Waza2"].AsUShort;
+                    pokemon.moveID3 = pokemonFields["P4Waza3"].AsUShort;
+                    pokemon.moveID4 = pokemonFields["P4Waza4"].AsUShort;
+                    pokemon.itemID = pokemonFields["P4Item"].AsUShort;
+                    pokemon.ballID = pokemonFields["P4Ball"].AsByte;
+                    pokemon.seal = pokemonFields["P4Seal"].AsInt;
+                    pokemon.hpIV = pokemonFields["P4TalentHp"].AsByte;
+                    pokemon.atkIV = pokemonFields["P4TalentAtk"].AsByte;
+                    pokemon.defIV = pokemonFields["P4TalentDef"].AsByte;
+                    pokemon.spAtkIV = pokemonFields["P4TalentSpAtk"].AsByte;
+                    pokemon.spDefIV = pokemonFields["P4TalentSpDef"].AsByte;
+                    pokemon.spdIV = pokemonFields["P4TalentAgi"].AsByte;
+                    pokemon.hpEV = pokemonFields["P4EffortHp"].AsByte;
+                    pokemon.atkEV = pokemonFields["P4EffortAtk"].AsByte;
+                    pokemon.defEV = pokemonFields["P4EffortDef"].AsByte;
+                    pokemon.spAtkEV = pokemonFields["P4EffortSpAtk"].AsByte;
+                    pokemon.spDefEV = pokemonFields["P4EffortSpDef"].AsByte;
+                    pokemon.spdEV = pokemonFields["P4EffortAgi"].AsByte;
+
+                    trainer.trainerPokemon.Add(pokemon);
+                }
+
+                if (pokemonFields["P5MonsNo"].AsUShort != 0)
+                {
+                    TrainerPokemon pokemon = new();
+                    pokemon.dexID = pokemonFields["P5MonsNo"].AsUShort;
+                    pokemon.formID = pokemonFields["P5FormNo"].AsUShort;
+                    pokemon.isRare = pokemonFields["P5IsRare"].AsByte;
+                    pokemon.level = pokemonFields["P5Level"].AsByte;
+                    pokemon.sex = pokemonFields["P5Sex"].AsByte;
+                    pokemon.natureID = pokemonFields["P5Seikaku"].AsByte;
+                    pokemon.abilityID = pokemonFields["P5Tokusei"].AsUShort;
+                    pokemon.moveID1 = pokemonFields["P5Waza1"].AsUShort;
+                    pokemon.moveID2 = pokemonFields["P5Waza2"].AsUShort;
+                    pokemon.moveID3 = pokemonFields["P5Waza3"].AsUShort;
+                    pokemon.moveID4 = pokemonFields["P5Waza4"].AsUShort;
+                    pokemon.itemID = pokemonFields["P5Item"].AsUShort;
+                    pokemon.ballID = pokemonFields["P5Ball"].AsByte;
+                    pokemon.seal = pokemonFields["P5Seal"].AsInt;
+                    pokemon.hpIV = pokemonFields["P5TalentHp"].AsByte;
+                    pokemon.atkIV = pokemonFields["P5TalentAtk"].AsByte;
+                    pokemon.defIV = pokemonFields["P5TalentDef"].AsByte;
+                    pokemon.spAtkIV = pokemonFields["P5TalentSpAtk"].AsByte;
+                    pokemon.spDefIV = pokemonFields["P5TalentSpDef"].AsByte;
+                    pokemon.spdIV = pokemonFields["P5TalentAgi"].AsByte;
+                    pokemon.hpEV = pokemonFields["P5EffortHp"].AsByte;
+                    pokemon.atkEV = pokemonFields["P5EffortAtk"].AsByte;
+                    pokemon.defEV = pokemonFields["P5EffortDef"].AsByte;
+                    pokemon.spAtkEV = pokemonFields["P5EffortSpAtk"].AsByte;
+                    pokemon.spDefEV = pokemonFields["P5EffortSpDef"].AsByte;
+                    pokemon.spdEV = pokemonFields["P5EffortAgi"].AsByte;
+
+                    trainer.trainerPokemon.Add(pokemon);
+                }
+
+                if (pokemonFields["P6MonsNo"].AsUShort != 0)
+                {
+                    TrainerPokemon pokemon = new();
+                    pokemon.dexID = pokemonFields["P6MonsNo"].AsUShort;
+                    pokemon.formID = pokemonFields["P6FormNo"].AsUShort;
+                    pokemon.isRare = pokemonFields["P6IsRare"].AsByte;
+                    pokemon.level = pokemonFields["P6Level"].AsByte;
+                    pokemon.sex = pokemonFields["P6Sex"].AsByte;
+                    pokemon.natureID = pokemonFields["P6Seikaku"].AsByte;
+                    pokemon.abilityID = pokemonFields["P6Tokusei"].AsUShort;
+                    pokemon.moveID1 = pokemonFields["P6Waza1"].AsUShort;
+                    pokemon.moveID2 = pokemonFields["P6Waza2"].AsUShort;
+                    pokemon.moveID3 = pokemonFields["P6Waza3"].AsUShort;
+                    pokemon.moveID4 = pokemonFields["P6Waza4"].AsUShort;
+                    pokemon.itemID = pokemonFields["P6Item"].AsUShort;
+                    pokemon.ballID = pokemonFields["P6Ball"].AsByte;
+                    pokemon.seal = pokemonFields["P6Seal"].AsInt;
+                    pokemon.hpIV = pokemonFields["P6TalentHp"].AsByte;
+                    pokemon.atkIV = pokemonFields["P6TalentAtk"].AsByte;
+                    pokemon.defIV = pokemonFields["P6TalentDef"].AsByte;
+                    pokemon.spAtkIV = pokemonFields["P6TalentSpAtk"].AsByte;
+                    pokemon.spDefIV = pokemonFields["P6TalentSpDef"].AsByte;
+                    pokemon.spdIV = pokemonFields["P6TalentAgi"].AsByte;
+                    pokemon.hpEV = pokemonFields["P6EffortHp"].AsByte;
+                    pokemon.atkEV = pokemonFields["P6EffortAtk"].AsByte;
+                    pokemon.defEV = pokemonFields["P6EffortDef"].AsByte;
+                    pokemon.spAtkEV = pokemonFields["P6EffortSpAtk"].AsByte;
+                    pokemon.spDefEV = pokemonFields["P6EffortSpDef"].AsByte;
+                    pokemon.spdEV = pokemonFields["P6EffortAgi"].AsByte;
 
                     trainer.trainerPokemon.Add(pokemon);
                 }
@@ -475,58 +641,61 @@ namespace ImpostersOrdeal
             gameData.battleTowerTrainers = new();
             gameData.battleTowerTrainersDouble = new();
             gameData.battleTowerTrainerPokemons = new();
-            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "TowerTrainerTable");
-            AssetTypeValueField monoBehaviour2 = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "TowerSingleStockTable");
-            AssetTypeValueField monoBehaviour3 = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "TowerDoubleStockTable");
+            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => m["m_Name"].AsString == "TowerTrainerTable");
+            AssetTypeValueField monoBehaviour2 = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => m["m_Name"].AsString == "TowerSingleStockTable");
+            AssetTypeValueField monoBehaviour3 = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => m["m_Name"].AsString == "TowerDoubleStockTable");
 
-            AssetTypeValueField[] nameFields = await FindLabelArrayOfMessageFileAsync("dp_trainers_name", Language.English);
+            var nameFields = await FindLabelArrayOfMessageFileAsync("dp_trainers_name", Language.English);
             Dictionary<string, string> trainerNames = new();
             gameData.trainerNames = trainerNames;
             foreach (AssetTypeValueField label in nameFields)
-                if (label.children[6].children[0].childrenCount > 0)
-                    trainerNames[label.children[2].GetValue().AsString()] = label.children[6].children[0].children[0].children[4].GetValue().AsString();
-            AssetTypeValueField[] trainerFields = monoBehaviour2.children[4].children[0].children;
-            AssetTypeValueField[] trainerFieldsDouble = monoBehaviour3.children[4].children[0].children;
-            AssetTypeValueField[] pokemonFields = monoBehaviour.children[5].children[0].children;
-            AssetTypeValueField[] nameFieldsTower = monoBehaviour.children[4].children[0].children;
+                if (label["wordDataArray.Array"].Children.Count > 0)
+                    trainerNames[label["labelName"].AsString] = label["wordDataArray.Array"][0]["str"].AsString;
+
+            var trainerFields = monoBehaviour2["TowerSingleStock.Array"].Children;
+            var trainerFieldsDouble = monoBehaviour3["TowerDoubleStock.Array"].Children;
+            var pokemonFields = monoBehaviour["TrainerPoke.Array"].Children;
+            var nameFieldsTower = monoBehaviour["TrainerData.Array"].Children;
+
             //Single battle parser
-            for (int trainerIdx = 0; trainerIdx < trainerFields.Length; trainerIdx++)
+            for (int trainerIdx = 0; trainerIdx < trainerFields.Count; trainerIdx++)
             {
                 BattleTowerTrainer trainer = new();
-                trainer.trainerID2 = trainerFields[trainerIdx].children[0].GetValue().AsUInt();
-                trainer.trainerTypeID = trainerFields[trainerIdx].children[1].GetValue().AsInt();
-                trainer.trainerTypeID2 = -1; ;
-                trainer.battleTowerPokemonID1 = trainerFields[trainerIdx].children[2].children[0].children[0].GetValue().AsUInt();
-                trainer.battleTowerPokemonID2 = trainerFields[trainerIdx].children[2].children[0].children[1].GetValue().AsUInt();
-                trainer.battleTowerPokemonID3 = trainerFields[trainerIdx].children[2].children[0].children[2].GetValue().AsUInt();
+                trainer.trainerID2 = trainerFields[trainerIdx]["ID"].AsUInt;
+                trainer.trainerTypeID = trainerFields[trainerIdx]["TrainerID"].AsInt;
+                trainer.trainerTypeID2 = -1;
+                trainer.battleTowerPokemonID1 = trainerFields[trainerIdx]["PokeID.Array"][0].AsUInt;
+                trainer.battleTowerPokemonID2 = trainerFields[trainerIdx]["PokeID.Array"][1].AsUInt;
+                trainer.battleTowerPokemonID3 = trainerFields[trainerIdx]["PokeID.Array"][2].AsUInt;
                 trainer.battleTowerPokemonID4 = 0;
-                trainer.battleBGM = trainerFields[trainerIdx].children[3].GetValue().AsString();
-                trainer.winBGM = trainerFields[trainerIdx].children[4].GetValue().AsString();
-                trainer.nameLabel = nameFieldsTower[trainer.trainerTypeID].children[1].GetValue().AsString();
+                trainer.battleBGM = trainerFields[trainerIdx]["BattleBGM"].AsString;
+                trainer.winBGM = trainerFields[trainerIdx]["WinBGM"].AsString;
+                trainer.nameLabel = nameFieldsTower[trainer.trainerTypeID]["NameLabel"].AsString;
                 trainer.name = trainerNames[trainer.nameLabel];
                 trainer.nameLabel2 = null;
                 trainer.name2 = null;
                 trainer.isDouble = false;
                 gameData.battleTowerTrainers.Add(trainer);
             }
+
             //Double battle parser
-            for (int trainerIdx = 0; trainerIdx < trainerFieldsDouble.Length; trainerIdx++)
+            for (int trainerIdx = 0; trainerIdx < trainerFieldsDouble.Count; trainerIdx++)
             {
                 BattleTowerTrainer trainer = new();
-                trainer.trainerID2 = trainerFieldsDouble[trainerIdx].children[0].GetValue().AsUInt();
-                trainer.trainerTypeID = trainerFieldsDouble[trainerIdx].children[1].children[0].children[0].GetValue().AsInt();
-                trainer.trainerTypeID2 = trainerFieldsDouble[trainerIdx].children[1].children[0].children[1].GetValue().AsInt();
-                trainer.battleTowerPokemonID1 = trainerFieldsDouble[trainerIdx].children[2].children[0].children[0].GetValue().AsUInt();
-                trainer.battleTowerPokemonID2 = trainerFieldsDouble[trainerIdx].children[2].children[0].children[1].GetValue().AsUInt();
-                trainer.battleTowerPokemonID3 = trainerFieldsDouble[trainerIdx].children[2].children[0].children[2].GetValue().AsUInt();
-                trainer.battleTowerPokemonID4 = trainerFieldsDouble[trainerIdx].children[2].children[0].children[3].GetValue().AsUInt();
-                trainer.battleBGM = trainerFieldsDouble[trainerIdx].children[3].GetValue().AsString();
-                trainer.winBGM = trainerFieldsDouble[trainerIdx].children[4].GetValue().AsString();
-                trainer.nameLabel = nameFieldsTower[trainer.trainerTypeID].children[1].GetValue().AsString();
+                trainer.trainerID2 = trainerFieldsDouble[trainerIdx]["ID"].AsUInt;
+                trainer.trainerTypeID = trainerFieldsDouble[trainerIdx]["TrainerID.Array"][0].AsInt;
+                trainer.trainerTypeID2 = trainerFieldsDouble[trainerIdx]["TrainerID.Array"][1].AsInt;
+                trainer.battleTowerPokemonID1 = trainerFieldsDouble[trainerIdx]["PokeID.Array"][0].AsUInt;
+                trainer.battleTowerPokemonID2 = trainerFieldsDouble[trainerIdx]["PokeID.Array"][1].AsUInt;
+                trainer.battleTowerPokemonID3 = trainerFieldsDouble[trainerIdx]["PokeID.Array"][2].AsUInt;
+                trainer.battleTowerPokemonID4 = trainerFieldsDouble[trainerIdx]["PokeID.Array"][3].AsUInt;
+                trainer.battleBGM = trainerFieldsDouble[trainerIdx]["BattleBGM"].AsString;
+                trainer.winBGM = trainerFieldsDouble[trainerIdx]["WinBGM"].AsString;
+                trainer.nameLabel = nameFieldsTower[trainer.trainerTypeID]["NameLabel"].AsString;
                 trainer.name = trainerNames[trainer.nameLabel];
                 if (trainer.trainerTypeID2 != -1)
                 {
-                    trainer.nameLabel2 = nameFieldsTower[trainer.trainerTypeID2].children[1].GetValue().AsString();
+                    trainer.nameLabel2 = nameFieldsTower[trainer.trainerTypeID2]["NameLabel"].AsString;
                     trainer.name2 = trainerNames[trainer.nameLabel2];
                 }
                 else
@@ -539,36 +708,36 @@ namespace ImpostersOrdeal
             }
 
             //Parse battle tower trainer pokemon
-            for (int pokemonIdx = 0; pokemonIdx < pokemonFields.Length && pokemonFields[pokemonIdx].children[0].value.value.asUInt32 != 0; pokemonIdx += 1)
+            for (int pokemonIdx = 0; pokemonIdx < pokemonFields.Count; pokemonIdx++)
             {
                 BattleTowerTrainerPokemon pokemon = new();
-                pokemon.pokemonID = pokemonFields[pokemonIdx].children[0].value.value.asUInt32;
-                pokemon.dexID = pokemonFields[pokemonIdx].children[1].value.value.asInt32;
-                pokemon.formID = pokemonFields[pokemonIdx].children[2].value.value.asUInt16;
-                pokemon.isRare = pokemonFields[pokemonIdx].children[3].value.value.asUInt8;
-                pokemon.level = pokemonFields[pokemonIdx].children[4].value.value.asUInt8;
-                pokemon.sex = pokemonFields[pokemonIdx].children[5].value.value.asUInt8;
-                pokemon.natureID = pokemonFields[pokemonIdx].children[6].value.value.asInt32;
-                pokemon.abilityID = pokemonFields[pokemonIdx].children[7].value.value.asInt32;
-                pokemon.moveID1 = pokemonFields[pokemonIdx].children[8].value.value.asInt32;
-                pokemon.moveID2 = pokemonFields[pokemonIdx].children[9].value.value.asInt32;
-                pokemon.moveID3 = pokemonFields[pokemonIdx].children[10].value.value.asInt32;
-                pokemon.moveID4 = pokemonFields[pokemonIdx].children[11].value.value.asInt32;
-                pokemon.itemID = pokemonFields[pokemonIdx].children[12].value.value.asUInt16;
-                pokemon.ballID = pokemonFields[pokemonIdx].children[13].value.value.asUInt8;
-                pokemon.seal = pokemonFields[pokemonIdx].children[14].value.value.asInt32;
-                pokemon.hpIV = pokemonFields[pokemonIdx].children[15].value.value.asUInt8;
-                pokemon.atkIV = pokemonFields[pokemonIdx].children[16].value.value.asUInt8;
-                pokemon.defIV = pokemonFields[pokemonIdx].children[17].value.value.asUInt8;
-                pokemon.spAtkIV = pokemonFields[pokemonIdx].children[18].value.value.asUInt8;
-                pokemon.spDefIV = pokemonFields[pokemonIdx].children[19].value.value.asUInt8;
-                pokemon.spdIV = pokemonFields[pokemonIdx].children[20].value.value.asUInt8;
-                pokemon.hpEV = pokemonFields[pokemonIdx].children[21].value.value.asUInt8;
-                pokemon.atkEV = pokemonFields[pokemonIdx].children[22].value.value.asUInt8;
-                pokemon.defEV = pokemonFields[pokemonIdx].children[23].value.value.asUInt8;
-                pokemon.spAtkEV = pokemonFields[pokemonIdx].children[24].value.value.asUInt8;
-                pokemon.spDefEV = pokemonFields[pokemonIdx].children[25].value.value.asUInt8;
-                pokemon.spdEV = pokemonFields[pokemonIdx].children[26].value.value.asUInt8;
+                pokemon.pokemonID = pokemonFields[pokemonIdx]["ID"].AsUInt;
+                pokemon.dexID = pokemonFields[pokemonIdx]["MonsNo"].AsInt;
+                pokemon.formID = pokemonFields[pokemonIdx]["FormNo"].AsUShort;
+                pokemon.isRare = pokemonFields[pokemonIdx]["IsRare"].AsByte;
+                pokemon.level = pokemonFields[pokemonIdx]["Level"].AsByte;
+                pokemon.sex = pokemonFields[pokemonIdx]["Sex"].AsByte;
+                pokemon.natureID = pokemonFields[pokemonIdx]["Seikaku"].AsInt;
+                pokemon.abilityID = pokemonFields[pokemonIdx]["Tokusei"].AsInt;
+                pokemon.moveID1 = pokemonFields[pokemonIdx]["Waza1"].AsInt;
+                pokemon.moveID2 = pokemonFields[pokemonIdx]["Waza2"].AsInt;
+                pokemon.moveID3 = pokemonFields[pokemonIdx]["Waza3"].AsInt;
+                pokemon.moveID4 = pokemonFields[pokemonIdx]["Waza4"].AsInt;
+                pokemon.itemID = pokemonFields[pokemonIdx]["Item"].AsUShort;
+                pokemon.ballID = pokemonFields[pokemonIdx]["Ball"].AsByte;
+                pokemon.seal = pokemonFields[pokemonIdx]["Seal"].AsInt;
+                pokemon.hpIV = pokemonFields[pokemonIdx]["TalentHp"].AsByte;
+                pokemon.atkIV = pokemonFields[pokemonIdx]["TalentAtk"].AsByte;
+                pokemon.defIV = pokemonFields[pokemonIdx]["TalentDef"].AsByte;
+                pokemon.spAtkIV = pokemonFields[pokemonIdx]["TalentSpAtk"].AsByte;
+                pokemon.spDefIV = pokemonFields[pokemonIdx]["TalentSpDef"].AsByte;
+                pokemon.spdIV = pokemonFields[pokemonIdx]["TalentAgi"].AsByte;
+                pokemon.hpEV = pokemonFields[pokemonIdx]["EffortHp"].AsByte;
+                pokemon.atkEV = pokemonFields[pokemonIdx]["EffortAtk"].AsByte;
+                pokemon.defEV = pokemonFields[pokemonIdx]["EffortDef"].AsByte;
+                pokemon.spAtkEV = pokemonFields[pokemonIdx]["EffortSpAtk"].AsByte;
+                pokemon.spDefEV = pokemonFields[pokemonIdx]["EffortSpDef"].AsByte;
+                pokemon.spdEV = pokemonFields[pokemonIdx]["EffortAgi"].AsByte;
                 gameData.battleTowerTrainerPokemons.Add(pokemon);
             }
 
@@ -583,98 +752,98 @@ namespace ImpostersOrdeal
 
             List<AssetTypeValueField> monoBehaviours = await monoBehaviourCollection[PathEnum.Gamesettings];
             AssetTypeValueField[] encounterTableMonoBehaviours = new AssetTypeValueField[2];
-            encounterTableMonoBehaviours[0] = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "FieldEncountTable_d");
-            encounterTableMonoBehaviours[1] = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "FieldEncountTable_p");
+            encounterTableMonoBehaviours[0] = monoBehaviours.Find(m => m["m_Name"].AsString == "FieldEncountTable_d");
+            encounterTableMonoBehaviours[1] = monoBehaviours.Find(m => m["m_Name"].AsString == "FieldEncountTable_p");
             for (int encounterTableFileIdx = 0; encounterTableFileIdx < encounterTableMonoBehaviours.Length; encounterTableFileIdx++)
             {
                 EncounterTableFile encounterTableFile = new();
-                encounterTableFile.mName = Encoding.Default.GetString(encounterTableMonoBehaviours[encounterTableFileIdx].children[3].value.value.asString);
+                encounterTableFile.mName = encounterTableMonoBehaviours[encounterTableFileIdx]["m_Name"].AsString;
 
                 //Parse wild encounter tables
                 encounterTableFile.encounterTables = new();
-                AssetTypeValueField[] encounterTableFields = encounterTableMonoBehaviours[encounterTableFileIdx].children[4].children[0].children;
-                for (int encounterTableIdx = 0; encounterTableIdx < encounterTableFields.Length; encounterTableIdx++)
+                var encounterTableFields = encounterTableMonoBehaviours[encounterTableFileIdx]["table.Array"].Children;
+                for (int encounterTableIdx = 0; encounterTableIdx < encounterTableFields.Count; encounterTableIdx++)
                 {
                     EncounterTable encounterTable = new();
-                    encounterTable.zoneID = (ZoneID)encounterTableFields[encounterTableIdx].children[0].value.value.asInt32;
-                    encounterTable.encRateGround = encounterTableFields[encounterTableIdx].children[1].value.value.asInt32;
-                    encounterTable.formProb = encounterTableFields[encounterTableIdx].children[7].children[0].children[0].value.value.asInt32;
-                    encounterTable.unownTable = encounterTableFields[encounterTableIdx].children[9].children[0].children[1].value.value.asInt32;
-                    encounterTable.encRateWater = encounterTableFields[encounterTableIdx].children[15].value.value.asInt32;
-                    encounterTable.encRateOldRod = encounterTableFields[encounterTableIdx].children[17].value.value.asInt32;
-                    encounterTable.encRateGoodRod = encounterTableFields[encounterTableIdx].children[19].value.value.asInt32;
-                    encounterTable.encRateSuperRod = encounterTableFields[encounterTableIdx].children[21].value.value.asInt32;
+                    encounterTable.zoneID = (ZoneID)encounterTableFields[encounterTableIdx]["zoneID"].AsInt;
+                    encounterTable.encRateGround = encounterTableFields[encounterTableIdx]["encRate_gr"].AsInt;
+                    encounterTable.formProb = encounterTableFields[encounterTableIdx]["FormProb.Array"][0].AsInt;
+                    encounterTable.unownTable = encounterTableFields[encounterTableIdx]["AnnoonTable.Array"][1].AsInt;
+                    encounterTable.encRateWater = encounterTableFields[encounterTableIdx]["encRate_wat"].AsInt;
+                    encounterTable.encRateOldRod = encounterTableFields[encounterTableIdx]["encRate_turi_boro"].AsInt;
+                    encounterTable.encRateGoodRod = encounterTableFields[encounterTableIdx]["encRate_turi_ii"].AsInt;
+                    encounterTable.encRateSuperRod = encounterTableFields[encounterTableIdx]["encRate_sugoi"].AsInt;
 
                     //Parse ground tables
-                    encounterTable.groundMons = GetParsedEncounters(encounterTableFields[encounterTableIdx].children[2].children[0].children);
+                    encounterTable.groundMons = GetParsedEncounters(encounterTableFields[encounterTableIdx]["ground_mons.Array"].Children);
 
                     //Parse morning tables
-                    encounterTable.tairyo = GetParsedEncounters(encounterTableFields[encounterTableIdx].children[3].children[0].children);
+                    encounterTable.tairyo = GetParsedEncounters(encounterTableFields[encounterTableIdx]["tairyo.Array"].Children);
 
                     //Parse day tables
-                    encounterTable.day = GetParsedEncounters(encounterTableFields[encounterTableIdx].children[4].children[0].children);
+                    encounterTable.day = GetParsedEncounters(encounterTableFields[encounterTableIdx]["day.Array"].Children);
 
                     //Parse night tables
-                    encounterTable.night = GetParsedEncounters(encounterTableFields[encounterTableIdx].children[5].children[0].children);
+                    encounterTable.night = GetParsedEncounters(encounterTableFields[encounterTableIdx]["night.Array"].Children);
 
                     //Parse pokefinder tables
-                    encounterTable.swayGrass = GetParsedEncounters(encounterTableFields[encounterTableIdx].children[6].children[0].children);
+                    encounterTable.swayGrass = GetParsedEncounters(encounterTableFields[encounterTableIdx]["swayGrass.Array"].Children);
 
                     //Parse ruby tables
-                    encounterTable.gbaRuby = GetParsedEncounters(encounterTableFields[encounterTableIdx]["gbaRuby"].children[0].children);
+                    encounterTable.gbaRuby = GetParsedEncounters(encounterTableFields[encounterTableIdx]["gbaRuby.Array"].Children);
 
                     //Parse sapphire tables
-                    encounterTable.gbaSapphire = GetParsedEncounters(encounterTableFields[encounterTableIdx]["gbaSapp"].children[0].children);
+                    encounterTable.gbaSapphire = GetParsedEncounters(encounterTableFields[encounterTableIdx]["gbaSapp.Array"].Children);
 
                     //Parse emerald tables
-                    encounterTable.gbaEmerald = GetParsedEncounters(encounterTableFields[encounterTableIdx]["gbaEme"].children[0].children);
+                    encounterTable.gbaEmerald = GetParsedEncounters(encounterTableFields[encounterTableIdx]["gbaEme.Array"].Children);
 
                     //Parse fire tables
-                    encounterTable.gbaFire = GetParsedEncounters(encounterTableFields[encounterTableIdx]["gbaFire"].children[0].children);
+                    encounterTable.gbaFire = GetParsedEncounters(encounterTableFields[encounterTableIdx]["gbaFire.Array"].Children);
 
                     //Parse leaf tables
-                    encounterTable.gbaLeaf = GetParsedEncounters(encounterTableFields[encounterTableIdx]["gbaLeaf"].children[0].children);
+                    encounterTable.gbaLeaf = GetParsedEncounters(encounterTableFields[encounterTableIdx]["gbaLeaf.Array"].Children);
 
                     //Parse surfing tables
-                    encounterTable.waterMons = GetParsedEncounters(encounterTableFields[encounterTableIdx].children[16].children[0].children);
+                    encounterTable.waterMons = GetParsedEncounters(encounterTableFields[encounterTableIdx]["water_mons.Array"].Children);
 
                     //Parse old rod tables
-                    encounterTable.oldRodMons = GetParsedEncounters(encounterTableFields[encounterTableIdx].children[18].children[0].children);
+                    encounterTable.oldRodMons = GetParsedEncounters(encounterTableFields[encounterTableIdx]["boro_mons.Array"].Children);
 
                     //Parse good rod tables
-                    encounterTable.goodRodMons = GetParsedEncounters(encounterTableFields[encounterTableIdx].children[20].children[0].children);
+                    encounterTable.goodRodMons = GetParsedEncounters(encounterTableFields[encounterTableIdx]["ii_mons.Array"].Children);
 
                     //Parse super rod tables
-                    encounterTable.superRodMons = GetParsedEncounters(encounterTableFields[encounterTableIdx].children[22].children[0].children);
+                    encounterTable.superRodMons = GetParsedEncounters(encounterTableFields[encounterTableIdx]["sugoi_mons.Array"].Children);
 
                     encounterTableFile.encounterTables.Add(encounterTable);
                 }
 
                 //Parse trophy garden table
                 encounterTableFile.trophyGardenMons = new();
-                AssetTypeValueField[] trophyGardenMonFields = encounterTableMonoBehaviours[encounterTableFileIdx].children[5].children[0].children;
-                for (int trophyGardenMonIdx = 0; trophyGardenMonIdx < trophyGardenMonFields.Length; trophyGardenMonIdx++)
-                    encounterTableFile.trophyGardenMons.Add(trophyGardenMonFields[trophyGardenMonIdx].children[0].value.value.asInt32);
+                var trophyGardenMonFields = encounterTableMonoBehaviours[encounterTableFileIdx]["urayama.Array"].Children;
+                for (int trophyGardenMonIdx = 0; trophyGardenMonIdx < trophyGardenMonFields.Count; trophyGardenMonIdx++)
+                    encounterTableFile.trophyGardenMons.Add(trophyGardenMonFields[trophyGardenMonIdx]["monsNo"].AsInt);
 
                 //Parse honey tree tables
                 encounterTableFile.honeyTreeEnconters = new();
-                AssetTypeValueField[] honeyTreeEncounterFields = encounterTableMonoBehaviours[encounterTableFileIdx].children[6].children[0].children;
-                for (int honeyTreeEncounterIdx = 0; honeyTreeEncounterIdx < honeyTreeEncounterFields.Length; honeyTreeEncounterIdx++)
+                var honeyTreeEncounterFields = encounterTableMonoBehaviours[encounterTableFileIdx]["mistu.Array"].Children;
+                for (int honeyTreeEncounterIdx = 0; honeyTreeEncounterIdx < honeyTreeEncounterFields.Count; honeyTreeEncounterIdx++)
                 {
                     HoneyTreeEncounter honeyTreeEncounter = new();
-                    honeyTreeEncounter.rate = honeyTreeEncounterFields[honeyTreeEncounterIdx].children[0].value.value.asInt32;
-                    honeyTreeEncounter.normalDexID = honeyTreeEncounterFields[honeyTreeEncounterIdx].children[1].value.value.asInt32;
-                    honeyTreeEncounter.rareDexID = honeyTreeEncounterFields[honeyTreeEncounterIdx].children[2].value.value.asInt32;
-                    honeyTreeEncounter.superRareDexID = honeyTreeEncounterFields[honeyTreeEncounterIdx].children[3].value.value.asInt32;
+                    honeyTreeEncounter.rate = honeyTreeEncounterFields[honeyTreeEncounterIdx]["Rate"].AsInt;
+                    honeyTreeEncounter.normalDexID = honeyTreeEncounterFields[honeyTreeEncounterIdx]["Normal"].AsInt;
+                    honeyTreeEncounter.rareDexID = honeyTreeEncounterFields[honeyTreeEncounterIdx]["Rare"].AsInt;
+                    honeyTreeEncounter.superRareDexID = honeyTreeEncounterFields[honeyTreeEncounterIdx]["SuperRare"].AsInt;
 
                     encounterTableFile.honeyTreeEnconters.Add(honeyTreeEncounter);
                 }
 
                 //Parse safari table
                 encounterTableFile.safariMons = new();
-                AssetTypeValueField[] safariMonFields = encounterTableMonoBehaviours[encounterTableFileIdx].children[8].children[0].children;
-                for (int safariMonIdx = 0; safariMonIdx < safariMonFields.Length; safariMonIdx++)
-                    encounterTableFile.safariMons.Add(safariMonFields[safariMonIdx].children[0].value.value.asInt32);
+                var safariMonFields = encounterTableMonoBehaviours[encounterTableFileIdx]["safari.Array"].Children;
+                for (int safariMonIdx = 0; safariMonIdx < safariMonFields.Count; safariMonIdx++)
+                    encounterTableFile.safariMons.Add(safariMonFields[safariMonIdx]["MonsNo"].AsInt);
 
                 gameData.encounterTableFiles[encounterTableFileIdx] = encounterTableFile;
             }
@@ -683,15 +852,15 @@ namespace ImpostersOrdeal
         /// <summary>
         ///  Parses an array of encounters in a monobehaviour into a list of Encounters.
         /// </summary>
-        private static List<Encounter> GetParsedEncounters(AssetTypeValueField[] encounterFields)
+        private static List<Encounter> GetParsedEncounters(List<AssetTypeValueField> encounterFields)
         {
             List<Encounter> encounters = new();
-            for (int encounterIdx = 0; encounterIdx < encounterFields.Length; encounterIdx++)
+            for (int encounterIdx = 0; encounterIdx < encounterFields.Count; encounterIdx++)
             {
                 Encounter encounter = new();
-                encounter.maxLv = encounterFields[encounterIdx].children[0].value.value.asInt32;
-                encounter.minLv = encounterFields[encounterIdx].children[1].value.value.asInt32;
-                encounter.dexID = encounterFields[encounterIdx].children[2].value.value.asInt32;
+                encounter.maxLv = encounterFields[encounterIdx]["maxlv"].AsInt;
+                encounter.minLv = encounterFields[encounterIdx]["minlv"].AsInt;
+                encounter.dexID = encounterFields[encounterIdx]["monsNo"].AsInt;
 
                 encounters.Add(encounter);
             }
@@ -707,81 +876,81 @@ namespace ImpostersOrdeal
             gameData.personalEntries = new();
             List<AssetTypeValueField> monoBehaviours = (await monoBehaviourCollection[PathEnum.PersonalMasterdatas]);
 
-            AssetTypeValueField[] levelUpMoveFields = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "WazaOboeTable").children[4].children[0].children;
-            AssetTypeValueField[] eggMoveFields = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "TamagoWazaTable").children[4].children[0].children;
-            AssetTypeValueField[] evolveFields = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "EvolveTable").children[4].children[0].children;
-            AssetTypeValueField[] personalFields = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "PersonalTable").children[4].children[0].children;
-            AssetTypeValueField[] textFields = await FindLabelArrayOfMessageFileAsync("ss_monsname", Language.English);
+            var levelUpMoveFields = monoBehaviours.Find(m => m["m_Name"].AsString == "WazaOboeTable")["WazaOboe.Array"].Children;
+            var eggMoveFields = monoBehaviours.Find(m => m["m_Name"].AsString == "TamagoWazaTable")["Data.Array"].Children;
+            var evolveFields = monoBehaviours.Find(m => m["m_Name"].AsString == "EvolveTable")["Evolve.Array"].Children;
+            var personalFields = monoBehaviours.Find(m => m["m_Name"].AsString == "PersonalTable")["Personal.Array"].Children;
+            var textFields = await FindLabelArrayOfMessageFileAsync("ss_monsname", Language.English);
 
-            if (levelUpMoveFields.Length < personalFields.Length)
+            if (levelUpMoveFields.Count < personalFields.Count)
                 MainForm.ShowParserError("Oh my, this WazaOboeTable is missing some stuff...\n" +
                     "I don't feel so good...\n" +
-                    "PersonalTable entries: " + personalFields.Length + "\n" +
-                    "WazaOboeTable entries: " + levelUpMoveFields.Length + "??");
-            if (eggMoveFields.Length < personalFields.Length)
+                    "PersonalTable entries: " + personalFields.Count + "\n" +
+                    "WazaOboeTable entries: " + levelUpMoveFields.Count + "??");
+            if (eggMoveFields.Count < personalFields.Count)
                 MainForm.ShowParserError("Oh my, this TamagoWazaTable is missing some stuff...\n" +
                     "I don't feel so good...\n" +
-                    "PersonalTable entries: " + personalFields.Length + "\n" +
-                    "TamagoWazaTable entries: " + eggMoveFields.Length + "??");
-            if (evolveFields.Length < personalFields.Length)
+                    "PersonalTable entries: " + personalFields.Count + "\n" +
+                    "TamagoWazaTable entries: " + eggMoveFields.Count + "??");
+            if (evolveFields.Count < personalFields.Count)
                 MainForm.ShowParserError("Oh my, this EvolveTable is missing some stuff...\n" +
                     "I don't feel so good...\n" +
-                    "PersonalTable entries: " + personalFields.Length + "\n" +
-                    "EvolveTable entries: " + evolveFields.Length + "??");
+                    "PersonalTable entries: " + personalFields.Count + "\n" +
+                    "EvolveTable entries: " + evolveFields.Count + "??");
 
-            for (int personalID = 0; personalID < personalFields.Length; personalID++)
+            for (int personalID = 0; personalID < personalFields.Count; personalID++)
             {
                 Pokemon pokemon = new();
-                pokemon.validFlag = personalFields[personalID].children[0].value.value.asUInt8;
-                pokemon.personalID = personalFields[personalID].children[1].value.value.asUInt16;
-                pokemon.dexID = personalFields[personalID].children[2].value.value.asUInt16;
-                pokemon.formIndex = personalFields[personalID].children[3].value.value.asUInt16;
-                pokemon.formMax = personalFields[personalID].children[4].value.value.asUInt8;
-                pokemon.color = personalFields[personalID].children[5].value.value.asUInt8;
-                pokemon.graNo = personalFields[personalID].children[6].value.value.asUInt16;
-                pokemon.basicHp = personalFields[personalID].children[7].value.value.asUInt8;
-                pokemon.basicAtk = personalFields[personalID].children[8].value.value.asUInt8;
-                pokemon.basicDef = personalFields[personalID].children[9].value.value.asUInt8;
-                pokemon.basicSpd = personalFields[personalID].children[10].value.value.asUInt8;
-                pokemon.basicSpAtk = personalFields[personalID].children[11].value.value.asUInt8;
-                pokemon.basicSpDef = personalFields[personalID].children[12].value.value.asUInt8;
-                pokemon.typingID1 = personalFields[personalID].children[13].value.value.asUInt8;
-                pokemon.typingID2 = personalFields[personalID].children[14].value.value.asUInt8;
-                pokemon.getRate = personalFields[personalID].children[15].value.value.asUInt8;
-                pokemon.rank = personalFields[personalID].children[16].value.value.asUInt8;
-                pokemon.expValue = personalFields[personalID].children[17].value.value.asUInt16;
-                pokemon.item1 = personalFields[personalID].children[18].value.value.asUInt16;
-                pokemon.item2 = personalFields[personalID].children[19].value.value.asUInt16;
-                pokemon.item3 = personalFields[personalID].children[20].value.value.asUInt16;
-                pokemon.sex = personalFields[personalID].children[21].value.value.asUInt8;
-                pokemon.eggBirth = personalFields[personalID].children[22].value.value.asUInt8;
-                pokemon.initialFriendship = personalFields[personalID].children[23].value.value.asUInt8;
-                pokemon.eggGroup1 = personalFields[personalID].children[24].value.value.asUInt8;
-                pokemon.eggGroup2 = personalFields[personalID].children[25].value.value.asUInt8;
-                pokemon.grow = personalFields[personalID].children[26].value.value.asUInt8;
-                pokemon.abilityID1 = personalFields[personalID].children[27].value.value.asUInt16;
-                pokemon.abilityID2 = personalFields[personalID].children[28].value.value.asUInt16;
-                pokemon.abilityID3 = personalFields[personalID].children[29].value.value.asUInt16;
-                pokemon.giveExp = personalFields[personalID].children[30].value.value.asUInt16;
-                pokemon.height = personalFields[personalID].children[31].value.value.asUInt16;
-                pokemon.weight = personalFields[personalID].children[32].value.value.asUInt16;
-                pokemon.chihouZukanNo = personalFields[personalID].children[33].value.value.asUInt16;
-                pokemon.machine1 = personalFields[personalID].children[34].value.value.asUInt32;
-                pokemon.machine2 = personalFields[personalID].children[35].value.value.asUInt32;
-                pokemon.machine3 = personalFields[personalID].children[36].value.value.asUInt32;
-                pokemon.machine4 = personalFields[personalID].children[37].value.value.asUInt32;
-                pokemon.hiddenMachine = personalFields[personalID].children[38].value.value.asUInt32;
-                pokemon.eggMonsno = personalFields[personalID].children[39].value.value.asUInt16;
-                pokemon.eggFormno = personalFields[personalID].children[40].value.value.asUInt16;
-                pokemon.eggFormnoKawarazunoishi = personalFields[personalID].children[41].value.value.asUInt16;
-                pokemon.eggFormInheritKawarazunoishi = personalFields[personalID].children[42].value.value.asUInt8;
+                pokemon.validFlag = personalFields[personalID]["valid_flag"].AsByte;
+                pokemon.personalID = personalFields[personalID]["id"].AsUShort;
+                pokemon.dexID = personalFields[personalID]["monsno"].AsUShort; 
+                pokemon.formIndex = personalFields[personalID]["form_index"].AsUShort;
+                pokemon.formMax = personalFields[personalID]["form_max"].AsByte;
+                pokemon.color = personalFields[personalID]["color"].AsByte;
+                pokemon.graNo = personalFields[personalID]["gra_no"].AsUShort;
+                pokemon.basicHp = personalFields[personalID]["basic_hp"].AsByte;
+                pokemon.basicAtk = personalFields[personalID]["basic_atk"].AsByte;
+                pokemon.basicDef = personalFields[personalID]["basic_def"].AsByte;
+                pokemon.basicSpd = personalFields[personalID]["basic_agi"].AsByte;
+                pokemon.basicSpAtk = personalFields[personalID]["basic_spatk"].AsByte;
+                pokemon.basicSpDef = personalFields[personalID]["basic_spdef"].AsByte;
+                pokemon.typingID1 = personalFields[personalID]["type1"].AsByte;
+                pokemon.typingID2 = personalFields[personalID]["type2"].AsByte;
+                pokemon.getRate = personalFields[personalID]["get_rate"].AsByte;
+                pokemon.rank = personalFields[personalID]["rank"].AsByte;
+                pokemon.expValue = personalFields[personalID]["exp_value"].AsUShort;
+                pokemon.item1 = personalFields[personalID]["item1"].AsUShort;
+                pokemon.item2 = personalFields[personalID]["item2"].AsUShort;
+                pokemon.item3 = personalFields[personalID]["item3"].AsUShort;
+                pokemon.sex = personalFields[personalID]["sex"].AsByte;
+                pokemon.eggBirth = personalFields[personalID]["egg_birth"].AsByte;
+                pokemon.initialFriendship = personalFields[personalID]["initial_friendship"].AsByte;
+                pokemon.eggGroup1 = personalFields[personalID]["egg_group1"].AsByte;
+                pokemon.eggGroup2 = personalFields[personalID]["egg_group2"].AsByte;
+                pokemon.grow = personalFields[personalID]["grow"].AsByte;
+                pokemon.abilityID1 = personalFields[personalID]["tokusei1"].AsUShort;
+                pokemon.abilityID2 = personalFields[personalID]["tokusei2"].AsUShort;
+                pokemon.abilityID3 = personalFields[personalID]["tokusei3"].AsUShort;
+                pokemon.giveExp = personalFields[personalID]["give_exp"].AsUShort;
+                pokemon.height = personalFields[personalID]["height"].AsUShort;
+                pokemon.weight = personalFields[personalID]["weight"].AsUShort;
+                pokemon.chihouZukanNo = personalFields[personalID]["chihou_zukan_no"].AsUShort;
+                pokemon.machine1 = personalFields[personalID]["machine1"].AsUInt;
+                pokemon.machine2 = personalFields[personalID]["machine2"].AsUInt;
+                pokemon.machine3 = personalFields[personalID]["machine3"].AsUInt;
+                pokemon.machine4 = personalFields[personalID]["machine4"].AsUInt;
+                pokemon.hiddenMachine = personalFields[personalID]["hiden_machine"].AsUInt;
+                pokemon.eggMonsno = personalFields[personalID]["egg_monsno"].AsUShort;
+                pokemon.eggFormno = personalFields[personalID]["egg_formno"].AsUShort;
+                pokemon.eggFormnoKawarazunoishi = personalFields[personalID]["egg_formno_kawarazunoishi"].AsUShort;
+                pokemon.eggFormInheritKawarazunoishi = personalFields[personalID]["egg_form_inherit_kawarazunoishi"].AsByte;
 
                 pokemon.formID = 0;
                 if (pokemon.personalID != pokemon.dexID)
                     pokemon.formID = pokemon.personalID - pokemon.formIndex + 1;
                 pokemon.name = "";
-                if (textFields[pokemon.dexID].children[6].children[0].childrenCount > 0)
-                    pokemon.name = Encoding.UTF8.GetString(textFields[pokemon.dexID].children[6].children[0].children[0].children[4].value.value.asString);
+                if (textFields[pokemon.dexID]["wordDataArray.Array"].Children.Count > 0)
+                    pokemon.name = textFields[pokemon.dexID]["wordDataArray.Array"][0]["str"].AsString;
                 pokemon.nextEvoLvs = (ushort.MaxValue, ushort.MaxValue); //(wildLevel, trainerLevel)
                 pokemon.pastPokemon = new();
                 pokemon.nextPokemon = new();
@@ -790,30 +959,30 @@ namespace ImpostersOrdeal
 
                 //Parse level up moves
                 pokemon.levelUpMoves = new();
-                for (int levelUpMoveIdx = 0; levelUpMoveIdx < levelUpMoveFields[personalID].children[1].children[0].childrenCount; levelUpMoveIdx += 2)
+                for (int levelUpMoveIdx = 0; levelUpMoveIdx < levelUpMoveFields[personalID]["ar.Array"].Children.Count; levelUpMoveIdx += 2)
                 {
                     LevelUpMove levelUpMove = new();
-                    levelUpMove.level = levelUpMoveFields[personalID].children[1].children[0].children[levelUpMoveIdx].value.value.asUInt16;
-                    levelUpMove.moveID = levelUpMoveFields[personalID].children[1].children[0].children[levelUpMoveIdx + 1].value.value.asUInt16;
+                    levelUpMove.level = levelUpMoveFields[personalID]["ar.Array"][levelUpMoveIdx].AsUShort;
+                    levelUpMove.moveID = levelUpMoveFields[personalID]["ar.Array"][levelUpMoveIdx + 1].AsUShort;
 
                     pokemon.levelUpMoves.Add(levelUpMove);
                 }
 
                 //Parse egg moves
                 pokemon.eggMoves = new();
-                for (int eggMoveIdx = 0; eggMoveIdx < eggMoveFields[personalID].children[2].children[0].childrenCount; eggMoveIdx++)
-                    pokemon.eggMoves.Add(eggMoveFields[personalID].children[2].children[0].children[eggMoveIdx].value.value.asUInt16);
+                for (int eggMoveIdx = 0; eggMoveIdx < eggMoveFields[personalID]["wazaNo.Array"].Children.Count; eggMoveIdx++)
+                    pokemon.eggMoves.Add(eggMoveFields[personalID]["wazaNo.Array"][eggMoveIdx].AsUShort);
 
                 //Parse evolutions
                 pokemon.evolutionPaths = new();
-                for (int evolutionIdx = 0; evolutionIdx < evolveFields[personalID].children[1].children[0].childrenCount; evolutionIdx += 5)
+                for (int evolutionIdx = 0; evolutionIdx < evolveFields[personalID]["ar.Array"].Children.Count; evolutionIdx += 5)
                 {
                     EvolutionPath evolution = new();
-                    evolution.method = evolveFields[personalID].children[1].children[0].children[evolutionIdx].value.value.asUInt16;
-                    evolution.parameter = evolveFields[personalID].children[1].children[0].children[evolutionIdx + 1].value.value.asUInt16;
-                    evolution.destDexID = evolveFields[personalID].children[1].children[0].children[evolutionIdx + 2].value.value.asUInt16;
-                    evolution.destFormID = evolveFields[personalID].children[1].children[0].children[evolutionIdx + 3].value.value.asUInt16;
-                    evolution.level = evolveFields[personalID].children[1].children[0].children[evolutionIdx + 4].value.value.asUInt16;
+                    evolution.method = evolveFields[personalID]["ar.Array"][evolutionIdx].AsUShort;
+                    evolution.parameter = evolveFields[personalID]["ar.Array"][evolutionIdx + 1].AsUShort;
+                    evolution.destDexID = evolveFields[personalID]["ar.Array"][evolutionIdx + 2].AsUShort;
+                    evolution.destFormID = evolveFields[personalID]["ar.Array"][evolutionIdx + 3].AsUShort;
+                    evolution.level = evolveFields[personalID]["ar.Array"][evolutionIdx + 4].AsUShort;
 
                     pokemon.evolutionPaths.Add(evolution);
                 }
@@ -840,10 +1009,10 @@ namespace ImpostersOrdeal
 
         private static async void SetLegendaries()
         {
-            AssetTypeValueField[] legendFields = (await monoBehaviourCollection[PathEnum.Gamesettings]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "FieldEncountTable_d").children[10].children[0].children;
-            for (int legendEntryIdx = 0; legendEntryIdx < legendFields.Length; legendEntryIdx++)
+            var legendFields = (await monoBehaviourCollection[PathEnum.Gamesettings]).Find(m => m["m_Name"].AsString == "FieldEncountTable_d")["legendpoke.Array"].Children;
+            for (int legendEntryIdx = 0; legendEntryIdx < legendFields.Count; legendEntryIdx++)
             {
-                List<Pokemon> forms = gameData.dexEntries[legendFields[legendEntryIdx].children[0].value.value.asInt32].forms;
+                List<Pokemon> forms = gameData.dexEntries[legendFields[legendEntryIdx]["monsNo"].AsInt].forms;
                 for (int formID = 0; formID < forms.Count; formID++)
                     forms[formID].legendary = true;
             }
@@ -1029,21 +1198,21 @@ namespace ImpostersOrdeal
         private static async Task ParseTMs()
         {
             gameData.tms = new();
-            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.PersonalMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "ItemTable");
+            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.PersonalMasterdatas]).Find(m => m["m_Name"].AsString == "ItemTable");
 
-            AssetTypeValueField[] tmFields = monoBehaviour.children[5].children[0].children;
-            AssetTypeValueField[] textFields = await FindLabelArrayOfMessageFileAsync("ss_itemname", Language.English);
-            for (int tmID = 0; tmID < tmFields.Length; tmID++)
+            var tmFields = monoBehaviour["WazaMachine.Array"].Children;
+            var textFields = await FindLabelArrayOfMessageFileAsync("ss_itemname", Language.English);
+            for (int tmID = 0; tmID < tmFields.Count; tmID++)
             {
                 TM tm = new();
-                tm.itemID = tmFields[tmID].children[0].value.value.asInt32;
-                tm.machineNo = tmFields[tmID].children[1].value.value.asInt32;
-                tm.moveID = tmFields[tmID].children[2].value.value.asInt32;
+                tm.itemID = tmFields[tmID]["itemNo"].AsInt;
+                tm.machineNo = tmFields[tmID]["machineNo"].AsInt;
+                tm.moveID = tmFields[tmID]["wazaNo"].AsInt;
 
                 tm.tmID = tmID;
                 tm.name = "";
-                if (textFields[tm.itemID].children[6].children[0].childrenCount > 0)
-                    tm.name = Encoding.UTF8.GetString(textFields[tm.itemID].children[6].children[0].children[0].children[4].value.value.asString);
+                if (textFields[tm.itemID]["wordDataArray.Array"].Children.Count > 0)
+                    tm.name = textFields[tm.itemID]["wordDataArray.Array"][0]["str"].AsString;
 
                 gameData.tms.Add(tm);
             }
@@ -1051,17 +1220,17 @@ namespace ImpostersOrdeal
         private static async Task ParsePersonalMasterDatas()
         {
             gameData.addPersonalTables = new();
-            AssetTypeValueField addPersonalTable = (await monoBehaviourCollection[PathEnum.PersonalMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "AddPersonalTable");
-            AssetTypeValueField[] addPersonalTableArray = addPersonalTable["AddPersonal"].children[0].children;
-            for (int i = 0; i < addPersonalTableArray.Length; i++)
+            AssetTypeValueField addPersonalTable = (await monoBehaviourCollection[PathEnum.PersonalMasterdatas]).Find(m => m["m_Name"].AsString == "AddPersonalTable");
+            var addPersonalTableArray = addPersonalTable["AddPersonal.Array"].Children;
+            for (int i = 0; i < addPersonalTableArray.Count; i++)
             {
                 PersonalMasterdatas.AddPersonalTable addPersonal = new();
-                addPersonal.valid_flag = addPersonalTableArray[i]["valid_flag"].value.value.asUInt8 == 1;
-                addPersonal.monsno = addPersonalTableArray[i]["monsno"].value.value.asUInt16;
-                addPersonal.formno = addPersonalTableArray[i]["formno"].value.value.asUInt16;
-                addPersonal.isEnableSynchronize = addPersonalTableArray[i]["isEnableSynchronize"].value.value.asUInt8 == 0;
-                addPersonal.escape = addPersonalTableArray[i]["escape"].value.value.asUInt8;
-                addPersonal.isDisableReverce = addPersonalTableArray[i]["isDisableReverce"].value.value.asUInt8 == 0;
+                addPersonal.valid_flag = addPersonalTableArray[i]["valid_flag"].AsByte == 1;
+                addPersonal.monsno = addPersonalTableArray[i]["monsno"].AsUShort;
+                addPersonal.formno = addPersonalTableArray[i]["formno"].AsUShort;
+                addPersonal.isEnableSynchronize = addPersonalTableArray[i]["isEnableSynchronize"].AsByte == 1;
+                addPersonal.escape = addPersonalTableArray[i]["escape"].AsByte;
+                addPersonal.isDisableReverce = addPersonalTableArray[i]["isDisableReverce"].AsByte == 1;
                 gameData.addPersonalTables.Add(addPersonal);
             }
         }
@@ -1075,123 +1244,119 @@ namespace ImpostersOrdeal
             gameData.uiZukanCompareHeights = new();
             gameData.uiSearchPokeIconSex = new();
             gameData.uiDistributionTable = new();
-            AssetTypeValueField uiDatabase = (await monoBehaviourCollection[PathEnum.UIMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "UIDatabase");
-            AssetTypeValueField distributionTable = (await monoBehaviourCollection[PathEnum.UIMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "DistributionTable");
+            AssetTypeValueField uiDatabase = (await monoBehaviourCollection[PathEnum.UIMasterdatas]).Find(m => m["m_Name"].AsString == "UIDatabase");
+            AssetTypeValueField distributionTable = (await monoBehaviourCollection[PathEnum.UIMasterdatas]).Find(m => m["m_Name"].AsString == "DistributionTable");
 
-            AssetTypeValueField[] pokemonIcons = uiDatabase["PokemonIcon"].children[0].children;
-            for (int i = 0; i < pokemonIcons.Length; i++)
+            var pokemonIcons = uiDatabase["PokemonIcon.Array"].Children;
+            for (int i = 0; i < pokemonIcons.Count; i++)
             {
                 UIMasterdatas.PokemonIcon pokemonIcon = new();
-                pokemonIcon.uniqueID = pokemonIcons[i]["UniqueID"].value.value.asInt32;
-                pokemonIcon.assetBundleName = pokemonIcons[i]["AssetBundleName"].GetValue().AsString();
-                pokemonIcon.assetName = pokemonIcons[i]["AssetName"].GetValue().AsString();
-                pokemonIcon.assetBundleNameLarge = pokemonIcons[i]["AssetBundleNameLarge"].GetValue().AsString();
-                pokemonIcon.assetNameLarge = pokemonIcons[i]["AssetNameLarge"].GetValue().AsString();
-                pokemonIcon.assetBundleNameDP = pokemonIcons[i]["AssetBundleNameDP"].GetValue().AsString();
-                pokemonIcon.assetNameDP = pokemonIcons[i]["AssetNameDP"].GetValue().AsString();
+                pokemonIcon.uniqueID = pokemonIcons[i]["UniqueID"].AsInt;
+                pokemonIcon.assetBundleName = pokemonIcons[i]["AssetBundleName"].AsString;
+                pokemonIcon.assetName = pokemonIcons[i]["AssetName"].AsString;
+                pokemonIcon.assetBundleNameLarge = pokemonIcons[i]["AssetBundleNameLarge"].AsString;
+                pokemonIcon.assetNameLarge = pokemonIcons[i]["AssetNameLarge"].AsString;
+                pokemonIcon.assetBundleNameDP = pokemonIcons[i]["AssetBundleNameDP"].AsString;
+                pokemonIcon.assetNameDP = pokemonIcons[i]["AssetNameDP"].AsString;
                 pokemonIcon.hallofFameOffset = new();
-                pokemonIcon.hallofFameOffset.X = pokemonIcons[i]["HallofFameOffset"].children[0].value.value.asFloat;
-                pokemonIcon.hallofFameOffset.Y = pokemonIcons[i]["HallofFameOffset"].children[1].value.value.asFloat;
+                pokemonIcon.hallofFameOffset.X = pokemonIcons[i]["HallofFameOffset.x"].AsFloat;
+                pokemonIcon.hallofFameOffset.Y = pokemonIcons[i]["HallofFameOffset.y"].AsFloat;
 
                 gameData.uiPokemonIcon.Add(pokemonIcon);
             }
 
-            AssetTypeValueField[] ashiatoIcons = uiDatabase["AshiatoIcon"].children[0].children;
-            for (int i = 0; i < ashiatoIcons.Length; i++)
+            var ashiatoIcons = uiDatabase["AshiatoIcon.Array"].Children;
+            for (int i = 0; i < ashiatoIcons.Count; i++)
             {
                 UIMasterdatas.AshiatoIcon ashiatoIcon = new();
-                ashiatoIcon.uniqueID = ashiatoIcons[i]["UniqueID"].value.value.asInt32;
-                ashiatoIcon.sideIconAssetName = ashiatoIcons[i]["SideIconAssetName"].GetValue().AsString();
-                ashiatoIcon.bothIconAssetName = ashiatoIcons[i]["BothIconAssetName"].GetValue().AsString();
+                ashiatoIcon.uniqueID = ashiatoIcons[i]["UniqueID"].AsInt;
+                ashiatoIcon.sideIconAssetName = ashiatoIcons[i]["SideIconAssetName"].AsString;
+                ashiatoIcon.bothIconAssetName = ashiatoIcons[i]["BothIconAssetName"].AsString;
 
                 gameData.uiAshiatoIcon.Add(ashiatoIcon);
             }
 
-            AssetTypeValueField[] pokemonVoices = uiDatabase["PokemonVoice"].children[0].children;
-            for (int i = 0; i < pokemonVoices.Length; i++)
+            var pokemonVoices = uiDatabase["PokemonVoice.Array"].Children;
+            for (int i = 0; i < pokemonVoices.Count; i++)
             {
                 UIMasterdatas.PokemonVoice pokemonVoice = new();
-                pokemonVoice.uniqueID = pokemonVoices[i]["UniqueID"].value.value.asInt32;
-                pokemonVoice.wwiseEvent = pokemonVoices[i]["WwiseEvent"].GetValue().AsString();
-                pokemonVoice.stopEventId = pokemonVoices[i]["stopEventId"].GetValue().AsString();
+                pokemonVoice.uniqueID = pokemonVoices[i]["UniqueID"].AsInt;
+                pokemonVoice.wwiseEvent = pokemonVoices[i]["WwiseEvent"].AsString;
+                pokemonVoice.stopEventId = pokemonVoices[i]["stopEventId"].AsString;
                 pokemonVoice.centerPointOffset = new();
-                pokemonVoice.centerPointOffset.X = pokemonVoices[i]["CenterPointOffset"].children[0].value.value.asFloat;
-                pokemonVoice.centerPointOffset.Y = pokemonVoices[i]["CenterPointOffset"].children[1].value.value.asFloat;
-                pokemonVoice.centerPointOffset.Z = pokemonVoices[i]["CenterPointOffset"].children[2].value.value.asFloat;
-                pokemonVoice.rotationLimits = pokemonVoices[i]["RotationLimits"].value.value.asUInt8 == 0;
+                pokemonVoice.centerPointOffset.X = pokemonVoices[i]["CenterPointOffset.x"].AsFloat;
+                pokemonVoice.centerPointOffset.Y = pokemonVoices[i]["CenterPointOffset.y"].AsFloat;
+                pokemonVoice.centerPointOffset.Z = pokemonVoices[i]["CenterPointOffset.z"].AsFloat;
+                pokemonVoice.rotationLimits = pokemonVoices[i]["RotationLimits"].AsByte == 1;
                 pokemonVoice.rotationLimitAngle = new();
-                pokemonVoice.rotationLimitAngle.X = pokemonVoices[i]["RotationLimitAngle"].children[0].value.value.asFloat;
-                pokemonVoice.rotationLimitAngle.Y = pokemonVoices[i]["RotationLimitAngle"].children[1].value.value.asFloat;
+                pokemonVoice.rotationLimitAngle.X = pokemonVoices[i]["RotationLimitAngle.x"].AsFloat;
+                pokemonVoice.rotationLimitAngle.Y = pokemonVoices[i]["RotationLimitAngle.y"].AsFloat;
 
                 gameData.uiPokemonVoice.Add(pokemonVoice);
             }
 
-            AssetTypeValueField[] zukanDisplays = uiDatabase["ZukanDisplay"].children[0].children;
-            for (int i = 0; i < zukanDisplays.Length; i++)
+            var zukanDisplays = uiDatabase["ZukanDisplay.Array"].Children;
+            for (int i = 0; i < zukanDisplays.Count; i++)
             {
                 UIMasterdatas.ZukanDisplay zukanDisplay = new();
-                zukanDisplay.uniqueID = zukanDisplays[i]["UniqueID"].value.value.asInt32;
+                zukanDisplay.uniqueID = zukanDisplays[i]["UniqueID"].AsInt;
 
                 zukanDisplay.moveLimit = new();
-                zukanDisplay.moveLimit.X = zukanDisplays[i]["MoveLimit"].children[0].value.value.asFloat;
-                zukanDisplay.moveLimit.Y = zukanDisplays[i]["MoveLimit"].children[1].value.value.asFloat;
-                zukanDisplay.moveLimit.Z = zukanDisplays[i]["MoveLimit"].children[2].value.value.asFloat;
+                zukanDisplay.moveLimit.X = zukanDisplays[i]["MoveLimit.x"].AsFloat;
+                zukanDisplay.moveLimit.Y = zukanDisplays[i]["MoveLimit.y"].AsFloat;
+                zukanDisplay.moveLimit.Z = zukanDisplays[i]["MoveLimit.z"].AsFloat;
 
                 zukanDisplay.modelOffset = new();
-                zukanDisplay.modelOffset.X = zukanDisplays[i]["ModelOffset"].children[0].value.value.asFloat;
-                zukanDisplay.modelOffset.Y = zukanDisplays[i]["ModelOffset"].children[1].value.value.asFloat;
-                zukanDisplay.modelOffset.Z = zukanDisplays[i]["ModelOffset"].children[2].value.value.asFloat;
+                zukanDisplay.modelOffset.X = zukanDisplays[i]["ModelOffset.x"].AsFloat;
+                zukanDisplay.modelOffset.Y = zukanDisplays[i]["ModelOffset.y"].AsFloat;
+                zukanDisplay.modelOffset.Z = zukanDisplays[i]["ModelOffset.z"].AsFloat;
 
                 zukanDisplay.modelRotationAngle = new();
-                zukanDisplay.modelRotationAngle.X = zukanDisplays[i]["ModelRotationAngle"].children[0].value.value.asFloat;
-                zukanDisplay.modelRotationAngle.Y = zukanDisplays[i]["ModelRotationAngle"].children[1].value.value.asFloat;
+                zukanDisplay.modelRotationAngle.X = zukanDisplays[i]["ModelRotationAngle.x"].AsFloat;
+                zukanDisplay.modelRotationAngle.Y = zukanDisplays[i]["ModelRotationAngle.y"].AsFloat;
 
                 gameData.uiZukanDisplay.Add(zukanDisplay);
             }
 
-            AssetTypeValueField[] zukanCompareHeights = uiDatabase["ZukanCompareHeight"].children[0].children;
-            for (int i = 0; i < zukanCompareHeights.Length; i++)
+            var zukanCompareHeights = uiDatabase["ZukanCompareHeight.Array"].Children;
+            for (int i = 0; i < zukanCompareHeights.Count; i++)
             {
                 UIMasterdatas.ZukanCompareHeight zukanCompareHeight = new();
-                zukanCompareHeight.uniqueID = zukanCompareHeights[i]["UniqueID"].value.value.asInt32;
+                zukanCompareHeight.uniqueID = zukanCompareHeights[i]["UniqueID"].AsInt;
 
-                zukanCompareHeight.playerScaleFactor = zukanCompareHeights[i]["PlayerScaleFactor"].value.value.asFloat;
+                zukanCompareHeight.playerScaleFactor = zukanCompareHeights[i]["PlayerScaleFactor"].AsFloat;
                 zukanCompareHeight.playerOffset = new();
-                zukanCompareHeight.playerOffset.X = zukanCompareHeights[i]["PlayerOffset"].children[0].value.value.asFloat;
-                zukanCompareHeight.playerOffset.Y = zukanCompareHeights[i]["PlayerOffset"].children[1].value.value.asFloat;
-                zukanCompareHeight.playerOffset.Z = zukanCompareHeights[i]["PlayerOffset"].children[2].value.value.asFloat;
+                zukanCompareHeight.playerOffset.X = zukanCompareHeights[i]["PlayerOffset.x"].AsFloat;
+                zukanCompareHeight.playerOffset.Y = zukanCompareHeights[i]["PlayerOffset.y"].AsFloat;
+                zukanCompareHeight.playerOffset.Z = zukanCompareHeights[i]["PlayerOffset.z"].AsFloat;
 
                 zukanCompareHeight.playerRotationAngle = new();
-                zukanCompareHeight.playerRotationAngle.X = zukanCompareHeights[i]["PlayerRotationAngle"].children[0].value.value.asFloat;
-                zukanCompareHeight.playerRotationAngle.Y = zukanCompareHeights[i]["PlayerRotationAngle"].children[1].value.value.asFloat;
+                zukanCompareHeight.playerRotationAngle.X = zukanCompareHeights[i]["PlayerRotationAngle.x"].AsFloat;
+                zukanCompareHeight.playerRotationAngle.Y = zukanCompareHeights[i]["PlayerRotationAngle.y"].AsFloat;
 
                 gameData.uiZukanCompareHeights.Add(zukanCompareHeight);
             }
 
-            AssetTypeValueField[] searchPokeIconSexes = uiDatabase["SearchPokeIconSex"].children[0].children;
-            for (int i = 0; i < searchPokeIconSexes.Length; i++)
+            var searchPokeIconSexes = uiDatabase["SearchPokeIconSex.Array"].Children;
+            for (int i = 0; i < searchPokeIconSexes.Count; i++)
             {
                 UIMasterdatas.SearchPokeIconSex searchPokeIconSex = new();
-                searchPokeIconSex.monsNo = searchPokeIconSexes[i]["MonsNo"].value.value.asInt32;
-                searchPokeIconSex.sex = searchPokeIconSexes[i]["Sex"].value.value.asInt32;
+                searchPokeIconSex.monsNo = searchPokeIconSexes[i]["MonsNo"].AsInt;
+                searchPokeIconSex.sex = searchPokeIconSexes[i]["Sex"].AsInt;
 
                 gameData.uiSearchPokeIconSex.Add(searchPokeIconSex);
             }
 
-            AssetTypeValueField[] diamondField = distributionTable["Diamond_FieldTable"].children[0].children;
-            gameData.uiDistributionTable.diamondFieldTable = ParseDistributionSheet(diamondField);
-            AssetTypeValueField[] diamondDungeon = distributionTable["Diamond_DungeonTable"].children[0].children;
-            gameData.uiDistributionTable.diamondDungeonTable = ParseDistributionSheet(diamondDungeon);
-            AssetTypeValueField[] pearlField = distributionTable["Pearl_FieldTable"].children[0].children;
-            gameData.uiDistributionTable.pearlFieldTable = ParseDistributionSheet(pearlField);
-            AssetTypeValueField[] pearlDungeon = distributionTable["Pearl_DungeonTable"].children[0].children;
-            gameData.uiDistributionTable.pearlDungeonTable = ParseDistributionSheet(pearlDungeon);
+            gameData.uiDistributionTable.diamondFieldTable = ParseDistributionSheet(distributionTable["Diamond_FieldTable.Array"].Children);
+            gameData.uiDistributionTable.diamondDungeonTable = ParseDistributionSheet(distributionTable["Diamond_DungeonTable.Array"].Children);
+            gameData.uiDistributionTable.pearlFieldTable = ParseDistributionSheet(distributionTable["Pearl_FieldTable.Array"].Children);
+            gameData.uiDistributionTable.pearlDungeonTable = ParseDistributionSheet(distributionTable["Pearl_DungeonTable.Array"].Children);
         }
 
-        private static List<UIMasterdatas.DistributionEntry> ParseDistributionSheet(AssetTypeValueField[] sheetATVF)
+        private static List<UIMasterdatas.DistributionEntry> ParseDistributionSheet(List<AssetTypeValueField> sheetATVF)
         {
             List<UIMasterdatas.DistributionEntry> sheet = new();
-            for (int i = 0; i < sheetATVF.Length; i++)
+            for (int i = 0; i < sheetATVF.Count; i++)
             {
                 UIMasterdatas.DistributionEntry entry = new()
                 {
@@ -1210,155 +1375,155 @@ namespace ImpostersOrdeal
             return sheet;
         }
 
-        private static int[] ParseDistributionCoord(AssetTypeValueField posATVF) => posATVF[0].children.Select(a => a.GetValue().AsInt()).ToArray();
+        private static int[] ParseDistributionCoord(AssetTypeValueField posATVF) => posATVF["Array"].Children.Select(a => a.AsInt).ToArray();
 
         private static async Task ParseMasterDatas()
         {
             gameData.pokemonInfos = new();
-            AssetTypeValueField pokemonInfo = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "PokemonInfo");
-            AssetTypeValueField[] catalogArray = pokemonInfo["Catalog"].children[0].children;
-            AssetTypeValueField[] trearukiArray = null;
-            if (pokemonInfo["Trearuki"].children != null)
-                trearukiArray = pokemonInfo["Trearuki"].children[0].children;
+            AssetTypeValueField pokemonInfo = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => m["m_Name"].AsString == "PokemonInfo");
+            var catalogArray = pokemonInfo["Catalog.Array"].Children;
+            List<AssetTypeValueField> trearukiArray = null;
+            if (!pokemonInfo["Trearuki"].IsDummy)
+                trearukiArray = pokemonInfo["Trearuki.Array"].Children;
             //pre-1.3.0 versions don't have this field
 
-            for (int i = 0; i < catalogArray.Length; i++)
+            for (int i = 0; i < catalogArray.Count; i++)
             {
                 Masterdatas.PokemonInfoCatalog catalog = new();
-                catalog.UniqueID = catalogArray[i]["UniqueID"].value.value.asInt32;
-                catalog.No = catalogArray[i]["No"].value.value.asInt32;
-                catalog.SinnohNo = catalogArray[i]["SinnohNo"].value.value.asInt32;
-                catalog.MonsNo = catalogArray[i]["MonsNo"].value.value.asInt32;
-                catalog.FormNo = catalogArray[i]["FormNo"].value.value.asInt32;
-                catalog.Sex = catalogArray[i]["Sex"].value.value.asUInt8;
-                catalog.Rare = catalogArray[i]["Rare"].value.value.asUInt8 == 1;
-                catalog.AssetBundleName = catalogArray[i]["AssetBundleName"].GetValue().AsString();
-                catalog.BattleScale = catalogArray[i]["BattleScale"].value.value.asFloat;
-                catalog.ContestScale = catalogArray[i]["ContestScale"].value.value.asFloat;
-                catalog.ContestSize = (Masterdatas.Size)catalogArray[i]["ContestSize"].value.value.asInt32;
-                catalog.FieldScale = catalogArray[i]["FieldScale"].value.value.asFloat;
-                catalog.FieldChikaScale = catalogArray[i]["FieldChikaScale"].value.value.asFloat;
-                catalog.StatueScale = catalogArray[i]["StatueScale"].value.value.asFloat;
-                catalog.FieldWalkingScale = catalogArray[i]["FieldWalkingScale"].value.value.asFloat;
-                catalog.FieldFureaiScale = catalogArray[i]["FieldFureaiScale"].value.value.asFloat;
-                catalog.MenuScale = catalogArray[i]["MenuScale"].value.value.asFloat;
-                catalog.ModelMotion = catalogArray[i]["ModelMotion"].GetValue().AsString();
+                catalog.UniqueID = catalogArray[i]["UniqueID"].AsInt;
+                catalog.No = catalogArray[i]["No"].AsInt;
+                catalog.SinnohNo = catalogArray[i]["SinnohNo"].AsInt;
+                catalog.MonsNo = catalogArray[i]["MonsNo"].AsInt;
+                catalog.FormNo = catalogArray[i]["FormNo"].AsInt;
+                catalog.Sex = catalogArray[i]["Sex"].AsByte;
+                catalog.Rare = catalogArray[i]["Rare"].AsByte == 1;
+                catalog.AssetBundleName = catalogArray[i]["AssetBundleName"].AsString;
+                catalog.BattleScale = catalogArray[i]["BattleScale"].AsFloat;
+                catalog.ContestScale = catalogArray[i]["ContestScale"].AsFloat;
+                catalog.ContestSize = (Masterdatas.Size)catalogArray[i]["ContestSize"].AsInt;
+                catalog.FieldScale = catalogArray[i]["FieldScale"].AsFloat;
+                catalog.FieldChikaScale = catalogArray[i]["FieldChikaScale"].AsFloat;
+                catalog.StatueScale = catalogArray[i]["StatueScale"].AsFloat;
+                catalog.FieldWalkingScale = catalogArray[i]["FieldWalkingScale"].AsFloat;
+                catalog.FieldFureaiScale = catalogArray[i]["FieldFureaiScale"].AsFloat;
+                catalog.MenuScale = catalogArray[i]["MenuScale"].AsFloat;
+                catalog.ModelMotion = catalogArray[i]["ModelMotion"].AsString;
 
                 catalog.ModelOffset = new();
-                catalog.ModelOffset.X = catalogArray[i]["ModelOffset"].children[0].value.value.asFloat;
-                catalog.ModelOffset.Y = catalogArray[i]["ModelOffset"].children[1].value.value.asFloat;
-                catalog.ModelOffset.Z = catalogArray[i]["ModelOffset"].children[2].value.value.asFloat;
+                catalog.ModelOffset.X = catalogArray[i]["ModelOffset.x"].AsFloat;
+                catalog.ModelOffset.Y = catalogArray[i]["ModelOffset.y"].AsFloat;
+                catalog.ModelOffset.Z = catalogArray[i]["ModelOffset.z"].AsFloat;
 
                 catalog.ModelRotationAngle = new();
-                catalog.ModelRotationAngle.X = catalogArray[i]["ModelRotationAngle"].children[0].value.value.asFloat;
-                catalog.ModelRotationAngle.Y = catalogArray[i]["ModelRotationAngle"].children[1].value.value.asFloat;
-                catalog.ModelRotationAngle.Z = catalogArray[i]["ModelRotationAngle"].children[2].value.value.asFloat;
+                catalog.ModelRotationAngle.X = catalogArray[i]["ModelRotationAngle.x"].AsFloat;
+                catalog.ModelRotationAngle.Y = catalogArray[i]["ModelRotationAngle.y"].AsFloat;
+                catalog.ModelRotationAngle.Z = catalogArray[i]["ModelRotationAngle.z"].AsFloat;
 
-                catalog.DistributionScale = catalogArray[i]["DistributionScale"].value.value.asFloat;
-                catalog.DistributionModelMotion = catalogArray[i]["DistributionModelMotion"].GetValue().AsString();
+                catalog.DistributionScale = catalogArray[i]["DistributionScale"].AsFloat;
+                catalog.DistributionModelMotion = catalogArray[i]["DistributionModelMotion"].AsString;
 
                 catalog.DistributionModelOffset = new();
-                catalog.DistributionModelOffset.X = catalogArray[i]["DistributionModelOffset"].children[0].value.value.asFloat;
-                catalog.DistributionModelOffset.Y = catalogArray[i]["DistributionModelOffset"].children[1].value.value.asFloat;
-                catalog.DistributionModelOffset.Z = catalogArray[i]["DistributionModelOffset"].children[2].value.value.asFloat;
+                catalog.DistributionModelOffset.X = catalogArray[i]["DistributionModelOffset.x"].AsFloat;
+                catalog.DistributionModelOffset.Y = catalogArray[i]["DistributionModelOffset.y"].AsFloat;
+                catalog.DistributionModelOffset.Z = catalogArray[i]["DistributionModelOffset.z"].AsFloat;
 
                 catalog.DistributionModelRotationAngle = new();
-                catalog.DistributionModelRotationAngle.X = catalogArray[i]["DistributionModelRotationAngle"].children[0].value.value.asFloat;
-                catalog.DistributionModelRotationAngle.Y = catalogArray[i]["DistributionModelRotationAngle"].children[1].value.value.asFloat;
-                catalog.DistributionModelRotationAngle.Z = catalogArray[i]["DistributionModelRotationAngle"].children[2].value.value.asFloat;
+                catalog.DistributionModelRotationAngle.X = catalogArray[i]["DistributionModelRotationAngle.x"].AsFloat;
+                catalog.DistributionModelRotationAngle.Y = catalogArray[i]["DistributionModelRotationAngle.y"].AsFloat;
+                catalog.DistributionModelRotationAngle.Z = catalogArray[i]["DistributionModelRotationAngle.z"].AsFloat;
 
-                catalog.VoiceScale = catalogArray[i]["VoiceScale"].value.value.asFloat;
-                catalog.VoiceModelMotion = catalogArray[i]["VoiceModelMotion"].GetValue().AsString();
+                catalog.VoiceScale = catalogArray[i]["VoiceScale"].AsFloat;
+                catalog.VoiceModelMotion = catalogArray[i]["VoiceModelMotion"].AsString;
 
                 catalog.VoiceModelOffset = new();
-                catalog.VoiceModelOffset.X = catalogArray[i]["VoiceModelOffset"].children[0].value.value.asFloat;
-                catalog.VoiceModelOffset.Y = catalogArray[i]["VoiceModelOffset"].children[1].value.value.asFloat;
-                catalog.VoiceModelOffset.Z = catalogArray[i]["VoiceModelOffset"].children[2].value.value.asFloat;
+                catalog.VoiceModelOffset.X = catalogArray[i]["VoiceModelOffset.x"].AsFloat;
+                catalog.VoiceModelOffset.Y = catalogArray[i]["VoiceModelOffset.y"].AsFloat;
+                catalog.VoiceModelOffset.Z = catalogArray[i]["VoiceModelOffset.z"].AsFloat;
 
                 catalog.VoiceModelRotationAngle = new();
-                catalog.VoiceModelRotationAngle.X = catalogArray[i]["VoiceModelRotationAngle"].children[0].value.value.asFloat;
-                catalog.VoiceModelRotationAngle.Y = catalogArray[i]["VoiceModelRotationAngle"].children[1].value.value.asFloat;
-                catalog.VoiceModelRotationAngle.Z = catalogArray[i]["VoiceModelRotationAngle"].children[2].value.value.asFloat;
+                catalog.VoiceModelRotationAngle.X = catalogArray[i]["VoiceModelRotationAngle.x"].AsFloat;
+                catalog.VoiceModelRotationAngle.Y = catalogArray[i]["VoiceModelRotationAngle.y"].AsFloat;
+                catalog.VoiceModelRotationAngle.Z = catalogArray[i]["VoiceModelRotationAngle.z"].AsFloat;
 
                 catalog.CenterPointOffset = new();
-                catalog.CenterPointOffset.X = catalogArray[i]["CenterPointOffset"].children[0].value.value.asFloat;
-                catalog.CenterPointOffset.Y = catalogArray[i]["CenterPointOffset"].children[1].value.value.asFloat;
-                catalog.CenterPointOffset.Z = catalogArray[i]["CenterPointOffset"].children[2].value.value.asFloat;
+                catalog.CenterPointOffset.X = catalogArray[i]["CenterPointOffset.x"].AsFloat;
+                catalog.CenterPointOffset.Y = catalogArray[i]["CenterPointOffset.y"].AsFloat;
+                catalog.CenterPointOffset.Z = catalogArray[i]["CenterPointOffset.z"].AsFloat;
 
                 catalog.RotationLimitAngle = new();
-                catalog.RotationLimitAngle.X = catalogArray[i]["RotationLimitAngle"].children[0].value.value.asFloat;
-                catalog.RotationLimitAngle.Y = catalogArray[i]["RotationLimitAngle"].children[1].value.value.asFloat;
+                catalog.RotationLimitAngle.X = catalogArray[i]["RotationLimitAngle.x"].AsFloat;
+                catalog.RotationLimitAngle.Y = catalogArray[i]["RotationLimitAngle.y"].AsFloat;
 
-                catalog.StatusScale = catalogArray[i]["StatusScale"].value.value.asFloat;
-                catalog.StatusModelMotion = catalogArray[i]["StatusModelMotion"].GetValue().AsString();
+                catalog.StatusScale = catalogArray[i]["StatusScale"].AsFloat;
+                catalog.StatusModelMotion = catalogArray[i]["StatusModelMotion"].AsString;
 
                 catalog.StatusModelOffset = new();
-                catalog.StatusModelOffset.X = catalogArray[i]["StatusModelOffset"].children[0].value.value.asFloat;
-                catalog.StatusModelOffset.Y = catalogArray[i]["StatusModelOffset"].children[1].value.value.asFloat;
-                catalog.StatusModelOffset.Z = catalogArray[i]["StatusModelOffset"].children[2].value.value.asFloat;
+                catalog.StatusModelOffset.X = catalogArray[i]["StatusModelOffset.x"].AsFloat;
+                catalog.StatusModelOffset.Y = catalogArray[i]["StatusModelOffset.y"].AsFloat;
+                catalog.StatusModelOffset.Z = catalogArray[i]["StatusModelOffset.z"].AsFloat;
 
                 catalog.StatusModelRotationAngle = new();
-                catalog.StatusModelRotationAngle.X = catalogArray[i]["StatusModelRotationAngle"].children[0].value.value.asFloat;
-                catalog.StatusModelRotationAngle.Y = catalogArray[i]["StatusModelRotationAngle"].children[1].value.value.asFloat;
-                catalog.StatusModelRotationAngle.Z = catalogArray[i]["StatusModelRotationAngle"].children[2].value.value.asFloat;
+                catalog.StatusModelRotationAngle.X = catalogArray[i]["StatusModelRotationAngle.x"].AsFloat;
+                catalog.StatusModelRotationAngle.Y = catalogArray[i]["StatusModelRotationAngle.y"].AsFloat;
+                catalog.StatusModelRotationAngle.Z = catalogArray[i]["StatusModelRotationAngle.z"].AsFloat;
 
-                catalog.BoxScale = catalogArray[i]["BoxScale"].value.value.asFloat;
-                catalog.BoxModelMotion = catalogArray[i]["BoxModelMotion"].GetValue().AsString();
+                catalog.BoxScale = catalogArray[i]["BoxScale"].AsFloat;
+                catalog.BoxModelMotion = catalogArray[i]["BoxModelMotion"].AsString;
 
                 catalog.BoxModelOffset = new();
-                catalog.BoxModelOffset.X = catalogArray[i]["BoxModelOffset"].children[0].value.value.asFloat;
-                catalog.BoxModelOffset.Y = catalogArray[i]["BoxModelOffset"].children[1].value.value.asFloat;
-                catalog.BoxModelOffset.Z = catalogArray[i]["BoxModelOffset"].children[2].value.value.asFloat;
+                catalog.BoxModelOffset.X = catalogArray[i]["BoxModelOffset.x"].AsFloat;
+                catalog.BoxModelOffset.Y = catalogArray[i]["BoxModelOffset.y"].AsFloat;
+                catalog.BoxModelOffset.Z = catalogArray[i]["BoxModelOffset.z"].AsFloat;
 
                 catalog.BoxModelRotationAngle = new();
-                catalog.BoxModelRotationAngle.X = catalogArray[i]["BoxModelRotationAngle"].children[0].value.value.asFloat;
-                catalog.BoxModelRotationAngle.Y = catalogArray[i]["BoxModelRotationAngle"].children[1].value.value.asFloat;
-                catalog.BoxModelRotationAngle.Z = catalogArray[i]["BoxModelRotationAngle"].children[2].value.value.asFloat;
+                catalog.BoxModelRotationAngle.X = catalogArray[i]["BoxModelRotationAngle.x"].AsFloat;
+                catalog.BoxModelRotationAngle.Y = catalogArray[i]["BoxModelRotationAngle.y"].AsFloat;
+                catalog.BoxModelRotationAngle.Z = catalogArray[i]["BoxModelRotationAngle.z"].AsFloat;
 
-                catalog.CompareScale = catalogArray[i]["CompareScale"].value.value.asFloat;
-                catalog.CompareModelMotion = catalogArray[i]["CompareModelMotion"].GetValue().AsString();
+                catalog.CompareScale = catalogArray[i]["CompareScale"].AsFloat;
+                catalog.CompareModelMotion = catalogArray[i]["CompareModelMotion"].AsString;
 
                 catalog.CompareModelOffset = new();
-                catalog.CompareModelOffset.X = catalogArray[i]["CompareModelOffset"].children[0].value.value.asFloat;
-                catalog.CompareModelOffset.Y = catalogArray[i]["CompareModelOffset"].children[1].value.value.asFloat;
-                catalog.CompareModelOffset.Z = catalogArray[i]["CompareModelOffset"].children[2].value.value.asFloat;
+                catalog.CompareModelOffset.X = catalogArray[i]["CompareModelOffset.x"].AsFloat;
+                catalog.CompareModelOffset.Y = catalogArray[i]["CompareModelOffset.y"].AsFloat;
+                catalog.CompareModelOffset.Z = catalogArray[i]["CompareModelOffset.z"].AsFloat;
 
                 catalog.CompareModelRotationAngle = new();
-                catalog.CompareModelRotationAngle.X = catalogArray[i]["CompareModelRotationAngle"].children[0].value.value.asFloat;
-                catalog.CompareModelRotationAngle.Y = catalogArray[i]["CompareModelRotationAngle"].children[1].value.value.asFloat;
-                catalog.CompareModelRotationAngle.Z = catalogArray[i]["CompareModelRotationAngle"].children[2].value.value.asFloat;
+                catalog.CompareModelRotationAngle.X = catalogArray[i]["CompareModelRotationAngle.x"].AsFloat;
+                catalog.CompareModelRotationAngle.Y = catalogArray[i]["CompareModelRotationAngle.y"].AsFloat;
+                catalog.CompareModelRotationAngle.Z = catalogArray[i]["CompareModelRotationAngle.z"].AsFloat;
 
-                catalog.BrakeStart = catalogArray[i]["BrakeStart"].value.value.asFloat;
-                catalog.BrakeEnd = catalogArray[i]["BrakeEnd"].value.value.asFloat;
-                catalog.WalkSpeed = catalogArray[i]["WalkSpeed"].value.value.asFloat;
-                catalog.RunSpeed = catalogArray[i]["RunSpeed"].value.value.asFloat;
-                catalog.WalkStart = catalogArray[i]["WalkStart"].value.value.asFloat;
-                catalog.RunStart = catalogArray[i]["RunStart"].value.value.asFloat;
-                catalog.BodySize = catalogArray[i]["BodySize"].value.value.asFloat;
-                catalog.AppearLimit = catalogArray[i]["AppearLimit"].value.value.asFloat;
-                catalog.MoveType = (Masterdatas.MoveType)catalogArray[i]["MoveType"].value.value.asInt32;
+                catalog.BrakeStart = catalogArray[i]["BrakeStart"].AsFloat;
+                catalog.BrakeEnd = catalogArray[i]["BrakeEnd"].AsFloat;
+                catalog.WalkSpeed = catalogArray[i]["WalkSpeed"].AsFloat;
+                catalog.RunSpeed = catalogArray[i]["RunSpeed"].AsFloat;
+                catalog.WalkStart = catalogArray[i]["WalkStart"].AsFloat;
+                catalog.RunStart = catalogArray[i]["RunStart"].AsFloat;
+                catalog.BodySize = catalogArray[i]["BodySize"].AsFloat;
+                catalog.AppearLimit = catalogArray[i]["AppearLimit"].AsFloat;
+                catalog.MoveType = (Masterdatas.MoveType)catalogArray[i]["MoveType"].AsInt;
 
-                catalog.GroundEffect = catalogArray[i]["GroundEffect"].value.value.asUInt8 != 0;
-                catalog.Waitmoving = catalogArray[i]["Waitmoving"].value.value.asUInt8 != 0;
-                catalog.BattleAjustHeight = catalogArray[i]["BattleAjustHeight"].value.value.asInt32;
+                catalog.GroundEffect = catalogArray[i]["GroundEffect"].AsByte != 0;
+                catalog.Waitmoving = catalogArray[i]["Waitmoving"].AsByte != 0;
+                catalog.BattleAjustHeight = catalogArray[i]["BattleAjustHeight"].AsInt;
 
                 if (trearukiArray != null)
                 {
                     Masterdatas.Trearuki t = new()
                     {
-                        enable = trearukiArray[i]["Enable"].GetValue().value.asUInt8 != 0,
+                        enable = trearukiArray[i]["Enable"].AsByte != 0,
                         animeIndex = new(),
                         animeDuration = new()
                     };
                     catalog.trearuki = t;
 
-                    AssetTypeValueField[] animeIndexATVFS = trearukiArray[i]["AnimeIndex"].children[0].children;
+                    var animeIndexATVFS = trearukiArray[i]["AnimeIndex.Array"].Children;
                     foreach (AssetTypeValueField atvf in animeIndexATVFS)
-                        t.animeIndex.Add(atvf.GetValue().AsInt());
+                        t.animeIndex.Add(atvf.AsInt);
 
-                    AssetTypeValueField[] animeDurationATVFS = trearukiArray[i]["AnimeIndex"].children[0].children;
+                    var animeDurationATVFS = trearukiArray[i]["AnimeDuration.Array"].Children;
                     foreach (AssetTypeValueField atvf in animeDurationATVFS)
-                        t.animeDuration.Add(atvf.GetValue().AsFloat());
+                        t.animeDuration.Add(atvf.AsFloat);
                 }
 
                 gameData.pokemonInfos.Add(catalog);
@@ -1367,34 +1532,34 @@ namespace ImpostersOrdeal
         private static async Task ParseBattleMasterDatas()
         {
             gameData.motionTimingData = new();
-            AssetTypeValueField battleDataTable = (await monoBehaviourCollection[PathEnum.BattleMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "BattleDataTable");
-            AssetTypeValueField[] motionTimingDataArray = battleDataTable["MotionTimingData"].children[0].children;
+            AssetTypeValueField battleDataTable = (await monoBehaviourCollection[PathEnum.BattleMasterdatas]).Find(m => m["m_Name"].AsString == "BattleDataTable");
+            var motionTimingDataArray = battleDataTable["MotionTimingData.Array"].Children;
 
-            for (int i = 0; i < motionTimingDataArray.Length; i++)
+            for (int i = 0; i < motionTimingDataArray.Count; i++)
             {
                 BattleMasterdatas.MotionTimingData motionTimingData = new();
-                motionTimingData.MonsNo = motionTimingDataArray[i]["MonsNo"].value.value.asInt32;
-                motionTimingData.FormNo = motionTimingDataArray[i]["FormNo"].value.value.asInt32;
-                motionTimingData.Sex = motionTimingDataArray[i]["Sex"].value.value.asInt32;
-                motionTimingData.Buturi01 = motionTimingDataArray[i]["Buturi01"].value.value.asInt32;
-                motionTimingData.Buturi02 = motionTimingDataArray[i]["Buturi02"].value.value.asInt32;
-                motionTimingData.Buturi03 = motionTimingDataArray[i]["Buturi03"].value.value.asInt32;
-                motionTimingData.Tokusyu01 = motionTimingDataArray[i]["Tokusyu01"].value.value.asInt32;
-                motionTimingData.Tokusyu02 = motionTimingDataArray[i]["Tokusyu02"].value.value.asInt32;
-                motionTimingData.Tokusyu03 = motionTimingDataArray[i]["Tokusyu03"].value.value.asInt32;
-                motionTimingData.BodyBlow = motionTimingDataArray[i]["BodyBlow"].value.value.asInt32;
-                motionTimingData.Punch = motionTimingDataArray[i]["Punch"].value.value.asInt32;
-                motionTimingData.Kick = motionTimingDataArray[i]["Kick"].value.value.asInt32;
-                motionTimingData.Tail = motionTimingDataArray[i]["Tail"].value.value.asInt32;
-                motionTimingData.Bite = motionTimingDataArray[i]["Bite"].value.value.asInt32;
-                motionTimingData.Peck = motionTimingDataArray[i]["Peck"].value.value.asInt32;
-                motionTimingData.Radial = motionTimingDataArray[i]["Radial"].value.value.asInt32;
-                motionTimingData.Cry = motionTimingDataArray[i]["Cry"].value.value.asInt32;
-                motionTimingData.Dust = motionTimingDataArray[i]["Dust"].value.value.asInt32;
-                motionTimingData.Shot = motionTimingDataArray[i]["Shot"].value.value.asInt32;
-                motionTimingData.Guard = motionTimingDataArray[i]["Guard"].value.value.asInt32;
-                motionTimingData.LandingFall = motionTimingDataArray[i]["LandingFall"].value.value.asInt32;
-                motionTimingData.LandingFallEase = motionTimingDataArray[i]["LandingFallEase"].value.value.asInt32;
+                motionTimingData.MonsNo = motionTimingDataArray[i]["MonsNo"].AsInt;
+                motionTimingData.FormNo = motionTimingDataArray[i]["FormNo"].AsInt;
+                motionTimingData.Sex = motionTimingDataArray[i]["Sex"].AsInt;
+                motionTimingData.Buturi01 = motionTimingDataArray[i]["Buturi01"].AsInt;
+                motionTimingData.Buturi02 = motionTimingDataArray[i]["Buturi02"].AsInt;
+                motionTimingData.Buturi03 = motionTimingDataArray[i]["Buturi03"].AsInt;
+                motionTimingData.Tokusyu01 = motionTimingDataArray[i]["Tokusyu01"].AsInt;
+                motionTimingData.Tokusyu02 = motionTimingDataArray[i]["Tokusyu02"].AsInt;
+                motionTimingData.Tokusyu03 = motionTimingDataArray[i]["Tokusyu03"].AsInt;
+                motionTimingData.BodyBlow = motionTimingDataArray[i]["BodyBlow"].AsInt;
+                motionTimingData.Punch = motionTimingDataArray[i]["Punch"].AsInt;
+                motionTimingData.Kick = motionTimingDataArray[i]["Kick"].AsInt;
+                motionTimingData.Tail = motionTimingDataArray[i]["Tail"].AsInt;
+                motionTimingData.Bite = motionTimingDataArray[i]["Bite"].AsInt;
+                motionTimingData.Peck = motionTimingDataArray[i]["Peck"].AsInt;
+                motionTimingData.Radial = motionTimingDataArray[i]["Radial"].AsInt;
+                motionTimingData.Cry = motionTimingDataArray[i]["Cry"].AsInt;
+                motionTimingData.Dust = motionTimingDataArray[i]["Dust"].AsInt;
+                motionTimingData.Shot = motionTimingDataArray[i]["Shot"].AsInt;
+                motionTimingData.Guard = motionTimingDataArray[i]["Guard"].AsInt;
+                motionTimingData.LandingFall = motionTimingDataArray[i]["LandingFall"].AsInt;
+                motionTimingData.LandingFallEase = motionTimingDataArray[i]["LandingFallEase"].AsInt;
 
                 gameData.motionTimingData.Add(motionTimingData);
             }
@@ -1406,68 +1571,68 @@ namespace ImpostersOrdeal
         private static async Task ParseMoves()
         {
             gameData.moves = new();
-            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.PersonalMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "WazaTable");
-            AssetTypeValueField animationData = (await monoBehaviourCollection[PathEnum.BattleMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "BattleDataTable");
+            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.PersonalMasterdatas]).Find(m => m["m_Name"].AsString == "WazaTable");
+            AssetTypeValueField animationData = (await monoBehaviourCollection[PathEnum.BattleMasterdatas]).Find(m => m["m_Name"].AsString == "BattleDataTable");
 
-            AssetTypeValueField[] moveFields = monoBehaviour.children[4].children[0].children;
-            AssetTypeValueField[] animationFields = animationData.children[8].children[0].children;
-            AssetTypeValueField[] textFields = await FindLabelArrayOfMessageFileAsync("ss_wazaname", Language.English);
+            var moveFields = monoBehaviour["Waza.Array"].Children;
+            var animationFields = animationData["BattleWazaData.Array"].Children;
+            var textFields = await FindLabelArrayOfMessageFileAsync("ss_wazaname", Language.English);
 
-            if (animationFields.Length < moveFields.Length)
+            if (animationFields.Count < moveFields.Count)
                 MainForm.ShowParserError("Oh my, this BattleDataTable is missing some stuff...\n" +
                     "I don't feel so good...\n" +
-                    "WazaTable entries: " + moveFields.Length + "\n" +
-                    "BattleDataTable entries: " + animationFields.Length + "??");
+                    "WazaTable entries: " + moveFields.Count + "\n" +
+                    "BattleDataTable entries: " + animationFields.Count + "??");
 
-            for (int moveID = 0; moveID < moveFields.Length; moveID++)
+            for (int moveID = 0; moveID < moveFields.Count; moveID++)
             {
                 Move move = new();
-                move.moveID = moveFields[moveID].children[0].value.value.asInt32;
-                move.isValid = moveFields[moveID].children[1].value.value.asUInt8;
-                move.typingID = moveFields[moveID].children[2].value.value.asUInt8;
-                move.category = moveFields[moveID].children[3].value.value.asUInt8;
-                move.damageCategoryID = moveFields[moveID].children[4].value.value.asUInt8;
-                move.power = moveFields[moveID].children[5].value.value.asUInt8;
-                move.hitPer = moveFields[moveID].children[6].value.value.asUInt8;
-                move.basePP = moveFields[moveID].children[7].value.value.asUInt8;
-                move.priority = moveFields[moveID].children[8].value.value.asInt8;
-                move.hitCountMax = moveFields[moveID].children[9].value.value.asUInt8;
-                move.hitCountMin = moveFields[moveID].children[10].value.value.asUInt8;
-                move.sickID = moveFields[moveID].children[11].value.value.asUInt16;
-                move.sickPer = moveFields[moveID].children[12].value.value.asUInt8;
-                move.sickCont = moveFields[moveID].children[13].value.value.asUInt8;
-                move.sickTurnMin = moveFields[moveID].children[14].value.value.asUInt8;
-                move.sickTurnMax = moveFields[moveID].children[15].value.value.asUInt8;
-                move.criticalRank = moveFields[moveID].children[16].value.value.asUInt8;
-                move.shrinkPer = moveFields[moveID].children[17].value.value.asUInt8;
-                move.aiSeqNo = moveFields[moveID].children[18].value.value.asUInt16;
-                move.damageRecoverRatio = moveFields[moveID].children[19].value.value.asInt8;
-                move.hpRecoverRatio = moveFields[moveID].children[20].value.value.asInt8;
-                move.target = moveFields[moveID].children[21].value.value.asUInt8;
-                move.rankEffType1 = moveFields[moveID].children[22].value.value.asUInt8;
-                move.rankEffType2 = moveFields[moveID].children[23].value.value.asUInt8;
-                move.rankEffType3 = moveFields[moveID].children[24].value.value.asUInt8;
-                move.rankEffValue1 = moveFields[moveID].children[25].value.value.asInt8;
-                move.rankEffValue2 = moveFields[moveID].children[26].value.value.asInt8;
-                move.rankEffValue3 = moveFields[moveID].children[27].value.value.asInt8;
-                move.rankEffPer1 = moveFields[moveID].children[28].value.value.asUInt8;
-                move.rankEffPer2 = moveFields[moveID].children[29].value.value.asUInt8;
-                move.rankEffPer3 = moveFields[moveID].children[30].value.value.asUInt8;
-                move.flags = moveFields[moveID].children[31].value.value.asUInt32;
-                move.contestWazaNo = moveFields[moveID].children[32].value.value.asUInt32;
+                move.moveID = moveFields[moveID]["wazaNo"].AsInt;
+                move.isValid = moveFields[moveID]["isValid"].AsByte;
+                move.typingID = moveFields[moveID]["type"].AsByte;
+                move.category = moveFields[moveID]["category"].AsByte;
+                move.damageCategoryID = moveFields[moveID]["damageType"].AsByte;
+                move.power = moveFields[moveID]["power"].AsByte;
+                move.hitPer = moveFields[moveID]["hitPer"].AsByte;
+                move.basePP = moveFields[moveID]["basePP"].AsByte;
+                move.priority = moveFields[moveID]["priority"].AsSByte;
+                move.hitCountMax = moveFields[moveID]["hitCountMax"].AsByte;
+                move.hitCountMin = moveFields[moveID]["hitCountMin"].AsByte;
+                move.sickID = moveFields[moveID]["sickID"].AsUShort;
+                move.sickPer = moveFields[moveID]["sickPer"].AsByte;
+                move.sickCont = moveFields[moveID]["sickCont"].AsByte;
+                move.sickTurnMin = moveFields[moveID]["sickTurnMin"].AsByte;
+                move.sickTurnMax = moveFields[moveID]["sickTurnMax"].AsByte;
+                move.criticalRank = moveFields[moveID]["criticalRank"].AsByte;
+                move.shrinkPer = moveFields[moveID]["shrinkPer"].AsByte;
+                move.aiSeqNo = moveFields[moveID]["aiSeqNo"].AsUShort;
+                move.damageRecoverRatio = moveFields[moveID]["damageRecoverRatio"].AsSByte;
+                move.hpRecoverRatio = moveFields[moveID]["hpRecoverRatio"].AsSByte;
+                move.target = moveFields[moveID]["target"].AsByte;
+                move.rankEffType1 = moveFields[moveID]["rankEffType1"].AsByte;
+                move.rankEffType2 = moveFields[moveID]["rankEffType2"].AsByte;
+                move.rankEffType3 = moveFields[moveID]["rankEffType3"].AsByte;
+                move.rankEffValue1 = moveFields[moveID]["rankEffValue1"].AsSByte;
+                move.rankEffValue2 = moveFields[moveID]["rankEffValue2"].AsSByte;
+                move.rankEffValue3 = moveFields[moveID]["rankEffValue3"].AsSByte;
+                move.rankEffPer1 = moveFields[moveID]["rankEffPer1"].AsByte;
+                move.rankEffPer2 = moveFields[moveID]["rankEffPer2"].AsByte;
+                move.rankEffPer3 = moveFields[moveID]["rankEffPer3"].AsByte;
+                move.flags = moveFields[moveID]["flags"].AsUInt;
+                move.contestWazaNo = moveFields[moveID]["contestWazaNo"].AsUInt;
 
-                move.cmdSeqName = animationFields[moveID].children[1].GetValue().AsString();
-                move.cmdSeqNameLegend = animationFields[moveID].children[2].GetValue().AsString();
-                move.notShortenTurnType0 = animationFields[moveID].children[3].GetValue().AsString();
-                move.notShortenTurnType1 = animationFields[moveID].children[4].GetValue().AsString();
-                move.turnType1 = animationFields[moveID].children[5].GetValue().AsString();
-                move.turnType2 = animationFields[moveID].children[6].GetValue().AsString();
-                move.turnType3 = animationFields[moveID].children[7].GetValue().AsString();
-                move.turnType4 = animationFields[moveID].children[8].GetValue().AsString();
+                move.cmdSeqName = animationFields[moveID]["CmdSeqName"].AsString;
+                move.cmdSeqNameLegend = animationFields[moveID]["CmdSeqNameLegend"].AsString;
+                move.notShortenTurnType0 = animationFields[moveID]["NotShortenTurnType0"].AsString;
+                move.notShortenTurnType1 = animationFields[moveID]["NotShortenTurnType1"].AsString;
+                move.turnType1 = animationFields[moveID]["TurnType1"].AsString;
+                move.turnType2 = animationFields[moveID]["TurnType2"].AsString;
+                move.turnType3 = animationFields[moveID]["TurnType3"].AsString;
+                move.turnType4 = animationFields[moveID]["TurnType4"].AsString;
 
                 move.name = "";
-                if (textFields[moveID].children[6].children[0].childrenCount > 0)
-                    move.name = Encoding.UTF8.GetString(textFields[moveID].children[6].children[0].children[0].children[4].value.value.asString);
+                if (textFields[moveID]["wordDataArray.Array"].Children.Count > 0)
+                    move.name = textFields[moveID]["wordDataArray.Array"][0]["str"].AsString;
 
                 gameData.moves.Add(move);
             }
@@ -1479,47 +1644,46 @@ namespace ImpostersOrdeal
         private static async Task ParseShopTables()
         {
             gameData.shopTables = new();
-            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "ShopTable");
+            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => m["m_Name"].AsString == "ShopTable");
 
             gameData.shopTables.martItems = new();
-            AssetTypeValueField[] martItemFields = monoBehaviour.children[4].children[0].children;
-            for (int martItemIdx = 0; martItemIdx < martItemFields.Length; martItemIdx++)
+            var martItemFields = monoBehaviour["FS.Array"].Children;
+            for (int martItemIdx = 0; martItemIdx < martItemFields.Count; martItemIdx++)
             {
                 MartItem martItem = new();
-                martItem.itemID = martItemFields[martItemIdx].children[0].value.value.asUInt16;
-                martItem.badgeNum = martItemFields[martItemIdx].children[1].value.value.asInt32;
-                martItem.zoneID = martItemFields[martItemIdx].children[2].value.value.asInt32;
+                martItem.itemID = martItemFields[martItemIdx]["ItemNo"].AsUShort;
+                martItem.badgeNum = martItemFields[martItemIdx]["BadgeNum"].AsInt;
+                martItem.zoneID = martItemFields[martItemIdx]["ZoneID"].AsInt;
 
                 gameData.shopTables.martItems.Add(martItem);
             }
 
             gameData.shopTables.fixedShopItems = new();
-            AssetTypeValueField[] fixedShopItemFields = monoBehaviour.children[5].children[0].children;
-            for (int fixedShopItemIdx = 0; fixedShopItemIdx < fixedShopItemFields.Length; fixedShopItemIdx++)
+            var fixedShopItemFields = monoBehaviour["FixedShop.Array"].Children;
+            for (int fixedShopItemIdx = 0; fixedShopItemIdx < fixedShopItemFields.Count; fixedShopItemIdx++)
             {
                 FixedShopItem fixedShopItem = new();
-                fixedShopItem.itemID = fixedShopItemFields[fixedShopItemIdx].children[0].value.value.asUInt16;
-                fixedShopItem.shopID = fixedShopItemFields[fixedShopItemIdx].children[1].value.value.asInt32;
+                fixedShopItem.itemID = fixedShopItemFields[fixedShopItemIdx]["ItemNo"].AsUShort;
+                fixedShopItem.shopID = fixedShopItemFields[fixedShopItemIdx]["ShopID"].AsInt;
 
                 gameData.shopTables.fixedShopItems.Add(fixedShopItem);
             }
 
             gameData.shopTables.bpShopItems = new();
-            AssetTypeValueField[] bpShopItemFields = monoBehaviour.children[9].children[0].children;
-            for (int bpShopItemIdx = 0; bpShopItemIdx < bpShopItemFields.Length; bpShopItemIdx++)
+            var bpShopItemFields = monoBehaviour["BPShop.Array"].Children;
+            for (int bpShopItemIdx = 0; bpShopItemIdx < bpShopItemFields.Count; bpShopItemIdx++)
             {
                 BpShopItem bpShopItem = new();
-                bpShopItem.itemID = bpShopItemFields[bpShopItemIdx].children[0].value.value.asUInt16;
-                try
-                {
-                    bpShopItem.npcID = bpShopItemFields[bpShopItemIdx].children[1].value.value.asInt32;
-                }
-                catch (IndexOutOfRangeException)
+                bpShopItem.itemID = bpShopItemFields[bpShopItemIdx]["ItemNo"].AsUShort;
+
+                if (!bpShopItemFields[bpShopItemIdx]["NPCID"].IsDummy)
+                    bpShopItem.npcID = bpShopItemFields[bpShopItemIdx]["NPCID"].AsInt;
+                else
                 {
                     MainForm.ShowParserError("Oh my, this dump might be a bit outdated...\n" +
                         "Please input at least the v1.1.3 version of BDSP.\n" +
                         "I don't feel so good...");
-                    throw;
+                    throw new Exception("Outdated Dump");
                 }
 
                 gameData.shopTables.bpShopItems.Add(bpShopItem);
@@ -1532,18 +1696,18 @@ namespace ImpostersOrdeal
         private static async Task ParsePickupItems()
         {
             gameData.pickupItems = new();
-            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "MonohiroiTable");
+            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => m["m_Name"].AsString == "MonohiroiTable");
 
-            AssetTypeValueField[] pickupItemFields = monoBehaviour.children[4].children[0].children;
-            for (int pickupItemIdx = 0; pickupItemIdx < pickupItemFields.Length; pickupItemIdx++)
+            var pickupItemFields = monoBehaviour["MonoHiroi.Array"].Children;
+            for (int pickupItemIdx = 0; pickupItemIdx < pickupItemFields.Count; pickupItemIdx++)
             {
                 PickupItem pickupItem = new();
-                pickupItem.itemID = pickupItemFields[pickupItemIdx].children[0].value.value.asUInt16;
+                pickupItem.itemID = pickupItemFields[pickupItemIdx]["ID"].AsUShort;
 
                 //Parse item probabilities
                 pickupItem.ratios = new();
-                for (int ratio = 0; ratio < pickupItemFields[pickupItemIdx].children[1].children[0].childrenCount; ratio++)
-                    pickupItem.ratios.Add(pickupItemFields[pickupItemIdx].children[1].children[0].children[ratio].value.value.asUInt8);
+                for (int ratio = 0; ratio < pickupItemFields[pickupItemIdx]["Ratios.Array"].Children.Count; ratio++)
+                    pickupItem.ratios.Add(pickupItemFields[pickupItemIdx]["Ratios.Array"][ratio].AsByte);
 
                 gameData.pickupItems.Add(pickupItem);
             }
@@ -1555,58 +1719,58 @@ namespace ImpostersOrdeal
         private static async Task ParseItems()
         {
             gameData.items = new();
-            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.PersonalMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "ItemTable");
+            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.PersonalMasterdatas]).Find(m => m["m_Name"].AsString == "ItemTable");
 
-            AssetTypeValueField[] itemFields = monoBehaviour.children[4].children[0].children;
-            AssetTypeValueField[] textFields = await FindLabelArrayOfMessageFileAsync("ss_itemname", Language.English);
+            var itemFields = monoBehaviour["Item.Array"].Children;
+            var textFields = await FindLabelArrayOfMessageFileAsync("ss_itemname", Language.English);
 
-            if (textFields.Length < itemFields.Length)
+            if (textFields.Length < itemFields.Count)
                 MainForm.ShowParserError("Oh my, this " + FormatMessageFileNameForLanguage("ss_itemname", Language.English) + " is missing some stuff...\n" +
                     "I don't feel so good...\n" +
-                    "ItemTable entries: " + itemFields.Length + "\n" +
+                    "ItemTable entries: " + itemFields.Count + "\n" +
                     FormatMessageFileNameForLanguage("ss_itemname", Language.English) + " entries: " + textFields.Length + "??");
 
-            for (int itemIdx = 0; itemIdx < itemFields.Length; itemIdx++)
+            for (int itemIdx = 0; itemIdx < itemFields.Count; itemIdx++)
             {
                 Item item = new();
-                item.itemID = itemFields[itemIdx].children[0].value.value.asInt16;
-                item.type = itemFields[itemIdx].children[1].value.value.asUInt8;
-                item.iconID = itemFields[itemIdx].children[2].value.value.asInt32;
-                item.price = itemFields[itemIdx].children[3].value.value.asInt32;
-                item.bpPrice = itemFields[itemIdx].children[4].value.value.asInt32;
-                item.nageAtc = itemFields[itemIdx].children[7].value.value.asUInt8;
-                item.sizenAtc = itemFields[itemIdx].children[8].value.value.asUInt8;
-                item.sizenType = itemFields[itemIdx].children[9].value.value.asUInt8;
-                item.tuibamuEff = itemFields[itemIdx].children[10].value.value.asUInt8;
-                item.sort = itemFields[itemIdx].children[11].value.value.asUInt8;
-                item.group = itemFields[itemIdx].children[12].value.value.asUInt8;
-                item.groupID = itemFields[itemIdx].children[13].value.value.asUInt8;
-                item.fldPocket = itemFields[itemIdx].children[14].value.value.asUInt8;
-                item.fieldFunc = itemFields[itemIdx].children[15].value.value.asUInt8;
-                item.battleFunc = itemFields[itemIdx].children[16].value.value.asUInt8;
-                item.criticalRanks = itemFields[itemIdx].children[18].value.value.asUInt8;
-                item.atkStages = itemFields[itemIdx].children[19].value.value.asUInt8;
-                item.defStages = itemFields[itemIdx].children[20].value.value.asUInt8;
-                item.spdStages = itemFields[itemIdx].children[21].value.value.asUInt8;
-                item.accStages = itemFields[itemIdx].children[22].value.value.asUInt8;
-                item.spAtkStages = itemFields[itemIdx].children[23].value.value.asUInt8;
-                item.spDefStages = itemFields[itemIdx].children[24].value.value.asUInt8;
-                item.ppRestoreAmount = itemFields[itemIdx].children[25].value.value.asUInt8;
-                item.hpEvIncrease = itemFields[itemIdx].children[26].value.value.asInt8;
-                item.atkEvIncrease = itemFields[itemIdx].children[27].value.value.asInt8;
-                item.defEvIncrease = itemFields[itemIdx].children[28].value.value.asInt8;
-                item.spdEvIncrease = itemFields[itemIdx].children[29].value.value.asInt8;
-                item.spAtkEvIncrease = itemFields[itemIdx].children[30].value.value.asInt8;
-                item.spDefEvIncrease = itemFields[itemIdx].children[31].value.value.asInt8;
-                item.friendshipIncrease1 = itemFields[itemIdx].children[32].value.value.asInt8;
-                item.friendshipIncrease2 = itemFields[itemIdx].children[33].value.value.asInt8;
-                item.friendshipIncrease3 = itemFields[itemIdx].children[34].value.value.asInt8;
-                item.hpRestoreAmount = itemFields[itemIdx].children[35].value.value.asUInt8;
-                item.flags0 = itemFields[itemIdx].children[36].value.value.asUInt32;
+                item.itemID = itemFields[itemIdx]["no"].AsShort;
+                item.type = itemFields[itemIdx]["type"].AsByte;
+                item.iconID = itemFields[itemIdx]["iconid"].AsInt;
+                item.price = itemFields[itemIdx]["price"].AsInt;
+                item.bpPrice = itemFields[itemIdx]["bp_price"].AsInt;
+                item.nageAtc = itemFields[itemIdx]["nage_atc"].AsByte;
+                item.sizenAtc = itemFields[itemIdx]["sizen_atc"].AsByte;
+                item.sizenType = itemFields[itemIdx]["sizen_type"].AsByte;
+                item.tuibamuEff = itemFields[itemIdx]["tuibamu_eff"].AsByte;
+                item.sort = itemFields[itemIdx]["sort"].AsByte;
+                item.group = itemFields[itemIdx]["group"].AsByte;
+                item.groupID = itemFields[itemIdx]["group_id"].AsByte;
+                item.fldPocket = itemFields[itemIdx]["fld_pocket"].AsByte;
+                item.fieldFunc = itemFields[itemIdx]["field_func"].AsByte;
+                item.battleFunc = itemFields[itemIdx]["battle_func"].AsByte;
+                item.criticalRanks = itemFields[itemIdx]["wk_critical_up"].AsByte;
+                item.atkStages = itemFields[itemIdx]["wk_atc_up"].AsByte;
+                item.defStages = itemFields[itemIdx]["wk_def_up"].AsByte;
+                item.spdStages = itemFields[itemIdx]["wk_agi_up"].AsByte;
+                item.accStages = itemFields[itemIdx]["wk_hit_up"].AsByte;
+                item.spAtkStages = itemFields[itemIdx]["wk_spa_up"].AsByte;
+                item.spDefStages = itemFields[itemIdx]["wk_spd_up"].AsByte;
+                item.ppRestoreAmount = itemFields[itemIdx]["wk_prm_pp_rcv"].AsByte;
+                item.hpEvIncrease = itemFields[itemIdx]["wk_prm_hp_exp"].AsSByte;
+                item.atkEvIncrease = itemFields[itemIdx]["wk_prm_pow_exp"].AsSByte;
+                item.defEvIncrease = itemFields[itemIdx]["wk_prm_def_exp"].AsSByte;
+                item.spdEvIncrease = itemFields[itemIdx]["wk_prm_agi_exp"].AsSByte;
+                item.spAtkEvIncrease = itemFields[itemIdx]["wk_prm_spa_exp"].AsSByte;
+                item.spDefEvIncrease = itemFields[itemIdx]["wk_prm_spd_exp"].AsSByte;
+                item.friendshipIncrease1 = itemFields[itemIdx]["wk_friend1"].AsSByte;
+                item.friendshipIncrease2 = itemFields[itemIdx]["wk_friend2"].AsSByte;
+                item.friendshipIncrease3 = itemFields[itemIdx]["wk_friend3"].AsSByte;
+                item.hpRestoreAmount = itemFields[itemIdx]["wk_prm_hp_rcv"].AsByte;
+                item.flags0 = itemFields[itemIdx]["flags0"].AsUInt;
 
                 item.name = "";
-                if (textFields[itemIdx].children[6].children[0].childrenCount > 0)
-                    item.name = Encoding.UTF8.GetString(textFields[itemIdx].children[6].children[0].children[0].children[4].value.value.asString);
+                if (textFields[itemIdx]["wordDataArray.Array"].Children.Count > 0)
+                    item.name = textFields[itemIdx]["wordDataArray.Array"][0]["str"].AsString;
 
                 gameData.items.Add(item);
             }
@@ -1618,18 +1782,18 @@ namespace ImpostersOrdeal
         private static async Task ParseGrowthRates()
         {
             gameData.growthRates = new();
-            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.PersonalMasterdatas]).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "GrowTable");
+            AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.PersonalMasterdatas]).Find(m => m["m_Name"].AsString == "GrowTable");
 
-            AssetTypeValueField[] growthRateFields = monoBehaviour.children[4].children[0].children;
-            for (int growthRateIdx = 0; growthRateIdx < growthRateFields.Length; growthRateIdx++)
+            var growthRateFields = monoBehaviour["Data.Array"].Children;
+            for (int growthRateIdx = 0; growthRateIdx < growthRateFields.Count; growthRateIdx++)
             {
                 GrowthRate growthRate = new();
                 growthRate.growthID = growthRateIdx;
 
                 //Parse exp requirement
                 growthRate.expRequirements = new();
-                for (int level = 0; level < growthRateFields[growthRateIdx].children[0].children[0].childrenCount; level++)
-                    growthRate.expRequirements.Add(growthRateFields[growthRateIdx].children[0].children[0].children[level].value.value.asUInt32);
+                for (int level = 0; level < growthRateFields[growthRateIdx]["exps.Array"].Children.Count; level++)
+                    growthRate.expRequirements.Add(growthRateFields[growthRateIdx]["exps.Array"][level].AsUInt);
 
                 gameData.growthRates.Add(growthRate);
             }
@@ -1672,68 +1836,68 @@ namespace ImpostersOrdeal
             for (int mIdx = 0; mIdx < monoBehaviours.Count; mIdx++)
             {
                 MessageFile messageFile = new();
-                messageFile.mName = Encoding.Default.GetString(monoBehaviours[mIdx].children[3].value.value.asString);
-                messageFile.langID = (Language)monoBehaviours[mIdx].children[5].value.value.asInt32;
-                messageFile.isKanji = monoBehaviours[mIdx].children[7].value.value.asUInt8;
+                messageFile.mName = monoBehaviours[mIdx]["m_Name"].AsString;
+                messageFile.langID = (Language)monoBehaviours[mIdx]["langID"].AsInt;
+                messageFile.isKanji = monoBehaviours[mIdx]["isKanji"].AsByte;
 
                 //Parse LabelData
                 messageFile.labelDatas = new();
-                AssetTypeValueField[] labelDataFields = monoBehaviours[mIdx].children[8].children[0].children;
-                for (int labelDataIdx = 0; labelDataIdx < labelDataFields.Length; labelDataIdx++)
+                var labelDataFields = monoBehaviours[mIdx]["labelDataArray.Array"].Children;
+                for (int labelDataIdx = 0; labelDataIdx < labelDataFields.Count; labelDataIdx++)
                 {
                     LabelData labelData = new();
-                    labelData.labelIndex = labelDataFields[labelDataIdx].children[0].value.value.asInt32;
-                    labelData.arrayIndex = labelDataFields[labelDataIdx].children[1].value.value.asInt32;
-                    labelData.labelName = Encoding.Default.GetString(labelDataFields[labelDataIdx].children[2].value.value.asString);
-                    labelData.styleIndex = labelDataFields[labelDataIdx].children[3].children[0].value.value.asInt32;
-                    labelData.colorIndex = labelDataFields[labelDataIdx].children[3].children[1].value.value.asInt32;
-                    labelData.fontSize = labelDataFields[labelDataIdx].children[3].children[2].value.value.asInt32;
-                    labelData.maxWidth = labelDataFields[labelDataIdx].children[3].children[3].value.value.asInt32;
-                    labelData.controlID = labelDataFields[labelDataIdx].children[3].children[4].value.value.asInt32;
+                    labelData.labelIndex = labelDataFields[labelDataIdx]["labelIndex"].AsInt;
+                    labelData.arrayIndex = labelDataFields[labelDataIdx]["arrayIndex"].AsInt;
+                    labelData.labelName = labelDataFields[labelDataIdx]["labelName"].AsString;
+                    labelData.styleIndex = labelDataFields[labelDataIdx]["styleInfo.styleIndex"].AsInt;
+                    labelData.colorIndex = labelDataFields[labelDataIdx]["styleInfo.colorIndex"].AsInt;
+                    labelData.fontSize = labelDataFields[labelDataIdx]["styleInfo.fontSize"].AsInt;
+                    labelData.maxWidth = labelDataFields[labelDataIdx]["styleInfo.maxWidth"].AsInt;
+                    labelData.controlID = labelDataFields[labelDataIdx]["styleInfo.controlID"].AsInt;
 
                     // Parse Attribute Array
-                    AssetTypeValueField[] attrArray = labelDataFields[labelDataIdx].children[4].children[0].children;
+                    var attrArray = labelDataFields[labelDataIdx]["attributeValueArray.Array"].Children;
                     labelData.attributeValues = new();
-                    for (int attrIdx = 0; attrIdx < attrArray.Length; attrIdx++)
+                    for (int attrIdx = 0; attrIdx < attrArray.Count; attrIdx++)
                     {
-                        labelData.attributeValues.Add(attrArray[attrIdx].value.value.asInt32);
+                        labelData.attributeValues.Add(attrArray[attrIdx].AsInt);
                     }
 
                     // Parse TagData
-                    AssetTypeValueField[] tagDataFields = labelDataFields[labelDataIdx].children[5].children[0].children;
+                    var tagDataFields = labelDataFields[labelDataIdx]["tagDataArray.Array"].Children;
                     labelData.tagDatas = new();
-                    for (int tagDataIdx = 0; tagDataIdx < tagDataFields.Length; tagDataIdx++)
+                    for (int tagDataIdx = 0; tagDataIdx < tagDataFields.Count; tagDataIdx++)
                     {
                         TagData tagData = new();
-                        tagData.tagIndex = tagDataFields[tagDataIdx].children[0].value.value.asInt32;
-                        tagData.groupID = tagDataFields[tagDataIdx].children[1].value.value.asInt32;
-                        tagData.tagID = tagDataFields[tagDataIdx].children[2].value.value.asInt32;
-                        tagData.tagPatternID = tagDataFields[tagDataIdx].children[3].value.value.asInt32;
-                        tagData.forceArticle = tagDataFields[tagDataIdx].children[4].value.value.asInt32;
-                        tagData.tagParameter = tagDataFields[tagDataIdx].children[5].value.value.asInt32;
+                        tagData.tagIndex = tagDataFields[tagDataIdx]["tagIndex"].AsInt;
+                        tagData.groupID = tagDataFields[tagDataIdx]["groupID"].AsInt;
+                        tagData.tagID = tagDataFields[tagDataIdx]["tagID"].AsInt;
+                        tagData.tagPatternID = tagDataFields[tagDataIdx]["tagPatternID"].AsInt;
+                        tagData.forceArticle = tagDataFields[tagDataIdx]["forceArticle"].AsInt;
+                        tagData.tagParameter = tagDataFields[tagDataIdx]["tagParameter"].AsInt;
                         tagData.tagWordArray = new();
-                        foreach (AssetTypeValueField tagWordField in tagDataFields[tagDataIdx].children[6][0].children)
+                        foreach (AssetTypeValueField tagWordField in tagDataFields[tagDataIdx]["tagWordArray.Array"].Children)
                         {
-                            tagData.tagWordArray.Add(tagWordField.GetValue().AsString());
+                            tagData.tagWordArray.Add(tagWordField.AsString);
                         }
 
-                        tagData.forceGrmID = tagDataFields[tagDataIdx].children[7].value.value.asInt32;
+                        tagData.forceGrmID = tagDataFields[tagDataIdx]["forceGrmID"].AsInt;
 
                         labelData.tagDatas.Add(tagData);
                     }
 
                     //Parse WordData
                     labelData.wordDatas = new();
-                    AssetTypeValueField[] wordDataFields = labelDataFields[labelDataIdx].children[6].children[0].children;
-                    for (int wordDataIdx = 0; wordDataIdx < wordDataFields.Length; wordDataIdx++)
+                    var wordDataFields = labelDataFields[labelDataIdx]["wordDataArray.Array"].Children;
+                    for (int wordDataIdx = 0; wordDataIdx < wordDataFields.Count; wordDataIdx++)
                     {
                         WordData wordData = new();
-                        wordData.patternID = wordDataFields[wordDataIdx].children[0].value.value.asInt32;
-                        wordData.eventID = wordDataFields[wordDataIdx].children[1].value.value.asInt32;
-                        wordData.tagIndex = wordDataFields[wordDataIdx].children[2].value.value.asInt32;
-                        wordData.tagValue = wordDataFields[wordDataIdx].children[3].value.value.asFloat;
-                        wordData.str = Encoding.UTF8.GetString(wordDataFields[wordDataIdx].children[4].value.value.asString);
-                        wordData.strWidth = wordDataFields[wordDataIdx].children[5].value.value.asFloat;
+                        wordData.patternID = wordDataFields[wordDataIdx]["patternID"].AsInt;
+                        wordData.eventID = wordDataFields[wordDataIdx]["eventID"].AsInt;
+                        wordData.tagIndex = wordDataFields[wordDataIdx]["tagIndex"].AsInt;
+                        wordData.tagValue = wordDataFields[wordDataIdx]["tagValue"].AsFloat;
+                        wordData.str = wordDataFields[wordDataIdx]["str"].AsString;
+                        wordData.strWidth = wordDataFields[wordDataIdx]["strWidth"].AsFloat;
 
                         labelData.wordDatas.Add(wordData);
                     }
@@ -1783,45 +1947,45 @@ namespace ImpostersOrdeal
         private static async Task ParseEvScripts()
         {
             gameData.evScripts = new();
-            List<AssetTypeValueField> monoBehaviours = (await monoBehaviourCollection[PathEnum.EvScript]).Where(m => m.children[4].GetName() == "Scripts").ToList();
+            List<AssetTypeValueField> monoBehaviours = (await monoBehaviourCollection[PathEnum.EvScript]).Where(m => !m["Scripts"].IsDummy && !m["StrList"].IsDummy).ToList();
 
             for (int mIdx = 0; mIdx < monoBehaviours.Count; mIdx++)
             {
                 EvScript evScript = new();
-                evScript.mName = Encoding.Default.GetString(monoBehaviours[mIdx].children[3].value.value.asString);
+                evScript.mName = monoBehaviours[mIdx]["m_Name"].AsString;
 
                 //Parse Scripts
                 evScript.scripts = new();
-                AssetTypeValueField[] scriptFields = monoBehaviours[mIdx].children[4].children[0].children;
-                for (int scriptIdx = 0; scriptIdx < scriptFields.Length; scriptIdx++)
+                var scriptFields = monoBehaviours[mIdx]["Scripts.Array"].Children;
+                for (int scriptIdx = 0; scriptIdx < scriptFields.Count; scriptIdx++)
                 {
                     Script script = new();
-                    script.evLabel = Encoding.Default.GetString(scriptFields[scriptIdx].children[0].value.value.asString);
+                    script.evLabel = scriptFields[scriptIdx]["Label"].AsString;
 
                     //Parse Commands
                     script.commands = new();
-                    AssetTypeValueField[] commandFields = scriptFields[scriptIdx].children[1].children[0].children;
-                    for (int commandIdx = 0; commandIdx < commandFields.Length; commandIdx++)
+                    var commandFields = scriptFields[scriptIdx]["Commands.Array"].Children;
+                    for (int commandIdx = 0; commandIdx < commandFields.Count; commandIdx++)
                     {
                         Command command = new();
 
                         //Check for commands without data, because those exist for some reason.
-                        if (commandFields[commandIdx].children[0].children[0].children.Length == 0)
+                        if (commandFields[commandIdx]["Arg.Array"].Children.Count == 0)
                         {
                             command.cmdType = -1;
                             script.commands.Add(command);
                             continue;
                         }
-                        command.cmdType = commandFields[commandIdx].children[0].children[0].children[0].children[1].value.value.asInt32;
+                        command.cmdType = commandFields[commandIdx]["Arg.Array"][0]["data"].AsInt;
 
                         //Parse Arguments
                         command.args = new();
-                        AssetTypeValueField[] argumentFields = commandFields[commandIdx].children[0].children[0].children;
-                        for (int argIdx = 1; argIdx < argumentFields.Length; argIdx++)
+                        var argumentFields = commandFields[commandIdx]["Arg.Array"].Children;
+                        for (int argIdx = 1; argIdx < argumentFields.Count; argIdx++)
                         {
                             Argument arg = new();
-                            arg.argType = argumentFields[argIdx].children[0].value.value.asInt32;
-                            arg.data = argumentFields[argIdx].children[1].value.value.asInt32;
+                            arg.argType = argumentFields[argIdx]["argType"].AsInt;
+                            arg.data = argumentFields[argIdx]["data"].AsInt;
                             if (arg.argType == 1)
                                 arg.data = ConvertToFloat((int)arg.data);
 
@@ -1836,9 +2000,9 @@ namespace ImpostersOrdeal
 
                 //Parse StrLists
                 evScript.strList = new();
-                AssetTypeValueField[] stringFields = monoBehaviours[mIdx].children[5].children[0].children;
-                for (int stringIdx = 0; stringIdx < stringFields.Length; stringIdx++)
-                    evScript.strList.Add(Encoding.Default.GetString(stringFields[stringIdx].value.value.asString));
+                var stringFields = monoBehaviours[mIdx]["StrList.Array"].Children;
+                for (int stringIdx = 0; stringIdx < stringFields.Count; stringIdx++)
+                    evScript.strList.Add(stringFields[stringIdx].AsString);
 
                 gameData.evScripts.Add(evScript);
             }
@@ -2075,25 +2239,27 @@ namespace ImpostersOrdeal
         private static void CommitContestMasterDatas()
         {
             gameData.contestResultMotion.Sort();
-            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.ContestMasterdatas).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "ContestConfigDatas");
+            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.ContestMasterdatas).Find(m => m["m_Name"].AsString == "ContestConfigDatas");
 
-            AssetTypeValueField[] resultMotionSheet = monoBehaviour["ResultMotion"].children[0].children;
-            AssetTypeValueField resultMotionRef = resultMotionSheet[0];
             List<AssetTypeValueField> newResultMotionSheet = new();
             for (int i = 0; i < gameData.contestResultMotion.Count; i++)
             {
                 ResultMotion rm = gameData.contestResultMotion[i];
-                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromTemplate(resultMotionRef.GetTemplateField());
-                baseField["valid_flag"].GetValue().Set(rm.validFlag);
-                baseField["id"].GetValue().Set(rm.id);
-                baseField["monsNo"].GetValue().Set(rm.monsNo);
-                baseField["winAnim"].GetValue().Set(rm.winAnim);
-                baseField["loseAnim"].GetValue().Set(rm.loseAnim);
-                baseField["waitAnim"].GetValue().Set(rm.waitAnim);
-                baseField["duration"].GetValue().Set(rm.duration);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["ResultMotion.Array"]);
+
+                baseField["valid_flag"].AsBool = rm.validFlag != 0;
+                baseField["id"].AsUShort = rm.id;
+                baseField["monsNo"].AsInt = rm.monsNo;
+                baseField["winAnim"].AsUInt = rm.winAnim;
+                baseField["loseAnim"].AsUInt = rm.loseAnim;
+                baseField["waitAnim"].AsUInt = rm.waitAnim;
+                baseField["duration"].AsFloat = rm.duration;
+
                 newResultMotionSheet.Add(baseField);
             }
-            monoBehaviour["ResultMotion"].children[0].SetChildrenList(newResultMotionSheet.ToArray());
+
+            monoBehaviour["ResultMotion.Array"].Children = newResultMotionSheet;
+
             fileManager.WriteMonoBehaviour(PathEnum.ContestMasterdatas, monoBehaviour);
         }
 
@@ -2135,57 +2301,66 @@ namespace ImpostersOrdeal
 
         private static void CommitMoves()
         {
-            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.PersonalMasterdatas).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "WazaTable");
-            AssetTypeValueField animationData = fileManager.GetMonoBehaviours(PathEnum.BattleMasterdatas).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "BattleDataTable");
+            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.PersonalMasterdatas).Find(m => m["m_Name"].AsString == "WazaTable");
+            AssetTypeValueField animationData = fileManager.GetMonoBehaviours(PathEnum.BattleMasterdatas).Find(m => m["m_Name"].AsString == "BattleDataTable");
 
-            AssetTypeValueField[] moveFields = monoBehaviour.children[4].children[0].children;
-            AssetTypeValueField[] animationFields = animationData.children[8].children[0].children;
-            AssetTypeValueField[] textFields = FindLabelArrayOfMessageFile("ss_wazaname", Language.English);
-            for (int moveID = 0; moveID < moveFields.Length; moveID++)
+            List<AssetTypeValueField> newMoveFields = new();
+            List<AssetTypeValueField> newAnimationFields = new();
+            for (int moveID = 0; moveID < gameData.moves.Count; moveID++)
             {
                 Move move = gameData.moves[moveID];
-                moveFields[moveID].children[0].GetValue().Set(move.moveID);
-                moveFields[moveID].children[1].GetValue().Set(move.isValid);
-                moveFields[moveID].children[2].GetValue().Set(move.typingID);
-                moveFields[moveID].children[3].GetValue().Set(move.category);
-                moveFields[moveID].children[4].GetValue().Set(move.damageCategoryID);
-                moveFields[moveID].children[5].GetValue().Set(move.power);
-                moveFields[moveID].children[6].GetValue().Set(move.hitPer);
-                moveFields[moveID].children[7].GetValue().Set(move.basePP);
-                moveFields[moveID].children[8].GetValue().Set(move.priority);
-                moveFields[moveID].children[9].GetValue().Set(move.hitCountMax);
-                moveFields[moveID].children[10].GetValue().Set(move.hitCountMin);
-                moveFields[moveID].children[11].GetValue().Set(move.sickID);
-                moveFields[moveID].children[12].GetValue().Set(move.sickPer);
-                moveFields[moveID].children[13].GetValue().Set(move.sickCont);
-                moveFields[moveID].children[14].GetValue().Set(move.sickTurnMin);
-                moveFields[moveID].children[15].GetValue().Set(move.sickTurnMax);
-                moveFields[moveID].children[16].GetValue().Set(move.criticalRank);
-                moveFields[moveID].children[17].GetValue().Set(move.shrinkPer);
-                moveFields[moveID].children[18].GetValue().Set(move.aiSeqNo);
-                moveFields[moveID].children[19].GetValue().Set(move.damageRecoverRatio);
-                moveFields[moveID].children[20].GetValue().Set(move.hpRecoverRatio);
-                moveFields[moveID].children[21].GetValue().Set(move.target);
-                moveFields[moveID].children[22].GetValue().Set(move.rankEffType1);
-                moveFields[moveID].children[23].GetValue().Set(move.rankEffType2);
-                moveFields[moveID].children[24].GetValue().Set(move.rankEffType3);
-                moveFields[moveID].children[25].GetValue().Set(move.rankEffValue1);
-                moveFields[moveID].children[26].GetValue().Set(move.rankEffValue2);
-                moveFields[moveID].children[27].GetValue().Set(move.rankEffValue3);
-                moveFields[moveID].children[28].GetValue().Set(move.rankEffPer1);
-                moveFields[moveID].children[29].GetValue().Set(move.rankEffPer2);
-                moveFields[moveID].children[30].GetValue().Set(move.rankEffPer3);
-                moveFields[moveID].children[31].GetValue().Set(move.flags);
-                moveFields[moveID].children[32].GetValue().Set(move.contestWazaNo);
-                animationFields[moveID].children[1].GetValue().Set(move.cmdSeqName);
-                animationFields[moveID].children[2].GetValue().Set(move.cmdSeqNameLegend);
-                animationFields[moveID].children[3].GetValue().Set(move.notShortenTurnType0);
-                animationFields[moveID].children[4].GetValue().Set(move.notShortenTurnType1);
-                animationFields[moveID].children[5].GetValue().Set(move.turnType1);
-                animationFields[moveID].children[6].GetValue().Set(move.turnType2);
-                animationFields[moveID].children[7].GetValue().Set(move.turnType3);
-                animationFields[moveID].children[8].GetValue().Set(move.turnType4);
+                AssetTypeValueField baseMoveField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["Waza.Array"]);
+                AssetTypeValueField baseAnimationField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["BattleWazaData.Array"]);
+
+                baseMoveField["wazaNo"].AsInt = move.moveID;
+                baseMoveField["isValid"].AsByte = move.isValid;
+                baseMoveField["type"].AsByte = move.typingID;
+                baseMoveField["category"].AsByte = move.category;
+                baseMoveField["damageType"].AsByte = move.damageCategoryID;
+                baseMoveField["power"].AsByte = move.power;
+                baseMoveField["hitPer"].AsByte = move.hitPer;
+                baseMoveField["basePP"].AsByte = move.basePP;
+                baseMoveField["priority"].AsSByte = move.priority;
+                baseMoveField["hitCountMax"].AsByte = move.hitCountMax;
+                baseMoveField["hitCountMin"].AsByte = move.hitCountMin;
+                baseMoveField["sickID"].AsUShort = move.sickID;
+                baseMoveField["sickPer"].AsByte = move.sickPer;
+                baseMoveField["sickCont"].AsByte = move.sickCont;
+                baseMoveField["sickTurnMin"].AsByte = move.sickTurnMin;
+                baseMoveField["sickTurnMax"].AsByte = move.sickTurnMax;
+                baseMoveField["criticalRank"].AsByte = move.criticalRank;
+                baseMoveField["shrinkPer"].AsByte = move.shrinkPer;
+                baseMoveField["aiSeqNo"].AsUShort = move.aiSeqNo;
+                baseMoveField["damageRecoverRatio"].AsSByte = move.damageRecoverRatio;
+                baseMoveField["hpRecoverRatio"].AsSByte = move.hpRecoverRatio;
+                baseMoveField["target"].AsByte = move.target;
+                baseMoveField["rankEffType1"].AsByte = move.rankEffType1;
+                baseMoveField["rankEffType2"].AsByte = move.rankEffType2;
+                baseMoveField["rankEffType3"].AsByte = move.rankEffType3;
+                baseMoveField["rankEffValue1"].AsSByte = move.rankEffValue1;
+                baseMoveField["rankEffValue2"].AsSByte = move.rankEffValue2;
+                baseMoveField["rankEffValue3"].AsSByte = move.rankEffValue3;
+                baseMoveField["rankEffPer1"].AsByte = move.rankEffPer1;
+                baseMoveField["rankEffPer2"].AsByte = move.rankEffPer2;
+                baseMoveField["rankEffPer3"].AsByte = move.rankEffPer3;
+                baseMoveField["flags"].AsUInt = move.flags;
+                baseMoveField["contestWazaNo"].AsUInt = move.contestWazaNo;
+
+                baseAnimationField["CmdSeqName"].AsString = move.cmdSeqName;
+                baseAnimationField["CmdSeqNameLegend"].AsString = move.cmdSeqNameLegend;
+                baseAnimationField["NotShortenTurnType0"].AsString = move.notShortenTurnType0;
+                baseAnimationField["NotShortenTurnType1"].AsString = move.notShortenTurnType1;
+                baseAnimationField["TurnType1"].AsString = move.turnType1;
+                baseAnimationField["TurnType2"].AsString = move.turnType2;
+                baseAnimationField["TurnType3"].AsString = move.turnType3;
+                baseAnimationField["TurnType4"].AsString = move.turnType4;
+
+                newMoveFields.Add(baseMoveField);
+                newAnimationFields.Add(baseAnimationField);
             }
+
+            monoBehaviour["Waza.Array"].Children = newMoveFields;
+            monoBehaviour["BattleWazaData.Array"].Children = newAnimationFields;
 
             fileManager.WriteMonoBehaviour(PathEnum.PersonalMasterdatas, monoBehaviour);
             fileManager.WriteMonoBehaviour(PathEnum.BattleMasterdatas, animationData);
@@ -2196,17 +2371,22 @@ namespace ImpostersOrdeal
         /// </summary>
         private static void CommitTMs()
         {
-            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.PersonalMasterdatas).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "ItemTable");
+            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.PersonalMasterdatas).Find(m => m["m_Name"].AsString == "ItemTable");
 
-            AssetTypeValueField[] tmFields = monoBehaviour.children[5].children[0].children;
-            AssetTypeValueField[] textFields = FindLabelArrayOfMessageFile("ss_itemname", Language.English);
-            for (int tmID = 0; tmID < tmFields.Length; tmID++)
+            List<AssetTypeValueField> newTmFields = new();
+            for (int tmID = 0; tmID < gameData.tms.Count; tmID++)
             {
                 TM tm = gameData.tms[tmID];
-                tmFields[tmID].children[0].GetValue().Set(tm.itemID);
-                tmFields[tmID].children[1].GetValue().Set(tm.machineNo);
-                tmFields[tmID].children[2].GetValue().Set(tm.moveID);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["WazaMachine.Array"]);
+
+                baseField["itemNo"].AsInt = tm.itemID;
+                baseField["machineNo"].AsInt = tm.machineNo;
+                baseField["wazaNo"].AsInt = tm.moveID;
+
+                newTmFields.Add(baseField);
             }
+
+            monoBehaviour["WazaMachine.Array"].Children = newTmFields;
 
             fileManager.WriteMonoBehaviour(PathEnum.PersonalMasterdatas, monoBehaviour);
         }
@@ -2216,48 +2396,53 @@ namespace ImpostersOrdeal
         /// </summary>
         private static void CommitItems()
         {
-            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.PersonalMasterdatas).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "ItemTable");
+            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.PersonalMasterdatas).Find(m => m["m_Name"].AsString == "ItemTable");
 
-            AssetTypeValueField[] itemFields = monoBehaviour.children[4].children[0].children;
-            AssetTypeValueField[] textFields = FindLabelArrayOfMessageFile("ss_itemname", Language.English);
-            for (int itemIdx = 0; itemIdx < itemFields.Length; itemIdx++)
+            List<AssetTypeValueField> newItemFields = new();
+            for (int itemIdx = 0; itemIdx < gameData.items.Count; itemIdx++)
             {
                 Item item = gameData.items[itemIdx];
-                itemFields[itemIdx].children[0].GetValue().Set(item.itemID);
-                itemFields[itemIdx].children[1].GetValue().Set(item.type);
-                itemFields[itemIdx].children[2].GetValue().Set(item.iconID);
-                itemFields[itemIdx].children[3].GetValue().Set(item.price);
-                itemFields[itemIdx].children[4].GetValue().Set(item.bpPrice);
-                itemFields[itemIdx].children[7].GetValue().Set(item.nageAtc);
-                itemFields[itemIdx].children[8].GetValue().Set(item.sizenAtc);
-                itemFields[itemIdx].children[9].GetValue().Set(item.sizenType);
-                itemFields[itemIdx].children[10].GetValue().Set(item.tuibamuEff);
-                itemFields[itemIdx].children[11].GetValue().Set(item.sort);
-                itemFields[itemIdx].children[12].GetValue().Set(item.group);
-                itemFields[itemIdx].children[13].GetValue().Set(item.groupID);
-                itemFields[itemIdx].children[14].GetValue().Set(item.fldPocket);
-                itemFields[itemIdx].children[15].GetValue().Set(item.fieldFunc);
-                itemFields[itemIdx].children[16].GetValue().Set(item.battleFunc);
-                itemFields[itemIdx].children[18].GetValue().Set(item.criticalRanks);
-                itemFields[itemIdx].children[19].GetValue().Set(item.atkStages);
-                itemFields[itemIdx].children[20].GetValue().Set(item.defStages);
-                itemFields[itemIdx].children[21].GetValue().Set(item.spdStages);
-                itemFields[itemIdx].children[22].GetValue().Set(item.accStages);
-                itemFields[itemIdx].children[23].GetValue().Set(item.spAtkStages);
-                itemFields[itemIdx].children[24].GetValue().Set(item.spDefStages);
-                itemFields[itemIdx].children[25].GetValue().Set(item.ppRestoreAmount);
-                itemFields[itemIdx].children[26].GetValue().Set(item.hpEvIncrease);
-                itemFields[itemIdx].children[27].GetValue().Set(item.atkEvIncrease);
-                itemFields[itemIdx].children[28].GetValue().Set(item.defEvIncrease);
-                itemFields[itemIdx].children[29].GetValue().Set(item.spdEvIncrease);
-                itemFields[itemIdx].children[30].GetValue().Set(item.spAtkEvIncrease);
-                itemFields[itemIdx].children[31].GetValue().Set(item.spDefEvIncrease);
-                itemFields[itemIdx].children[32].GetValue().Set(item.friendshipIncrease1);
-                itemFields[itemIdx].children[33].GetValue().Set(item.friendshipIncrease2);
-                itemFields[itemIdx].children[34].GetValue().Set(item.friendshipIncrease3);
-                itemFields[itemIdx].children[35].GetValue().Set(item.hpRestoreAmount);
-                itemFields[itemIdx].children[36].GetValue().Set(item.flags0);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["Item.Array"]);
+
+                baseField["no"].AsShort = item.itemID;
+                baseField["type"].AsByte = item.type;
+                baseField["iconid"].AsInt = item.iconID;
+                baseField["price"].AsInt = item.price;
+                baseField["bp_price"].AsInt = item.bpPrice;
+                baseField["nage_atc"].AsByte = item.nageAtc;
+                baseField["sizen_atc"].AsByte = item.sizenAtc;
+                baseField["sizen_type"].AsByte = item.sizenType;
+                baseField["tuibamu_eff"].AsByte = item.tuibamuEff;
+                baseField["sort"].AsByte = item.sort;
+                baseField["group"].AsByte = item.group;
+                baseField["group_id"].AsByte = item.groupID;
+                baseField["fld_pocket"].AsByte = item.fldPocket;
+                baseField["field_func"].AsByte = item.fieldFunc;
+                baseField["battle_func"].AsByte = item.battleFunc;
+                baseField["wk_critical_up"].AsByte = item.criticalRanks;
+                baseField["wk_atc_up"].AsByte = item.atkStages;
+                baseField["wk_def_up"].AsByte = item.defStages;
+                baseField["wk_agi_up"].AsByte = item.spdStages;
+                baseField["wk_hit_up"].AsByte = item.accStages;
+                baseField["wk_spa_up"].AsByte = item.spAtkStages;
+                baseField["wk_spd_up"].AsByte = item.spDefStages;
+                baseField["wk_prm_pp_rcv"].AsByte = item.ppRestoreAmount;
+                baseField["wk_prm_hp_exp"].AsSByte = item.hpEvIncrease;
+                baseField["wk_prm_pow_exp"].AsSByte = item.atkEvIncrease;
+                baseField["wk_prm_def_exp"].AsSByte = item.defEvIncrease;
+                baseField["wk_prm_agi_exp"].AsSByte = item.spdEvIncrease;
+                baseField["wk_prm_spa_exp"].AsSByte = item.spAtkEvIncrease;
+                baseField["wk_prm_spd_exp"].AsSByte = item.spDefEvIncrease;
+                baseField["wk_friend1"].AsSByte = item.friendshipIncrease1;
+                baseField["wk_friend2"].AsSByte = item.friendshipIncrease2;
+                baseField["wk_friend3"].AsSByte = item.friendshipIncrease3;
+                baseField["wk_prm_hp_rcv"].AsByte = item.hpRestoreAmount;
+                baseField["flags0"].AsUInt = item.flags0;
+
+                newItemFields.Add(baseField);
             }
+
+            monoBehaviour["Item.Array"].Children = newItemFields;
 
             fileManager.WriteMonoBehaviour(PathEnum.PersonalMasterdatas, monoBehaviour);
         }
@@ -2265,141 +2450,130 @@ namespace ImpostersOrdeal
         {
             gameData.pokemonInfos.Sort();
 
-            List<AssetTypeValueField> monoBehaviours = fileManager.GetMonoBehaviours(PathEnum.DprMasterdatas);
-            AssetTypeValueField pokemonInfo = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "PokemonInfo");
-
-            AssetTypeValueField[] PokemonInfoCatalog = pokemonInfo["Catalog"].children[0].children;
-            AssetTypeValueField catalogRef = PokemonInfoCatalog[0];
-
-            AssetTypeValueField[] PokemonInfoTrearuki = null;
-            AssetTypeValueField trearukiRef = null;
-            if (pokemonInfo["Trearuki"].children != null)
-            {
-                PokemonInfoTrearuki = pokemonInfo["Trearuki"].children[0].children;
-                trearukiRef = PokemonInfoTrearuki[0];
-            }
+            AssetTypeValueField pokemonInfo = fileManager.GetMonoBehaviours(PathEnum.DprMasterdatas).Find(m => m["m_Name"].AsString == "PokemonInfo");
 
             List<AssetTypeValueField> newCatalogs = new();
             List<AssetTypeValueField> newTrearukis = new();
             foreach (Masterdatas.PokemonInfoCatalog pokemonInfoCatalog in gameData.pokemonInfos)
             {
-                AssetTypeValueField catalogBaseField = ValueBuilder.DefaultValueFieldFromTemplate(catalogRef.GetTemplateField());
+                AssetTypeValueField catalogBaseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(pokemonInfo["Catalog.Array"]);
                 AssetTypeValueField trearukiBaseField = null;
-                if (trearukiRef != null)
-                    trearukiBaseField = ValueBuilder.DefaultValueFieldFromTemplate(trearukiRef.GetTemplateField());
-                Masterdatas.Trearuki t = pokemonInfoCatalog.trearuki;
+                if (!pokemonInfo["Trearuki"].IsDummy)
+                    trearukiBaseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(pokemonInfo["Trearuki.Array"]);
 
-                catalogBaseField["UniqueID"].GetValue().Set(pokemonInfoCatalog.UniqueID);
-                catalogBaseField["No"].GetValue().Set(pokemonInfoCatalog.No);
-                catalogBaseField["SinnohNo"].GetValue().Set(pokemonInfoCatalog.SinnohNo);
-                catalogBaseField["MonsNo"].GetValue().Set(pokemonInfoCatalog.MonsNo);
-                catalogBaseField["FormNo"].GetValue().Set(pokemonInfoCatalog.FormNo);
-                catalogBaseField["Sex"].GetValue().Set(pokemonInfoCatalog.Sex);
-                catalogBaseField["Rare"].GetValue().Set(pokemonInfoCatalog.Rare);
-                catalogBaseField["AssetBundleName"].GetValue().Set(pokemonInfoCatalog.AssetBundleName);
-                catalogBaseField["BattleScale"].GetValue().Set(pokemonInfoCatalog.BattleScale);
-                catalogBaseField["ContestScale"].GetValue().Set(pokemonInfoCatalog.ContestScale);
-                catalogBaseField["ContestSize"].GetValue().Set(pokemonInfoCatalog.ContestSize);
-                catalogBaseField["FieldScale"].GetValue().Set(pokemonInfoCatalog.FieldScale);
-                catalogBaseField["FieldChikaScale"].GetValue().Set(pokemonInfoCatalog.FieldChikaScale);
-                catalogBaseField["StatueScale"].GetValue().Set(pokemonInfoCatalog.StatueScale);
-                catalogBaseField["FieldWalkingScale"].GetValue().Set(pokemonInfoCatalog.FieldWalkingScale);
-                catalogBaseField["FieldFureaiScale"].GetValue().Set(pokemonInfoCatalog.FieldFureaiScale);
-                catalogBaseField["MenuScale"].GetValue().Set(pokemonInfoCatalog.MenuScale);
-                catalogBaseField["ModelMotion"].GetValue().Set(pokemonInfoCatalog.ModelMotion);
-                catalogBaseField["ModelOffset"].children[0].GetValue().Set(pokemonInfoCatalog.ModelOffset.X);
-                catalogBaseField["ModelOffset"].children[1].GetValue().Set(pokemonInfoCatalog.ModelOffset.Y);
-                catalogBaseField["ModelOffset"].children[2].GetValue().Set(pokemonInfoCatalog.ModelOffset.Z);
-                catalogBaseField["ModelRotationAngle"].children[0].GetValue().Set(pokemonInfoCatalog.ModelRotationAngle.X);
-                catalogBaseField["ModelRotationAngle"].children[1].GetValue().Set(pokemonInfoCatalog.ModelRotationAngle.Y);
-                catalogBaseField["ModelRotationAngle"].children[2].GetValue().Set(pokemonInfoCatalog.ModelRotationAngle.Z);
-                catalogBaseField["DistributionScale"].GetValue().Set(pokemonInfoCatalog.DistributionScale);
-                catalogBaseField["DistributionModelMotion"].GetValue().Set(pokemonInfoCatalog.DistributionModelMotion);
-                catalogBaseField["DistributionModelOffset"].children[0].GetValue().Set(pokemonInfoCatalog.DistributionModelOffset.X);
-                catalogBaseField["DistributionModelOffset"].children[1].GetValue().Set(pokemonInfoCatalog.DistributionModelOffset.Y);
-                catalogBaseField["DistributionModelOffset"].children[2].GetValue().Set(pokemonInfoCatalog.DistributionModelOffset.Z);
-                catalogBaseField["DistributionModelRotationAngle"].children[0].GetValue().Set(pokemonInfoCatalog.DistributionModelRotationAngle.X);
-                catalogBaseField["DistributionModelRotationAngle"].children[1].GetValue().Set(pokemonInfoCatalog.DistributionModelRotationAngle.Y);
-                catalogBaseField["DistributionModelRotationAngle"].children[2].GetValue().Set(pokemonInfoCatalog.DistributionModelRotationAngle.Z);
-                catalogBaseField["VoiceScale"].GetValue().Set(pokemonInfoCatalog.VoiceScale);
-                catalogBaseField["VoiceModelMotion"].GetValue().Set(pokemonInfoCatalog.VoiceModelMotion);
-                catalogBaseField["VoiceModelOffset"].children[0].GetValue().Set(pokemonInfoCatalog.VoiceModelOffset.X);
-                catalogBaseField["VoiceModelOffset"].children[1].GetValue().Set(pokemonInfoCatalog.VoiceModelOffset.Y);
-                catalogBaseField["VoiceModelOffset"].children[2].GetValue().Set(pokemonInfoCatalog.VoiceModelOffset.Z);
-                catalogBaseField["VoiceModelRotationAngle"].children[0].GetValue().Set(pokemonInfoCatalog.VoiceModelRotationAngle.X);
-                catalogBaseField["VoiceModelRotationAngle"].children[1].GetValue().Set(pokemonInfoCatalog.VoiceModelRotationAngle.Y);
-                catalogBaseField["VoiceModelRotationAngle"].children[2].GetValue().Set(pokemonInfoCatalog.VoiceModelRotationAngle.Z);
-                catalogBaseField["CenterPointOffset"].children[0].GetValue().Set(pokemonInfoCatalog.CenterPointOffset.X);
-                catalogBaseField["CenterPointOffset"].children[1].GetValue().Set(pokemonInfoCatalog.CenterPointOffset.Y);
-                catalogBaseField["CenterPointOffset"].children[2].GetValue().Set(pokemonInfoCatalog.CenterPointOffset.Z);
-                catalogBaseField["RotationLimitAngle"].children[0].GetValue().Set(pokemonInfoCatalog.RotationLimitAngle.X);
-                catalogBaseField["RotationLimitAngle"].children[1].GetValue().Set(pokemonInfoCatalog.RotationLimitAngle.Y);
-                catalogBaseField["StatusScale"].GetValue().Set(pokemonInfoCatalog.StatusScale);
-                catalogBaseField["StatusModelMotion"].GetValue().Set(pokemonInfoCatalog.StatusModelMotion);
-                catalogBaseField["StatusModelOffset"].children[0].GetValue().Set(pokemonInfoCatalog.StatusModelOffset.X);
-                catalogBaseField["StatusModelOffset"].children[1].GetValue().Set(pokemonInfoCatalog.StatusModelOffset.Y);
-                catalogBaseField["StatusModelOffset"].children[2].GetValue().Set(pokemonInfoCatalog.StatusModelOffset.Z);
-                catalogBaseField["StatusModelRotationAngle"].children[0].GetValue().Set(pokemonInfoCatalog.StatusModelRotationAngle.X);
-                catalogBaseField["StatusModelRotationAngle"].children[1].GetValue().Set(pokemonInfoCatalog.StatusModelRotationAngle.Y);
-                catalogBaseField["StatusModelRotationAngle"].children[2].GetValue().Set(pokemonInfoCatalog.StatusModelRotationAngle.Z);
-                catalogBaseField["BoxScale"].GetValue().Set(pokemonInfoCatalog.BoxScale);
-                catalogBaseField["BoxModelMotion"].GetValue().Set(pokemonInfoCatalog.BoxModelMotion);
-                catalogBaseField["BoxModelOffset"].children[0].GetValue().Set(pokemonInfoCatalog.BoxModelOffset.X);
-                catalogBaseField["BoxModelOffset"].children[1].GetValue().Set(pokemonInfoCatalog.BoxModelOffset.Y);
-                catalogBaseField["BoxModelOffset"].children[2].GetValue().Set(pokemonInfoCatalog.BoxModelOffset.Z);
-                catalogBaseField["BoxModelRotationAngle"].children[0].GetValue().Set(pokemonInfoCatalog.BoxModelRotationAngle.X);
-                catalogBaseField["BoxModelRotationAngle"].children[1].GetValue().Set(pokemonInfoCatalog.BoxModelRotationAngle.Y);
-                catalogBaseField["BoxModelRotationAngle"].children[2].GetValue().Set(pokemonInfoCatalog.BoxModelRotationAngle.Z);
-                catalogBaseField["CompareScale"].GetValue().Set(pokemonInfoCatalog.CompareScale);
-                catalogBaseField["CompareModelMotion"].GetValue().Set(pokemonInfoCatalog.CompareModelMotion);
-                catalogBaseField["CompareModelOffset"].children[0].GetValue().Set(pokemonInfoCatalog.CompareModelOffset.X);
-                catalogBaseField["CompareModelOffset"].children[1].GetValue().Set(pokemonInfoCatalog.CompareModelOffset.Y);
-                catalogBaseField["CompareModelOffset"].children[2].GetValue().Set(pokemonInfoCatalog.CompareModelOffset.Z);
-                catalogBaseField["CompareModelRotationAngle"].children[0].GetValue().Set(pokemonInfoCatalog.CompareModelRotationAngle.X);
-                catalogBaseField["CompareModelRotationAngle"].children[1].GetValue().Set(pokemonInfoCatalog.CompareModelRotationAngle.Y);
-                catalogBaseField["CompareModelRotationAngle"].children[2].GetValue().Set(pokemonInfoCatalog.CompareModelRotationAngle.Z);
-                catalogBaseField["BrakeStart"].GetValue().Set(pokemonInfoCatalog.BrakeStart);
-                catalogBaseField["BrakeEnd"].GetValue().Set(pokemonInfoCatalog.BrakeEnd);
-                catalogBaseField["WalkSpeed"].GetValue().Set(pokemonInfoCatalog.WalkSpeed);
-                catalogBaseField["RunSpeed"].GetValue().Set(pokemonInfoCatalog.RunSpeed);
-                catalogBaseField["WalkStart"].GetValue().Set(pokemonInfoCatalog.WalkStart);
-                catalogBaseField["RunStart"].GetValue().Set(pokemonInfoCatalog.RunStart);
-                catalogBaseField["BodySize"].GetValue().Set(pokemonInfoCatalog.BodySize);
-                catalogBaseField["AppearLimit"].GetValue().Set(pokemonInfoCatalog.AppearLimit);
-                catalogBaseField["MoveType"].GetValue().Set(pokemonInfoCatalog.MoveType);
-                catalogBaseField["GroundEffect"].GetValue().Set(pokemonInfoCatalog.GroundEffect);
-                catalogBaseField["Waitmoving"].GetValue().Set(pokemonInfoCatalog.Waitmoving);
-                catalogBaseField["BattleAjustHeight"].GetValue().Set(pokemonInfoCatalog.BattleAjustHeight);
+                catalogBaseField["UniqueID"].AsInt = pokemonInfoCatalog.UniqueID;
+                catalogBaseField["No"].AsInt = pokemonInfoCatalog.No;
+                catalogBaseField["SinnohNo"].AsInt = pokemonInfoCatalog.SinnohNo;
+                catalogBaseField["MonsNo"].AsInt = pokemonInfoCatalog.MonsNo;
+                catalogBaseField["FormNo"].AsInt = pokemonInfoCatalog.FormNo;
+                catalogBaseField["Sex"].AsByte = pokemonInfoCatalog.Sex;
+                catalogBaseField["Rare"].AsBool = pokemonInfoCatalog.Rare;
+                catalogBaseField["AssetBundleName"].AsString = pokemonInfoCatalog.AssetBundleName;
+                catalogBaseField["BattleScale"].AsFloat = pokemonInfoCatalog.BattleScale;
+                catalogBaseField["ContestScale"].AsFloat = pokemonInfoCatalog.ContestScale;
+                catalogBaseField["ContestSize"].AsInt = (int)pokemonInfoCatalog.ContestSize;
+                catalogBaseField["FieldScale"].AsFloat = pokemonInfoCatalog.FieldScale;
+                catalogBaseField["FieldChikaScale"].AsFloat = pokemonInfoCatalog.FieldChikaScale;
+                catalogBaseField["StatueScale"].AsFloat = pokemonInfoCatalog.StatueScale;
+                catalogBaseField["FieldWalkingScale"].AsFloat = pokemonInfoCatalog.FieldWalkingScale;
+                catalogBaseField["FieldFureaiScale"].AsFloat = pokemonInfoCatalog.FieldFureaiScale;
+                catalogBaseField["MenuScale"].AsFloat = pokemonInfoCatalog.MenuScale;
+                catalogBaseField["ModelMotion"].AsString = pokemonInfoCatalog.ModelMotion;
+                catalogBaseField["ModelOffset.x"].AsFloat = pokemonInfoCatalog.ModelOffset.X;
+                catalogBaseField["ModelOffset.y"].AsFloat = pokemonInfoCatalog.ModelOffset.Y;
+                catalogBaseField["ModelOffset.z"].AsFloat = pokemonInfoCatalog.ModelOffset.Z;
+                catalogBaseField["ModelRotationAngle.x"].AsFloat = pokemonInfoCatalog.ModelRotationAngle.X;
+                catalogBaseField["ModelRotationAngle.y"].AsFloat = pokemonInfoCatalog.ModelRotationAngle.Y;
+                catalogBaseField["ModelRotationAngle.z"].AsFloat = pokemonInfoCatalog.ModelRotationAngle.Z;
+                catalogBaseField["DistributionScale"].AsFloat = pokemonInfoCatalog.DistributionScale;
+                catalogBaseField["DistributionModelMotion"].AsString = pokemonInfoCatalog.DistributionModelMotion;
+                catalogBaseField["DistributionModelOffset.x"].AsFloat = pokemonInfoCatalog.DistributionModelOffset.X;
+                catalogBaseField["DistributionModelOffset.y"].AsFloat = pokemonInfoCatalog.DistributionModelOffset.Y;
+                catalogBaseField["DistributionModelOffset.z"].AsFloat = pokemonInfoCatalog.DistributionModelOffset.Z;
+                catalogBaseField["DistributionModelRotationAngle.x"].AsFloat = pokemonInfoCatalog.DistributionModelRotationAngle.X;
+                catalogBaseField["DistributionModelRotationAngle.y"].AsFloat = pokemonInfoCatalog.DistributionModelRotationAngle.Y;
+                catalogBaseField["DistributionModelRotationAngle.z"].AsFloat = pokemonInfoCatalog.DistributionModelRotationAngle.Z;
+                catalogBaseField["VoiceScale"].AsFloat = pokemonInfoCatalog.VoiceScale;
+                catalogBaseField["VoiceModelMotion"].AsString = pokemonInfoCatalog.VoiceModelMotion;
+                catalogBaseField["VoiceModelOffset.x"].AsFloat = pokemonInfoCatalog.VoiceModelOffset.X;
+                catalogBaseField["VoiceModelOffset.y"].AsFloat = pokemonInfoCatalog.VoiceModelOffset.Y;
+                catalogBaseField["VoiceModelOffset.z"].AsFloat = pokemonInfoCatalog.VoiceModelOffset.Z;
+                catalogBaseField["VoiceModelRotationAngle.x"].AsFloat = pokemonInfoCatalog.VoiceModelRotationAngle.X;
+                catalogBaseField["VoiceModelRotationAngle.y"].AsFloat = pokemonInfoCatalog.VoiceModelRotationAngle.Y;
+                catalogBaseField["VoiceModelRotationAngle.z"].AsFloat = pokemonInfoCatalog.VoiceModelRotationAngle.Z;
+                catalogBaseField["CenterPointOffset.x"].AsFloat = pokemonInfoCatalog.CenterPointOffset.X;
+                catalogBaseField["CenterPointOffset.y"].AsFloat = pokemonInfoCatalog.CenterPointOffset.Y;
+                catalogBaseField["CenterPointOffset.z"].AsFloat = pokemonInfoCatalog.CenterPointOffset.Z;
+                catalogBaseField["RotationLimitAngle.x"].AsFloat = pokemonInfoCatalog.RotationLimitAngle.X;
+                catalogBaseField["RotationLimitAngle.y"].AsFloat = pokemonInfoCatalog.RotationLimitAngle.Y;
+                catalogBaseField["StatusScale"].AsFloat = pokemonInfoCatalog.StatusScale;
+                catalogBaseField["StatusModelMotion"].AsString = pokemonInfoCatalog.StatusModelMotion;
+                catalogBaseField["StatusModelOffset.x"].AsFloat = pokemonInfoCatalog.StatusModelOffset.X;
+                catalogBaseField["StatusModelOffset.y"].AsFloat = pokemonInfoCatalog.StatusModelOffset.Y;
+                catalogBaseField["StatusModelOffset.z"].AsFloat = pokemonInfoCatalog.StatusModelOffset.Z;
+                catalogBaseField["StatusModelRotationAngle.x"].AsFloat = pokemonInfoCatalog.StatusModelRotationAngle.X;
+                catalogBaseField["StatusModelRotationAngle.y"].AsFloat = pokemonInfoCatalog.StatusModelRotationAngle.Y;
+                catalogBaseField["StatusModelRotationAngle.z"].AsFloat = pokemonInfoCatalog.StatusModelRotationAngle.Z;
+                catalogBaseField["BoxScale"].AsFloat = pokemonInfoCatalog.BoxScale;
+                catalogBaseField["BoxModelMotion"].AsString = pokemonInfoCatalog.BoxModelMotion;
+                catalogBaseField["BoxModelOffset.x"].AsFloat = pokemonInfoCatalog.BoxModelOffset.X;
+                catalogBaseField["BoxModelOffset.y"].AsFloat = pokemonInfoCatalog.BoxModelOffset.Y;
+                catalogBaseField["BoxModelOffset.z"].AsFloat = pokemonInfoCatalog.BoxModelOffset.Z;
+                catalogBaseField["BoxModelRotationAngle.x"].AsFloat = pokemonInfoCatalog.BoxModelRotationAngle.X;
+                catalogBaseField["BoxModelRotationAngle.y"].AsFloat = pokemonInfoCatalog.BoxModelRotationAngle.Y;
+                catalogBaseField["BoxModelRotationAngle.z"].AsFloat = pokemonInfoCatalog.BoxModelRotationAngle.Z;
+                catalogBaseField["CompareScale"].AsFloat = pokemonInfoCatalog.CompareScale;
+                catalogBaseField["CompareModelMotion"].AsString = pokemonInfoCatalog.CompareModelMotion;
+                catalogBaseField["CompareModelOffset.x"].AsFloat = pokemonInfoCatalog.CompareModelOffset.X;
+                catalogBaseField["CompareModelOffset.y"].AsFloat = pokemonInfoCatalog.CompareModelOffset.Y;
+                catalogBaseField["CompareModelOffset.z"].AsFloat = pokemonInfoCatalog.CompareModelOffset.Z;
+                catalogBaseField["CompareModelRotationAngle.x"].AsFloat = pokemonInfoCatalog.CompareModelRotationAngle.X;
+                catalogBaseField["CompareModelRotationAngle.y"].AsFloat = pokemonInfoCatalog.CompareModelRotationAngle.Y;
+                catalogBaseField["CompareModelRotationAngle.z"].AsFloat = pokemonInfoCatalog.CompareModelRotationAngle.Z;
+                catalogBaseField["BrakeStart"].AsFloat = pokemonInfoCatalog.BrakeStart;
+                catalogBaseField["BrakeEnd"].AsFloat = pokemonInfoCatalog.BrakeEnd;
+                catalogBaseField["WalkSpeed"].AsFloat = pokemonInfoCatalog.WalkSpeed;
+                catalogBaseField["RunSpeed"].AsFloat = pokemonInfoCatalog.RunSpeed;
+                catalogBaseField["WalkStart"].AsFloat = pokemonInfoCatalog.WalkStart;
+                catalogBaseField["RunStart"].AsFloat = pokemonInfoCatalog.RunStart;
+                catalogBaseField["BodySize"].AsFloat = pokemonInfoCatalog.BodySize;
+                catalogBaseField["AppearLimit"].AsFloat = pokemonInfoCatalog.AppearLimit;
+                catalogBaseField["MoveType"].AsInt = (int)pokemonInfoCatalog.MoveType;
+                catalogBaseField["GroundEffect"].AsBool = pokemonInfoCatalog.GroundEffect;
+                catalogBaseField["Waitmoving"].AsBool = pokemonInfoCatalog.Waitmoving;
+                catalogBaseField["BattleAjustHeight"].AsInt = (int)pokemonInfoCatalog.BattleAjustHeight;
+
+                newCatalogs.Add(catalogBaseField);
 
                 if (trearukiBaseField != null)
                 {
-                    trearukiBaseField["Enable"].GetValue().Set(t.enable ? 1 : 0);
+                    trearukiBaseField["Enable"].AsBool = pokemonInfoCatalog.trearuki.enable;
 
                     List<AssetTypeValueField> newAnimeIndices = new();
-                    for (int i = 0; i < t.animeIndex.Count; i++)
+                    for (int i = 0; i < pokemonInfoCatalog.trearuki.animeIndex.Count; i++)
                     {
-                        AssetTypeValueField animeIndexBaseField = ValueBuilder.DefaultValueFieldFromTemplate(trearukiRef["AnimeIndex"].children[0].children[0].GetTemplateField());
-                        animeIndexBaseField.GetValue().Set(t.animeIndex[i]);
+                        AssetTypeValueField animeIndexBaseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(trearukiBaseField["AnimeIndex.Array"]);
+                        animeIndexBaseField.AsInt = pokemonInfoCatalog.trearuki.animeIndex[i];
                         newAnimeIndices.Add(animeIndexBaseField);
                     }
-                    trearukiBaseField["AnimeIndex"].children[0].SetChildrenList(newAnimeIndices.ToArray());
+                    trearukiBaseField["AnimeIndex.Array"].Children = newAnimeIndices;
 
                     List<AssetTypeValueField> newAnimeDurations = new();
-                    for (int i = 0; i < t.animeDuration.Count; i++)
+                    for (int i = 0; i < pokemonInfoCatalog.trearuki.animeDuration.Count; i++)
                     {
-                        AssetTypeValueField animeDurationBaseField = ValueBuilder.DefaultValueFieldFromTemplate(trearukiRef["AnimeDuration"].children[0].children[0].GetTemplateField());
-                        animeDurationBaseField.GetValue().Set(t.animeDuration[i]);
+                        AssetTypeValueField animeDurationBaseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(trearukiBaseField["AnimeDuration.Array"]);
+                        animeDurationBaseField.AsFloat = pokemonInfoCatalog.trearuki.animeDuration[i];
                         newAnimeDurations.Add(animeDurationBaseField);
                     }
-                    trearukiBaseField["AnimeDuration"].children[0].SetChildrenList(newAnimeDurations.ToArray());
+                    trearukiBaseField["AnimeDuration.Array"].Children = newAnimeDurations;
 
                     newTrearukis.Add(trearukiBaseField);
                 }
-                newCatalogs.Add(catalogBaseField);
             }
 
-            pokemonInfo["Catalog"].children[0].SetChildrenList(newCatalogs.ToArray());
-            pokemonInfo["Trearuki"].children?[0].SetChildrenList(newTrearukis.ToArray());
+            pokemonInfo["Catalog.Array"].Children = newCatalogs;
+            if (!pokemonInfo["Trearuki"].IsDummy)
+                pokemonInfo["Trearuki.Array"].Children = newTrearukis;
 
             fileManager.WriteMonoBehaviour(PathEnum.DprMasterdatas, pokemonInfo);
         }
@@ -2409,42 +2583,40 @@ namespace ImpostersOrdeal
             gameData.motionTimingData.Sort();
 
             List<AssetTypeValueField> monoBehaviours = fileManager.GetMonoBehaviours(PathEnum.BattleMasterdatas);
-            AssetTypeValueField BattleDataTable = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "BattleDataTable");
+            AssetTypeValueField BattleDataTable = monoBehaviours.Find(m => m["m_Name"].AsString == "BattleDataTable");
 
-            AssetTypeValueField[] MotionTimingData = BattleDataTable["MotionTimingData"].children[0].children;
-            AssetTypeTemplateField templateField = new();
-
-            AssetTypeValueField motionTimingDataRef = MotionTimingData[0];
             List<AssetTypeValueField> newMotionTimingData = new();
             foreach (BattleMasterdatas.MotionTimingData motionTimingData in gameData.motionTimingData)
             {
-                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromTemplate(motionTimingDataRef.GetTemplateField());
-                baseField["MonsNo"].GetValue().Set(motionTimingData.MonsNo);
-                baseField["FormNo"].GetValue().Set(motionTimingData.FormNo);
-                baseField["Sex"].GetValue().Set(motionTimingData.Sex);
-                baseField["Buturi01"].GetValue().Set(motionTimingData.Buturi01);
-                baseField["Buturi02"].GetValue().Set(motionTimingData.Buturi02);
-                baseField["Buturi03"].GetValue().Set(motionTimingData.Buturi03);
-                baseField["Tokusyu01"].GetValue().Set(motionTimingData.Tokusyu01);
-                baseField["Tokusyu02"].GetValue().Set(motionTimingData.Tokusyu02);
-                baseField["Tokusyu03"].GetValue().Set(motionTimingData.Tokusyu03);
-                baseField["BodyBlow"].GetValue().Set(motionTimingData.BodyBlow);
-                baseField["Punch"].GetValue().Set(motionTimingData.Punch);
-                baseField["Kick"].GetValue().Set(motionTimingData.Kick);
-                baseField["Tail"].GetValue().Set(motionTimingData.Tail);
-                baseField["Bite"].GetValue().Set(motionTimingData.Bite);
-                baseField["Peck"].GetValue().Set(motionTimingData.Peck);
-                baseField["Radial"].GetValue().Set(motionTimingData.Radial);
-                baseField["Cry"].GetValue().Set(motionTimingData.Cry);
-                baseField["Dust"].GetValue().Set(motionTimingData.Dust);
-                baseField["Shot"].GetValue().Set(motionTimingData.Shot);
-                baseField["Guard"].GetValue().Set(motionTimingData.Guard);
-                baseField["LandingFall"].GetValue().Set(motionTimingData.LandingFall);
-                baseField["LandingFallEase"].GetValue().Set(motionTimingData.LandingFallEase);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(BattleDataTable["MotionTimingData.Array"]);
+
+                baseField["MonsNo"].AsInt = motionTimingData.MonsNo;
+                baseField["FormNo"].AsInt = motionTimingData.FormNo;
+                baseField["Sex"].AsInt = motionTimingData.Sex;
+                baseField["Buturi01"].AsInt = motionTimingData.Buturi01;
+                baseField["Buturi02"].AsInt = motionTimingData.Buturi02;
+                baseField["Buturi03"].AsInt = motionTimingData.Buturi03;
+                baseField["Tokusyu01"].AsInt = motionTimingData.Tokusyu01;
+                baseField["Tokusyu02"].AsInt = motionTimingData.Tokusyu02;
+                baseField["Tokusyu03"].AsInt = motionTimingData.Tokusyu03;
+                baseField["BodyBlow"].AsInt = motionTimingData.BodyBlow;
+                baseField["Punch"].AsInt = motionTimingData.Punch;
+                baseField["Kick"].AsInt = motionTimingData.Kick;
+                baseField["Tail"].AsInt = motionTimingData.Tail;
+                baseField["Bite"].AsInt = motionTimingData.Bite;
+                baseField["Peck"].AsInt = motionTimingData.Peck;
+                baseField["Radial"].AsInt = motionTimingData.Radial;
+                baseField["Cry"].AsInt = motionTimingData.Cry;
+                baseField["Dust"].AsInt = motionTimingData.Dust;
+                baseField["Shot"].AsInt = motionTimingData.Shot;
+                baseField["Guard"].AsInt = motionTimingData.Guard;
+                baseField["LandingFall"].AsInt = motionTimingData.LandingFall;
+                baseField["LandingFallEase"].AsInt = motionTimingData.LandingFallEase;
+
                 newMotionTimingData.Add(baseField);
             }
 
-            BattleDataTable["MotionTimingData"].children[0].SetChildrenList(newMotionTimingData.ToArray());
+            BattleDataTable["MotionTimingData.Array"].Children = newMotionTimingData;
 
             fileManager.WriteMonoBehaviour(PathEnum.BattleMasterdatas, BattleDataTable);
         }
@@ -2453,26 +2625,24 @@ namespace ImpostersOrdeal
             gameData.addPersonalTables.Sort();
 
             List<AssetTypeValueField> monoBehaviours = fileManager.GetMonoBehaviours(PathEnum.PersonalMasterdatas);
-            AssetTypeValueField AddPersonalTable = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "AddPersonalTable");
-
-            AssetTypeValueField[] addPersonals = AddPersonalTable["AddPersonal"].children[0].children;
-
-            AssetTypeValueField addPersonalRef = addPersonals[0];
+            AssetTypeValueField AddPersonalTable = monoBehaviours.Find(m => m["m_Name"].AsString == "AddPersonalTable");
 
             List<AssetTypeValueField> newAddPersonals = new();
             foreach (PersonalMasterdatas.AddPersonalTable addPersonal in gameData.addPersonalTables)
             {
-                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromTemplate(addPersonalRef.GetTemplateField());
-                baseField["valid_flag"].GetValue().Set(addPersonal.valid_flag ? 1 : 0);
-                baseField["monsno"].GetValue().Set(addPersonal.monsno);
-                baseField["formno"].GetValue().Set(addPersonal.formno);
-                baseField["isEnableSynchronize"].GetValue().Set(addPersonal.isEnableSynchronize);
-                baseField["escape"].GetValue().Set(addPersonal.escape);
-                baseField["isDisableReverce"].GetValue().Set(addPersonal.isDisableReverce);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(AddPersonalTable["AddPersonal.Array"]);
+
+                baseField["valid_flag"].AsBool = addPersonal.valid_flag;
+                baseField["monsno"].AsUShort = addPersonal.monsno;
+                baseField["formno"].AsUShort = addPersonal.formno;
+                baseField["isEnableSynchronize"].AsBool = addPersonal.isEnableSynchronize;
+                baseField["escape"].AsByte = addPersonal.escape;
+                baseField["isDisableReverce"].AsBool = addPersonal.isDisableReverce;
+
                 newAddPersonals.Add(baseField);
             }
 
-            AddPersonalTable["AddPersonal"].children[0].SetChildrenList(newAddPersonals.ToArray());
+            AddPersonalTable["AddPersonal.Array"].Children = newAddPersonals;
 
             fileManager.WriteMonoBehaviour(PathEnum.PersonalMasterdatas, AddPersonalTable);
         }
@@ -2488,167 +2658,186 @@ namespace ImpostersOrdeal
 
             List<AssetTypeValueField> monoBehaviours = fileManager.GetMonoBehaviours(PathEnum.UIMasterdatas);
 
-            AssetTypeValueField uiDatabase = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "UIDatabase");
-            AssetTypeValueField distributionTable = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "DistributionTable");
-            monoBehaviours = new()
-{
-uiDatabase,
-distributionTable
-};
+            AssetTypeValueField uiDatabase = monoBehaviours.Find(m => m["m_Name"].AsString == "UIDatabase");
+            AssetTypeValueField distributionTable = monoBehaviours.Find(m => m["m_Name"].AsString == "DistributionTable");
 
             // Pokemon Icon
-            AssetTypeValueField[] pokemonIcons = uiDatabase["PokemonIcon"].children[0].children;
-
-            AssetTypeValueField pokemonIconRef = pokemonIcons[0];
             List<AssetTypeValueField> newPokemonIcons = new();
             foreach (UIMasterdatas.PokemonIcon pokemonIcon in gameData.uiPokemonIcon)
             {
-                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromTemplate(pokemonIconRef.GetTemplateField());
-                baseField["UniqueID"].GetValue().Set(pokemonIcon.uniqueID);
-                baseField["AssetBundleName"].GetValue().Set(pokemonIcon.assetBundleName);
-                baseField["AssetName"].GetValue().Set(pokemonIcon.assetName);
-                baseField["AssetBundleNameLarge"].GetValue().Set(pokemonIcon.assetBundleNameLarge);
-                baseField["AssetNameLarge"].GetValue().Set(pokemonIcon.assetNameLarge);
-                baseField["AssetBundleNameDP"].GetValue().Set(pokemonIcon.assetBundleNameDP);
-                baseField["AssetNameDP"].GetValue().Set(pokemonIcon.assetNameDP);
-                baseField["HallofFameOffset"].children[0].GetValue().Set(pokemonIcon.hallofFameOffset.X);
-                baseField["HallofFameOffset"].children[1].GetValue().Set(pokemonIcon.hallofFameOffset.Y);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(uiDatabase["PokemonIcon.Array"]);
+
+                baseField["UniqueID"].AsInt = pokemonIcon.uniqueID;
+                baseField["AssetBundleName"].AsString = pokemonIcon.assetBundleName;
+                baseField["AssetName"].AsString = pokemonIcon.assetName;
+                baseField["AssetBundleNameLarge"].AsString = pokemonIcon.assetBundleNameLarge;
+                baseField["AssetNameLarge"].AsString = pokemonIcon.assetNameLarge;
+                baseField["AssetBundleNameDP"].AsString = pokemonIcon.assetBundleNameDP;
+                baseField["AssetNameDP"].AsString = pokemonIcon.assetNameDP;
+                baseField["HallofFameOffset.x"].AsFloat = pokemonIcon.hallofFameOffset.X;
+                baseField["HallofFameOffset.y"].AsFloat = pokemonIcon.hallofFameOffset.Y;
+
                 newPokemonIcons.Add(baseField);
             }
-            uiDatabase["PokemonIcon"].children[0].SetChildrenList(newPokemonIcons.ToArray());
+            uiDatabase["PokemonIcon.Array"].Children = newPokemonIcons;
 
             // Ashiato Icon
-            AssetTypeValueField[] ashiatoIcons = uiDatabase["AshiatoIcon"].children[0].children;
-
-            AssetTypeValueField ashiatoIconRef = ashiatoIcons[0];
             List<AssetTypeValueField> newAshiatoIcons = new();
             foreach (UIMasterdatas.AshiatoIcon ashiatoIcon in gameData.uiAshiatoIcon)
             {
-                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromTemplate(ashiatoIconRef.GetTemplateField());
-                baseField["UniqueID"].GetValue().Set(ashiatoIcon.uniqueID);
-                baseField["SideIconAssetName"].GetValue().Set(ashiatoIcon.sideIconAssetName);
-                baseField["BothIconAssetName"].GetValue().Set(ashiatoIcon.bothIconAssetName);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(uiDatabase["AshiatoIcon.Array"]);
+
+                baseField["UniqueID"].AsInt = ashiatoIcon.uniqueID;
+                baseField["SideIconAssetName"].AsString = ashiatoIcon.sideIconAssetName;
+                baseField["BothIconAssetName"].AsString = ashiatoIcon.bothIconAssetName;
+
                 newAshiatoIcons.Add(baseField);
             }
-            uiDatabase["AshiatoIcon"].children[0].SetChildrenList(newAshiatoIcons.ToArray());
-
+            uiDatabase["AshiatoIcon.Array"].Children = newAshiatoIcons;
 
             // Pokemon Voice
-            AssetTypeValueField[] pokemonVoices = uiDatabase["PokemonVoice"].children[0].children;
-
-            AssetTypeValueField pokemonVoiceRef = pokemonVoices[0];
             List<AssetTypeValueField> newPokemonVoices = new();
             foreach (UIMasterdatas.PokemonVoice pokemonVoice in gameData.uiPokemonVoice)
             {
-                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromTemplate(pokemonVoiceRef.GetTemplateField());
-                baseField["UniqueID"].GetValue().Set(pokemonVoice.uniqueID);
-                baseField["WwiseEvent"].GetValue().Set(pokemonVoice.wwiseEvent);
-                baseField["stopEventId"].GetValue().Set(pokemonVoice.stopEventId);
-                baseField["CenterPointOffset"].children[0].GetValue().Set(pokemonVoice.centerPointOffset.X);
-                baseField["CenterPointOffset"].children[1].GetValue().Set(pokemonVoice.centerPointOffset.Y);
-                baseField["CenterPointOffset"].children[2].GetValue().Set(pokemonVoice.centerPointOffset.Z);
-                baseField["RotationLimits"].GetValue().Set(pokemonVoice.rotationLimits);
-                baseField["RotationLimitAngle"].children[0].GetValue().Set(pokemonVoice.rotationLimitAngle.X);
-                baseField["RotationLimitAngle"].children[1].GetValue().Set(pokemonVoice.rotationLimitAngle.Y);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(uiDatabase["PokemonVoice.Array"]);
+
+                baseField["UniqueID"].AsInt = pokemonVoice.uniqueID;
+                baseField["WwiseEvent"].AsString = pokemonVoice.wwiseEvent;
+                baseField["stopEventId"].AsString = pokemonVoice.stopEventId;
+                baseField["CenterPointOffset.x"].AsFloat = pokemonVoice.centerPointOffset.X;
+                baseField["CenterPointOffset.y"].AsFloat = pokemonVoice.centerPointOffset.Y;
+                baseField["CenterPointOffset.z"].AsFloat = pokemonVoice.centerPointOffset.Z;
+                baseField["RotationLimits"].AsBool = pokemonVoice.rotationLimits;
+                baseField["RotationLimitAngle.x"].AsFloat = pokemonVoice.rotationLimitAngle.X;
+                baseField["RotationLimitAngle.y"].AsFloat = pokemonVoice.rotationLimitAngle.Y;
+
                 newPokemonVoices.Add(baseField);
             }
-            uiDatabase["PokemonVoice"].children[0].SetChildrenList(newPokemonVoices.ToArray());
-
+            uiDatabase["PokemonVoice.Array"].Children = newPokemonVoices;
 
             // ZukanDisplay
-            AssetTypeValueField[] zukanDisplays = uiDatabase["ZukanDisplay"].children[0].children;
-
-            AssetTypeValueField zukanDisplayRef = zukanDisplays[0];
             List<AssetTypeValueField> newZukanDisplays = new();
             foreach (UIMasterdatas.ZukanDisplay zukanDisplay in gameData.uiZukanDisplay)
             {
-                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromTemplate(zukanDisplayRef.GetTemplateField());
-                baseField["UniqueID"].GetValue().Set(zukanDisplay.uniqueID);
-                baseField["MoveLimit"].children[0].GetValue().Set(zukanDisplay.moveLimit.X);
-                baseField["MoveLimit"].children[1].GetValue().Set(zukanDisplay.moveLimit.Y);
-                baseField["MoveLimit"].children[2].GetValue().Set(zukanDisplay.moveLimit.Z);
-                baseField["ModelOffset"].children[0].GetValue().Set(zukanDisplay.modelOffset.X);
-                baseField["ModelOffset"].children[1].GetValue().Set(zukanDisplay.modelOffset.Y);
-                baseField["ModelOffset"].children[2].GetValue().Set(zukanDisplay.modelOffset.Z);
-                baseField["ModelRotationAngle"].children[0].GetValue().Set(zukanDisplay.modelRotationAngle.X);
-                baseField["ModelRotationAngle"].children[1].GetValue().Set(zukanDisplay.modelRotationAngle.Y);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(uiDatabase["ZukanDisplay.Array"]);
+
+                baseField["UniqueID"].AsInt = zukanDisplay.uniqueID;
+                baseField["MoveLimit.x"].AsFloat = zukanDisplay.moveLimit.X;
+                baseField["MoveLimit.y"].AsFloat = zukanDisplay.moveLimit.Y;
+                baseField["MoveLimit.z"].AsFloat = zukanDisplay.moveLimit.Z;
+                baseField["ModelOffset.x"].AsFloat = zukanDisplay.modelOffset.X;
+                baseField["ModelOffset.y"].AsFloat = zukanDisplay.modelOffset.Y;
+                baseField["ModelOffset.z"].AsFloat = zukanDisplay.modelOffset.Z;
+                baseField["ModelRotationAngle.x"].AsFloat = zukanDisplay.modelRotationAngle.X;
+                baseField["ModelRotationAngle.y"].AsFloat = zukanDisplay.modelRotationAngle.Y;
+
                 newZukanDisplays.Add(baseField);
             }
-            uiDatabase["ZukanDisplay"].children[0].SetChildrenList(newZukanDisplays.ToArray());
+            uiDatabase["ZukanDisplay.Array"].Children = newZukanDisplays;
 
             // ZukanCompareHeight
-            AssetTypeValueField[] zukanCompareHeights = uiDatabase["ZukanCompareHeight"].children[0].children;
-
-            AssetTypeValueField zukanCompareHeightRef = zukanCompareHeights[0];
             List<AssetTypeValueField> newZukanCompareHeights = new();
             foreach (UIMasterdatas.ZukanCompareHeight zukanCompareHeight in gameData.uiZukanCompareHeights)
             {
-                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromTemplate(zukanCompareHeightRef.GetTemplateField());
-                baseField["UniqueID"].GetValue().Set(zukanCompareHeight.uniqueID);
-                baseField["PlayerScaleFactor"].GetValue().Set(zukanCompareHeight.playerScaleFactor);
-                baseField["PlayerOffset"].children[0].GetValue().Set(zukanCompareHeight.playerOffset.X);
-                baseField["PlayerOffset"].children[1].GetValue().Set(zukanCompareHeight.playerOffset.Y);
-                baseField["PlayerOffset"].children[2].GetValue().Set(zukanCompareHeight.playerOffset.Z);
-                baseField["PlayerRotationAngle"].children[0].GetValue().Set(zukanCompareHeight.playerRotationAngle.X);
-                baseField["PlayerRotationAngle"].children[1].GetValue().Set(zukanCompareHeight.playerRotationAngle.Y);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(uiDatabase["ZukanCompareHeight.Array"]);
+
+                baseField["UniqueID"].AsInt = zukanCompareHeight.uniqueID;
+                baseField["PlayerScaleFactor"].AsFloat = zukanCompareHeight.playerScaleFactor;
+                baseField["PlayerOffset.x"].AsFloat = zukanCompareHeight.playerOffset.X;
+                baseField["PlayerOffset.y"].AsFloat = zukanCompareHeight.playerOffset.Y;
+                baseField["PlayerOffset.z"].AsFloat = zukanCompareHeight.playerOffset.Z;
+                baseField["PlayerRotationAngle.x"].AsFloat = zukanCompareHeight.playerRotationAngle.X;
+                baseField["PlayerRotationAngle.y"].AsFloat = zukanCompareHeight.playerRotationAngle.Y;
+
                 newZukanCompareHeights.Add(baseField);
             }
-            uiDatabase["ZukanCompareHeight"].children[0].SetChildrenList(newZukanCompareHeights.ToArray());
+            uiDatabase["ZukanCompareHeight.Array"].Children = newZukanCompareHeights;
 
             // SearchPokeIconSex
-            AssetTypeValueField[] searchPokeIconSexes = uiDatabase["SearchPokeIconSex"].children[0].children;
-
-            AssetTypeValueField searchPokeIconSexRef = searchPokeIconSexes[0];
             List<AssetTypeValueField> newSearchPokeIconSexes = new();
             foreach (UIMasterdatas.SearchPokeIconSex searchPokeIconSex in gameData.uiSearchPokeIconSex)
             {
-                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromTemplate(searchPokeIconSexRef.GetTemplateField());
-                baseField["MonsNo"].GetValue().Set(searchPokeIconSex.monsNo);
-                baseField["Sex"].GetValue().Set(searchPokeIconSex.sex);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(uiDatabase["SearchPokeIconSex.Array"]);
+
+                baseField["MonsNo"].AsInt = searchPokeIconSex.monsNo;
+                baseField["Sex"].AsInt = searchPokeIconSex.sex;
+
                 newSearchPokeIconSexes.Add(baseField);
             }
-            uiDatabase["SearchPokeIconSex"].children[0].SetChildrenList(newSearchPokeIconSexes.ToArray());
+            uiDatabase["SearchPokeIconSex.Array"].Children = newSearchPokeIconSexes;
 
             // DistributionTable
-            CommitDistributionSheet(distributionTable["Diamond_FieldTable"].children[0], gameData.uiDistributionTable.diamondFieldTable);
-            CommitDistributionSheet(distributionTable["Diamond_DungeonTable"].children[0], gameData.uiDistributionTable.diamondDungeonTable);
-            CommitDistributionSheet(distributionTable["Pearl_FieldTable"].children[0], gameData.uiDistributionTable.pearlFieldTable);
-            CommitDistributionSheet(distributionTable["Pearl_DungeonTable"].children[0], gameData.uiDistributionTable.pearlDungeonTable);
+            CommitDistributionSheet(distributionTable["Diamond_FieldTable.Array"], gameData.uiDistributionTable.diamondFieldTable);
+            CommitDistributionSheet(distributionTable["Diamond_DungeonTable.Array"], gameData.uiDistributionTable.diamondDungeonTable);
+            CommitDistributionSheet(distributionTable["Pearl_FieldTable.Array"], gameData.uiDistributionTable.pearlFieldTable);
+            CommitDistributionSheet(distributionTable["Pearl_DungeonTable.Array"], gameData.uiDistributionTable.pearlDungeonTable);
 
-            fileManager.WriteMonoBehaviours(PathEnum.UIMasterdatas, monoBehaviours.ToArray());
+            fileManager.WriteMonoBehaviours(PathEnum.UIMasterdatas, new AssetTypeValueField[] { uiDatabase, distributionTable });
         }
 
         private static void CommitDistributionSheet(AssetTypeValueField sheetATVF, List<UIMasterdatas.DistributionEntry> sheet)
         {
-            AssetTypeValueField distributionEntryRef = sheetATVF.children[0];
             List<AssetTypeValueField> newSheet = new();
             foreach (UIMasterdatas.DistributionEntry entry in sheet)
             {
-                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromTemplate(distributionEntryRef.GetTemplateField());
-                CommitDistributionCoord(baseField["BeforeMorning"], entry.beforeMorning, distributionEntryRef[0][0][0]);
-                CommitDistributionCoord(baseField["BeforeDaytime"], entry.beforeDaytime, distributionEntryRef[0][0][0]);
-                CommitDistributionCoord(baseField["BeforeNight"], entry.beforeNight, distributionEntryRef[0][0][0]);
-                CommitDistributionCoord(baseField["AfterMorning"], entry.afterMorning, distributionEntryRef[0][0][0]);
-                CommitDistributionCoord(baseField["AfterDaytime"], entry.afterDaytime, distributionEntryRef[0][0][0]);
-                CommitDistributionCoord(baseField["AfterNight"], entry.afterNight, distributionEntryRef[0][0][0]);
-                CommitDistributionCoord(baseField["Fishing"], entry.fishing, distributionEntryRef[0][0][0]);
-                CommitDistributionCoord(baseField["PokemonTraser"], entry.pokemonTraser, distributionEntryRef[0][0][0]);
-                CommitDistributionCoord(baseField["HoneyTree"], entry.honeyTree, distributionEntryRef[0][0][0]);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(sheetATVF);
+
+                CommitIntArray(baseField["BeforeMorning.Array"], entry.beforeMorning);
+                CommitIntArray(baseField["BeforeDaytime.Array"], entry.beforeDaytime);
+                CommitIntArray(baseField["BeforeNight.Array"], entry.beforeNight);
+                CommitIntArray(baseField["AfterMorning.Array"], entry.afterMorning);
+                CommitIntArray(baseField["AfterDaytime.Array"], entry.afterDaytime);
+                CommitIntArray(baseField["AfterNight.Array"], entry.afterNight);
+                CommitIntArray(baseField["Fishing.Array"], entry.fishing);
+                CommitIntArray(baseField["PokemonTraser.Array"], entry.pokemonTraser);
+                CommitIntArray(baseField["HoneyTree.Array"], entry.honeyTree);
+
                 newSheet.Add(baseField);
             }
-            sheetATVF.SetChildrenList(newSheet.ToArray());
+
+            sheetATVF.Children = newSheet;
         }
 
-        private static void CommitDistributionCoord(AssetTypeValueField posATVF, int[] pos, AssetTypeValueField intRef)
+        private static void CommitIntArray(AssetTypeValueField arrayATVF, int[] values)
         {
             List<AssetTypeValueField> newInts = new();
-            for (int i = 0; i < pos.Length; i++)
+            for (int i = 0; i < values.Length; i++)
             {
-                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromTemplate(intRef.GetTemplateField());
-                baseField.GetValue().Set(pos[i]);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(arrayATVF);
+
+                baseField.AsInt = values[i];
+
                 newInts.Add(baseField);
             }
-            posATVF[0].SetChildrenList(newInts.ToArray());
+            arrayATVF.Children = newInts;
+        }
+
+        private static void CommitUIntArray(AssetTypeValueField arrayATVF, uint[] values)
+        {
+            List<AssetTypeValueField> newInts = new();
+            for (int i = 0; i < values.Length; i++)
+            {
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(arrayATVF);
+
+                baseField.AsUInt = values[i];
+
+                newInts.Add(baseField);
+            }
+            arrayATVF.Children = newInts;
+        }
+
+        private static void CommitByteArray(AssetTypeValueField arrayATVF, byte[] values)
+        {
+            List<AssetTypeValueField> newInts = new();
+            for (int i = 0; i < values.Length; i++)
+            {
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(arrayATVF);
+
+                baseField.AsByte = values[i];
+
+                newInts.Add(baseField);
+            }
+            arrayATVF.Children = newInts;
         }
 
         /// <summary>
@@ -2658,139 +2847,130 @@ distributionTable
         {
             List<AssetTypeValueField> monoBehaviours = fileManager.GetMonoBehaviours(PathEnum.PersonalMasterdatas);
 
-            AssetTypeValueField wazaOboeTable = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "WazaOboeTable");
-            AssetTypeValueField tamagoWazaTable = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "TamagoWazaTable");
-            AssetTypeValueField evolveTable = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "EvolveTable");
-            AssetTypeValueField personalTable = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "PersonalTable");
-            monoBehaviours = new()
-            {
-                wazaOboeTable,
-                tamagoWazaTable,
-                evolveTable,
-                personalTable
-            };
-
-            AssetTypeValueField[] levelUpMoveFields = wazaOboeTable.children[4].children[0].children;
-            AssetTypeValueField[] eggMoveFields = tamagoWazaTable.children[4].children[0].children;
-            AssetTypeValueField[] evolveFields = evolveTable.children[4].children[0].children;
-            AssetTypeValueField[] personalFields = personalTable.children[4].children[0].children;
+            AssetTypeValueField wazaOboeTable = monoBehaviours.Find(m => m["m_Name"].AsString == "WazaOboeTable");
+            AssetTypeValueField tamagoWazaTable = monoBehaviours.Find(m => m["m_Name"].AsString == "TamagoWazaTable");
+            AssetTypeValueField evolveTable = monoBehaviours.Find(m => m["m_Name"].AsString == "EvolveTable");
+            AssetTypeValueField personalTable = monoBehaviours.Find(m => m["m_Name"].AsString == "PersonalTable");
 
             List<AssetTypeValueField> newLevelUpMoveFields = new();
             List<AssetTypeValueField> newEggMoveFields = new();
             List<AssetTypeValueField> newEvolveFields = new();
             List<AssetTypeValueField> newPersonalFields = new();
-
-            AssetTypeValueField personalFieldRef = personalFields[0];
             for (int personalID = 0; personalID < gameData.personalEntries.Count; personalID++)
             {
-                AssetTypeValueField personalField = ValueBuilder.DefaultValueFieldFromTemplate(personalFieldRef.GetTemplateField());
                 Pokemon pokemon = gameData.personalEntries[personalID];
-                personalField.children[0].GetValue().Set(pokemon.validFlag);
-                personalField.children[1].GetValue().Set(pokemon.personalID);
-                personalField.children[2].GetValue().Set(pokemon.dexID);
-                personalField.children[3].GetValue().Set(pokemon.formIndex);
-                personalField.children[4].GetValue().Set(pokemon.formMax);
-                personalField.children[5].GetValue().Set(pokemon.color);
-                personalField.children[6].GetValue().Set(pokemon.graNo);
-                personalField.children[7].GetValue().Set(pokemon.basicHp);
-                personalField.children[8].GetValue().Set(pokemon.basicAtk);
-                personalField.children[9].GetValue().Set(pokemon.basicDef);
-                personalField.children[10].GetValue().Set(pokemon.basicSpd);
-                personalField.children[11].GetValue().Set(pokemon.basicSpAtk);
-                personalField.children[12].GetValue().Set(pokemon.basicSpDef);
-                personalField.children[13].GetValue().Set(pokemon.typingID1);
-                personalField.children[14].GetValue().Set(pokemon.typingID2);
-                personalField.children[15].GetValue().Set(pokemon.getRate);
-                personalField.children[16].GetValue().Set(pokemon.rank);
-                personalField.children[17].GetValue().Set(pokemon.expValue);
-                personalField.children[18].GetValue().Set(pokemon.item1);
-                personalField.children[19].GetValue().Set(pokemon.item2);
-                personalField.children[20].GetValue().Set(pokemon.item3);
-                personalField.children[21].GetValue().Set(pokemon.sex);
-                personalField.children[22].GetValue().Set(pokemon.eggBirth);
-                personalField.children[23].GetValue().Set(pokemon.initialFriendship);
-                personalField.children[24].GetValue().Set(pokemon.eggGroup1);
-                personalField.children[25].GetValue().Set(pokemon.eggGroup2);
-                personalField.children[26].GetValue().Set(pokemon.grow);
-                personalField.children[27].GetValue().Set(pokemon.abilityID1);
-                personalField.children[28].GetValue().Set(pokemon.abilityID2);
-                personalField.children[29].GetValue().Set(pokemon.abilityID3);
-                personalField.children[30].GetValue().Set(pokemon.giveExp);
-                personalField.children[31].GetValue().Set(pokemon.height);
-                personalField.children[32].GetValue().Set(pokemon.weight);
-                personalField.children[33].GetValue().Set(pokemon.chihouZukanNo);
-                personalField.children[34].GetValue().Set(pokemon.machine1);
-                personalField.children[35].GetValue().Set(pokemon.machine2);
-                personalField.children[36].GetValue().Set(pokemon.machine3);
-                personalField.children[37].GetValue().Set(pokemon.machine4);
-                personalField.children[38].GetValue().Set(pokemon.hiddenMachine);
-                personalField.children[39].GetValue().Set(pokemon.eggMonsno);
-                personalField.children[40].GetValue().Set(pokemon.eggFormno);
-                personalField.children[41].GetValue().Set(pokemon.eggFormnoKawarazunoishi);
-                personalField.children[42].GetValue().Set(pokemon.eggFormInheritKawarazunoishi);
+                AssetTypeValueField personalField = ValueBuilder.DefaultValueFieldFromArrayTemplate(personalTable["Personal.Array"]);
+
+                personalField["valid_flag"].AsByte = pokemon.validFlag;
+                personalField["id"].AsUShort = pokemon.personalID;
+                personalField["monsno"].AsUShort = pokemon.dexID;
+                personalField["form_index"].AsUShort = pokemon.formIndex;
+                personalField["form_max"].AsByte = pokemon.formMax;
+                personalField["color"].AsByte = pokemon.color;
+                personalField["gra_no"].AsUShort = pokemon.graNo;
+                personalField["basic_hp"].AsByte = pokemon.basicHp;
+                personalField["basic_atk"].AsByte = pokemon.basicAtk;
+                personalField["basic_def"].AsByte = pokemon.basicDef;
+                personalField["basic_agi"].AsByte = pokemon.basicSpd;
+                personalField["basic_spatk"].AsByte = pokemon.basicSpAtk;
+                personalField["basic_spdef"].AsByte = pokemon.basicSpDef;
+                personalField["type1"].AsByte = pokemon.typingID1;
+                personalField["type2"].AsByte = pokemon.typingID2;
+                personalField["get_rate"].AsByte = pokemon.getRate;
+                personalField["rank"].AsByte = pokemon.rank;
+                personalField["exp_value"].AsUShort = pokemon.expValue;
+                personalField["item1"].AsUShort = pokemon.item1;
+                personalField["item2"].AsUShort = pokemon.item2;
+                personalField["item3"].AsUShort = pokemon.item3;
+                personalField["sex"].AsByte = pokemon.sex;
+                personalField["egg_birth"].AsByte = pokemon.eggBirth;
+                personalField["initial_friendship"].AsByte = pokemon.initialFriendship;
+                personalField["egg_group1"].AsByte = pokemon.eggGroup1;
+                personalField["egg_group2"].AsByte = pokemon.eggGroup2;
+                personalField["grow"].AsByte = pokemon.grow;
+                personalField["tokusei1"].AsUShort = pokemon.abilityID1;
+                personalField["tokusei2"].AsUShort = pokemon.abilityID2;
+                personalField["tokusei3"].AsUShort = pokemon.abilityID3;
+                personalField["give_exp"].AsUShort = pokemon.giveExp;
+                personalField["height"].AsUShort = pokemon.height;
+                personalField["weight"].AsUShort = pokemon.weight;
+                personalField["chihou_zukan_no"].AsUShort = pokemon.chihouZukanNo;
+                personalField["machine1"].AsUInt = pokemon.machine1;
+                personalField["machine2"].AsUInt = pokemon.machine2;
+                personalField["machine3"].AsUInt = pokemon.machine3;
+                personalField["machine4"].AsUInt = pokemon.machine4;
+                personalField["hiden_machine"].AsUInt = pokemon.hiddenMachine;
+                personalField["egg_monsno"].AsUShort = pokemon.eggMonsno;
+                personalField["egg_formno"].AsUShort = pokemon.eggFormno;
+                personalField["egg_formno_kawarazunoishi"].AsUShort = pokemon.eggFormnoKawarazunoishi;
+                personalField["egg_form_inherit_kawarazunoishi"].AsByte = pokemon.eggFormInheritKawarazunoishi;
+
                 newPersonalFields.Add(personalField);
 
                 // Level Up Moves
-                AssetTypeValueField levelUpMoveField = ValueBuilder.DefaultValueFieldFromTemplate(levelUpMoveFields[0].GetTemplateField());
-                levelUpMoveField["id"].GetValue().Set(pokemon.personalID);
+                AssetTypeValueField levelUpMoveField = ValueBuilder.DefaultValueFieldFromArrayTemplate(wazaOboeTable["WazaOboe.Array"]);
+                levelUpMoveField["id"].AsInt = pokemon.personalID;
 
                 List<AssetTypeValueField> levelUpMoveAr = new();
-                AssetTypeTemplateField arTemplate = levelUpMoveFields[1]["ar"][0][0].GetTemplateField();
                 foreach (LevelUpMove levelUpMove in pokemon.levelUpMoves)
                 {
-                    AssetTypeValueField levelField = ValueBuilder.DefaultValueFieldFromTemplate(arTemplate);
-                    AssetTypeValueField moveIDField = ValueBuilder.DefaultValueFieldFromTemplate(arTemplate);
-                    levelField.GetValue().Set(levelUpMove.level);
-                    moveIDField.GetValue().Set(levelUpMove.moveID);
+                    AssetTypeValueField levelField = ValueBuilder.DefaultValueFieldFromArrayTemplate(levelUpMoveField["ar.Array"]);
+                    AssetTypeValueField moveIDField = ValueBuilder.DefaultValueFieldFromArrayTemplate(levelUpMoveField["ar.Array"]);
+
+                    levelField.AsUShort = levelUpMove.level;
+                    moveIDField.AsUShort = levelUpMove.moveID;
+
                     levelUpMoveAr.Add(levelField);
                     levelUpMoveAr.Add(moveIDField);
                 }
-                levelUpMoveField["ar"][0].SetChildrenList(levelUpMoveAr.ToArray());
+                levelUpMoveField["ar.Array"].Children = levelUpMoveAr;
 
                 newLevelUpMoveFields.Add(levelUpMoveField);
 
                 // Evolution Paths
-                AssetTypeValueField evolveField = ValueBuilder.DefaultValueFieldFromTemplate(evolveFields[0].GetTemplateField());
-                evolveField["id"].GetValue().Set(pokemon.personalID);
+                AssetTypeValueField evolveField = ValueBuilder.DefaultValueFieldFromArrayTemplate(evolveTable["Evolve.Array"]);
+                evolveField["id"].AsInt = pokemon.personalID;
 
                 List<AssetTypeValueField> evolveAr = new();
-                arTemplate = evolveFields[1]["ar"][0][0].GetTemplateField();
                 foreach (EvolutionPath evolutionPath in pokemon.evolutionPaths)
                 {
-                    AssetTypeValueField methodField = ValueBuilder.DefaultValueFieldFromTemplate(arTemplate);
-                    AssetTypeValueField parameterField = ValueBuilder.DefaultValueFieldFromTemplate(arTemplate);
-                    AssetTypeValueField destDexIDField = ValueBuilder.DefaultValueFieldFromTemplate(arTemplate);
-                    AssetTypeValueField destFormIDField = ValueBuilder.DefaultValueFieldFromTemplate(arTemplate);
-                    AssetTypeValueField levelField = ValueBuilder.DefaultValueFieldFromTemplate(arTemplate);
-                    methodField.GetValue().Set(evolutionPath.method);
-                    parameterField.GetValue().Set(evolutionPath.parameter);
-                    destDexIDField.GetValue().Set(evolutionPath.destDexID);
-                    destFormIDField.GetValue().Set(evolutionPath.destFormID);
-                    levelField.GetValue().Set(evolutionPath.level);
+                    AssetTypeValueField methodField = ValueBuilder.DefaultValueFieldFromArrayTemplate(evolveField["ar.Array"]);
+                    AssetTypeValueField parameterField = ValueBuilder.DefaultValueFieldFromArrayTemplate(evolveField["ar.Array"]);
+                    AssetTypeValueField destDexIDField = ValueBuilder.DefaultValueFieldFromArrayTemplate(evolveField["ar.Array"]);
+                    AssetTypeValueField destFormIDField = ValueBuilder.DefaultValueFieldFromArrayTemplate(evolveField["ar.Array"]);
+                    AssetTypeValueField levelField = ValueBuilder.DefaultValueFieldFromArrayTemplate(evolveField["ar.Array"]);
+
+                    methodField.AsUShort = evolutionPath.method;
+                    parameterField.AsUShort = evolutionPath.parameter;
+                    destDexIDField.AsUShort = evolutionPath.destDexID;
+                    destFormIDField.AsUShort = evolutionPath.destFormID;
+                    levelField.AsUShort = evolutionPath.level;
+
                     evolveAr.Add(methodField);
                     evolveAr.Add(parameterField);
                     evolveAr.Add(destDexIDField);
                     evolveAr.Add(destFormIDField);
                     evolveAr.Add(levelField);
                 }
-                evolveField["ar"][0].SetChildrenList(evolveAr.ToArray());
+                evolveField["ar.Array"].Children = evolveAr;
 
                 newEvolveFields.Add(evolveField);
 
                 // Egg Moves
-                AssetTypeValueField eggMoveField = ValueBuilder.DefaultValueFieldFromTemplate(eggMoveFields[0].GetTemplateField());
-                eggMoveField["no"].GetValue().Set(pokemon.dexID);
-                eggMoveField["formNo"].GetValue().Set(pokemon.formID);
+                AssetTypeValueField eggMoveField = ValueBuilder.DefaultValueFieldFromArrayTemplate(tamagoWazaTable["Data.Array"]);
+                eggMoveField["no"].AsUShort = pokemon.dexID;
+                eggMoveField["formNo"].AsUShort = (ushort)pokemon.formID;
 
                 List<AssetTypeValueField> wazaNos = new();
-                AssetTypeTemplateField wazaNoTemplate = eggMoveFields[1]["wazaNo"][0][0].GetTemplateField();
                 foreach (ushort wazaNo in pokemon.eggMoves)
                 {
-                    AssetTypeValueField wazaNoField = ValueBuilder.DefaultValueFieldFromTemplate(wazaNoTemplate);
-                    wazaNoField.GetValue().Set(wazaNo);
+                    AssetTypeValueField wazaNoField = ValueBuilder.DefaultValueFieldFromArrayTemplate(eggMoveField["wazaNo.Array"]);
+
+                    wazaNoField.AsUShort = wazaNo;
+
                     wazaNos.Add(wazaNoField);
                 }
-                eggMoveField["wazaNo"][0].SetChildrenList(wazaNos.ToArray());
+                eggMoveField["wazaNo.Array"].Children = wazaNos;
 
                 newEggMoveFields.Add(eggMoveField);
 
@@ -2799,31 +2979,31 @@ distributionTable
                     fileManager.CommitExternalJson($"MonData\\TMLearnset\\monsno_{pokemon.dexID}_formno_{pokemon.formID}.json");
             }
 
-            newPersonalFields.Sort((atvf1, atvf2) => atvf1[1].GetValue().AsUInt().CompareTo(atvf2[1].GetValue().AsUInt()));
-            newLevelUpMoveFields.Sort((atvf1, atvf2) => atvf1["id"].GetValue().AsInt().CompareTo(atvf2["id"].GetValue().AsInt()));
-            newEvolveFields.Sort((atvf1, atvf2) => atvf1["id"].GetValue().AsInt().CompareTo(atvf2["id"].GetValue().AsInt()));
+            newPersonalFields.Sort((atvf1, atvf2) => atvf1["id"].AsUShort.CompareTo(atvf2["id"].AsUShort));
+            newLevelUpMoveFields.Sort((atvf1, atvf2) => atvf1["id"].AsInt.CompareTo(atvf2["id"].AsInt));
+            newEvolveFields.Sort((atvf1, atvf2) => atvf1["id"].AsInt.CompareTo(atvf2["id"].AsInt));
             newEggMoveFields.Sort((atvf1, atvf2) =>
             {
-                if (atvf1["formNo"].GetValue().AsUInt().CompareTo(atvf2["formNo"].GetValue().AsUInt()) != 0)
+                if (atvf1["formNo"].AsUShort.CompareTo(atvf2["formNo"].AsUShort) != 0)
                 {
-                    if (atvf1["formNo"].GetValue().AsUInt() == 0)
+                    if (atvf1["formNo"].AsUShort == 0)
                         return -1;
-                    if (atvf2["formNo"].GetValue().AsUInt() == 0)
+                    if (atvf2["formNo"].AsUShort == 0)
                         return 1;
                 }
 
-                int i = atvf1["no"].GetValue().AsUInt().CompareTo(atvf2["no"].GetValue().AsUInt());
+                int i = atvf1["no"].AsUShort.CompareTo(atvf2["no"].AsUShort);
                 if (i == 0)
-                    i = atvf1["formNo"].GetValue().AsUInt().CompareTo(atvf2["formNo"].GetValue().AsUInt());
+                    i = atvf1["formNo"].AsUShort.CompareTo(atvf2["formNo"].AsUShort);
                 return i;
             });
 
-            wazaOboeTable.children[4].children[0].SetChildrenList(newLevelUpMoveFields.ToArray());
-            tamagoWazaTable.children[4].children[0].SetChildrenList(newEggMoveFields.ToArray());
-            evolveTable.children[4].children[0].SetChildrenList(newEvolveFields.ToArray());
-            personalTable.children[4].children[0].SetChildrenList(newPersonalFields.ToArray());
+            wazaOboeTable["WazaOboe.Array"].Children = newLevelUpMoveFields;
+            tamagoWazaTable["Data.Array"].Children = newEggMoveFields;
+            evolveTable["Evolve.Array"].Children = newEvolveFields;
+            personalTable["Personal.Array"].Children = newPersonalFields;
 
-            fileManager.WriteMonoBehaviours(PathEnum.PersonalMasterdatas, monoBehaviours.ToArray());
+            fileManager.WriteMonoBehaviours(PathEnum.PersonalMasterdatas, new AssetTypeValueField[] { wazaOboeTable, tamagoWazaTable, evolveTable, personalTable });
         }
 
         /// <summary>
@@ -2834,116 +3014,97 @@ distributionTable
             List<AssetTypeValueField> monoBehaviours = fileManager.GetMonoBehaviours(PathEnum.Ugdata);
             List<AssetTypeValueField> updatedMonoBehaviours = new();
 
-            AssetTypeValueField ugRandMark = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "UgRandMark");
-            AssetTypeValueField[] ugAreaFields = ugRandMark["table"].children[0].children;
-
+            AssetTypeValueField ugRandMark = monoBehaviours.Find(m => m["m_Name"].AsString == "UgRandMark");
+            List<AssetTypeValueField> newUgRandMarkFields = new();
             for (int ugAreaIdx = 0; ugAreaIdx < gameData.ugAreas.Count; ugAreaIdx++)
             {
                 UgArea ugArea = gameData.ugAreas[ugAreaIdx];
-                ugAreaFields[ugAreaIdx]["id"].GetValue().Set(ugArea.id);
-                ugAreaFields[ugAreaIdx]["FileName"].GetValue().Set(ugArea.fileName);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(ugRandMark["table.Array"]);
+
+                baseField["id"].AsInt = ugArea.id;
+                baseField["FileName"].AsString = ugArea.fileName;
+
+                newUgRandMarkFields.Add(baseField);
             }
+            ugRandMark["table.Array"].Children = newUgRandMarkFields;
             updatedMonoBehaviours.Add(ugRandMark);
 
-            List<AssetTypeValueField> ugEncounterFileMonobehaviours = monoBehaviours.Where(m => Encoding.Default.GetString(m.children[3].value.value.asString).StartsWith("UgEncount_")).ToList();
-            AssetTypeTemplateField ugEncounterTemplate = ugEncounterFileMonobehaviours[0]["table"][0][0].GetTemplateField();
+            List<AssetTypeValueField> ugEncounterFileMonobehaviours = monoBehaviours.Where(m => m["m_Name"].AsString.StartsWith("UgEncount_")).ToList();
             for (int ugEncounterFileIdx = 0; ugEncounterFileIdx < ugEncounterFileMonobehaviours.Count; ugEncounterFileIdx++)
             {
-                UgEncounterFile ugEncounterFile = gameData.ugEncounterFiles[ugEncounterFileIdx];
-                ugEncounterFileMonobehaviours[ugEncounterFileIdx]["m_Name"].GetValue().Set(ugEncounterFile.mName);
+                var ugEncounterMono = ugEncounterFileMonobehaviours[ugEncounterFileIdx];
+                UgEncounterFile ugEncounterFile = gameData.ugEncounterFiles.Find(f => f.mName == ugEncounterMono["m_Name"].AsString);
 
                 List<AssetTypeValueField> newUgEncounters = new();
                 foreach (UgEncounter ugEncounter in ugEncounterFile.ugEncounters)
                 {
-                    AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromTemplate(ugEncounterTemplate);
-                    baseField["monsno"].GetValue().Set(ugEncounter.dexID);
-                    baseField["version"].GetValue().Set(ugEncounter.version);
-                    baseField["zukanflag"].GetValue().Set(ugEncounter.zukanFlag);
+                    AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(ugEncounterMono["table.Array"]);
+
+                    baseField["monsno"].AsInt = ugEncounter.dexID;
+                    baseField["version"].AsInt = ugEncounter.version;
+                    baseField["zukanflag"].AsInt = ugEncounter.zukanFlag;
 
                     newUgEncounters.Add(baseField);
                 }
-                ugEncounterFileMonobehaviours[ugEncounterFileIdx]["table"][0].SetChildrenList(newUgEncounters.ToArray());
-
+                ugEncounterMono["table.Array"].Children = newUgEncounters;
                 updatedMonoBehaviours.Add(ugEncounterFileMonobehaviours[ugEncounterFileIdx]);
             }
 
-            AssetTypeValueField ugEncounterLevelMonobehaviour = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "UgEncountLevel");
-            AssetTypeValueField[] ugEncounterLevelFields = ugEncounterLevelMonobehaviour.children[4].children[0].children;
-            for (int ugEncouterLevelIdx = 0; ugEncouterLevelIdx < ugEncounterLevelFields.Length; ugEncouterLevelIdx++)
+            AssetTypeValueField ugEncounterLevelMonobehaviour = monoBehaviours.Find(m => m["m_Name"].AsString == "UgEncountLevel");
+            List<AssetTypeValueField> newUgEncounterLevelFields = new();
+            for (int ugEncouterLevelIdx = 0; ugEncouterLevelIdx < gameData.ugEncounterLevelSets.Count; ugEncouterLevelIdx++)
             {
                 UgEncounterLevelSet ugLevels = gameData.ugEncounterLevelSets[ugEncouterLevelIdx];
-                ugEncounterLevelFields[ugEncouterLevelIdx].children[0].GetValue().Set(ugLevels.minLv);
-                ugEncounterLevelFields[ugEncouterLevelIdx].children[1].GetValue().Set(ugLevels.maxLv);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(ugEncounterLevelMonobehaviour["Data.Array"]);
+
+                baseField["MinLv"].AsInt = ugLevels.minLv;
+                baseField["MaxLv"].AsInt = ugLevels.maxLv;
+
+                newUgEncounterLevelFields.Add(baseField);
             }
+            ugRandMark["Data.Array"].Children = newUgEncounterLevelFields;
             updatedMonoBehaviours.Add(ugEncounterLevelMonobehaviour);
 
-            AssetTypeValueField ugSpecialPokemon = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "UgSpecialPokemon");
-            AssetTypeValueField[] ugSpecialPokemonFields = ugSpecialPokemon["Sheet1"].children[0].children;
-
-            AssetTypeTemplateField ugSpecialPokemonTemplate = ugSpecialPokemonFields[0].GetTemplateField();
-
+            AssetTypeValueField ugSpecialPokemon = monoBehaviours.Find(m => m["m_Name"].AsString == "UgSpecialPokemon");
             List<AssetTypeValueField> newUgSpecialPokemon = new();
             foreach (UgSpecialEncounter ugSpecialEncounter in gameData.ugSpecialEncounters)
             {
-                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromTemplate(ugSpecialPokemonTemplate);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(ugSpecialPokemon["Sheet1.Array"]);
 
-                baseField["id"].GetValue().Set(ugSpecialEncounter.id);
-                baseField["monsno"].GetValue().Set(ugSpecialEncounter.dexID);
-                baseField["version"].GetValue().Set(ugSpecialEncounter.version);
-                baseField["Dspecialrate"].GetValue().Set(ugSpecialEncounter.dRate);
-                baseField["Pspecialrate"].GetValue().Set(ugSpecialEncounter.pRate);
+                baseField["id"].AsInt = ugSpecialEncounter.id;
+                baseField["monsno"].AsInt = ugSpecialEncounter.dexID;
+                baseField["version"].AsInt = ugSpecialEncounter.version;
+                baseField["Dspecialrate"].AsInt = ugSpecialEncounter.dRate;
+                baseField["Pspecialrate"].AsInt = ugSpecialEncounter.pRate;
 
                 newUgSpecialPokemon.Add(baseField);
             }
-            ugSpecialPokemon["Sheet1"].children[0].SetChildrenList(newUgSpecialPokemon.ToArray());
-
+            ugSpecialPokemon["Sheet1.Array"].Children = newUgSpecialPokemon;
             updatedMonoBehaviours.Add(ugSpecialPokemon);
 
-            AssetTypeValueField ugPokemonDataMonobehaviour = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "UgPokemonData");
-            AssetTypeValueField[] ugPokemonDataFields = ugPokemonDataMonobehaviour["table"].children[0].children;
-
-            AssetTypeTemplateField ugPokemonDataTemplate = ugPokemonDataFields[0].GetTemplateField();
-            AssetTypeTemplateField intATTF = ugPokemonDataFields[0]["reactioncode"][0][0].GetTemplateField();
-
+            AssetTypeValueField ugPokemonDataMonobehaviour = monoBehaviours.Find(m => m["m_Name"].AsString == "UgPokemonData");
             List<AssetTypeValueField> newUgPokemonData = new();
             foreach (UgPokemonData ugPokemonData in gameData.ugPokemonData)
             {
-                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromTemplate(ugPokemonDataTemplate);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(ugPokemonDataMonobehaviour["table.Array"]);
 
-                baseField["monsno"].GetValue().Set(ugPokemonData.monsno);
-                baseField["type1ID"].GetValue().Set(ugPokemonData.type1ID);
-                baseField["type2ID"].GetValue().Set(ugPokemonData.type2ID);
-                baseField["size"].GetValue().Set(ugPokemonData.size);
-                baseField["movetype"].GetValue().Set(ugPokemonData.movetype);
-
-                baseField["reactioncode"][0].SetChildrenList(PrimitiveATVFArray(ugPokemonData.reactioncode, intATTF));
-                baseField["move_rate"][0].SetChildrenList(PrimitiveATVFArray(ugPokemonData.moveRate, intATTF));
-                baseField["submove_rate"][0].SetChildrenList(PrimitiveATVFArray(ugPokemonData.submoveRate, intATTF));
-                baseField["reaction"][0].SetChildrenList(PrimitiveATVFArray(ugPokemonData.reaction, intATTF));
-                baseField["flagrate"][0].SetChildrenList(PrimitiveATVFArray(ugPokemonData.flagrate, intATTF));
+                baseField["monsno"].AsInt = ugPokemonData.monsno;
+                baseField["type1ID"].AsInt = ugPokemonData.type1ID;
+                baseField["type2ID"].AsInt = ugPokemonData.type2ID;
+                baseField["size"].AsInt = ugPokemonData.size;
+                baseField["movetype"].AsInt = ugPokemonData.movetype;
+                CommitIntArray(baseField["reactioncode.Array"], ugPokemonData.reactioncode);
+                CommitIntArray(baseField["move_rate.Array"], ugPokemonData.moveRate);
+                CommitIntArray(baseField["submove_rate.Array"], ugPokemonData.submoveRate);
+                CommitIntArray(baseField["reaction.Array"], ugPokemonData.reaction);
+                CommitIntArray(baseField["flagrate.Array"], ugPokemonData.flagrate);
 
                 newUgPokemonData.Add(baseField);
             }
-            ugPokemonDataMonobehaviour["table"].children[0].SetChildrenList(newUgPokemonData.ToArray());
-
+            ugSpecialPokemon["table.Array"].Children = newUgPokemonData;
             updatedMonoBehaviours.Add(ugPokemonDataMonobehaviour);
 
             fileManager.WriteMonoBehaviours(PathEnum.Ugdata, updatedMonoBehaviours.ToArray());
-        }
-
-        /// <summary>
-        /// Builds an array of AssetTypeValueField objects from primitive values.
-        /// </summary>
-        private static AssetTypeValueField[] PrimitiveATVFArray<T>(T[] values, AssetTypeTemplateField attf)
-        {
-            List<AssetTypeValueField> atvfList = new();
-            for (int i = 0; i < values.Length; i++)
-            {
-                AssetTypeValueField intField = ValueBuilder.DefaultValueFieldFromTemplate(attf);
-                intField.GetValue().Set(values[i]);
-                atvfList.Add(intField);
-            }
-            return atvfList.ToArray();
         }
 
         /// <summary>
@@ -3005,108 +3166,72 @@ distributionTable
         {
             foreach (AssetTypeValueField monoBehaviour in monoBehaviours)
             {
-                MessageFile messageFile = messageFiles.Find(mf => mf.mName == monoBehaviour.children[3].GetValue().AsString());
-                AssetTypeValueField[] labelDataArray = monoBehaviour["labelDataArray"].children[0].children;
-                AssetTypeTemplateField templateField = new();
-
-                AssetTypeValueField labelDataRef = labelDataArray[0];
-
-                // tagDataFields[tagDataIdx].children[6][0].children
-                foreach (AssetTypeValueField field in labelDataArray)
-                {
-                    if (tagDataTemplate == null && field["tagDataArray"].children[0].childrenCount > 0)
-                    {
-                        tagDataTemplate = field["tagDataArray"].children[0][0].GetTemplateField();
-                    }
-
-
-                    if (tagWordTemplate == null && field["tagDataArray"].children[0].childrenCount > 0)
-                    {
-                        if (field["tagDataArray"].children[0][0]["tagWordArray"].children[0].childrenCount > 0)
-                        {
-                            tagWordTemplate = field["tagDataArray"].children[0][0]["tagWordArray"].children[0][0].GetTemplateField();
-                            if (tagWordTemplate != null)
-                            {
-
-                            }
-                        }
-                    }
-
-                    if (attributeValueTemplate == null && field["attributeValueArray"].children[0].childrenCount > 0)
-                    {
-                        attributeValueTemplate = field["attributeValueArray"].children[0][0].GetTemplateField();
-                    }
-
-                    if (wordDataTemplate == null && field["wordDataArray"].children[0].childrenCount > 0)
-                    {
-                        wordDataTemplate = field["wordDataArray"].children[0][0].GetTemplateField();
-                    }
-                }
+                MessageFile messageFile = messageFiles.Find(mf => mf.mName == monoBehaviour["m_Name"].AsString);
 
                 List<AssetTypeValueField> newLabelDataArray = new();
                 foreach (LabelData labelData in messageFile.labelDatas)
                 {
-                    AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromTemplate(labelDataRef.GetTemplateField());
-                    baseField["labelIndex"].GetValue().Set(labelData.labelIndex);
-                    baseField["arrayIndex"].GetValue().Set(labelData.arrayIndex);
-                    baseField["labelName"].GetValue().Set(labelData.labelName);
-                    baseField["styleInfo"]["styleIndex"].GetValue().Set(labelData.styleIndex);
-                    baseField["styleInfo"]["colorIndex"].GetValue().Set(labelData.colorIndex);
-                    baseField["styleInfo"]["fontSize"].GetValue().Set(labelData.fontSize);
-                    baseField["styleInfo"]["maxWidth"].GetValue().Set(labelData.maxWidth);
-                    baseField["styleInfo"]["controlID"].GetValue().Set(labelData.controlID);
+                    AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["labelDataArray.Array"]);
 
-                    List<AssetTypeValueField> attributeValueArray = new();
-                    foreach (int attrVal in labelData.attributeValues)
-                    {
-                        AssetTypeValueField attributeValueField = ValueBuilder.DefaultValueFieldFromTemplate(attributeValueTemplate);
-                        attributeValueField.GetValue().Set(attrVal);
-                        attributeValueArray.Add(attributeValueField);
-                    }
-                    baseField["attributeValueArray"][0].SetChildrenList(attributeValueArray.ToArray());
+                    baseField["labelIndex"].AsInt = labelData.labelIndex;
+                    baseField["arrayIndex"].AsInt = labelData.arrayIndex;
+                    baseField["labelName"].AsString = labelData.labelName;
+                    baseField["styleInfo.styleIndex"].AsInt = labelData.styleIndex;
+                    baseField["styleInfo.colorIndex"].AsInt = labelData.colorIndex;
+                    baseField["styleInfo.fontSize"].AsInt = labelData.fontSize;
+                    baseField["styleInfo.maxWidth"].AsInt = labelData.maxWidth;
+                    baseField["styleInfo.controlID"].AsInt = labelData.controlID;
+
+                    CommitIntArray(baseField["attributeValueArray.Array"], labelData.attributeValues.ToArray());
 
                     List<AssetTypeValueField> tagDataArray = new();
                     foreach (TagData tagData in labelData.tagDatas)
                     {
-                        AssetTypeValueField tagDataField = ValueBuilder.DefaultValueFieldFromTemplate(tagDataTemplate);
-                        tagDataField["tagIndex"].GetValue().Set(tagData.tagIndex);
-                        tagDataField["groupID"].GetValue().Set(tagData.groupID);
-                        tagDataField["tagID"].GetValue().Set(tagData.tagID);
-                        tagDataField["tagPatternID"].GetValue().Set(tagData.tagPatternID);
-                        tagDataField["forceArticle"].GetValue().Set(tagData.forceArticle);
-                        tagDataField["tagParameter"].GetValue().Set(tagData.tagParameter);
+                        AssetTypeValueField tagDataField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["tagDataArray.Array"]);
+
+                        tagDataField["tagIndex"].AsInt = tagData.tagIndex;
+                        tagDataField["groupID"].AsInt = tagData.groupID;
+                        tagDataField["tagID"].AsInt = tagData.tagID;
+                        tagDataField["tagPatternID"].AsInt = tagData.tagPatternID;
+                        tagDataField["forceArticle"].AsInt = tagData.forceArticle;
+                        tagDataField["tagParameter"].AsInt = tagData.tagParameter;
+
                         List<AssetTypeValueField> tagWordArray = new();
                         foreach (string tagWord in tagData.tagWordArray)
                         {
-                            AssetTypeValueField tagWordField = ValueBuilder.DefaultValueFieldFromTemplate(tagWordTemplate);
-                            tagWordField.GetValue().Set(tagWord);
+                            AssetTypeValueField tagWordField = ValueBuilder.DefaultValueFieldFromArrayTemplate(tagDataField["tagWordArray.Array"]);
+
+                            tagWordField.AsString = tagWord;
+
                             tagWordArray.Add(tagWordField);
                         }
-                        tagDataField["tagWordArray"][0].SetChildrenList(tagWordArray.ToArray());
-                        // tagWordArray
-                        tagDataField["forceGrmID"].GetValue().Set(tagData.forceGrmID);
+                        tagDataField["tagWordArray.Array"].Children = tagWordArray;
+
+                        tagDataField["forceGrmID"].AsInt = tagData.forceGrmID;
+
                         tagDataArray.Add(tagDataField);
                     }
-                    baseField["tagDataArray"][0].SetChildrenList(tagDataArray.ToArray());
+                    baseField["tagDataArray.Array"].Children = tagDataArray;
 
                     List<AssetTypeValueField> wordDataArray = new();
                     foreach (WordData wordData in labelData.wordDatas)
                     {
-                        AssetTypeValueField wordDataField = ValueBuilder.DefaultValueFieldFromTemplate(wordDataTemplate);
-                        wordDataField["patternID"].GetValue().Set(wordData.patternID);
-                        wordDataField["eventID"].GetValue().Set(wordData.eventID);
-                        wordDataField["tagIndex"].GetValue().Set(wordData.tagIndex);
-                        wordDataField["tagValue"].GetValue().Set(wordData.tagValue);
-                        wordDataField["str"].GetValue().Set(wordData.str);
-                        wordDataField["strWidth"].GetValue().Set(wordData.strWidth);
+                        AssetTypeValueField wordDataField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["wordDataArray.Array"]);
+
+                        wordDataField["patternID"].AsInt = wordData.patternID;
+                        wordDataField["eventID"].AsInt = wordData.eventID;
+                        wordDataField["tagIndex"].AsInt = wordData.tagIndex;
+                        wordDataField["tagValue"].AsFloat = wordData.tagValue;
+                        wordDataField["str"].AsString = wordData.str;
+                        wordDataField["strWidth"].AsFloat = wordData.strWidth;
+
                         wordDataArray.Add(wordDataField);
                     }
-                    baseField["wordDataArray"][0].SetChildrenList(wordDataArray.ToArray());
+                    baseField["wordDataArray.Array"].Children = wordDataArray;
 
                     newLabelDataArray.Add(baseField);
                 }
-
-                monoBehaviour["labelDataArray"].children[0].SetChildrenList(newLabelDataArray.ToArray());
+                monoBehaviour["labelDataArray.Array"].Children = newLabelDataArray;
             }
         }
 
@@ -3116,91 +3241,117 @@ distributionTable
         private static void CommitEncounterTables()
         {
             List<AssetTypeValueField> monoBehaviours = fileManager.GetMonoBehaviours(PathEnum.Gamesettings);
-            AssetTypeValueField[] encounterTableMonoBehaviours = new AssetTypeValueField[2];
-            encounterTableMonoBehaviours[0] = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "FieldEncountTable_d");
-            encounterTableMonoBehaviours[1] = monoBehaviours.Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "FieldEncountTable_p");
+            AssetTypeValueField[] encounterTableMonoBehaviours = new AssetTypeValueField[] {
+                monoBehaviours.Find(m => m["m_Name"].AsString == "FieldEncountTable_d"),
+                monoBehaviours.Find(m => m["m_Name"].AsString == "FieldEncountTable_p"),
+            };
+
             for (int encounterTableFileIdx = 0; encounterTableFileIdx < encounterTableMonoBehaviours.Length; encounterTableFileIdx++)
             {
-                EncounterTableFile encounterTableFile = gameData.encounterTableFiles[encounterTableFileIdx];
-                encounterTableMonoBehaviours[encounterTableFileIdx].children[3].GetValue().Set(encounterTableFile.mName);
+                var encounterMono = encounterTableMonoBehaviours[encounterTableFileIdx];
+                EncounterTableFile encounterTableFile = Array.Find(gameData.encounterTableFiles, f => f.mName == encounterMono["m_Name"].AsString);
 
                 //Write wild encounter tables
-                AssetTypeValueField[] encounterTableFields = encounterTableMonoBehaviours[encounterTableFileIdx].children[4].children[0].children;
-                for (int encounterTableIdx = 0; encounterTableIdx < encounterTableFields.Length; encounterTableIdx++)
+                List<AssetTypeValueField> newEncounterTable = new();
+                foreach (EncounterTable encounterTable in encounterTableFile.encounterTables)
                 {
-                    EncounterTable encounterTable = encounterTableFile.encounterTables[encounterTableIdx];
-                    encounterTableFields[encounterTableIdx].children[0].GetValue().Set(encounterTable.zoneID);
-                    encounterTableFields[encounterTableIdx].children[1].GetValue().Set(encounterTable.encRateGround);
-                    encounterTableFields[encounterTableIdx].children[7].children[0].children[0].GetValue().Set(encounterTable.formProb);
-                    encounterTableFields[encounterTableIdx].children[9].children[0].children[1].GetValue().Set(encounterTable.unownTable);
-                    encounterTableFields[encounterTableIdx].children[15].GetValue().Set(encounterTable.encRateWater);
-                    encounterTableFields[encounterTableIdx].children[17].GetValue().Set(encounterTable.encRateOldRod);
-                    encounterTableFields[encounterTableIdx].children[19].GetValue().Set(encounterTable.encRateGoodRod);
-                    encounterTableFields[encounterTableIdx].children[21].GetValue().Set(encounterTable.encRateSuperRod);
+                    AssetTypeValueField encounterTableField = ValueBuilder.DefaultValueFieldFromArrayTemplate(encounterMono["table.Array"]);
+
+                    encounterTableField["zoneID"].AsInt = (int)encounterTable.zoneID;
+                    encounterTableField["encRate_gr"].AsInt = encounterTable.encRateGround;
+
+                    CommitIntArray(encounterTableField["FormProb.Array"], new int[] { encounterTable.formProb, encounterTable.formProb });
+                    CommitIntArray(encounterTableField["AnnoonTable.Array"], new int[] { 0, encounterTable.unownTable });
+
+                    encounterTableField["encRate_wat"].AsInt = encounterTable.encRateWater;
+                    encounterTableField["encRate_turi_boro"].AsInt = encounterTable.encRateOldRod;
+                    encounterTableField["encRate_turi_ii"].AsInt = encounterTable.encRateGoodRod;
+                    encounterTableField["encRate_sugoi"].AsInt = encounterTable.encRateSuperRod;
 
                     //Write ground tables
-                    SetEncounters(encounterTableFields[encounterTableIdx].children[2].children[0], encounterTable.groundMons);
+                    SetEncounters(encounterTableField["ground_mons.Array"], encounterTable.groundMons);
 
                     //Write morning tables
-                    SetEncounters(encounterTableFields[encounterTableIdx].children[3].children[0], encounterTable.tairyo);
+                    SetEncounters(encounterTableField["tairyo.Array"], encounterTable.tairyo);
 
                     //Write day tables
-                    SetEncounters(encounterTableFields[encounterTableIdx].children[4].children[0], encounterTable.day);
+                    SetEncounters(encounterTableField["day.Array"], encounterTable.day);
 
                     //Write night tables
-                    SetEncounters(encounterTableFields[encounterTableIdx].children[5].children[0], encounterTable.night);
+                    SetEncounters(encounterTableField["night.Array"], encounterTable.night);
 
                     //Write pokefinder tables
-                    SetEncounters(encounterTableFields[encounterTableIdx].children[6].children[0], encounterTable.swayGrass);
+                    SetEncounters(encounterTableField["swayGrass.Array"], encounterTable.swayGrass);
 
                     //Write ruby tables
-                    SetEncounters(encounterTableFields[encounterTableIdx]["gbaRuby"].children[0], encounterTable.gbaRuby);
+                    SetEncounters(encounterTableField["gbaRuby.Array"], encounterTable.gbaRuby);
 
                     //Write sapphire tables
-                    SetEncounters(encounterTableFields[encounterTableIdx]["gbaSapp"].children[0], encounterTable.gbaSapphire);
+                    SetEncounters(encounterTableField["gbaSapp.Array"], encounterTable.gbaSapphire);
 
                     //Write emerald tables
-                    SetEncounters(encounterTableFields[encounterTableIdx]["gbaEme"].children[0], encounterTable.gbaEmerald);
+                    SetEncounters(encounterTableField["gbaEme.Array"], encounterTable.gbaEmerald);
 
                     //Write fire tables
-                    SetEncounters(encounterTableFields[encounterTableIdx]["gbaFire"].children[0], encounterTable.gbaFire);
+                    SetEncounters(encounterTableField["gbaFire.Array"], encounterTable.gbaFire);
 
                     //Write leaf tables
-                    SetEncounters(encounterTableFields[encounterTableIdx]["gbaLeaf"].children[0], encounterTable.gbaLeaf);
+                    SetEncounters(encounterTableField["gbaLeaf.Array"], encounterTable.gbaLeaf);
 
                     //Write surfing tables
-                    SetEncounters(encounterTableFields[encounterTableIdx].children[16].children[0], encounterTable.waterMons);
+                    SetEncounters(encounterTableField["water_mons.Array"], encounterTable.waterMons);
 
                     //Write old rod tables
-                    SetEncounters(encounterTableFields[encounterTableIdx].children[18].children[0], encounterTable.oldRodMons);
+                    SetEncounters(encounterTableField["boro_mons.Array"], encounterTable.oldRodMons);
 
                     //Write good rod tables
-                    SetEncounters(encounterTableFields[encounterTableIdx].children[20].children[0], encounterTable.goodRodMons);
+                    SetEncounters(encounterTableField["ii_mons.Array"], encounterTable.goodRodMons);
 
                     //Write super rod tables
-                    SetEncounters(encounterTableFields[encounterTableIdx].children[22].children[0], encounterTable.superRodMons);
+                    SetEncounters(encounterTableField["sugoi_mons.Array"], encounterTable.superRodMons);
+
+                    newEncounterTable.Add(encounterTableField);
                 }
+                encounterMono["table.Array"].Children = newEncounterTable;
 
                 //Write trophy garden table
-                AssetTypeValueField[] trophyGardenMonFields = encounterTableMonoBehaviours[encounterTableFileIdx].children[5].children[0].children;
-                for (int trophyGardenMonIdx = 0; trophyGardenMonIdx < trophyGardenMonFields.Length; trophyGardenMonIdx++)
-                    trophyGardenMonFields[trophyGardenMonIdx].children[0].GetValue().Set(encounterTableFile.trophyGardenMons[trophyGardenMonIdx]);
+                List<AssetTypeValueField> newTrophyGardenTable = new();
+                foreach (var trophyGardenMon in encounterTableFile.trophyGardenMons)
+                {
+                    AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(encounterMono["urayama.Array"]);
+
+                    baseField["monsNo"].AsInt = trophyGardenMon;
+
+                    newTrophyGardenTable.Add(baseField);
+                }
+                encounterMono["urayama.Array"].Children = newTrophyGardenTable;
 
                 //Write honey tree tables
-                AssetTypeValueField[] honeyTreeEncounterFields = encounterTableMonoBehaviours[encounterTableFileIdx].children[6].children[0].children;
-                for (int honeyTreeEncounterIdx = 0; honeyTreeEncounterIdx < honeyTreeEncounterFields.Length; honeyTreeEncounterIdx++)
+                List<AssetTypeValueField> newHoneyTable = new();
+                foreach (var honeyTreeMon in encounterTableFile.honeyTreeEnconters)
                 {
-                    HoneyTreeEncounter honeyTreeEncounter = encounterTableFile.honeyTreeEnconters[honeyTreeEncounterIdx];
-                    honeyTreeEncounterFields[honeyTreeEncounterIdx].children[0].GetValue().Set(honeyTreeEncounter.rate);
-                    honeyTreeEncounterFields[honeyTreeEncounterIdx].children[1].GetValue().Set(honeyTreeEncounter.normalDexID);
-                    honeyTreeEncounterFields[honeyTreeEncounterIdx].children[2].GetValue().Set(honeyTreeEncounter.rareDexID);
-                    honeyTreeEncounterFields[honeyTreeEncounterIdx].children[3].GetValue().Set(honeyTreeEncounter.superRareDexID);
+                    AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(encounterMono["mistu.Array"]);
+
+                    baseField["Rate"].AsInt = honeyTreeMon.rate;
+                    baseField["Normal"].AsInt = honeyTreeMon.normalDexID;
+                    baseField["Rare"].AsInt = honeyTreeMon.rareDexID;
+                    baseField["SuperRare"].AsInt = honeyTreeMon.superRareDexID;
+
+                    newHoneyTable.Add(baseField);
                 }
+                encounterMono["mistu.Array"].Children = newHoneyTable;
 
                 //Write safari table
-                AssetTypeValueField[] safariMonFields = encounterTableMonoBehaviours[encounterTableFileIdx].children[8].children[0].children;
-                for (int safariMonIdx = 0; safariMonIdx < safariMonFields.Length; safariMonIdx++)
-                    safariMonFields[safariMonIdx].children[0].GetValue().Set(encounterTableFile.safariMons[safariMonIdx]);
+                List<AssetTypeValueField> newSafariTable = new();
+                foreach (var safariMon in encounterTableFile.safariMons)
+                {
+                    AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(encounterMono["safari.Array"]);
+
+                    baseField["MonsNo"].AsInt = safariMon;
+
+                    newSafariTable.Add(baseField);
+                }
+                encounterMono["safari.Array"].Children = newSafariTable;
             }
 
             fileManager.WriteMonoBehaviours(PathEnum.Gamesettings, encounterTableMonoBehaviours);
@@ -3212,67 +3363,207 @@ distributionTable
         /// </summary>
         private static void CommitTrainers()
         {
-            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.DprMasterdatas).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "TrainerTable");
+            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.DprMasterdatas).Find(m => m["m_Name"].AsString == "TrainerTable");
 
-            AssetTypeValueField[] trainerFields = monoBehaviour.children[5].children[0].children;
+            List<AssetTypeValueField> newTrainers = new();
+            List<AssetTypeValueField> newPokes = new();
             for (int trainerIdx = 0; trainerIdx < gameData.trainers.Count; trainerIdx++)
             {
                 Trainer trainer = gameData.trainers[trainerIdx];
-                trainerFields[trainerIdx].children[0].GetValue().Set(trainer.trainerTypeID);
-                trainerFields[trainerIdx].children[1].GetValue().Set(trainer.colorID);
-                trainerFields[trainerIdx].children[2].GetValue().Set(trainer.fightType);
-                trainerFields[trainerIdx].children[3].GetValue().Set(trainer.arenaID);
-                trainerFields[trainerIdx].children[4].GetValue().Set(trainer.effectID);
-                trainerFields[trainerIdx].children[5].GetValue().Set(trainer.gold);
-                trainerFields[trainerIdx].children[6].GetValue().Set(trainer.useItem1);
-                trainerFields[trainerIdx].children[7].GetValue().Set(trainer.useItem2);
-                trainerFields[trainerIdx].children[8].GetValue().Set(trainer.useItem3);
-                trainerFields[trainerIdx].children[9].GetValue().Set(trainer.useItem4);
-                trainerFields[trainerIdx].children[10].GetValue().Set(trainer.hpRecoverFlag);
-                trainerFields[trainerIdx].children[11].GetValue().Set(trainer.giftItem);
-                trainerFields[trainerIdx].children[12].GetValue().Set(trainer.nameLabel);
-                trainerFields[trainerIdx].children[19].GetValue().Set(trainer.aiBit);
+                AssetTypeValueField trainerBaseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["TrainerData.Array"]);
+
+                trainerBaseField["TypeID"].AsInt = trainer.trainerTypeID;
+                trainerBaseField["ColorID"].AsByte = trainer.colorID;
+                trainerBaseField["FightType"].AsByte = trainer.fightType;
+                trainerBaseField["ArenaID"].AsInt = trainer.arenaID;
+                trainerBaseField["EffectID"].AsInt = trainer.effectID;
+                trainerBaseField["Gold"].AsByte = trainer.gold;
+                trainerBaseField["UseItem1"].AsUShort = trainer.useItem1;
+                trainerBaseField["UseItem2"].AsUShort = trainer.useItem2;
+                trainerBaseField["UseItem3"].AsUShort = trainer.useItem3;
+                trainerBaseField["UseItem4"].AsUShort = trainer.useItem4;
+                trainerBaseField["HpRecoverFlag"].AsByte = trainer.hpRecoverFlag;
+                trainerBaseField["GiftItem"].AsUShort = trainer.giftItem;
+                trainerBaseField["NameLabel"].AsString = trainer.nameLabel;
+                trainerBaseField["AIBit"].AsUInt = trainer.aiBit;
+
+                newTrainers.Add(trainerBaseField);
 
                 //Write trainer pokemon
-                List<List<AssetTypeValue>> tranierPokemons = new();
-                List<AssetTypeValue> atvs = new();
-                atvs.Add(monoBehaviour.children[6].children[0].children[trainerIdx].children[0].GetValue());
-                for (int trainerPokemonIdx = 0; trainerPokemonIdx < (int)GetBoundaries(AbsoluteBoundary.TrainerPokemonCount)[2]; trainerPokemonIdx++)
-                {
-                    TrainerPokemon trainerPokemon = new();
-                    if (gameData.trainers[trainerIdx].trainerPokemon.Count > trainerPokemonIdx)
-                        trainerPokemon = gameData.trainers[trainerIdx].trainerPokemon[trainerPokemonIdx];
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt16, trainerPokemon.dexID));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt16, trainerPokemon.formID));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt8, trainerPokemon.isRare));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt8, trainerPokemon.level));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt8, trainerPokemon.sex));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt8, trainerPokemon.natureID));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt16, trainerPokemon.abilityID));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt16, trainerPokemon.moveID1));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt16, trainerPokemon.moveID2));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt16, trainerPokemon.moveID3));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt16, trainerPokemon.moveID4));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt16, trainerPokemon.itemID));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt8, trainerPokemon.ballID));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.Int32, trainerPokemon.seal));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt8, trainerPokemon.hpIV));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt8, trainerPokemon.atkIV));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt8, trainerPokemon.defIV));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt8, trainerPokemon.spAtkIV));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt8, trainerPokemon.spDefIV));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt8, trainerPokemon.spdIV));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt8, trainerPokemon.hpEV));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt8, trainerPokemon.atkEV));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt8, trainerPokemon.defEV));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt8, trainerPokemon.spAtkEV));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt8, trainerPokemon.spDefEV));
-                    atvs.Add(new AssetTypeValue(EnumValueTypes.UInt8, trainerPokemon.spdEV));
-                }
-                tranierPokemons.Add(atvs);
-                AssetTypeValueField trainerPokemonsReference = monoBehaviour.children[6].children[0].children[trainerIdx];
-                monoBehaviour.children[6].children[0].children[trainerIdx] = GetATVFs(trainerPokemonsReference, tranierPokemons)[0];
+                AssetTypeValueField pokeBaseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["TrainerPoke.Array"]);
+
+                var pokemon = trainer.trainerPokemon.Count >= 1 ? trainer.trainerPokemon[0] : new();
+                pokeBaseField["P1MonsNo"].AsUShort = pokemon.dexID;
+                pokeBaseField["P1FormNo"].AsUShort = pokemon.formID;
+                pokeBaseField["P1IsRare"].AsByte = pokemon.isRare;
+                pokeBaseField["P1Level"].AsByte = pokemon.level;
+                pokeBaseField["P1Sex"].AsByte = pokemon.sex;
+                pokeBaseField["P1Seikaku"].AsByte = pokemon.natureID;
+                pokeBaseField["P1Tokusei"].AsUShort = pokemon.abilityID;
+                pokeBaseField["P1Waza1"].AsUShort = pokemon.moveID1;
+                pokeBaseField["P1Waza2"].AsUShort = pokemon.moveID2;
+                pokeBaseField["P1Waza3"].AsUShort = pokemon.moveID3;
+                pokeBaseField["P1Waza4"].AsUShort = pokemon.moveID4;
+                pokeBaseField["P1Item"].AsUShort = pokemon.itemID;
+                pokeBaseField["P1Ball"].AsByte = pokemon.ballID;
+                pokeBaseField["P1Seal"].AsInt = pokemon.seal;
+                pokeBaseField["P1TalentHp"].AsByte = pokemon.hpIV;
+                pokeBaseField["P1TalentAtk"].AsByte = pokemon.atkIV;
+                pokeBaseField["P1TalentDef"].AsByte = pokemon.defIV;
+                pokeBaseField["P1TalentSpAtk"].AsByte = pokemon.spAtkIV;
+                pokeBaseField["P1TalentSpDef"].AsByte = pokemon.spDefIV;
+                pokeBaseField["P1TalentAgi"].AsByte = pokemon.spdIV;
+                pokeBaseField["P1EffortHp"].AsByte = pokemon.hpEV;
+                pokeBaseField["P1EffortAtk"].AsByte = pokemon.atkEV;
+                pokeBaseField["P1EffortDef"].AsByte = pokemon.defEV;
+                pokeBaseField["P1EffortSpAtk"].AsByte = pokemon.spAtkEV;
+                pokeBaseField["P1EffortSpDef"].AsByte = pokemon.spDefEV;
+                pokeBaseField["P1EffortAgi"].AsByte = pokemon.spdEV;
+
+                pokemon = trainer.trainerPokemon.Count >= 2 ? trainer.trainerPokemon[1] : new();
+                pokeBaseField["P2MonsNo"].AsUShort = pokemon.dexID;
+                pokeBaseField["P2FormNo"].AsUShort = pokemon.formID;
+                pokeBaseField["P2IsRare"].AsByte = pokemon.isRare;
+                pokeBaseField["P2Level"].AsByte = pokemon.level;
+                pokeBaseField["P2Sex"].AsByte = pokemon.sex;
+                pokeBaseField["P2Seikaku"].AsByte = pokemon.natureID;
+                pokeBaseField["P2Tokusei"].AsUShort = pokemon.abilityID;
+                pokeBaseField["P2Waza1"].AsUShort = pokemon.moveID1;
+                pokeBaseField["P2Waza2"].AsUShort = pokemon.moveID2;
+                pokeBaseField["P2Waza3"].AsUShort = pokemon.moveID3;
+                pokeBaseField["P2Waza4"].AsUShort = pokemon.moveID4;
+                pokeBaseField["P2Item"].AsUShort = pokemon.itemID;
+                pokeBaseField["P2Ball"].AsByte = pokemon.ballID;
+                pokeBaseField["P2Seal"].AsInt = pokemon.seal;
+                pokeBaseField["P2TalentHp"].AsByte = pokemon.hpIV;
+                pokeBaseField["P2TalentAtk"].AsByte = pokemon.atkIV;
+                pokeBaseField["P2TalentDef"].AsByte = pokemon.defIV;
+                pokeBaseField["P2TalentSpAtk"].AsByte = pokemon.spAtkIV;
+                pokeBaseField["P2TalentSpDef"].AsByte = pokemon.spDefIV;
+                pokeBaseField["P2TalentAgi"].AsByte = pokemon.spdIV;
+                pokeBaseField["P2EffortHp"].AsByte = pokemon.hpEV;
+                pokeBaseField["P2EffortAtk"].AsByte = pokemon.atkEV;
+                pokeBaseField["P2EffortDef"].AsByte = pokemon.defEV;
+                pokeBaseField["P2EffortSpAtk"].AsByte = pokemon.spAtkEV;
+                pokeBaseField["P2EffortSpDef"].AsByte = pokemon.spDefEV;
+                pokeBaseField["P2EffortAgi"].AsByte = pokemon.spdEV;
+
+                pokemon = trainer.trainerPokemon.Count >= 3 ? trainer.trainerPokemon[2] : new();
+                pokeBaseField["P3MonsNo"].AsUShort = pokemon.dexID;
+                pokeBaseField["P3FormNo"].AsUShort = pokemon.formID;
+                pokeBaseField["P3IsRare"].AsByte = pokemon.isRare;
+                pokeBaseField["P3Level"].AsByte = pokemon.level;
+                pokeBaseField["P3Sex"].AsByte = pokemon.sex;
+                pokeBaseField["P3Seikaku"].AsByte = pokemon.natureID;
+                pokeBaseField["P3Tokusei"].AsUShort = pokemon.abilityID;
+                pokeBaseField["P3Waza1"].AsUShort = pokemon.moveID1;
+                pokeBaseField["P3Waza2"].AsUShort = pokemon.moveID2;
+                pokeBaseField["P3Waza3"].AsUShort = pokemon.moveID3;
+                pokeBaseField["P3Waza4"].AsUShort = pokemon.moveID4;
+                pokeBaseField["P3Item"].AsUShort = pokemon.itemID;
+                pokeBaseField["P3Ball"].AsByte = pokemon.ballID;
+                pokeBaseField["P3Seal"].AsInt = pokemon.seal;
+                pokeBaseField["P3TalentHp"].AsByte = pokemon.hpIV;
+                pokeBaseField["P3TalentAtk"].AsByte = pokemon.atkIV;
+                pokeBaseField["P3TalentDef"].AsByte = pokemon.defIV;
+                pokeBaseField["P3TalentSpAtk"].AsByte = pokemon.spAtkIV;
+                pokeBaseField["P3TalentSpDef"].AsByte = pokemon.spDefIV;
+                pokeBaseField["P3TalentAgi"].AsByte = pokemon.spdIV;
+                pokeBaseField["P3EffortHp"].AsByte = pokemon.hpEV;
+                pokeBaseField["P3EffortAtk"].AsByte = pokemon.atkEV;
+                pokeBaseField["P3EffortDef"].AsByte = pokemon.defEV;
+                pokeBaseField["P3EffortSpAtk"].AsByte = pokemon.spAtkEV;
+                pokeBaseField["P3EffortSpDef"].AsByte = pokemon.spDefEV;
+                pokeBaseField["P3EffortAgi"].AsByte = pokemon.spdEV;
+
+                pokemon = trainer.trainerPokemon.Count >= 4 ? trainer.trainerPokemon[3] : new();
+                pokeBaseField["P4MonsNo"].AsUShort = pokemon.dexID;
+                pokeBaseField["P4FormNo"].AsUShort = pokemon.formID;
+                pokeBaseField["P4IsRare"].AsByte = pokemon.isRare;
+                pokeBaseField["P4Level"].AsByte = pokemon.level;
+                pokeBaseField["P4Sex"].AsByte = pokemon.sex;
+                pokeBaseField["P4Seikaku"].AsByte = pokemon.natureID;
+                pokeBaseField["P4Tokusei"].AsUShort = pokemon.abilityID;
+                pokeBaseField["P4Waza1"].AsUShort = pokemon.moveID1;
+                pokeBaseField["P4Waza2"].AsUShort = pokemon.moveID2;
+                pokeBaseField["P4Waza3"].AsUShort = pokemon.moveID3;
+                pokeBaseField["P4Waza4"].AsUShort = pokemon.moveID4;
+                pokeBaseField["P4Item"].AsUShort = pokemon.itemID;
+                pokeBaseField["P4Ball"].AsByte = pokemon.ballID;
+                pokeBaseField["P4Seal"].AsInt = pokemon.seal;
+                pokeBaseField["P4TalentHp"].AsByte = pokemon.hpIV;
+                pokeBaseField["P4TalentAtk"].AsByte = pokemon.atkIV;
+                pokeBaseField["P4TalentDef"].AsByte = pokemon.defIV;
+                pokeBaseField["P4TalentSpAtk"].AsByte = pokemon.spAtkIV;
+                pokeBaseField["P4TalentSpDef"].AsByte = pokemon.spDefIV;
+                pokeBaseField["P4TalentAgi"].AsByte = pokemon.spdIV;
+                pokeBaseField["P4EffortHp"].AsByte = pokemon.hpEV;
+                pokeBaseField["P4EffortAtk"].AsByte = pokemon.atkEV;
+                pokeBaseField["P4EffortDef"].AsByte = pokemon.defEV;
+                pokeBaseField["P4EffortSpAtk"].AsByte = pokemon.spAtkEV;
+                pokeBaseField["P4EffortSpDef"].AsByte = pokemon.spDefEV;
+                pokeBaseField["P4EffortAgi"].AsByte = pokemon.spdEV;
+
+                pokemon = trainer.trainerPokemon.Count >= 5 ? trainer.trainerPokemon[4] : new();
+                pokeBaseField["P5MonsNo"].AsUShort = pokemon.dexID;
+                pokeBaseField["P5FormNo"].AsUShort = pokemon.formID;
+                pokeBaseField["P5IsRare"].AsByte = pokemon.isRare;
+                pokeBaseField["P5Level"].AsByte = pokemon.level;
+                pokeBaseField["P5Sex"].AsByte = pokemon.sex;
+                pokeBaseField["P5Seikaku"].AsByte = pokemon.natureID;
+                pokeBaseField["P5Tokusei"].AsUShort = pokemon.abilityID;
+                pokeBaseField["P5Waza1"].AsUShort = pokemon.moveID1;
+                pokeBaseField["P5Waza2"].AsUShort = pokemon.moveID2;
+                pokeBaseField["P5Waza3"].AsUShort = pokemon.moveID3;
+                pokeBaseField["P5Waza4"].AsUShort = pokemon.moveID4;
+                pokeBaseField["P5Item"].AsUShort = pokemon.itemID;
+                pokeBaseField["P5Ball"].AsByte = pokemon.ballID;
+                pokeBaseField["P5Seal"].AsInt = pokemon.seal;
+                pokeBaseField["P5TalentHp"].AsByte = pokemon.hpIV;
+                pokeBaseField["P5TalentAtk"].AsByte = pokemon.atkIV;
+                pokeBaseField["P5TalentDef"].AsByte = pokemon.defIV;
+                pokeBaseField["P5TalentSpAtk"].AsByte = pokemon.spAtkIV;
+                pokeBaseField["P5TalentSpDef"].AsByte = pokemon.spDefIV;
+                pokeBaseField["P5TalentAgi"].AsByte = pokemon.spdIV;
+                pokeBaseField["P5EffortHp"].AsByte = pokemon.hpEV;
+                pokeBaseField["P5EffortAtk"].AsByte = pokemon.atkEV;
+                pokeBaseField["P5EffortDef"].AsByte = pokemon.defEV;
+                pokeBaseField["P5EffortSpAtk"].AsByte = pokemon.spAtkEV;
+                pokeBaseField["P5EffortSpDef"].AsByte = pokemon.spDefEV;
+                pokeBaseField["P5EffortAgi"].AsByte = pokemon.spdEV;
+
+                pokemon = trainer.trainerPokemon.Count >= 6 ? trainer.trainerPokemon[5] : new();
+                pokeBaseField["P6MonsNo"].AsUShort = pokemon.dexID;
+                pokeBaseField["P6FormNo"].AsUShort = pokemon.formID;
+                pokeBaseField["P6IsRare"].AsByte = pokemon.isRare;
+                pokeBaseField["P6Level"].AsByte = pokemon.level;
+                pokeBaseField["P6Sex"].AsByte = pokemon.sex;
+                pokeBaseField["P6Seikaku"].AsByte = pokemon.natureID;
+                pokeBaseField["P6Tokusei"].AsUShort = pokemon.abilityID;
+                pokeBaseField["P6Waza1"].AsUShort = pokemon.moveID1;
+                pokeBaseField["P6Waza2"].AsUShort = pokemon.moveID2;
+                pokeBaseField["P6Waza3"].AsUShort = pokemon.moveID3;
+                pokeBaseField["P6Waza4"].AsUShort = pokemon.moveID4;
+                pokeBaseField["P6Item"].AsUShort = pokemon.itemID;
+                pokeBaseField["P6Ball"].AsByte = pokemon.ballID;
+                pokeBaseField["P6Seal"].AsInt = pokemon.seal;
+                pokeBaseField["P6TalentHp"].AsByte = pokemon.hpIV;
+                pokeBaseField["P6TalentAtk"].AsByte = pokemon.atkIV;
+                pokeBaseField["P6TalentDef"].AsByte = pokemon.defIV;
+                pokeBaseField["P6TalentSpAtk"].AsByte = pokemon.spAtkIV;
+                pokeBaseField["P6TalentSpDef"].AsByte = pokemon.spDefIV;
+                pokeBaseField["P6TalentAgi"].AsByte = pokemon.spdIV;
+                pokeBaseField["P6EffortHp"].AsByte = pokemon.hpEV;
+                pokeBaseField["P6EffortAtk"].AsByte = pokemon.atkEV;
+                pokeBaseField["P6EffortDef"].AsByte = pokemon.defEV;
+                pokeBaseField["P6EffortSpAtk"].AsByte = pokemon.spAtkEV;
+                pokeBaseField["P6EffortSpDef"].AsByte = pokemon.spDefEV;
+                pokeBaseField["P6EffortAgi"].AsByte = pokemon.spdEV;
+
+                newPokes.Add(pokeBaseField);
             }
+            monoBehaviour["TrainerData.Array"].Children = newTrainers;
+            monoBehaviour["TrainerPoke.Array"].Children = newPokes;
 
             fileManager.WriteMonoBehaviour(PathEnum.DprMasterdatas, monoBehaviour);
         }
@@ -3282,78 +3573,90 @@ distributionTable
         /// </summary>
         private static void CommitBattleTowerTrainers()
         {
-            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.DprMasterdatas).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "TowerSingleStockTable");
-            AssetTypeValueField monoBehaviour2 = fileManager.GetMonoBehaviours(PathEnum.DprMasterdatas).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "TowerDoubleStockTable");
+            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.DprMasterdatas).Find(m => m["m_Name"].AsString == "TowerSingleStockTable");
+            AssetTypeValueField monoBehaviour2 = fileManager.GetMonoBehaviours(PathEnum.DprMasterdatas).Find(m => m["m_Name"].AsString == "TowerDoubleStockTable");
 
-            AssetTypeValueField[] trainerFields = monoBehaviour.children[4].children[0].children;
-            AssetTypeValueField[] trainerFieldsDouble = monoBehaviour2.children[4].children[0].children;
-            for (int trainerIdx = 0; trainerIdx < trainerFields.Length; trainerIdx++)
+            List<AssetTypeValueField> newSingleTrainers = new();
+            for (int trainerIdx = 0; trainerIdx < gameData.battleTowerTrainers.Count; trainerIdx++)
             {
                 BattleTowerTrainer trainer = gameData.battleTowerTrainers[trainerIdx];
-                trainerFields[trainerIdx].children[0].GetValue().Set(trainer.trainerID2);
-                trainerFields[trainerIdx].children[1].GetValue().Set(trainer.trainerTypeID);
-                trainerFields[trainerIdx].children[2].children[0].children[0].GetValue().Set(trainer.battleTowerPokemonID1);
-                trainerFields[trainerIdx].children[2].children[0].children[1].GetValue().Set(trainer.battleTowerPokemonID2);
-                trainerFields[trainerIdx].children[2].children[0].children[2].GetValue().Set(trainer.battleTowerPokemonID3);
-                trainerFields[trainerIdx].children[3].GetValue().Set(trainer.battleBGM);
-                trainerFields[trainerIdx].children[4].GetValue().Set(trainer.winBGM);
-            }
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["TowerSingleStock.Array"]);
 
-            for (int trainerIdx = 0; trainerIdx < trainerFieldsDouble.Length; trainerIdx++)
+                baseField["ID"].AsUInt = trainer.trainerID2;
+                baseField["TrainerID"].AsInt = trainer.trainerTypeID;
+
+                CommitUIntArray(baseField["PokeID.Array"], new uint[] { trainer.battleTowerPokemonID1, trainer.battleTowerPokemonID2, trainer.battleTowerPokemonID3 });
+
+                baseField["BattleBGM"].AsString = trainer.battleBGM;
+                baseField["WinBGM"].AsString = trainer.winBGM;
+
+                newSingleTrainers.Add(baseField);
+            }
+            monoBehaviour["TowerSingleStock.Array"].Children = newSingleTrainers;
+
+            List<AssetTypeValueField> newDoubleTrainers = new();
+            for (int trainerIdx = 0; trainerIdx < gameData.battleTowerTrainersDouble.Count; trainerIdx++)
             {
                 BattleTowerTrainer trainer = gameData.battleTowerTrainersDouble[trainerIdx];
-                trainerFieldsDouble[trainerIdx].children[0].GetValue().Set(trainer.trainerID2);
-                trainerFieldsDouble[trainerIdx].children[1].children[0].children[0].GetValue().Set(trainer.trainerTypeID);
-                trainerFieldsDouble[trainerIdx].children[1].children[0].children[1].GetValue().Set(trainer.trainerTypeID2);
-                trainerFieldsDouble[trainerIdx].children[2].children[0].children[0].GetValue().Set(trainer.battleTowerPokemonID1);
-                trainerFieldsDouble[trainerIdx].children[2].children[0].children[1].GetValue().Set(trainer.battleTowerPokemonID2);
-                trainerFieldsDouble[trainerIdx].children[2].children[0].children[2].GetValue().Set(trainer.battleTowerPokemonID3);
-                trainerFieldsDouble[trainerIdx].children[2].children[0].children[3].GetValue().Set(trainer.battleTowerPokemonID4);
-                trainerFieldsDouble[trainerIdx].children[3].GetValue().Set(trainer.battleBGM);
-                trainerFieldsDouble[trainerIdx].children[4].GetValue().Set(trainer.winBGM);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour2["TowerDoubleStock.Array"]);
+
+                baseField["ID"].AsUInt = trainer.trainerID2;
+
+                CommitIntArray(baseField["TrainerID.Array"], new int[] { trainer.trainerTypeID, trainer.trainerTypeID2 });
+                CommitUIntArray(baseField["PokeID.Array"], new uint[] { trainer.battleTowerPokemonID1, trainer.battleTowerPokemonID2, trainer.battleTowerPokemonID3, trainer.battleTowerPokemonID4 });
+
+                baseField["BattleBGM"].AsString = trainer.battleBGM;
+                baseField["WinBGM"].AsString = trainer.winBGM;
+
+                newDoubleTrainers.Add(baseField);
             }
+            monoBehaviour2["TowerDoubleStock.Array"].Children = newDoubleTrainers;
 
             fileManager.WriteMonoBehaviour(PathEnum.DprMasterdatas, monoBehaviour);
             fileManager.WriteMonoBehaviour(PathEnum.DprMasterdatas, monoBehaviour2);
         }
         private static void CommitBattleTowerPokemon()
         {
-            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.DprMasterdatas).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "TowerTrainerTable");
+            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.DprMasterdatas).Find(m => m["m_Name"].AsString == "TowerTrainerTable");
 
-            AssetTypeValueField[] pokemonFields = monoBehaviour.children[5].children[0].children;
             //Parse battle tower trainer pokemon
-            for (int pokemonIdx = 0; pokemonIdx < pokemonFields.Length && pokemonFields[pokemonIdx].children[0].value.value.asUInt32 != 0; pokemonIdx += 1)
+            List<AssetTypeValueField> newPokes = new();
+            for (int pokemonIdx = 0; pokemonIdx < gameData.battleTowerTrainerPokemons.Count; pokemonIdx++)
             {
                 BattleTowerTrainerPokemon pokemon = gameData.battleTowerTrainerPokemons[pokemonIdx];
-                // Trainer trainer = gameData.trainers[trainerIdx];
-                pokemonFields[pokemonIdx].children[0].GetValue().Set(pokemon.pokemonID);
-                pokemonFields[pokemonIdx].children[1].GetValue().Set(pokemon.dexID);
-                pokemonFields[pokemonIdx].children[2].GetValue().Set(pokemon.formID);
-                pokemonFields[pokemonIdx].children[3].GetValue().Set(pokemon.isRare);
-                pokemonFields[pokemonIdx].children[4].GetValue().Set(pokemon.level);
-                pokemonFields[pokemonIdx].children[5].GetValue().Set(pokemon.sex);
-                pokemonFields[pokemonIdx].children[6].GetValue().Set(pokemon.natureID);
-                pokemonFields[pokemonIdx].children[7].GetValue().Set(pokemon.abilityID);
-                pokemonFields[pokemonIdx].children[8].GetValue().Set(pokemon.moveID1);
-                pokemonFields[pokemonIdx].children[9].GetValue().Set(pokemon.moveID2);
-                pokemonFields[pokemonIdx].children[10].GetValue().Set(pokemon.moveID3);
-                pokemonFields[pokemonIdx].children[11].GetValue().Set(pokemon.moveID4);
-                pokemonFields[pokemonIdx].children[12].GetValue().Set(pokemon.itemID);
-                pokemonFields[pokemonIdx].children[13].GetValue().Set(pokemon.ballID);
-                pokemonFields[pokemonIdx].children[14].GetValue().Set(pokemon.seal);
-                pokemonFields[pokemonIdx].children[15].GetValue().Set(pokemon.hpIV);
-                pokemonFields[pokemonIdx].children[16].GetValue().Set(pokemon.atkIV);
-                pokemonFields[pokemonIdx].children[17].GetValue().Set(pokemon.defIV);
-                pokemonFields[pokemonIdx].children[18].GetValue().Set(pokemon.spAtkIV);
-                pokemonFields[pokemonIdx].children[19].GetValue().Set(pokemon.spDefIV);
-                pokemonFields[pokemonIdx].children[20].GetValue().Set(pokemon.spdIV);
-                pokemonFields[pokemonIdx].children[21].GetValue().Set(pokemon.hpEV);
-                pokemonFields[pokemonIdx].children[22].GetValue().Set(pokemon.atkEV);
-                pokemonFields[pokemonIdx].children[23].GetValue().Set(pokemon.defEV);
-                pokemonFields[pokemonIdx].children[24].GetValue().Set(pokemon.spAtkEV);
-                pokemonFields[pokemonIdx].children[25].GetValue().Set(pokemon.spDefEV);
-                pokemonFields[pokemonIdx].children[26].GetValue().Set(pokemon.spdEV);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["TrainerPoke.Array"]);
+
+                baseField["ID"].AsUInt = pokemon.pokemonID;
+                baseField["MonsNo"].AsInt = pokemon.dexID;
+                baseField["FormNo"].AsUShort = (ushort)pokemon.formID;
+                baseField["IsRare"].AsByte = pokemon.isRare;
+                baseField["Level"].AsByte = pokemon.level;
+                baseField["Sex"].AsByte = pokemon.sex;
+                baseField["Seikaku"].AsInt = pokemon.natureID;
+                baseField["Tokusei"].AsInt = pokemon.abilityID;
+                baseField["Waza1"].AsInt = pokemon.moveID1;
+                baseField["Waza2"].AsInt = pokemon.moveID2;
+                baseField["Waza3"].AsInt = pokemon.moveID3;
+                baseField["Waza4"].AsInt = pokemon.moveID4;
+                baseField["Item"].AsUShort = pokemon.itemID;
+                baseField["Ball"].AsByte = pokemon.ballID;
+                baseField["Seal"].AsInt = pokemon.seal;
+                baseField["TalentHp"].AsByte = pokemon.hpIV;
+                baseField["TalentAtk"].AsByte = pokemon.atkIV;
+                baseField["TalentDef"].AsByte = pokemon.defIV;
+                baseField["TalentSpAtk"].AsByte = pokemon.spAtkIV;
+                baseField["TalentSpDef"].AsByte = pokemon.spDefIV;
+                baseField["TalentAgi"].AsByte = pokemon.spdIV;
+                baseField["EffortHp"].AsByte = pokemon.hpEV;
+                baseField["EffortAtk"].AsByte = pokemon.atkEV;
+                baseField["EffortDef"].AsByte = pokemon.defEV;
+                baseField["EffortSpAtk"].AsByte = pokemon.spAtkEV;
+                baseField["EffortSpDef"].AsByte = pokemon.spDefEV;
+                baseField["EffortAgi"].AsByte = pokemon.spdEV;
+
+                newPokes.Add(baseField);
             }
+            monoBehaviour["TrainerPoke.Array"].Children = newPokes;
 
             fileManager.WriteMonoBehaviour(PathEnum.DprMasterdatas, monoBehaviour);
         }
@@ -3363,44 +3666,47 @@ distributionTable
         /// </summary>
         private static void CommitShopTables()
         {
-            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.DprMasterdatas).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "ShopTable");
+            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.DprMasterdatas).Find(m => m["m_Name"].AsString == "ShopTable");
 
-            List<List<AssetTypeValue>> martItems = new();
+            List<AssetTypeValueField> martItems = new();
             for (int martItemIdx = 0; martItemIdx < gameData.shopTables.martItems.Count; martItemIdx++)
             {
                 MartItem martItem = gameData.shopTables.martItems[martItemIdx];
-                List<AssetTypeValue> atvs = new();
-                atvs.Add(new AssetTypeValue(EnumValueTypes.UInt16, martItem.itemID));
-                atvs.Add(new AssetTypeValue(EnumValueTypes.Int32, martItem.badgeNum));
-                atvs.Add(new AssetTypeValue(EnumValueTypes.Int32, martItem.zoneID));
-                martItems.Add(atvs);
-            }
-            AssetTypeValueField martItemReference = monoBehaviour.children[4].children[0].children[0];
-            monoBehaviour.children[4].children[0].SetChildrenList(GetATVFs(martItemReference, martItems));
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["FS.Array"]);
 
-            List<List<AssetTypeValue>> fixedShopItems = new();
+                baseField["ItemNo"].AsUShort = martItem.itemID;
+                baseField["BadgeNum"].AsInt = martItem.badgeNum;
+                baseField["ZoneID"].AsInt = martItem.zoneID;
+
+                martItems.Add(baseField);
+            }
+            monoBehaviour["FS.Array"].Children = martItems;
+
+            List<AssetTypeValueField> fixedShopItems = new();
             for (int fixedShopItemIdx = 0; fixedShopItemIdx < gameData.shopTables.fixedShopItems.Count; fixedShopItemIdx++)
             {
                 FixedShopItem fixedShopItem = gameData.shopTables.fixedShopItems[fixedShopItemIdx];
-                List<AssetTypeValue> atvs = new();
-                atvs.Add(new AssetTypeValue(EnumValueTypes.UInt16, fixedShopItem.itemID));
-                atvs.Add(new AssetTypeValue(EnumValueTypes.Int32, fixedShopItem.shopID));
-                fixedShopItems.Add(atvs);
-            }
-            AssetTypeValueField fixedShopItemReference = monoBehaviour.children[5].children[0].children[0];
-            monoBehaviour.children[5].children[0].SetChildrenList(GetATVFs(fixedShopItemReference, fixedShopItems));
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["FixedShop.Array"]);
 
-            List<List<AssetTypeValue>> bpShopItems = new();
+                baseField["ItemNo"].AsUShort = fixedShopItem.itemID;
+                baseField["ShopID"].AsInt = fixedShopItem.shopID;
+
+                martItems.Add(baseField);
+            }
+            monoBehaviour["FixedShop.Array"].Children = fixedShopItems;
+
+            List<AssetTypeValueField> bpShopItems = new();
             for (int bpShopItemIdx = 0; bpShopItemIdx < gameData.shopTables.bpShopItems.Count; bpShopItemIdx++)
             {
                 BpShopItem bpShopItem = gameData.shopTables.bpShopItems[bpShopItemIdx];
-                List<AssetTypeValue> atvs = new();
-                atvs.Add(new AssetTypeValue(EnumValueTypes.UInt16, bpShopItem.itemID));
-                atvs.Add(new AssetTypeValue(EnumValueTypes.Int32, bpShopItem.npcID));
-                bpShopItems.Add(atvs);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["BPShop.Array"]);
+
+                baseField["ItemNo"].AsUShort = bpShopItem.itemID;
+                baseField["NPCID"].AsInt = bpShopItem.npcID;
+
+                bpShopItems.Add(baseField);
             }
-            AssetTypeValueField bpShopItemReference = monoBehaviour.children[9].children[0].children[0];
-            monoBehaviour.children[9].children[0].SetChildrenList(GetATVFs(bpShopItemReference, bpShopItems));
+            monoBehaviour["BPShop.Array"].Children = bpShopItems;
 
             fileManager.WriteMonoBehaviour(PathEnum.DprMasterdatas, monoBehaviour);
         }
@@ -3410,18 +3716,20 @@ distributionTable
         /// </summary>
         private static void CommitPickupItems()
         {
-            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.DprMasterdatas).Find(m => Encoding.Default.GetString(m.children[3].value.value.asString) == "MonohiroiTable");
+            AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.DprMasterdatas).Find(m => m["m_Name"].AsString == "MonohiroiTable");
 
-            AssetTypeValueField[] pickupItemFields = monoBehaviour.children[4].children[0].children;
-            for (int pickupItemIdx = 0; pickupItemIdx < pickupItemFields.Length; pickupItemIdx++)
+            List<AssetTypeValueField> pickupItems = new();
+            for (int pickupItemIdx = 0; pickupItemIdx < gameData.pickupItems.Count; pickupItemIdx++)
             {
                 PickupItem pickupItem = gameData.pickupItems[pickupItemIdx];
-                pickupItemFields[pickupItemIdx].children[0].GetValue().Set(pickupItem.itemID);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["MonoHiroi.Array"]);
 
-                //Write item probabilities
-                for (int ratio = 0; ratio < pickupItemFields[pickupItemIdx].children[1].children[0].childrenCount; ratio++)
-                    pickupItemFields[pickupItemIdx].children[1].children[0].children[ratio].GetValue().Set(pickupItem.ratios[ratio]);
+                baseField["ID"].AsUShort = pickupItem.itemID;
+                CommitByteArray(baseField["Ratios.Array"], pickupItem.ratios.ToArray());
+
+                pickupItems.Add(baseField);
             }
+            monoBehaviour["MonoHiroi.Array"].Children = pickupItems;
 
             fileManager.WriteMonoBehaviour(PathEnum.DprMasterdatas, monoBehaviour);
         }
@@ -3431,49 +3739,67 @@ distributionTable
         /// </summary>
         private static void CommitEvScripts()
         {
-            List<AssetTypeValueField> monoBehaviours = fileManager.GetMonoBehaviours(PathEnum.EvScript).Where(m => m.children[4].GetName() == "Scripts").ToList();
+            List<AssetTypeValueField> monoBehaviours = fileManager.GetMonoBehaviours(PathEnum.EvScript).Where(m => !m["Scripts"].IsDummy && !m["StrList"].IsDummy).ToList();
 
             for (int mIdx = 0; mIdx < monoBehaviours.Count; mIdx++)
             {
-                EvScript evScript = gameData.evScripts[mIdx];
-                monoBehaviours[mIdx].children[3].GetValue().Set(evScript.mName);
+                var mono = monoBehaviours[mIdx];
+                EvScript evScript = gameData.evScripts.Find(s => s.mName == mono["m_Name"].AsString);
 
                 //Write Scripts
-                AssetTypeValueField[] scriptFields = monoBehaviours[mIdx].children[4].children[0].children;
-                for (int scriptIdx = 0; scriptIdx < scriptFields.Length; scriptIdx++)
+                List<AssetTypeValueField> newScripts = new();
+                for (int scriptIdx = 0; scriptIdx < evScript.scripts.Count; scriptIdx++)
                 {
                     Script script = evScript.scripts[scriptIdx];
-                    scriptFields[scriptIdx].children[0].GetValue().Set(script.evLabel);
+                    AssetTypeValueField scriptField = ValueBuilder.DefaultValueFieldFromArrayTemplate(mono["Scripts.Array"]);
+
+                    scriptField["Label"].AsString = script.evLabel;
 
                     //Write Commands
-                    AssetTypeValueField[] commandFields = scriptFields[scriptIdx].children[1].children[0].children;
-                    for (int commandIdx = 0; commandIdx < commandFields.Length; commandIdx++)
+                    List<AssetTypeValueField> newCommands = new();
+                    for (int commandIdx = 0; commandIdx < script.commands.Count; commandIdx++)
                     {
                         Command command = script.commands[commandIdx];
+                        AssetTypeValueField commandField = ValueBuilder.DefaultValueFieldFromArrayTemplate(scriptField["Commands.Array"]);
 
-                        //Check for commands without data, because those exist for some reason.
-                        if (commandFields[commandIdx].children[0].children[0].children.Length == 0)
-                            continue;
-
-                        commandFields[commandIdx].children[0].children[0].children[0].children[1].GetValue().Set(command.cmdType);
+                        AssetTypeValueField arg0Field = ValueBuilder.DefaultValueFieldFromArrayTemplate(commandField["Arg.Array"]);
+                        arg0Field["argType"].AsInt = 0;
+                        arg0Field["data"].AsInt = command.cmdType;
 
                         //Write Arguments
-                        AssetTypeValueField[] argumentFields = commandFields[commandIdx].children[0].children[0].children;
-                        for (int argIdx = 1; argIdx < argumentFields.Length; argIdx++)
+                        List<AssetTypeValueField> newArgs = new();
+                        newArgs.Add(arg0Field);
+                        for (int argIdx = 1; argIdx < command.args.Count; argIdx++)
                         {
                             Argument arg = command.args[argIdx - 1];
-                            argumentFields[argIdx].children[0].GetValue().Set(arg.argType);
-                            argumentFields[argIdx].children[1].GetValue().Set(arg.data);
+                            AssetTypeValueField argField = ValueBuilder.DefaultValueFieldFromArrayTemplate(commandField["Arg.Array"]);
+
+                            argField["argType"].AsInt = arg.argType;
                             if (arg.argType == 1)
-                                argumentFields[argIdx].children[1].GetValue().Set(ConvertToInt((int)arg.data));
+                                argField["data"].AsInt = ConvertToInt((int)arg.data);
+                            else
+                                argField["data"].AsInt = (int)arg.data;
+
+                            newArgs.Add(argField);
                         }
+                        commandField["Arg.Array"].Children = newArgs;
                     }
+                    scriptField["Commands.Array"].Children = newCommands;
                 }
+                mono["Scripts.Array"].Children = newScripts;
 
                 //Write StrLists
-                AssetTypeValueField[] stringFields = monoBehaviours[mIdx].children[5].children[0].children;
-                for (int stringIdx = 0; stringIdx < stringFields.Length; stringIdx++)
-                    stringFields[stringIdx].GetValue().Set(evScript.strList[stringIdx]);
+                List<AssetTypeValueField> newStrs = new();
+                for (int stringIdx = 0; stringIdx < evScript.strList.Count; stringIdx++)
+                {
+                    string str = evScript.strList[stringIdx];
+                    AssetTypeValueField strField = ValueBuilder.DefaultValueFieldFromArrayTemplate(mono["StrList.Array"]);
+
+                    strField.AsString = str;
+
+                    newStrs.Add(strField);
+                }
+                mono["StrList.Array"].Children = newStrs;
             }
 
             fileManager.WriteMonoBehaviours(PathEnum.EvScript, monoBehaviours.ToArray());
@@ -3484,42 +3810,19 @@ distributionTable
         /// </summary>
         private static void SetEncounters(AssetTypeValueField encounterSetAtvf, List<Encounter> encounters)
         {
-            List<List<AssetTypeValue>> encounterAtvs = new();
-            for (int encounterIdx = 0; encounterIdx < encounterSetAtvf.GetChildrenCount(); encounterIdx++)
+            List<AssetTypeValueField> newEncounters = new();
+            for (int encounterIdx = 0; encounterIdx < encounters.Count; encounterIdx++)
             {
                 Encounter encounter = encounters[encounterIdx];
-                List<AssetTypeValue> atvs = new();
-                atvs.Add(new AssetTypeValue(EnumValueTypes.Int32, encounter.maxLv));
-                atvs.Add(new AssetTypeValue(EnumValueTypes.Int32, encounter.minLv));
-                atvs.Add(new AssetTypeValue(EnumValueTypes.Int32, encounter.dexID));
-                encounterAtvs.Add(atvs);
+                AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(encounterSetAtvf);
+
+                baseField["maxlv"].AsInt = encounter.maxLv;
+                baseField["minlv"].AsInt = encounter.minLv;
+                baseField["monsNo"].AsInt = encounter.dexID;
+
+                newEncounters.Add(baseField);
             }
-            AssetTypeValueField martItemReference = encounterSetAtvf.children[0];
-            encounterSetAtvf.SetChildrenList(GetATVFs(martItemReference, encounterAtvs));
-        }
-
-        /// <summary>
-        ///  Updates loaded bundle with PickupItems.
-        /// </summary>
-        private static AssetTypeValueField[] GetATVFs(AssetTypeValueField reference, List<List<AssetTypeValue>> items)
-        {
-            List<AssetTypeValueField> atvfs = new();
-            for (int itemIdx = 0; itemIdx < items.Count; itemIdx++)
-            {
-                List<AssetTypeValue> item = items[itemIdx];
-                AssetTypeValueField atvf = new();
-                AssetTypeValueField[] children = new AssetTypeValueField[item.Count];
-
-                for (int i = 0; i < children.Length; i++)
-                {
-                    children[i] = new AssetTypeValueField();
-                    children[i].Read(item[i], reference.children[i].templateField, Array.Empty<AssetTypeValueField>());
-                }
-
-                atvf.Read(null, reference.templateField, children);
-                atvfs.Add(atvf);
-            }
-            return atvfs.ToArray();
+            encounterSetAtvf.Children = newEncounters;
         }
 
         /// <summary>
