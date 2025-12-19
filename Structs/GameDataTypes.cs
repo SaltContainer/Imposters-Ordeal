@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using static ImpostersOrdeal.ExternalJsonStructs;
-using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
@@ -12,86 +11,6 @@ namespace ImpostersOrdeal
     /// </summary>
     public static class GameDataTypes
     {
-        public class EvScript
-        {
-            public string mName;
-            public List<Script> scripts;
-            public List<string> strList;
-        }
-
-        public class Script
-        {
-            public string evLabel;
-            public List<Command> commands;
-        }
-
-        public class Command
-        {
-            public int cmdType;
-            public List<Argument> args;
-        }
-
-        public class Argument
-        {
-            public int argType;
-            public float data;
-        }
-
-        public class MapWarpAsset
-        {
-            public string mName;
-            public List<MapWarp> mapWarps;
-            public List<int> zoneIDs;
-        }
-
-        public class MapWarp
-        {
-            public int groupId;
-            public int destWarpZone;
-            public int destWarpIndex;
-            public int inputDir;
-            public int flagIndex;
-            public int scriptLabel;
-            public int exitLabel;
-            public string connectionName;
-
-            //Readonly
-            public int currentWarpIndex;
-            public MapWarpAsset destination;
-        }
-
-        public class PickupItem
-        {
-            public ushort itemID;
-            public List<byte> ratios;
-        }
-
-        public class ShopTables
-        {
-            public List<MartItem> martItems;
-            public List<FixedShopItem> fixedShopItems;
-            public List<BpShopItem> bpShopItems;
-        }
-
-        public class MartItem
-        {
-            public ushort itemID;
-            public int badgeNum;
-            public int zoneID;
-        }
-
-        public class FixedShopItem
-        {
-            public ushort itemID;
-            public int shopID;
-        }
-
-        public class BpShopItem
-        {
-            public ushort itemID;
-            public int npcID;
-        }
-
         public class Trainer : INamedEntity
         {
             public int trainerTypeID;
@@ -578,82 +497,6 @@ namespace ImpostersOrdeal
             {
                 return label != "";
             }
-        }
-
-        public class EncounterTableFile
-        {
-            public string mName;
-            public List<EncounterTable> encounterTables;
-            public List<int> trophyGardenMons;
-            public List<HoneyTreeEncounter> honeyTreeEnconters;
-            public List<int> safariMons;
-        }
-
-        public class EncounterTable
-        {
-            public ZoneID zoneID;
-            public int encRateGround;
-            public List<Encounter> groundMons;
-            public List<Encounter> tairyo;
-            public List<Encounter> day;
-            public List<Encounter> night;
-            public List<Encounter> swayGrass;
-            public int formProb;
-            public int unownTable;
-            public List<Encounter> gbaRuby;
-            public List<Encounter> gbaSapphire;
-            public List<Encounter> gbaEmerald;
-            public List<Encounter> gbaFire;
-            public List<Encounter> gbaLeaf;
-            public int encRateWater;
-            public List<Encounter> waterMons;
-            public int encRateOldRod;
-            public List<Encounter> oldRodMons;
-            public int encRateGoodRod;
-            public List<Encounter> goodRodMons;
-            public int encRateSuperRod;
-            public List<Encounter> superRodMons;
-
-            public List<List<Encounter>> GetAllTables()
-            {
-                return new List<List<Encounter>>()
-                {
-                    groundMons, tairyo, day, night, swayGrass,
-                    gbaRuby, gbaSapphire, gbaEmerald, gbaFire, gbaLeaf,
-                    waterMons, oldRodMons, goodRodMons, superRodMons
-                };
-            }
-
-            public double GetAvgLevel()
-            {
-                return GetAllTables()
-                    .Take(5)
-                    .SelectMany(l => l)
-                    .Where(e => e.dexID != 0)
-                    .Select(e => e.GetAvgLevel())
-                    .DefaultIfEmpty()
-                    .Average();
-            }
-        }
-
-        public class Encounter
-        {
-            public int maxLv;
-            public int minLv;
-            public int dexID;
-
-            public double GetAvgLevel()
-            {
-                return (minLv + maxLv) / 2.0;
-            }
-        }
-
-        public class HoneyTreeEncounter
-        {
-            public int rate;
-            public int normalDexID;
-            public int rareDexID;
-            public int superRareDexID;
         }
 
         public class MessageFileSet

@@ -16,16 +16,15 @@ namespace ImpostersOrdeal
     {
         public class GameDataSet
         {
-            public List<EvScript> evScripts;
-            public List<MapWarpAsset> mapWarpAssets;
-            public List<PickupItem> pickupItems;
-            public ShopTables shopTables;
-            public List<Trainer> trainers;
-            public List<BattleTowerTrainer> battleTowerTrainers;
-            public List<BattleTowerTrainer> battleTowerTrainersDouble;
-            public List<BattleTowerTrainerPokemon> battleTowerTrainerPokemons;
-            public EncounterTableFile[] encounterTableFiles;
-            public MessageFileSet[] messageFileSets;
+            public EvDataCollection evScripts;
+            public PickupTable pickupItems;
+            public ShopTable shopTables;
+            public List<Trainer> trainers; // TODO
+            public List<BattleTowerTrainer> battleTowerTrainers; // TODO
+            public List<BattleTowerTrainer> battleTowerTrainersDouble; // TODO
+            public List<BattleTowerTrainerPokemon> battleTowerTrainerPokemons; // TODO
+            public List<FieldEncountTable> encounterTableFiles;
+            public Dictionary<MessageEnumData.MsgLangId, List<MsbtData>> messageFileSets;
             public List<GrowthRate> growthRates;
             public List<UgArea> ugAreas;
             public List<UgEncounterFile> ugEncounterFiles;
@@ -169,6 +168,7 @@ namespace ImpostersOrdeal
         }
 
         public static FileManager fileManager;
+        public static ParserCollection parserCollection;
         public static Dictionary<PathEnum, string> randomizerPaths = new();
         public static GameDataSet gameData;
         public static DataTable absoluteBoundaries = new();

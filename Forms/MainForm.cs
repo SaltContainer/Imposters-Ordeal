@@ -241,6 +241,10 @@ namespace ImpostersOrdeal
             Initialize();
             gameData = new();
 
+            parserCollection = new(fileManager);
+            parserCollection.AddParserForType(new VanillaEvDataParser());
+            parserCollection.AddParserForType(new VanillaPickupParser());
+
             //Check if valid dump path already is in config
             if (!fileManager.InitializeFromConfig())
             {

@@ -18,8 +18,174 @@ namespace ImpostersOrdeal
     /// </summary>
     public class FileManager
     {
+        public AssetsToolsAssetBundleIO assetBundleIO;
+
+        private Dictionary<string, DataSource> sources = new Dictionary<string, DataSource>();
+
+        public AssetsManager AssetsManager => assetBundleIO.AssetsManager;
+
+        public FileManager()
+        {
+            assetBundleIO = new AssetsToolsAssetBundleIO(this);
+        }
+
+        /// <summary>
+        /// Obtains a reference to the Battle/battle_masterdatas bundle data source.
+        /// </summary>
+        public BattleMasterdatasBundle GetBattleMasterdatasBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.BATTLEMASTERDATAS_PATH, p => new BattleMasterdatasBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the Contest/md/contest_masterdatas bundle data source.
+        /// </summary>
+        public ContestMasterdatasBundle GetContestMasterdatasBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.CONTESTMASTERDATAS_PATH, p => new ContestMasterdatasBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the Dpr/ev_script bundle data source.
+        /// </summary>
+        public EvScriptBundle GetEvScriptBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.EVSCRIPT_PATH, p => new EvScriptBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the Dpr/masterdatas bundle data source.
+        /// </summary>
+        public DprMasterdatasBundle GetDprMasterdatasBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.DPRMASTERDATAS_PATH, p => new DprMasterdatasBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the Dpr/scriptableobjects/gamesettings bundle data source.
+        /// </summary>
+        public GameSettingsBundle GetGameSettingsBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.GAMESETTINGS_PATH, p => new GameSettingsBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the Message/common_msbt bundle data source.
+        /// </summary>
+        public CommonMsbtBundle GetCommonMsbtBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.COMMONMSBT_PATH, p => new CommonMsbtBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the Message/english bundle data source.
+        /// </summary>
+        public EnglishMessageBundle GetEnglishMessageBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.ENGLISH_MESSAGE_PATH, p => new EnglishMessageBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the Message/french bundle data source.
+        /// </summary>
+        public FrenchMessageBundle GetFrenchMessageBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.FRENCH_MESSAGE_PATH, p => new FrenchMessageBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the Message/german bundle data source.
+        /// </summary>
+        public GermanMessageBundle GetGermanMessageBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.GERMAN_MESSAGE_PATH, p => new GermanMessageBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the Message/italian bundle data source.
+        /// </summary>
+        public ItalianMessageBundle GetItalianMessageBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.ITALIAN_MESSAGE_PATH, p => new ItalianMessageBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the Message/jpn bundle data source.
+        /// </summary>
+        public JapaneseMessageBundle GetJapaneseMessageBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.JAPANESE_MESSAGE_PATH, p => new JapaneseMessageBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the Message/jpn_kanji bundle data source.
+        /// </summary>
+        public JapaneseKanjiMessageBundle GetJapaneseKanjiMessageBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.JAPANESEKANJI_MESSAGE_PATH, p => new JapaneseKanjiMessageBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the Message/korean bundle data source.
+        /// </summary>
+        public KoreanMessageBundle GetKoreanMessageBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.KOREAN_MESSAGE_PATH, p => new KoreanMessageBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the Message/simp_chinese bundle data source.
+        /// </summary>
+        public SimplifiedChineseMessageBundle GetSimplifiedChineseMessageBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.SIMPLIFIEDCHINESE_MESSAGE_PATH, p => new SimplifiedChineseMessageBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the Message/spanish bundle data source.
+        /// </summary>
+        public SpanishMessageBundle GetSpanishMessageBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.SPANISH_MESSAGE_PATH, p => new SpanishMessageBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the Message/trad_chinese bundle data source.
+        /// </summary>
+        public TraditionalChineseMessageBundle GetTraditionalChineseMessageBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.TRADITIONALCHINESE_MESSAGE_PATH, p => new TraditionalChineseMessageBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the Pml/personal_masterdatas bundle data source.
+        /// </summary>
+        public PersonalMasterdatasBundle GetPersonalMasterdatasBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.PERSONALMASTERDATAS_PATH, p => new PersonalMasterdatasBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the UIs/masterdatas/uimasterdatas bundle data source.
+        /// </summary>
+        public UIMasterdatasBundle GetUIMasterdatasBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.UIMASTERDATAS_PATH, p => new UIMasterdatasBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the UnderGround/data/ugdata bundle data source.
+        /// </summary>
+        public UGDataBundle GetUGDataBundle() =>
+            GetDataSourceOfTypeAtPath(Constants.UGDATA_PATH, p => new UGDataBundle(this, p));
+
+        /// <summary>
+        /// Obtains a reference to a specific subclass of a data source, to a specific path.
+        /// </summary>
+        private T GetDataSourceOfTypeAtPath<T>(string path, Func<string, T> initFunc) where T : DataSource
+        {
+            DataSource source;
+            if (sources.TryGetValue(path, out source))
+                return source as T;
+
+            source = initFunc.Invoke(path);
+            sources[path] = source;
+            return source as T;
+        }
+
+        /// <summary>
+        /// Exports all the modded data sources into the output directory and clears it beforehand if necessary.
+        /// </summary>
+        public void ExportMod()
+        {
+            string outputDirectory = Path.Combine(Environment.CurrentDirectory, Constants.OUTPUT_FOLDER);
+
+            if (Directory.Exists(outputDirectory))
+                Directory.Delete(outputDirectory, true);
+
+            Directory.CreateDirectory(outputDirectory);
+
+            SaveDataSources(outputDirectory);
+        }
+
+        /// <summary>
+        /// Saves all the modded data sources into the output directory.
+        /// </summary>
+        private void SaveDataSources(string outputDirectory)
+        {
+            foreach (var source in sources.Values)
+                source.Save(outputDirectory);
+        }
+
+
+
         public static readonly string outputModName = "Output";
         public static readonly string tempLocationName = "Temp";
+
         public static readonly string[] assetAssistantRelevantFiles = new string[]
         {
             "\\Contest\\md\\contest_masterdatas",
@@ -416,7 +582,7 @@ namespace ImpostersOrdeal
         {
             BundleFileInstance bfi = fileArchive[randomizerPaths[pathEnum]].bundle;
             AssetsFileInstance afi = am.LoadAssetsFileFromBundle(bfi, 0);
-            return afi.table.GetAssetsOfType(114).Select(afie => am.GetTypeInstance(afi, afie).GetBaseField()).ToList();
+            return afi.file.GetAssetsOfType(AssetClassID.MonoBehaviour).Select(afie => am.GetBaseField(afi, afie)).ToList();
         }
 
         /// <summary>
