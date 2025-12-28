@@ -244,6 +244,20 @@ namespace ImpostersOrdeal
             parserCollection = new(fileManager);
             parserCollection.AddParserForType(new VanillaEvDataParser());
             parserCollection.AddParserForType(new VanillaPickupParser());
+            parserCollection.AddParserForType(new VanillaShopParser());
+            parserCollection.AddParserForType(new VanillaTrainerParser());
+            parserCollection.AddParserForType(new VanillaTowerTrainerParser());
+            parserCollection.AddParserForType(new VanillaEncounterTableParser());
+            parserCollection.AddParserForType(new VanillaMessageFileParser());
+            parserCollection.AddParserForType(new VanillaGrowthRateParser());
+            parserCollection.AddParserForType(new VanillaUgHideawayParser());
+            parserCollection.AddParserForType(new VanillaUgEncounterParser());
+            parserCollection.AddParserForType(new VanillaUgEncounterLevelParser());
+            parserCollection.AddParserForType(new VanillaUgPokemonDataParser());
+            parserCollection.AddParserForType(new VanillaPokemonDataParser());
+            parserCollection.AddParserForType(new VanillaItemParser());
+            parserCollection.AddParserForType(new VanillaMoveParser());
+            parserCollection.AddParserForType(new VanillaDelphisMainParser());
 
             //Check if valid dump path already is in config
             if (!fileManager.InitializeFromConfig())

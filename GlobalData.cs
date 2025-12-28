@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using static ImpostersOrdeal.GameDataTypes;
 using static ImpostersOrdeal.ExternalJsonStructs;
-using SmartPoint.AssetAssistant;
 
 namespace ImpostersOrdeal
 {
@@ -16,33 +15,33 @@ namespace ImpostersOrdeal
     {
         public class GameDataSet
         {
-            public EvDataCollection evScripts;
-            public PickupTable pickupItems;
-            public ShopTable shopTables;
-            public List<Trainer> trainers; // TODO
-            public List<BattleTowerTrainer> battleTowerTrainers; // TODO
-            public List<BattleTowerTrainer> battleTowerTrainersDouble; // TODO
-            public List<BattleTowerTrainerPokemon> battleTowerTrainerPokemons; // TODO
-            public List<FieldEncountTable> encounterTableFiles;
-            public Dictionary<MessageEnumData.MsgLangId, List<MsbtData>> messageFileSets;
-            public List<GrowthRate> growthRates;
-            public List<UgArea> ugAreas;
-            public List<UgEncounterFile> ugEncounterFiles;
-            public List<UgEncounterLevelSet> ugEncounterLevelSets;
-            public List<UgSpecialEncounter> ugSpecialEncounters;
-            public List<UgPokemonData> ugPokemonData;
+            public EvDataCollection evScriptFiles;
+            public PickupTable pickupTable;
+            public ShopTable shopTable;
+            public TrainerTable trainerTable;
+            public BattleTowerTable battleTowerTable;
+            public FieldEncountTableCollection encounterTableFiles;
+            public MessageFileTable messageFileTable;
+            public GrowTable growthRateTable;
+            public UgHideawayTable ugHideawayTable;
+            public UgEncounterTableCollection ugEncounterFiles;
+            public UgEncounterLevelTable ugEncounterLevelTable;
+            public UgPokemonDataTable ugPokemonDataTable;
+            public PokemonDataTable pokemonDataTable; //Ordered, idx=personalID
+            public ItemTable itemTable; //Ordered, idx=itemID, tmID
+            public MoveTable moveTable; //Ordered, idx=moveID
+            public DelphisMain delphisMainBank;
+            public GlobalMetadata globalMetadata;
+            public DprBin dprBin;
+
+            // TODO: Remove these?
             public List<Ability> abilities; //Readonly
             public List<Typing> typings; //Readonly
             public List<DamageCategory> damageCategories; //Readonly
             public List<Nature> natures; //Readonly
             public List<TrainerType> trainerTypes; //Readonly
-            public List<Pokemon> personalEntries; //Ordered, idx=personalID
             public List<DexEntry> dexEntries; //Ordered, idx=dexID
-            public List<Item> items; //Ordered, idx=itemID
-            public List<TM> tms; //Ordered, idx=tmID
-            public List<Move> moves; //Ordered, idx=moveID
-            public Wwise.WwiseData audioData;
-            public GlobalMetadata globalMetadata;
+
             public List<BattleMasterdatas.MotionTimingData> motionTimingData;
             public List<Masterdatas.PokemonInfoCatalog> pokemonInfos;
             public List<PersonalMasterdatas.AddPersonalTable> addPersonalTables;
@@ -54,7 +53,6 @@ namespace ImpostersOrdeal
             public List<UIMasterdatas.SearchPokeIconSex> uiSearchPokeIconSex;
             public UIMasterdatas.DistributionTable uiDistributionTable;
             public List<ResultMotion> contestResultMotion;
-            public AssetBundleDownloadManifest dprBin;
 
             public List<(string name, Starter obj)> externalStarters;
             public List<(string name, HoneyTreeZone obj)> externalHoneyTrees;

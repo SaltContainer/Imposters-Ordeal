@@ -19,6 +19,7 @@ namespace ImpostersOrdeal
     public class FileManager
     {
         public AssetsToolsAssetBundleIO assetBundleIO;
+        public BinaryFileIO binaryFileIO;
 
         private Dictionary<string, DataSource> sources = new Dictionary<string, DataSource>();
 
@@ -27,6 +28,7 @@ namespace ImpostersOrdeal
         public FileManager()
         {
             assetBundleIO = new AssetsToolsAssetBundleIO(this);
+            binaryFileIO = new BinaryFileIO(this);
         }
 
         /// <summary>
@@ -144,6 +146,24 @@ namespace ImpostersOrdeal
             GetDataSourceOfTypeAtPath(Constants.UGDATA_PATH, p => new UGDataBundle(this, p));
 
         /// <summary>
+        /// Obtains a reference to the Delphis_Main bank data source.
+        /// </summary>
+        public DelphisMainBank GetDelphisMainBank() =>
+            GetDataSourceOfTypeAtPath(Constants.DELPHISMAIN_PATH, p => new DelphisMainBank(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the GlobalMetadata file data source.
+        /// </summary>
+        public GlobalMetadataFile GetGlobalMetadataFile() =>
+            GetDataSourceOfTypeAtPath(Constants.GLOBALMETADATA_PATH, p => new GlobalMetadataFile(this, p));
+
+        /// <summary>
+        /// Obtains a reference to the Dpr.bin Asset Bundle Download Manifest file data source.
+        /// </summary>
+        public DprBinABDM GetDprBinFile() =>
+            GetDataSourceOfTypeAtPath(Constants.DPRBIN_PATH, p => new DprBinABDM(this, p));
+
+        /// <summary>
         /// Obtains a reference to a specific subclass of a data source, to a specific path.
         /// </summary>
         private T GetDataSourceOfTypeAtPath<T>(string path, Func<string, T> initFunc) where T : DataSource
@@ -180,7 +200,6 @@ namespace ImpostersOrdeal
             foreach (var source in sources.Values)
                 source.Save(outputDirectory);
         }
-
 
 
         public static readonly string outputModName = "Output";

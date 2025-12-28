@@ -106,7 +106,7 @@ namespace ImpostersOrdeal
                     break;
                 case 1:
                     sfd.FileName = trainersFileName;
-                    data = GenerateTrainerStructs(gameData.trainers);
+                    data = GenerateTrainerStructs(gameData.trainerTable);
                     break;
                 case 2:
                     sfd.FileName = textFileName;
@@ -337,7 +337,7 @@ namespace ImpostersOrdeal
                         List<JsonConverterStructs.Trainer> t =
                             JsonConvert.DeserializeObject<List<JsonConverterStructs.Trainer>>
                             (File.ReadAllText(ofd.FileName));
-                        gameData.trainers = ParseTrainerStructs(t, gameData.trainers);
+                        gameData.trainerTable = ParseTrainerStructs(t, gameData.trainerTable);
                         gameData.SetModified(GameDataSet.DataField.Trainers);
                         break;
                     case 2:

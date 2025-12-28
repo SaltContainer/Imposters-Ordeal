@@ -1,6 +1,4 @@
-﻿using AssetsTools.NET;
-using System.Collections.Generic;
-using ImpostersOrdeal.Utils;
+﻿using ImpostersOrdeal.Utils;
 using System.Linq;
 
 namespace ImpostersOrdeal
@@ -38,7 +36,7 @@ namespace ImpostersOrdeal
                 var pickupItem = new PickupTable.PickupItem();
 
                 pickupItem.ID = pickupItemField[ID_FIELD].AsUShort;
-                pickupItem.Ratios = pickupItemField[RATIOS_FIELD].GetArrayElements().Select(r => r.AsByte).ToList();
+                pickupItem.Ratios = pickupItemField[RATIOS_FIELD].GetArrayElements().Select(f => f.AsByte).ToList();
 
                 data.PickupItems.Add(pickupItem);
             }
@@ -51,17 +49,11 @@ namespace ImpostersOrdeal
             var dprMasterdatasBundle = fileManager.GetDprMasterdatasBundle();
             var (pathID, monoBehaviour) = dprMasterdatasBundle.GetMonoByName(PICKUPTABLE_MONONAME);
 
-            List<AssetTypeValueField> newPickupItems = new();
-            foreach (var pickupItem in data.PickupItems)
+            monoBehaviour[MONOHIROI_FIELD].SetArrayElementsAndInit(data.PickupItems, (pickupItemField, pickupItem) =>
             {
-                AssetTypeValueField pickupItemField = monoBehaviour[MONOHIROI_FIELD].CreateArrayElement();
-
                 pickupItemField[ID_FIELD].AsUShort = pickupItem.ID;
-                pickupItemField[RATIOS_FIELD].SetByteArrayElements(pickupItem.Ratios);
-
-                newPickupItems.Add(pickupItemField);
-            }
-            monoBehaviour[MONOHIROI_FIELD].SetArrayElements(newPickupItems);
+                pickupItemField[RATIOS_FIELD].SetArrayElementsAndInit(pickupItem.Ratios, (f, v) => f.AsByte = v);
+            });
 
             dprMasterdatasBundle.SetMonoByPathID(pathID, monoBehaviour);
         }

@@ -395,7 +395,7 @@ namespace ImpostersOrdeal
         /// </summary>
         private static async Task ParseTrainers()
         {
-            gameData.trainers = new();
+            gameData.trainerTable = new();
             AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => m["m_Name"].AsString == "TrainerTable");
 
             AssetTypeValueField[] nameFields = await FindLabelArrayOfMessageFileAsync("dp_trainers_name", Language.English);
@@ -629,7 +629,7 @@ namespace ImpostersOrdeal
                     trainer.trainerPokemon.Add(pokemon);
                 }
 
-                gameData.trainers.Add(trainer);
+                gameData.trainerTable.Add(trainer);
             }
         }
 
@@ -1643,10 +1643,10 @@ namespace ImpostersOrdeal
         /// </summary>
         private static async Task ParseShopTables()
         {
-            gameData.shopTables = new();
+            gameData.shopTable = new();
             AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => m["m_Name"].AsString == "ShopTable");
 
-            gameData.shopTables.martItems = new();
+            gameData.shopTable.martItems = new();
             var martItemFields = monoBehaviour["FS.Array"].Children;
             for (int martItemIdx = 0; martItemIdx < martItemFields.Count; martItemIdx++)
             {
@@ -1655,10 +1655,10 @@ namespace ImpostersOrdeal
                 martItem.badgeNum = martItemFields[martItemIdx]["BadgeNum"].AsInt;
                 martItem.zoneID = martItemFields[martItemIdx]["ZoneID"].AsInt;
 
-                gameData.shopTables.martItems.Add(martItem);
+                gameData.shopTable.martItems.Add(martItem);
             }
 
-            gameData.shopTables.fixedShopItems = new();
+            gameData.shopTable.fixedShopItems = new();
             var fixedShopItemFields = monoBehaviour["FixedShop.Array"].Children;
             for (int fixedShopItemIdx = 0; fixedShopItemIdx < fixedShopItemFields.Count; fixedShopItemIdx++)
             {
@@ -1666,10 +1666,10 @@ namespace ImpostersOrdeal
                 fixedShopItem.itemID = fixedShopItemFields[fixedShopItemIdx]["ItemNo"].AsUShort;
                 fixedShopItem.shopID = fixedShopItemFields[fixedShopItemIdx]["ShopID"].AsInt;
 
-                gameData.shopTables.fixedShopItems.Add(fixedShopItem);
+                gameData.shopTable.fixedShopItems.Add(fixedShopItem);
             }
 
-            gameData.shopTables.bpShopItems = new();
+            gameData.shopTable.bpShopItems = new();
             var bpShopItemFields = monoBehaviour["BPShop.Array"].Children;
             for (int bpShopItemIdx = 0; bpShopItemIdx < bpShopItemFields.Count; bpShopItemIdx++)
             {
@@ -1686,7 +1686,7 @@ namespace ImpostersOrdeal
                     throw new Exception("Outdated Dump");
                 }
 
-                gameData.shopTables.bpShopItems.Add(bpShopItem);
+                gameData.shopTable.bpShopItems.Add(bpShopItem);
             }
         }
 
@@ -1695,7 +1695,7 @@ namespace ImpostersOrdeal
         /// </summary>
         private static async Task ParsePickupItems()
         {
-            gameData.pickupItems = new();
+            gameData.pickupTable = new();
             AssetTypeValueField monoBehaviour = (await monoBehaviourCollection[PathEnum.DprMasterdatas]).Find(m => m["m_Name"].AsString == "MonohiroiTable");
 
             var pickupItemFields = monoBehaviour["MonoHiroi.Array"].Children;
@@ -1709,7 +1709,7 @@ namespace ImpostersOrdeal
                 for (int ratio = 0; ratio < pickupItemFields[pickupItemIdx]["Ratios.Array"].Children.Count; ratio++)
                     pickupItem.ratios.Add(pickupItemFields[pickupItemIdx]["Ratios.Array"][ratio].AsByte);
 
-                gameData.pickupItems.Add(pickupItem);
+                gameData.pickupTable.Add(pickupItem);
             }
         }
 
@@ -1946,7 +1946,7 @@ namespace ImpostersOrdeal
         /// </summary>
         private static async Task ParseEvScripts()
         {
-            gameData.evScripts = new();
+            gameData.evScriptFiles = new();
             List<AssetTypeValueField> monoBehaviours = (await monoBehaviourCollection[PathEnum.EvScript]).Where(m => !m["Scripts"].IsDummy && !m["StrList"].IsDummy).ToList();
 
             for (int mIdx = 0; mIdx < monoBehaviours.Count; mIdx++)
@@ -2004,7 +2004,7 @@ namespace ImpostersOrdeal
                 for (int stringIdx = 0; stringIdx < stringFields.Count; stringIdx++)
                     evScript.strList.Add(stringFields[stringIdx].AsString);
 
-                gameData.evScripts.Add(evScript);
+                gameData.evScriptFiles.Add(evScript);
             }
         }
 
@@ -3367,9 +3367,9 @@ namespace ImpostersOrdeal
 
             List<AssetTypeValueField> newTrainers = new();
             List<AssetTypeValueField> newPokes = new();
-            for (int trainerIdx = 0; trainerIdx < gameData.trainers.Count; trainerIdx++)
+            for (int trainerIdx = 0; trainerIdx < gameData.trainerTable.Count; trainerIdx++)
             {
-                Trainer trainer = gameData.trainers[trainerIdx];
+                Trainer trainer = gameData.trainerTable[trainerIdx];
                 AssetTypeValueField trainerBaseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["TrainerData.Array"]);
 
                 trainerBaseField["TypeID"].AsInt = trainer.trainerTypeID;
@@ -3669,9 +3669,9 @@ namespace ImpostersOrdeal
             AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.DprMasterdatas).Find(m => m["m_Name"].AsString == "ShopTable");
 
             List<AssetTypeValueField> martItems = new();
-            for (int martItemIdx = 0; martItemIdx < gameData.shopTables.martItems.Count; martItemIdx++)
+            for (int martItemIdx = 0; martItemIdx < gameData.shopTable.martItems.Count; martItemIdx++)
             {
-                MartItem martItem = gameData.shopTables.martItems[martItemIdx];
+                MartItem martItem = gameData.shopTable.martItems[martItemIdx];
                 AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["FS.Array"]);
 
                 baseField["ItemNo"].AsUShort = martItem.itemID;
@@ -3683,9 +3683,9 @@ namespace ImpostersOrdeal
             monoBehaviour["FS.Array"].Children = martItems;
 
             List<AssetTypeValueField> fixedShopItems = new();
-            for (int fixedShopItemIdx = 0; fixedShopItemIdx < gameData.shopTables.fixedShopItems.Count; fixedShopItemIdx++)
+            for (int fixedShopItemIdx = 0; fixedShopItemIdx < gameData.shopTable.fixedShopItems.Count; fixedShopItemIdx++)
             {
-                FixedShopItem fixedShopItem = gameData.shopTables.fixedShopItems[fixedShopItemIdx];
+                FixedShopItem fixedShopItem = gameData.shopTable.fixedShopItems[fixedShopItemIdx];
                 AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["FixedShop.Array"]);
 
                 baseField["ItemNo"].AsUShort = fixedShopItem.itemID;
@@ -3696,9 +3696,9 @@ namespace ImpostersOrdeal
             monoBehaviour["FixedShop.Array"].Children = fixedShopItems;
 
             List<AssetTypeValueField> bpShopItems = new();
-            for (int bpShopItemIdx = 0; bpShopItemIdx < gameData.shopTables.bpShopItems.Count; bpShopItemIdx++)
+            for (int bpShopItemIdx = 0; bpShopItemIdx < gameData.shopTable.bpShopItems.Count; bpShopItemIdx++)
             {
-                BpShopItem bpShopItem = gameData.shopTables.bpShopItems[bpShopItemIdx];
+                BpShopItem bpShopItem = gameData.shopTable.bpShopItems[bpShopItemIdx];
                 AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["BPShop.Array"]);
 
                 baseField["ItemNo"].AsUShort = bpShopItem.itemID;
@@ -3719,9 +3719,9 @@ namespace ImpostersOrdeal
             AssetTypeValueField monoBehaviour = fileManager.GetMonoBehaviours(PathEnum.DprMasterdatas).Find(m => m["m_Name"].AsString == "MonohiroiTable");
 
             List<AssetTypeValueField> pickupItems = new();
-            for (int pickupItemIdx = 0; pickupItemIdx < gameData.pickupItems.Count; pickupItemIdx++)
+            for (int pickupItemIdx = 0; pickupItemIdx < gameData.pickupTable.Count; pickupItemIdx++)
             {
-                PickupItem pickupItem = gameData.pickupItems[pickupItemIdx];
+                PickupItem pickupItem = gameData.pickupTable[pickupItemIdx];
                 AssetTypeValueField baseField = ValueBuilder.DefaultValueFieldFromArrayTemplate(monoBehaviour["MonoHiroi.Array"]);
 
                 baseField["ID"].AsUShort = pickupItem.itemID;
@@ -3744,7 +3744,7 @@ namespace ImpostersOrdeal
             for (int mIdx = 0; mIdx < monoBehaviours.Count; mIdx++)
             {
                 var mono = monoBehaviours[mIdx];
-                EvScript evScript = gameData.evScripts.Find(s => s.mName == mono["m_Name"].AsString);
+                EvScript evScript = gameData.evScriptFiles.Find(s => s.mName == mono["m_Name"].AsString);
 
                 //Write Scripts
                 List<AssetTypeValueField> newScripts = new();

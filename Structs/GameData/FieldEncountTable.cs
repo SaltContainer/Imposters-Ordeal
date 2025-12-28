@@ -1,52 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace ImpostersOrdeal
 {
     public class FieldEncountTable : ScriptableObject
     {
-        public Sheettable[] table;
-        public Sheeturayama[] urayama;
-        public Sheetmistu[] mistu;
-        public Sheethoneytree[] honeytree;
-        public Sheetsafari[] safari;
-        public Sheetmvpoke[] mvpoke;
-        public Sheetlegendpoke[] legendpoke;
-        public Sheetzui[] zui;
+        public List<Sheettable> table = new List<Sheettable>();
+        public List<Sheeturayama> urayama = new List<Sheeturayama>();
+        public List<Sheetmistu> mistu = new List<Sheetmistu>();
+        public List<Sheethoneytree> honeytree = new List<Sheethoneytree>();
+        public List<Sheetsafari> safari = new List<Sheetsafari>();
+        public List<Sheetmvpoke> mvpoke = new List<Sheetmvpoke>();
+        public List<Sheetlegendpoke> legendpoke = new List<Sheetlegendpoke>();
+        public List<Sheetzui> zui = new List<Sheetzui>();
 
-        public Sheettable this[int index] => table[index];
-
-        [Serializable]
         public class Sheettable
         {
             public ZoneID zoneID;
             public int encRate_gr;
-            public MonsLv[] ground_mons;
-            public MonsLv[] tairyo;
-            public MonsLv[] day;
-            public MonsLv[] night;
-            public MonsLv[] swayGrass;
-            public int[] FormProb;
-            public int[] Nazo;
-            public int[] AnnoonTable;
-            public MonsLv[] gbaRuby;
-            public MonsLv[] gbaSapp;
-            public MonsLv[] gbaEme;
-            public MonsLv[] gbaFire;
-            public MonsLv[] gbaLeaf;
+            public List<MonsLv> ground_mons = new List<MonsLv>();
+            public List<MonsLv> tairyo = new List<MonsLv>();
+            public List<MonsLv> day = new List<MonsLv>();
+            public List<MonsLv> night = new List<MonsLv>();
+            public List<MonsLv> swayGrass = new List<MonsLv>();
+            public List<int> FormProb = new List<int>();
+            public List<int> Nazo = new List<int>();
+            public List<int> AnnoonTable = new List<int>();
+            public List<MonsLv> gbaRuby = new List<MonsLv>();
+            public List<MonsLv> gbaSapp = new List<MonsLv>();
+            public List<MonsLv> gbaEme = new List<MonsLv>();
+            public List<MonsLv> gbaFire = new List<MonsLv>();
+            public List<MonsLv> gbaLeaf = new List<MonsLv>();
             public int encRate_wat;
-            public MonsLv[] water_mons;
+            public List<MonsLv> water_mons = new List<MonsLv>();
             public int encRate_turi_boro;
-            public MonsLv[] boro_mons;
+            public List<MonsLv> boro_mons = new List<MonsLv>();
             public int encRate_turi_ii;
-            public MonsLv[] ii_mons;
+            public List<MonsLv> ii_mons = new List<MonsLv>();
             public int encRate_sugoi;
-            public MonsLv[] sugoi_mons;
+            public List<MonsLv> sugoi_mons = new List<MonsLv>();
 
-            public List<MonsLv[]> GetAllTables()
+            public struct MonsLv
             {
-                return new List<MonsLv[]>()
+                public int maxlv;
+                public int minlv;
+                public int monsNo;
+
+                public double GetAvgLevel()
+                {
+                    return (minlv + maxlv) / 2.0;
+                }
+            }
+
+            public List<List<MonsLv>> GetAllTables()
+            {
+                return new List<List<MonsLv>>()
                 {
                     ground_mons, tairyo, day, night, swayGrass,
                     gbaRuby, gbaSapp, gbaEme, gbaFire, gbaLeaf,
@@ -66,13 +74,11 @@ namespace ImpostersOrdeal
             }
         }
 
-        [Serializable]
         public class Sheeturayama
         {
             public int monsNo;
         }
 
-        [Serializable]
         public class Sheetmistu
         {
             public int Rate;
@@ -81,28 +87,24 @@ namespace ImpostersOrdeal
             public int SuperRare;
         }
 
-        [Serializable]
         public class Sheethoneytree
         {
             public int Normal;
             public int Rare;
         }
 
-        [Serializable]
         public class Sheetsafari
         {
             public int MonsNo;
         }
 
-        [Serializable]
         public class Sheetmvpoke
         {
             public ZoneID zoneID;
             public int nextCount;
-            public ZoneID[] nextZoneID;
+            public List<ZoneID> nextZoneID = new List<ZoneID>();
         }
 
-        [Serializable]
         public class Sheetlegendpoke
         {
             public int monsNo;
@@ -121,11 +123,10 @@ namespace ImpostersOrdeal
             public int waza4;
         }
 
-        [Serializable]
         public class Sheetzui
         {
             public ZoneID zoneID;
-            public bool[] form;
+            public List<bool> form = new List<bool>();
         }
     }
 }

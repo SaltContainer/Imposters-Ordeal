@@ -7,8 +7,13 @@ namespace ImpostersOrdeal
         // Folder names
         private static readonly string ROMFS_FOLDER = "romfs";
         private static readonly string DATA_FOLDER = "Data";
+        private static readonly string MANAGED_FOLDER = "Managed";
+        private static readonly string METADATA_FOLDER = "Metadata";
         private static readonly string STREAMINGASSETS_FOLDER = "StreamingAssets";
         private static readonly string ASSETASSISTANT_FOLDER = "AssetAssistant";
+        private static readonly string AUDIO_FOLDER = "Audio";
+        private static readonly string GENERATEDSOUNDBANKS_FOLDER = "GeneratedSoundBanks";
+        private static readonly string SWITCH_FOLDER = "Switch";
 
         private static readonly string BATTLE_FOLDER = "Battle";
         private static readonly string CONTEST_FOLDER = "Contest";
@@ -67,5 +72,15 @@ namespace ImpostersOrdeal
         public static readonly string PERSONALMASTERDATAS_PATH =        Path.Combine(ROMFS_FOLDER, DATA_FOLDER, STREAMINGASSETS_FOLDER, ASSETASSISTANT_FOLDER, PML_FOLDER,         PERSONALMASTERDATAS_BUNDLE);
         public static readonly string UIMASTERDATAS_PATH =              Path.Combine(ROMFS_FOLDER, DATA_FOLDER, STREAMINGASSETS_FOLDER, ASSETASSISTANT_FOLDER, UIS_FOLDER,         MASTERDATAS_FOLDER, UIMASTERDATAS_BUNDLE);
         public static readonly string UGDATA_PATH =                     Path.Combine(ROMFS_FOLDER, DATA_FOLDER, STREAMINGASSETS_FOLDER, ASSETASSISTANT_FOLDER, UNDERGROUND_FOLDER, LOWERCASE_DATA_FOLDER, UGDATA_BUNDLE);
+
+        // Binary file names
+        private static readonly string DELPHISMAIN_FILE = "Delphis_Main.bnk";
+        private static readonly string GLOBALMETADATA_FILE = "global-metadata.dat";
+        private static readonly string DPRBIN_FILE = "Dpr.bin";
+
+        // Binary file paths
+        public static readonly string DELPHISMAIN_PATH =    Path.Combine(ROMFS_FOLDER, DATA_FOLDER, AUDIO_FOLDER,           GENERATEDSOUNDBANKS_FOLDER, SWITCH_FOLDER, DELPHISMAIN_FILE);
+        public static readonly string GLOBALMETADATA_PATH = Path.Combine(ROMFS_FOLDER, DATA_FOLDER, MANAGED_FOLDER,         METADATA_FOLDER,            GLOBALMETADATA_FILE);
+        public static readonly string DPRBIN_PATH =         Path.Combine(ROMFS_FOLDER, DATA_FOLDER, STREAMINGASSETS_FOLDER, ASSETASSISTANT_FOLDER,      DPRBIN_FILE);
     }
 }

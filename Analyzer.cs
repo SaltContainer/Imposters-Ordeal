@@ -219,15 +219,15 @@ namespace ImpostersOrdeal
             randomizerSetupConfig.itemPrices = GetNumericDistributionConfig(gameData.items, i => i.price, AbsoluteBoundary.Price);
 
             //Pickup Items
-            randomizerSetupConfig.pickupItems = GetItemDistributionConfig(gameData.pickupItems, p => p.itemID, gameData.items.Select(o => (INamedEntity)o).ToList());
+            randomizerSetupConfig.pickupItems = GetItemDistributionConfig(gameData.pickupTable, p => p.itemID, gameData.items.Select(o => (INamedEntity)o).ToList());
 
             //Shop Items
             instances = new int[gameData.items.Count];
             entities = gameData.items.Select(o => (INamedEntity)o).ToList();
-            for (int i = 0; i < gameData.shopTables.martItems.Count; i++)
-                instances[gameData.shopTables.martItems[i].itemID]++;
-            for (int i = 0; i < gameData.shopTables.fixedShopItems.Count; i++)
-                instances[gameData.shopTables.fixedShopItems[i].itemID]++;
+            for (int i = 0; i < gameData.shopTable.martItems.Count; i++)
+                instances[gameData.shopTable.martItems[i].itemID]++;
+            for (int i = 0; i < gameData.shopTable.fixedShopItems.Count; i++)
+                instances[gameData.shopTable.fixedShopItems[i].itemID]++;
             randomizerSetupConfig.shopItems = ToItemDistributionConfig(instances, entities);
             
             //Wild Pokémon
@@ -363,19 +363,19 @@ namespace ImpostersOrdeal
             //Trainer Items
             instances = new int[gameData.items.Count];
             entities = gameData.items.Select(o => (INamedEntity)o).ToList();
-            for (int i = 0; i < gameData.trainers.Count; i++)
+            for (int i = 0; i < gameData.trainerTable.Count; i++)
             {
-                List<int> items = gameData.trainers[i].GetItems();
+                List<int> items = gameData.trainerTable[i].GetItems();
                 for (int item = 0; item < items.Count; item++)
                     instances[items[item]]++;
             }
             randomizerSetupConfig.trainerItems = ToItemDistributionConfig(instances, entities);
 
             //Trainer Item Count
-            randomizerSetupConfig.trainerItemCount = GetNumericDistributionConfig(gameData.trainers, t => t.GetItems().Count);
+            randomizerSetupConfig.trainerItemCount = GetNumericDistributionConfig(gameData.trainerTable, t => t.GetItems().Count);
             
             //Trainer Pokémon
-            List<TrainerPokemon> tps = gameData.trainers.SelectMany(t => t.trainerPokemon).ToList();
+            List<TrainerPokemon> tps = gameData.trainerTable.SelectMany(t => t.trainerPokemon).ToList();
             randomizerSetupConfig.trainerPokemonSpecies = GetItemDistributionConfig(tps, p => p.dexID, gameData.dexEntries.Select(o =>(INamedEntity)o).ToList());
             
             //Trainer Pokémon Moves
@@ -398,7 +398,7 @@ namespace ImpostersOrdeal
                 randomizerSetupConfig.trainerPokemonMoveTypeBiasP = 0;
             
             //Trainer Pokémon Count
-            randomizerSetupConfig.trainerPokemonCount = GetNumericDistributionConfig(gameData.trainers, t => t.trainerPokemon.Count, AbsoluteBoundary.TrainerPokemonCount);
+            randomizerSetupConfig.trainerPokemonCount = GetNumericDistributionConfig(gameData.trainerTable, t => t.trainerPokemon.Count, AbsoluteBoundary.TrainerPokemonCount);
 
             //Trainer Pokémon Levels
             randomizerSetupConfig.trainerPokemonLevels = GetNumericDistributionConfig(tps, p => p.level, AbsoluteBoundary.Level);
@@ -430,7 +430,7 @@ namespace ImpostersOrdeal
             randomizerSetupConfig.trainerPokemonEvs = GetNumericDistributionConfig(tps, p => p.GetEVs().Sum(), AbsoluteBoundary.EvTotal);
 
             //Scripted Pokémon
-            List<Command> commands = gameData.evScripts.SelectMany(e => e.scripts.SelectMany(s => s.commands)).ToList();
+            List<Command> commands = gameData.evScriptFiles.SelectMany(e => e.scripts.SelectMany(s => s.commands)).ToList();
             randomizerSetupConfig.scriptedPokemon = GetItemDistributionConfig(commands.Where(c => c.cmdType == 322 && c.args[1].argType == 1).ToList(), c => (int)c.args[1].data, gameData.dexEntries.Select(o => (INamedEntity)o).ToList());
 
             //Scripted Items

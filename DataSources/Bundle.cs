@@ -10,10 +10,12 @@ namespace ImpostersOrdeal
     {
         protected AssetsToolsAssetBundleIO.AssetsToolsAssetBundle assetBundle;
         protected Dictionary<long, AssetTypeValueField> monoBehaviours;
+        protected Dictionary<long, string> monoScriptNames;
 
         protected bool IsBundleLoaded => assetBundle?.bundle != null;
         protected bool IsAssetsFileLoaded => assetBundle?.assetsFile != null;
         protected bool AreMonosLoaded => monoBehaviours != null;
+        protected bool AreScriptNamesLoaded => monoScriptNames != null;
 
         protected Dictionary<long, AssetTypeValueField> MonoBehaviours
         {
@@ -23,6 +25,17 @@ namespace ImpostersOrdeal
                     LoadAllMonoBehavioursFromAssetsFile();
 
                 return monoBehaviours;
+            }
+        }
+
+        protected Dictionary<long, string> MonoScriptNames
+        {
+            get
+            {
+                if (!AreScriptNamesLoaded)
+                    LoadAllMonoScriptNamesFromAssetsFile();
+
+                return monoScriptNames;
             }
         }
 
@@ -43,9 +56,14 @@ namespace ImpostersOrdeal
             return MonoBehaviours.Where(kvp => predicate.Invoke(kvp.Key, kvp.Value)).ToList();
         }
 
-        public List<AssetTypeValueField> GetMonosWhere(Func<AssetTypeValueField, bool> predicate)
+        public List<KeyValuePair<long, AssetTypeValueField>> GetAllMonos()
         {
-            return MonoBehaviours.Values.Where(predicate).ToList();
+            return GetMonosWhere((p, f) => true);
+        }
+
+        public List<KeyValuePair<long, AssetTypeValueField>> GetMonosByScriptName(string name)
+        {
+            return GetMonosWhere((p, f) => MonoScriptNames[f["m_Script.m_PathID"].AsLong] == name);
         }
 
         public void SetMonoByPathID(long pathID, AssetTypeValueField data)
@@ -94,6 +112,14 @@ namespace ImpostersOrdeal
                 LoadBundleFromFile();
 
             monoBehaviours = fileManager.assetBundleIO.GetAllAssetsOfTypeFromBundle(assetBundle, AssetClassID.MonoBehaviour);
+        }
+
+        protected void LoadAllMonoScriptNamesFromAssetsFile()
+        {
+            if (!IsBundleLoaded || !IsAssetsFileLoaded)
+                LoadBundleFromFile();
+
+            monoScriptNames = fileManager.assetBundleIO.GetAllAssetsOfTypeFromBundle(assetBundle, AssetClassID.MonoScript).ToDictionary(kvp => kvp.Key, kvp => kvp.Value["m_Name"].AsString);
         }
     }
 }

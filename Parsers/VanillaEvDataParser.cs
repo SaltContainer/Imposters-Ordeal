@@ -1,5 +1,5 @@
-﻿using AssetsTools.NET;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ImpostersOrdeal.Utils;
 
 namespace ImpostersOrdeal
@@ -8,6 +8,9 @@ namespace ImpostersOrdeal
     {
         object IParser.ParseFromSources(FileManager fileManager) => ParseFromSources(fileManager);
         void IParser.SaveToSources(FileManager fileManager, object data) => SaveToSources(fileManager, (EvDataCollection)data);
+
+        // Monos
+        private static readonly string EVDATA_MONOSCRIPTNAME = "EvData";
 
         // Arrays
         private static readonly string ARG_FIELD = "Arg";
@@ -26,7 +29,7 @@ namespace ImpostersOrdeal
             var data = new EvDataCollection();
 
             var evScriptBundle = fileManager.GetEvScriptBundle();
-            var monoBehaviours = evScriptBundle.GetMonosWhere((p, m) => !m[SCRIPTS_FIELD].IsDummy && !m[STRLIST_FIELD].IsDummy);
+            var monoBehaviours = evScriptBundle.GetMonosByScriptName(EVDATA_MONOSCRIPTNAME);
 
             foreach (var (pathId, monoBehaviour) in monoBehaviours)
             {
@@ -68,10 +71,7 @@ namespace ImpostersOrdeal
                 }
 
                 // Parse StrLists
-                evData.StrList = new();
-                var stringFields = monoBehaviour[STRLIST_FIELD].GetArrayElements();
-                foreach (var stringField in stringFields)
-                    evData.StrList.Add(stringField.AsString);
+                evData.StrList = monoBehaviour[STRLIST_FIELD].GetArrayElements().Select(f => f.AsString).ToList();
 
                 data.Add(evData);
             }
@@ -82,54 +82,26 @@ namespace ImpostersOrdeal
         public void SaveToSources(FileManager fileManager, EvDataCollection data)
         {
             var evScriptBundle = fileManager.GetEvScriptBundle();
-            var monoBehaviours = evScriptBundle.GetMonosWhere((p, m) => !m[SCRIPTS_FIELD].IsDummy && !m[STRLIST_FIELD].IsDummy);
+            var monoBehaviours = evScriptBundle.GetMonosByScriptName(EVDATA_MONOSCRIPTNAME);
 
             foreach (var evData in data)
             {
                 var mono = evScriptBundle.GetMonoByPathID(evData.pathID);
 
-                // Write Scripts
-                List<AssetTypeValueField> newScripts = new();
-                foreach (var script in evData.Scripts)
+                mono[SCRIPTS_FIELD].SetArrayElementsAndInit(evData.Scripts, (scriptField, script) =>
                 {
-                    AssetTypeValueField scriptField = mono[SCRIPTS_FIELD].CreateArrayElement();
-
                     scriptField[LABEL_FIELD].AsString = script.Label;
-
-                    // Write Commands
-                    List<AssetTypeValueField> newCommands = new();
-                    foreach (var command in script.Commands)
+                    scriptField[SCRIPTS_FIELD].SetArrayElementsAndInit(script.Commands, (commandField, command) =>
                     {
-                        AssetTypeValueField commandField = mono[COMMANDS_FIELD].CreateArrayElement();
-
-                        // Write Arguments
-                        List<AssetTypeValueField> newArgs = new();
-                        foreach (var arg in command.Arg)
+                        commandField[ARG_FIELD].SetArrayElementsAndInit(command.Arg, (argField, arg) =>
                         {
-                            AssetTypeValueField argField = mono[ARG_FIELD].CreateArrayElement();
-
                             argField[ARGTYPE_FIELD].AsInt = (int)arg.argType;
                             argField[DATA_FIELD].AsInt = arg.data;
+                        });
+                    });
+                });
 
-                            newArgs.Add(argField);
-                        }
-                        commandField[ARG_FIELD].SetArrayElements(newArgs);
-                    }
-                    scriptField[COMMANDS_FIELD].SetArrayElements(newCommands);
-                }
-                mono[SCRIPTS_FIELD].SetArrayElements(newScripts);
-
-                // Write StrLists
-                List<AssetTypeValueField> newStrs = new();
-                foreach (var str in evData.StrList)
-                {
-                    AssetTypeValueField strField = mono[STRLIST_FIELD].CreateArrayElement();
-
-                    strField.AsString = str;
-
-                    newStrs.Add(strField);
-                }
-                mono[STRLIST_FIELD].SetArrayElements(newStrs);
+                mono[STRLIST_FIELD].SetArrayElementsAndInit(evData.StrList, (f, v) => f.AsString = v);
 
                 evScriptBundle.SetMonoByPathID(evData.pathID, mono);
             }

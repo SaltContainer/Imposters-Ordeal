@@ -200,7 +200,7 @@ namespace ImpostersOrdeal
 
         private void ScaleTrainerPokemon(double coefficient)
         {
-            foreach (Trainer trainer in gameData.trainers)
+            foreach (Trainer trainer in gameData.trainerTable)
                 foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
                     if (IsWithin(AbsoluteBoundary.Level, trainerPokemon.level))
                         trainerPokemon.level = (byte)Conform(AbsoluteBoundary.Level, (int)(trainerPokemon.level * coefficient));
@@ -346,7 +346,7 @@ namespace ImpostersOrdeal
 
         private void RandomizeScriptedItems(IDistribution distribution)
         {
-            foreach (EvScript evScript in gameData.evScripts)
+            foreach (EvScript evScript in gameData.evScriptFiles)
                 foreach (Script script in evScript.scripts)
                     foreach (Command command in script.commands)
                         if (command.cmdType == 187 && gameData.items[(int)command.args[0].data].IsPurchasable())
@@ -360,7 +360,7 @@ namespace ImpostersOrdeal
 
         private void RandomizeScriptedPokemon(IDistribution distribution)
         {
-            foreach (EvScript evScript in gameData.evScripts)
+            foreach (EvScript evScript in gameData.evScriptFiles)
                 foreach (Script script in evScript.scripts)
                     foreach(Command command in script.commands)
                         if (command.cmdType == 322)
@@ -374,7 +374,7 @@ namespace ImpostersOrdeal
 
         private void RandomizeTrainerPokemonEVs(IDistribution distribution)
         {
-            foreach (Trainer trainer in gameData.trainers)
+            foreach (Trainer trainer in gameData.trainerTable)
                 foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
                 {
                     int[] evs = new int[6];
@@ -399,7 +399,7 @@ namespace ImpostersOrdeal
 
         private void RandomizeTrainerPokemonIVs(IDistribution distribution)
         {
-            foreach (Trainer trainer in gameData.trainers)
+            foreach (Trainer trainer in gameData.trainerTable)
                 foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
                     if (IsWithin(AbsoluteBoundary.Iv, (int)trainerPokemon.GetIVs().Average()))
                     {
@@ -416,7 +416,7 @@ namespace ImpostersOrdeal
 
         private void RandomizeTrainerPokemonLevels(IDistribution distribution)
         {
-            foreach (Trainer trainer in gameData.trainers)
+            foreach (Trainer trainer in gameData.trainerTable)
                 foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
                     if (IsWithin(AbsoluteBoundary.Level, trainerPokemon.level))
                         trainerPokemon.level = (byte)Conform(AbsoluteBoundary.Level, distribution.Next(trainerPokemon.level));
@@ -426,7 +426,7 @@ namespace ImpostersOrdeal
 
         private void RandomizeTrainerPokemonCount(IDistribution distribution)
         {
-            foreach (Trainer trainer in gameData.trainers)
+            foreach (Trainer trainer in gameData.trainerTable)
             {
                 List<TrainerPokemon> trainerPokemon = trainer.trainerPokemon;
                 int trainerPokemonCount = trainerPokemon.Count;
@@ -489,7 +489,7 @@ namespace ImpostersOrdeal
 
         private void RandomizeTrainerPokemonAbilities(bool includeUnobtainable, IDistribution distribution)
         {
-            foreach (Trainer trainer in gameData.trainers)
+            foreach (Trainer trainer in gameData.trainerTable)
                 foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
                 {
                     if (includeUnobtainable)
@@ -506,7 +506,7 @@ namespace ImpostersOrdeal
 
         private void RandomizeTrainerPokemonShininess(double shinyP)
         {
-            foreach (Trainer trainer in gameData.trainers)
+            foreach (Trainer trainer in gameData.trainerTable)
                 foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
                     trainerPokemon.isRare = (byte)(P(shinyP) ? 1 : 0);
 
@@ -515,7 +515,7 @@ namespace ImpostersOrdeal
 
         private void RandomizeTrainerPokemonNatures(IDistribution distribution)
         {
-            foreach (Trainer trainer in gameData.trainers)
+            foreach (Trainer trainer in gameData.trainerTable)
                 foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
                     trainerPokemon.natureID = (byte)distribution.Next(trainerPokemon.natureID);
 
@@ -524,7 +524,7 @@ namespace ImpostersOrdeal
 
         private void RandomizeTrainerPokemonHeldItems(IDistribution distribution, bool levelLogic)
         {
-            foreach (Trainer trainer in gameData.trainers)
+            foreach (Trainer trainer in gameData.trainerTable)
                 foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
                 {
                     if (levelLogic && !P(trainerPokemon.level))
@@ -538,7 +538,7 @@ namespace ImpostersOrdeal
 
         private void RandomizeTrainerPokemonMoves(bool setToLevelUpMoves, IDistribution distribution, double typeBiasP)
         {
-            foreach (Trainer trainer in gameData.trainers)
+            foreach (Trainer trainer in gameData.trainerTable)
                 foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
                 {
                     List<ushort> moves = trainerPokemon.GetMoves();
@@ -568,7 +568,7 @@ namespace ImpostersOrdeal
         private void RandomizeTrainerPokemonSpecies(IDistribution distribution, bool legendLogic, bool typeThemes, bool evolveLogic)
         {
             HashSet<int> legendaryDexIDs = gameData.dexEntries.Where(d => d.forms[0].legendary).Select(d => d.dexID).ToHashSet();
-            foreach (Trainer trainer in gameData.trainers)
+            foreach (Trainer trainer in gameData.trainerTable)
             {
                 int typing = trainer.GetTypeTheme();
 
@@ -596,7 +596,7 @@ namespace ImpostersOrdeal
 
         private void RandomizeTrainerItems(IDistribution itemDistribution, bool randomizeItemCount, IDistribution itemCountdistribution)
         {
-            foreach (Trainer trainer in gameData.trainers)
+            foreach (Trainer trainer in gameData.trainerTable)
             {
                 List<int> items = trainer.GetItems();
                 if (randomizeItemCount)
@@ -847,13 +847,13 @@ namespace ImpostersOrdeal
         private void RandomizeShopItems(IDistribution distribution, bool preserveRegularMarts)
         {
             if (!preserveRegularMarts)
-                foreach (MartItem item in gameData.shopTables.martItems)
+                foreach (MartItem item in gameData.shopTable.martItems)
                     item.itemID = (ushort)distribution.Next(item.itemID);
 
-            foreach (FixedShopItem item in gameData.shopTables.fixedShopItems)
+            foreach (FixedShopItem item in gameData.shopTable.fixedShopItems)
                 item.itemID = (ushort)distribution.Next(item.itemID);
 
-            foreach (BpShopItem item in gameData.shopTables.bpShopItems)
+            foreach (BpShopItem item in gameData.shopTable.bpShopItems)
                 item.itemID = (ushort)distribution.Next(item.itemID);
 
             gameData.SetModified(GameDataSet.DataField.ShopTables);
@@ -861,7 +861,7 @@ namespace ImpostersOrdeal
 
         private void RandomizePickupItems(IDistribution distribution)
         {
-            foreach (PickupItem item in gameData.pickupItems)
+            foreach (PickupItem item in gameData.pickupTable)
                 item.itemID = (ushort)distribution.Next(item.itemID);
 
             gameData.SetModified(GameDataSet.DataField.PickupItems);

@@ -62,7 +62,7 @@ namespace ImpostersOrdeal
             tsef = new(this);
 
             trainers = new();
-            trainers.AddRange(gameData.trainers);
+            trainers.AddRange(gameData.trainerTable);
 
             sortByComboBox.DataSource = sortNames;
             sortByComboBox.SelectedIndex = 0;

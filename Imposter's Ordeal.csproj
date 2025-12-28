@@ -9,6 +9,7 @@
     <FileUpgradeFlags>40</FileUpgradeFlags>
     <UpgradeBackupLocation>C:\Users\Lukas\Desktop\BDSP\Imposters-Ordeal-master\Backup\</UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
+    <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AssetsTools.NET" Version="3.0.2" />

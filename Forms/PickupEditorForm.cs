@@ -19,7 +19,7 @@ namespace ImpostersOrdeal
 
         public PickupEditorForm()
         {
-            pickupItems = gameData.pickupItems;
+            pickupItems = gameData.pickupTable;
             items = gameData.items.Select(i => i.GetName()).ToList();
             InitializeComponent();
 
@@ -56,7 +56,7 @@ namespace ImpostersOrdeal
                     p.ratios.Add((byte)(int)row.Cells[1 + i].Value);
                 pickupItems.Add(p);
             }
-            gameData.pickupItems = pickupItems;
+            gameData.pickupTable = pickupItems;
         }
 
         private void ActivateControls()

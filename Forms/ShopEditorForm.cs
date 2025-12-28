@@ -22,9 +22,9 @@ namespace ImpostersOrdeal
 
         public ShopEditorForm()
         {
-            martItems = gameData.shopTables.martItems;
-            fixedShopItems = gameData.shopTables.fixedShopItems;
-            bpShopItems = gameData.shopTables.bpShopItems;
+            martItems = gameData.shopTable.martItems;
+            fixedShopItems = gameData.shopTable.fixedShopItems;
+            bpShopItems = gameData.shopTable.bpShopItems;
             items = gameData.items.Select(i => i.GetName()).ToList();
             zones = Zones.zoneNames.ToList();
             zones[zones.Count - 1] = "All";
@@ -69,7 +69,7 @@ namespace ImpostersOrdeal
                     m.zoneID = -1;
                 martItems.Add(m);
             }
-            gameData.shopTables.martItems = martItems;
+            gameData.shopTable.martItems = martItems;
 
             fixedShopItems = new();
             foreach (DataGridViewRow row in fixedShopDataGridView.Rows)
@@ -83,7 +83,7 @@ namespace ImpostersOrdeal
                 f.shopID = (int)row.Cells[1].Value;
                 fixedShopItems.Add(f);
             }
-            gameData.shopTables.fixedShopItems = fixedShopItems;
+            gameData.shopTable.fixedShopItems = fixedShopItems;
 
             bpShopItems = new();
             foreach (DataGridViewRow row in bpShopDataGridView.Rows)
@@ -97,7 +97,7 @@ namespace ImpostersOrdeal
                 b.npcID = (int)row.Cells[1].Value;
                 bpShopItems.Add(b);
             }
-            gameData.shopTables.bpShopItems = bpShopItems;
+            gameData.shopTable.bpShopItems = bpShopItems;
         }
 
         private void ActivateControls()

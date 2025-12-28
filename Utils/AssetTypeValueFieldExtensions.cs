@@ -1,8 +1,10 @@
 ﻿using AssetsTools.NET;
 using AssetsTools.NET.Extra;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace ImpostersOrdeal.Utils
 {
@@ -33,9 +35,9 @@ namespace ImpostersOrdeal.Utils
         }
 
         /// <summary>
-        /// Replaces the byte elements of this array-typed AssetTypeValueField.
+        /// Replaces the elements of this array-typed AssetTypeValueField and initialize their values.
         /// </summary>
-        public static void SetByteArrayElements(this AssetTypeValueField self, IEnumerable<byte> values)
+        public static void SetArrayElementsAndInit<T>(this AssetTypeValueField self, IEnumerable<T> values, Action<AssetTypeValueField, T> initAction)
         {
             var field = GetInnerArrayField(self);
 
@@ -43,44 +45,33 @@ namespace ImpostersOrdeal.Utils
             foreach (var value in values)
             {
                 AssetTypeValueField baseField = field.CreateArrayElement();
-                baseField.AsByte = value;
+                initAction.Invoke(baseField, value);
                 newFields.Add(baseField);
             }
             field.SetArrayElements(newFields);
         }
 
         /// <summary>
-        /// Replaces the int elements of this array-typed AssetTypeValueField.
+        /// Gets the elements of this Vector3-typed AssetTypeValueField.
         /// </summary>
-        public static void SetIntArrayElements(this AssetTypeValueField self, IEnumerable<int> values)
+        public static Vector3 GetAsVector3(this AssetTypeValueField self)
         {
-            var field = GetInnerArrayField(self);
-
-            List<AssetTypeValueField> newFields = new();
-            foreach (var value in values)
+            return new Vector3()
             {
-                AssetTypeValueField baseField = field.CreateArrayElement();
-                baseField.AsInt = value;
-                newFields.Add(baseField);
-            }
-            field.SetArrayElements(newFields);
+                X = self["x"].AsFloat,
+                Y = self["y"].AsFloat,
+                Z = self["z"].AsFloat,
+            };
         }
 
         /// <summary>
-        /// Replaces the uint elements of this array-typed AssetTypeValueField.
+        /// Sets the elements of this Vector3-typed AssetTypeValueField.
         /// </summary>
-        public static void SetUIntArrayElements(this AssetTypeValueField self, IEnumerable<uint> values)
+        public static void SetAsVector3(this AssetTypeValueField self, Vector3 value)
         {
-            var field = GetInnerArrayField(self);
-
-            List<AssetTypeValueField> newFields = new();
-            foreach (var value in values)
-            {
-                AssetTypeValueField baseField = field.CreateArrayElement();
-                baseField.AsUInt = value;
-                newFields.Add(baseField);
-            }
-            field.SetArrayElements(newFields);
+            self["x"].AsFloat = value.X;
+            self["y"].AsFloat = value.X;
+            self["z"].AsFloat = value.X;
         }
 
         private static AssetTypeValueField GetInnerArrayField(AssetTypeValueField self)

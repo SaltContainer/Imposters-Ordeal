@@ -1,7 +1,5 @@
-﻿using AssetsTools.NET;
-using ImpostersOrdeal.Utils;
+﻿using ImpostersOrdeal.Utils;
 using System;
-using System.Collections.Generic;
 
 namespace ImpostersOrdeal
 {
@@ -207,135 +205,75 @@ namespace ImpostersOrdeal
             var dprMasterdatasBundle = fileManager.GetDprMasterdatasBundle();
             var (pathID, monoBehaviour) = dprMasterdatasBundle.GetMonoByName(SHOPTABLE_MONONAME);
 
-            List<AssetTypeValueField> newFS = new();
-            foreach (var fs in data.FS)
+            monoBehaviour[FS_FIELD].SetArrayElementsAndInit(data.FS, (fsField, fs) =>
             {
-                AssetTypeValueField fsField = monoBehaviour[FS_FIELD].CreateArrayElement();
-
                 fsField[ITEMNO_FIELD].AsUShort = fs.ItemNo;
                 fsField[BADGENUM_FIELD].AsInt = fs.BadgeNum;
                 fsField[ZONEID_FIELD].AsInt = (int)fs.ZoneID;
+            });
 
-                newFS.Add(fsField);
-            }
-            monoBehaviour[FS_FIELD].SetArrayElements(newFS);
-
-            List<AssetTypeValueField> newFixedShops = new();
-            foreach (var fixedShop in data.FixedShop)
+            monoBehaviour[FIXEDSHOP_FIELD].SetArrayElementsAndInit(data.FixedShop, (fixedShopField, fixedShop) =>
             {
-                AssetTypeValueField fixedShopField = monoBehaviour[FIXEDSHOP_FIELD].CreateArrayElement();
-
                 fixedShopField[ITEMNO_FIELD].AsUShort = fixedShop.ItemNo;
                 fixedShopField[SHOPID_FIELD].AsInt = fixedShop.ShopID;
+            });
 
-                newFixedShops.Add(fixedShopField);
-            }
-            monoBehaviour[FIXEDSHOP_FIELD].SetArrayElements(newFixedShops);
-
-            List<AssetTypeValueField> newFlowerShops = new();
-            foreach (var flowerShop in data.FlowerShop)
+            monoBehaviour[FLOWERSHOP_FIELD].SetArrayElementsAndInit(data.FlowerShop, (flowerShopField, flowerShop) =>
             {
-                AssetTypeValueField flowerShopField = monoBehaviour[FLOWERSHOP_FIELD].CreateArrayElement();
-
                 flowerShopField[SEALNO_FIELD].AsInt = flowerShop.SealNo;
                 flowerShopField[ITEMNO_FIELD].AsUShort = flowerShop.ItemNo;
                 flowerShopField[PRICE_FIELD].AsInt = flowerShop.Price;
+            });
 
-                newFlowerShops.Add(flowerShopField);
-            }
-            monoBehaviour[FLOWERSHOP_FIELD].SetArrayElements(newFlowerShops);
-
-            List<AssetTypeValueField> newRibbonShops = new();
-            foreach (var ribbonShop in data.RibonShop)
+            monoBehaviour[RIBBONSHOP_FIELD].SetArrayElementsAndInit(data.RibonShop, (ribbonShopField, ribbonShop) =>
             {
-                AssetTypeValueField ribbonShopField = monoBehaviour[RIBBONSHOP_FIELD].CreateArrayElement();
-
                 ribbonShopField[PRICE_FIELD].AsInt = ribbonShop.Price;
+            });
 
-                newRibbonShops.Add(ribbonShopField);
-            }
-            monoBehaviour[RIBBONSHOP_FIELD].SetArrayElements(newRibbonShops);
-
-            List<AssetTypeValueField> newSealShops = new();
-            foreach (var sealShop in data.SealShop)
+            monoBehaviour[SEALSHOP_FIELD].SetArrayElementsAndInit(data.SealShop, (sealShopField, sealShop) =>
             {
-                AssetTypeValueField sealShopField = monoBehaviour[SEALSHOP_FIELD].CreateArrayElement();
-
                 sealShopField[SEALNO_FIELD].AsInt = sealShop.SealNo;
                 sealShopField[PRICE_FIELD].AsInt = sealShop.Price;
                 sealShopField[WEEK_FIELD].AsInt = (int)sealShop.Week;
+            });
 
-                newSealShops.Add(sealShopField);
-            }
-            monoBehaviour[SEALSHOP_FIELD].SetArrayElements(newSealShops);
-
-            List<AssetTypeValueField> newBpShops = new();
-            foreach (var bpShop in data.BPShop)
+            monoBehaviour[BPSHOP_FIELD].SetArrayElementsAndInit(data.BPShop, (bpShopField, bpShop) =>
             {
-                AssetTypeValueField bpShopField = monoBehaviour[BPSHOP_FIELD].CreateArrayElement();
-
                 bpShopField[ITEMNO_FIELD].AsUShort = bpShop.ItemNo;
                 bpShopField[NPCID_FIELD].AsInt = bpShop.NPCID;
+            });
 
-                newBpShops.Add(bpShopField);
-            }
-            monoBehaviour[BPSHOP_FIELD].SetArrayElements(newBpShops);
-
-            List<AssetTypeValueField> newOtenkiShops = new();
-            foreach (var otenkiShop in data.OtenkiShop)
+            monoBehaviour[OTENKISHOP_FIELD].SetArrayElementsAndInit(data.OtenkiShop, (otenkiShopField, otenkiShop) =>
             {
-                AssetTypeValueField otenkiShopField = monoBehaviour[OTENKISHOP_FIELD].CreateArrayElement();
-
                 otenkiShopField[ITEMNO_FIELD].AsUShort = otenkiShop.ItemNo;
                 otenkiShopField[REQUESTITEM_FIELD].AsUShort = otenkiShop.RequestItem;
                 otenkiShopField[PRICE_FIELD].AsInt = otenkiShop.Price;
+            });
 
-                newOtenkiShops.Add(otenkiShopField);
-            }
-            monoBehaviour[OTENKISHOP_FIELD].SetArrayElements(newOtenkiShops);
-
-            List<AssetTypeValueField> newBoutiqueShops = new();
-            foreach (var boutiqueShop in data.BoutiqueShop)
+            monoBehaviour[BOUTIQUESHOP_FIELD].SetArrayElementsAndInit(data.BoutiqueShop, (boutiqueShopField, boutiqueShop) =>
             {
-                AssetTypeValueField boutiqueShopField = monoBehaviour[BOUTIQUESHOP_FIELD].CreateArrayElement();
-
                 boutiqueShopField[DRESSNO_FIELD].AsInt = boutiqueShop.DressNo;
                 boutiqueShopField[OPENDRESS_FIELD].AsInt = boutiqueShop.OpenDress;
                 boutiqueShopField[DRESSGET_FIELD].AsInt = boutiqueShop.DressGet;
                 boutiqueShopField[PRICE_FIELD].AsInt = boutiqueShop.Price;
+            });
 
-                newBoutiqueShops.Add(boutiqueShopField);
-            }
-            monoBehaviour[BOUTIQUESHOP_FIELD].SetArrayElements(newBoutiqueShops);
-
-            List<AssetTypeValueField> newPalParkShops = new();
-            foreach (var palparkShop in data.PalParkShop)
+            monoBehaviour[PALPARKSHOP_FIELD].SetArrayElementsAndInit(data.PalParkShop, (palParkShopField, palparkShop) =>
             {
-                AssetTypeValueField palParkShopField = monoBehaviour[PALPARKSHOP_FIELD].CreateArrayElement();
-
                 palParkShopField[ITEMNO_FIELD].AsUShort = palparkShop.ItemNo;
                 palParkShopField[ITEMNO2_FIELD].AsUShort = palparkShop.ItemNo2;
                 palParkShopField[PRICE_FIELD].AsInt = palparkShop.Price;
                 palParkShopField[SHOPID_FIELD].AsInt = palparkShop.ShopID;
                 palParkShopField[PARKNAMEID_FIELD].AsInt = palparkShop.ParkNameID;
                 palParkShopField[PARKNAMENAZO_FIELD].AsInt = palparkShop.ParkNameNazo;
+            });
 
-                newPalParkShops.Add(palParkShopField);
-            }
-            monoBehaviour[PALPARKSHOP_FIELD].SetArrayElements(newPalParkShops);
-
-            List<AssetTypeValueField> newVeilstoneShops = new();
-            foreach (var veilstoneShop in data.TobariDepartment4FShop)
+            monoBehaviour[VEILSTONE4FSHOP_FIELD].SetArrayElementsAndInit(data.TobariDepartment4FShop, (veilstoneShopField, veilstoneShop) =>
             {
-                AssetTypeValueField veilstoneShopField = monoBehaviour[VEILSTONE4FSHOP_FIELD].CreateArrayElement();
-
                 veilstoneShopField[UGITEMID_FIELD].AsInt = veilstoneShop.UgItemID;
                 veilstoneShopField[LOWERCASE_PRICE_FIELD].AsInt = veilstoneShop.price;
                 veilstoneShopField[SHOPID_FIELD].AsInt = veilstoneShop.ShopID;
-
-                newVeilstoneShops.Add(veilstoneShopField);
-            }
-            monoBehaviour[VEILSTONE4FSHOP_FIELD].SetArrayElements(newVeilstoneShops);
+            });
 
             dprMasterdatasBundle.SetMonoByPathID(pathID, monoBehaviour);
         }
