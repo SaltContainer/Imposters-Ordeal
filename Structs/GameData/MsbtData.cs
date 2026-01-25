@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ImpostersOrdeal
 {
@@ -49,6 +50,12 @@ namespace ImpostersOrdeal
                 public float tagValue;
                 public string str;
                 public float strWidth = -1.0f;
+            }
+
+            // TODO: Improve this?
+            public override string ToString()
+            {
+                return string.Join("\n", wordDataArray.Select(w => w.str));
             }
         }
     }

@@ -14,8 +14,7 @@ namespace ImpostersOrdeal
             public string path;
         }
 
-        // TODO: Get from FileManager
-        private string DumpPath => string.Empty;
+        private string DumpPath => fileManager.DumpPath;
 
         public BinaryFileIO(FileManager fileManager)
         {
@@ -45,9 +44,13 @@ namespace ImpostersOrdeal
             stream.Write(file.data);
         }
 
-        private void LoadBinaryFileAtPath(string path)
+        private void LoadBinaryFileAtPath(string path, FileManager.FileSource source = FileManager.FileSource.Dump)
         {
-            var data = File.ReadAllBytes(path);
+            var fullPath = path;
+            if (source == FileManager.FileSource.Dump)
+                fullPath = Path.Combine(DumpPath, path);
+
+            var data = File.ReadAllBytes(fullPath);
 
             binaryFiles.Add(path, new BinaryFile()
             {

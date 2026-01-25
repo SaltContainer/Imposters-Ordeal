@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ImpostersOrdeal.GameDataTypes;
-using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
     public partial class TypeMatchupEditorForm : Form
     {
+        private GameDataSet gameData;
+
         private GlobalMetadata gm;
         private int typeHeight;
         private int typeWidth;
@@ -31,8 +25,9 @@ namespace ImpostersOrdeal
             0xFF4E9A06
         };
 
-        public TypeMatchupEditorForm()
+        public TypeMatchupEditorForm(GameDataSet gameData)
         {
+            this.gameData = gameData;
             gm = gameData.globalMetadata;
             InitializeComponent();
             PopulateChart();

@@ -24,6 +24,7 @@ namespace ImpostersOrdeal
         private Dictionary<string, DataSource> sources = new Dictionary<string, DataSource>();
 
         public AssetsManager AssetsManager => assetBundleIO.AssetsManager;
+        public string DumpPath { get; set; } = string.Empty;
 
         public FileManager()
         {
@@ -178,6 +179,139 @@ namespace ImpostersOrdeal
         }
 
         /// <summary>
+        /// Free all the memory used by the data sources.
+        /// </summary>
+        public void FreeAll()
+        {
+            foreach (var source in sources)
+                source.Value.Free();
+
+            GC.Collect();
+        }
+
+        /// <summary>
+        /// Gets dump path from user and verifies that this is a usable dump.
+        /// </summary>
+        public bool InitializeFromInput()
+        {
+            //Get the dump path from user.
+            FolderBrowserDialog fbd = new();
+            fbd.Description = "Select the folder containing the romfs/exefs.";
+            if (fbd.ShowDialog() != DialogResult.OK)
+                return false;
+
+            //Check that it's a game directory
+            if (!IsGameDirectory(fbd.SelectedPath, true))
+            {
+                MessageBox.Show("Path does not contain a romfs folder.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            //Get the AssetAssistant path
+            /*assetAssistantPath = GetAssetAssistantPath(fbd.SelectedPath);
+            if (assetAssistantPath == "")
+            {
+                MessageBox.Show("Path does not contain path:\n\\romfs\\Data\\StreamingAssets\\AssetAssistant",
+                "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            audioPath = Directory.GetParent(assetAssistantPath).FullName + "\\Audio\\GeneratedSoundBanks\\Switch";
+            metadataPath = GetDataPath(fbd.SelectedPath) + "\\Managed\\Metadata";
+            externalJsonPath = GetDataPath(fbd.SelectedPath) + "\\ExtraData";
+
+
+            //Setup fileArchive
+            fileArchive = new();
+            for (int i = 0; i < assetAssistantRelevantFiles.Length; i++)
+            {
+                string absolutePath = assetAssistantPath + assetAssistantRelevantFiles[i];
+                string gamePath = "romfs\\Data\\StreamingAssets\\AssetAssistant" + assetAssistantRelevantFiles[i];
+                if (!File.Exists(absolutePath))
+                {
+                    MessageBox.Show("File not found:\n" + gamePath + "\nIncomplete dump.",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    fileArchive = null;
+                    return false;
+                }
+
+                FileData fd = new();
+                fd.fileLocation = absolutePath;
+                fd.gamePath = gamePath;
+                fd.fileSource = FileSource.Dump;
+                fd.bundle = am.LoadBundleFile(absolutePath, false);
+                DecompressBundle(fd.bundle);
+                fileArchive[gamePath] = fd;
+            }*/
+
+            SetAppConfigValue("dumpPath", fbd.SelectedPath);
+            DumpPath = fbd.SelectedPath;
+            return true;
+        }
+
+        /// <summary>
+        /// Reads dump path from config and verifies that this is a usable dump.
+        /// </summary>
+        public bool InitializeFromConfig()
+        {
+            //Get the dump path from config.
+            string dumpPath = ConfigurationManager.AppSettings["dumpPath"];
+
+            //Check that it's a game directory
+            if (!IsGameDirectory(dumpPath, true))
+                return false;
+
+            //Get the AssetAssistant path
+            /*assetAssistantPath = GetAssetAssistantPath(dumpPath);
+            if (assetAssistantPath == "")
+                return false;
+            audioPath = Directory.GetParent(assetAssistantPath).FullName + "\\Audio\\GeneratedSoundBanks\\Switch";
+            metadataPath = GetDataPath(dumpPath) + "\\Managed\\Metadata";
+            externalJsonPath = GetDataPath(dumpPath) + "\\ExtraData";
+
+
+            //Setup fileArchive
+            fileArchive = new();
+            for (int i = 0; i < assetAssistantRelevantFiles.Length; i++)
+            {
+                string absolutePath = assetAssistantPath + assetAssistantRelevantFiles[i];
+                string gamePath = "romfs\\Data\\StreamingAssets\\AssetAssistant" + assetAssistantRelevantFiles[i];
+                if (!File.Exists(absolutePath))
+                    return false;
+
+                FileData fd = new();
+                fd.fileLocation = absolutePath;
+                fd.gamePath = gamePath;
+                fd.fileSource = FileSource.Dump;
+                fd.bundle = am.LoadBundleFile(absolutePath, false);
+                DecompressBundle(fd.bundle);
+                fileArchive[gamePath] = fd;
+            }*/
+
+            DumpPath = dumpPath;
+            return true;
+        }
+
+        /// <summary>
+        /// Checks whether the path contains romfs or exefs folders.
+        /// </summary>
+        private bool IsGameDirectory(string path, bool needRomfs = false)
+        {
+            return Directory.Exists(Path.Combine(path, Constants.ROMFS_FOLDER)) ||
+                (Directory.Exists(Path.Combine(path, Constants.EXEFS_FOLDER)) && !needRomfs);
+        }
+
+        /// <summary>
+        /// Sets a value in the application config.
+        /// </summary>
+        private void SetAppConfigValue(string config, string value)
+        {
+            Configuration c = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            c.AppSettings.Settings[config].Value = value;
+            c.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection(c.AppSettings.SectionInformation.Name);
+        }
+
+        /// <summary>
         /// Exports all the modded data sources into the output directory and clears it beforehand if necessary.
         /// </summary>
         public void ExportMod()
@@ -255,7 +389,7 @@ namespace ImpostersOrdeal
             }
         }
 
-        private enum FileSource
+        public enum FileSource
         {
             Dump,
             Mod,
@@ -263,7 +397,7 @@ namespace ImpostersOrdeal
             App
         }
 
-        public AssetsManager GetAssetsManager()
+        /*public AssetsManager GetAssetsManager()
         {
             return am;
         }
@@ -372,7 +506,7 @@ namespace ImpostersOrdeal
 
             return true;
         }
-
+        
         /// <summary>
         ///  Gets a mod directory from user and loads all the files it contains into fileArchive.
         /// </summary>
@@ -1094,6 +1228,6 @@ namespace ImpostersOrdeal
         {
             fileIndex++;
             return fileIndex;
-        }
+        }*/
     }
 }

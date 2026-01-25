@@ -113,12 +113,12 @@ namespace ImpostersOrdeal
 
             public int CompareTo(SearchPokeIconSex other)
 			{
-				if (monsNo == other.monsNo)
+				/*if (monsNo == other.monsNo)
 					return 0;
 				if (monsNo == GlobalData.gameData.dexEntries.Count)
 					return -1;
 				if (other.monsNo == GlobalData.gameData.dexEntries.Count)
-					return 1;
+					return 1;*/
 				return monsNo.CompareTo(other.monsNo);
 			}
         }

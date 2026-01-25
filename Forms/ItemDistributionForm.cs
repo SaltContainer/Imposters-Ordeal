@@ -14,9 +14,9 @@ namespace ImpostersOrdeal
 {
     public partial class ItemDistributionForm : Form
     {
-        private MainForm.ItemDistributionControl idc;
+        private ItemDistributionControl idc;
 
-        public ItemDistributionForm(MainForm.ItemDistributionControl idc)
+        public ItemDistributionForm(ItemDistributionControl idc)
         {
             this.idc = idc;
 

@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static ImpostersOrdeal.Distributions;
-using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
@@ -19,143 +10,22 @@ namespace ImpostersOrdeal
     /// </summary>
     public partial class MainForm : Form
     {
+        // UI stuff
+        private Thread loadingDisplay;
+        private LoadingForm loadingForm;
+
+        private Controller controller;
+
+        private RandomizerSetupConfig rsc;
+
+        private bool randomizeClicked = false;
+
         public MainForm()
         {
             InitializeComponent();
+
+            controller = new Controller();
         }
-
-        public class RandomizerSetupConfig
-        {
-            public (IDistribution[], List<string>, int) evolutionDestinationPokemon;
-            public (IDistribution[], int) evolutionLevel;
-            public (IDistribution[], int) baseStats;
-            public (IDistribution[], List<string>, int) pokemonTyping;
-            public double doubleTypingP;
-            public double tmCompatibilityP;
-            public double tmCompatibilityTypeBiasP;
-            public (IDistribution[], List<string>, int) wildHeldItems;
-            public (IDistribution[], List<string>, int) growthRate;
-            public (IDistribution[], List<string>, int) abilities;
-            public (IDistribution[], int) catchRate;
-            public (IDistribution[], int) evYields;
-            public (IDistribution[], int) initialFriendship;
-            public (IDistribution[], int) expYield;
-            public (IDistribution[], List<string>, int) eggMoves;
-            public double eggMoveTypeBiasP;
-            public (IDistribution[], int) eggMoveCount;
-            public (IDistribution[], List<string>, int) levelUpMoves;
-            public double levelUpMoveTypeBiasP;
-            public (IDistribution[], int) levelUpMoveLevels;
-            public (IDistribution[], int) levelUpMoveCount;
-
-            public (IDistribution[], List<string>, int) moveTyping;
-            public (IDistribution[], List<string>, int) damageCategory;
-            public (IDistribution[], List<string>, int) tmMoves;
-            public (IDistribution[], int) movePower;
-            public (IDistribution[], int) moveAccuracy;
-            public (IDistribution[], int) movePp;
-            public (IDistribution[], int) itemPrices;
-            public (IDistribution[], List<string>, int) pickupItems;
-            public (IDistribution[], List<string>, int) shopItems;
-
-            public (IDistribution[], List<string>, int) wildPokemon;
-            public (IDistribution[], int) wildPokemonLevels;
-            public (IDistribution[], List<string>, int) trainerItems;
-            public (IDistribution[], int) trainerItemCount;
-            public (IDistribution[], List<string>, int) trainerPokemonSpecies;
-            public (IDistribution[], List<string>, int) trainerPokemonMoves;
-            public double trainerPokemonMoveTypeBiasP;
-            public (IDistribution[], int) trainerPokemonCount;
-            public (IDistribution[], int) trainerPokemonLevels;
-            public (IDistribution[], List<string>, int) trainerPokemonHeldItems;
-            public double trainerPokemonShinyP;
-            public (IDistribution[], List<string>, int) trainerPokemonNatures;
-            public (IDistribution[], List<string>, int) trainerPokemonAbilities;
-            public (IDistribution[], int) trainerPokemonIvs;
-            public (IDistribution[], int) trainerPokemonEvs;
-
-            public (IDistribution[], List<string>, int) typeMatchups;
-            public (IDistribution[], List<string>, int) scriptedPokemon;
-            public (IDistribution[], List<string>, int) scriptedItems;
-            public double levelCoefficient;
-
-            public IDistribution evolutionLogicTypingCorrelationDistribution;
-            public IDistribution evolutionMoveCount;
-        }
-
-        public class NumericDistributionControl : GroupBox
-        {
-            public IDistribution[] distributions = new IDistribution[]
-            {
-                new UniformConstant(100, 0, 100),
-                new UniformRelative(100, -25, 25),
-                new UniformProportional(100, 0.5, 1.5),
-                new NormalConstant(100, 50, 25),
-                new NormalRelative(100, 25),
-                new NormalProportional(100, 0.25)
-            }; // Just some example data for testing purposes, don't worry about it ;)
-            public int idx;
-
-            public IDistribution Get()
-            {
-                return distributions[idx];
-            }
-
-            public void SetCurrent(IDistribution d)
-            {
-                distributions[idx] = d;
-            }
-
-            public void Initialize((IDistribution[], int) config)
-            {
-                this.distributions = config.Item1;
-                this.idx = config.Item2;
-                UpdateTextBox();
-            }
-
-            public void UpdateTextBox()
-            {
-                List<Control> l = new();
-                for (int i = 0; i < Controls.Count; i++)
-                    l.Add(Controls[i]);
-                l.Find(c => c.Name.Contains("textBox")).Text = Get().GetString();
-            }
-        }
-
-        public class ItemDistributionControl : Button
-        {
-            public IDistribution[] distributions = new IDistribution[]
-            {
-                new Empirical(100, (new int[] { 1, 0, 2, 0, 3, 0, 4 }).ToList()),
-                new UniformSelection(100, (new bool[] { true, false, true, false, true, false, true }).ToList())
-            };
-            public List<string> itemNames = new(new string[] { "Item0", "Item1", "Item2", "Item3", "Item4", "Item5", "Item6" });
-            public int idx;
-
-            public IDistribution Get()
-            {
-                return distributions[idx];
-            }
-
-            public void SetCurrent(IDistribution d)
-            {
-                distributions[idx] = d;
-            }
-
-            public void Initialize((IDistribution[], List<string>, int) config)
-            {
-                this.distributions = config.Item1;
-                this.itemNames = config.Item2;
-                this.idx = config.Item3;
-            }
-        }
-
-        public RandomizerSetupConfig rsc;
-        private Flavor flavor;
-        private Thread loadingDisplay;
-        private LoadingForm loadingForm;
-        private Randomizer randomizer;
-        bool randomizeClicked = false;
 
         /// <summary>
         ///  Confirms with user to cancel loading dump.
@@ -171,6 +41,8 @@ namespace ImpostersOrdeal
         /// </summary>
         private void SetupConfig(RandomizerSetupConfig rsc)
         {
+            this.rsc = rsc;
+
             button2.Initialize(rsc.evolutionDestinationPokemon);
             groupBox1.Initialize(rsc.evolutionLevel);
             numericDistributionControl1.Initialize(rsc.baseStats);
@@ -220,7 +92,6 @@ namespace ImpostersOrdeal
             itemDistributionControl20.Initialize(rsc.scriptedPokemon);
             itemDistributionControl21.Initialize(rsc.scriptedItems);
             numericUpDown8.Value = (decimal)rsc.levelCoefficient;
-            this.rsc = rsc;
 
             comboBox1.SelectedIndex = 0;
         }
@@ -235,32 +106,8 @@ namespace ImpostersOrdeal
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            flavor = new();
-            randomizer = new Randomizer(this);
-            fileManager = new();
-            Initialize();
-            gameData = new();
-
-            parserCollection = new(fileManager);
-            parserCollection.AddParserForType(new VanillaEvDataParser());
-            parserCollection.AddParserForType(new VanillaPickupParser());
-            parserCollection.AddParserForType(new VanillaShopParser());
-            parserCollection.AddParserForType(new VanillaTrainerParser());
-            parserCollection.AddParserForType(new VanillaTowerTrainerParser());
-            parserCollection.AddParserForType(new VanillaEncounterTableParser());
-            parserCollection.AddParserForType(new VanillaMessageFileParser());
-            parserCollection.AddParserForType(new VanillaGrowthRateParser());
-            parserCollection.AddParserForType(new VanillaUgHideawayParser());
-            parserCollection.AddParserForType(new VanillaUgEncounterParser());
-            parserCollection.AddParserForType(new VanillaUgEncounterLevelParser());
-            parserCollection.AddParserForType(new VanillaUgPokemonDataParser());
-            parserCollection.AddParserForType(new VanillaPokemonDataParser());
-            parserCollection.AddParserForType(new VanillaItemParser());
-            parserCollection.AddParserForType(new VanillaMoveParser());
-            parserCollection.AddParserForType(new VanillaDelphisMainParser());
-
             //Check if valid dump path already is in config
-            if (!fileManager.InitializeFromConfig())
+            if (!controller.InitializeFromConfig())
             {
                 //Confirm with user to get dump path. Abort if cancel.
                 if (MessageBox.Show("Alright, to start out, could ya get me a dump of the game real quick?\n" +
@@ -272,7 +119,7 @@ namespace ImpostersOrdeal
                 }
 
                 //Load dump
-                while (!fileManager.InitializeFromInput())
+                while (!controller.InitializeFromInput())
                     if (RetryLoadDumpDialog() == DialogResult.No)
                     {
                         this.Close();
@@ -280,7 +127,7 @@ namespace ImpostersOrdeal
                     }
             }
 
-            loadingForm = new("Ferociously investigating your dump...", flavor.GetSubTask());
+            loadingForm = new("Ferociously investigating your dump...", controller.GetFlavorSubTask());
             loadingDisplay = new(StartLoadingDisplay);
             loadingDisplay.Start();
 
@@ -288,13 +135,13 @@ namespace ImpostersOrdeal
             //This is probably not a very good solution to that, but it works! ¯\_(ツ)_/¯
             Thread.Sleep(100);
 
-            DataParser.PrepareAnalysis();
+            controller.ParseAllData();
 
-            loadingForm.UpdateSubTask(flavor.GetSubTask());
-            SetupConfig(Analyzer.GetSetupConfig());
+            loadingForm.UpdateSubTask(controller.GetFlavorSubTask());
+            SetupConfig(controller.GetSetupConfig());
             loadingForm.Finish();
 
-            absoluteBoundaryDataGridView.DataSource = absoluteBoundaries;
+            absoluteBoundaryDataGridView.DataSource = controller.GetAbsoluteBoundariesTable();
             foreach (DataGridViewColumn c in absoluteBoundaryDataGridView.Columns)
             {
                 if (c.Name == "Value")
@@ -349,7 +196,7 @@ namespace ImpostersOrdeal
 
         private void AddMod(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Fancy! Let's see if we can merge in a mod, shall we?\n" +
+            /*if (MessageBox.Show("Fancy! Let's see if we can merge in a mod, shall we?\n" +
                    "Gimme a folder that's got a \"romfs\" or \"exefs\" in it.",
                    "Add Mod", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.Cancel)
                 return;
@@ -365,13 +212,13 @@ namespace ImpostersOrdeal
                 loadingForm.UpdateSubTask(flavor.GetSubTask());
                 SetupConfig(Analyzer.GetSetupConfig());
                 loadingForm.Finish();
-            }
+            }*/
         }
 
         private void Randomize(object sender, EventArgs e)
         {
             //Notify if already randomized.
-            if (randomizeClicked && MessageBox.Show("You uh... You already made me randomize the files, and I\n" +
+            /*if (randomizeClicked && MessageBox.Show("You uh... You already made me randomize the files, and I\n" +
                 "wouldn't really recommend doing it multiple times...\n" +
                 "Randomize again anyway?",
                    "Again?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
@@ -387,13 +234,13 @@ namespace ImpostersOrdeal
             randomizeClicked = true;
             MessageBox.Show(
                 "Randomization complete!",
-                  "All done!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                  "All done!", MessageBoxButtons.OK, MessageBoxIcon.Information);*/
         }
 
         private void Export(object sender, EventArgs e)
         {
             //Notify if not randomized.
-            if (!randomizeClicked && MessageBox.Show("I haven't randomized anything yet...\n" +
+            /*if (!randomizeClicked && MessageBox.Show("I haven't randomized anything yet...\n" +
                 "Just thought I'd mention it in case you forgot.\n" +
                 "Proceed anyway? I'll still export any changed files for you.",
                    "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.No)
@@ -416,84 +263,84 @@ namespace ImpostersOrdeal
                 "Oh, and if you wonder where it is, I placed it right\n" +
                 "alongside my executable, \"" + FileManager.outputModName + "\".",
                   "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            Close();
+            Close();*/
         }
 
         private void OpenPokemonEditor(object sender, EventArgs e)
         {
-            PokemonEditorForm pef = new();
+            PokemonEditorForm pef = new(controller.GetGameData());
             pef.Show();
-            gameData.SetModified(GameDataSet.DataField.PersonalEntries);
+            controller.SetDataFieldModified(GameDataSet.DataField.PersonalEntries);
         }
 
         private void OpenMoveEditor(object sender, EventArgs e)
         {
-            MoveEditorForm mef = new();
+            MoveEditorForm mef = new(controller.GetGameData());
             mef.Show();
-            gameData.SetModified(GameDataSet.DataField.Moves);
+            controller.SetDataFieldModified(GameDataSet.DataField.Moves);
         }
 
         private void OpenTMEditor(object sender, EventArgs e)
         {
-            TMEditorForm tmef = new();
+            TMEditorForm tmef = new(controller.GetGameData());
             tmef.Show();
-            gameData.SetModified(GameDataSet.DataField.TMs);
-            gameData.SetModified(GameDataSet.DataField.Items);
+            controller.SetDataFieldModified(GameDataSet.DataField.TMs);
+            controller.SetDataFieldModified(GameDataSet.DataField.Items);
         }
 
         private void OpenItemEditor(object sender, EventArgs e)
         {
-            ItemEditorForm ief = new();
+            ItemEditorForm ief = new(controller.GetGameData());
             ief.Show();
-            gameData.SetModified(GameDataSet.DataField.Items);
+            controller.SetDataFieldModified(GameDataSet.DataField.Items);
         }
 
         private void OpenPickupEditor(object sender, EventArgs e)
         {
-            PickupEditorForm pef = new();
+            PickupEditorForm pef = new(controller.GetGameData());
             pef.Show();
-            gameData.SetModified(GameDataSet.DataField.PickupItems);
+            controller.SetDataFieldModified(GameDataSet.DataField.PickupItems);
         }
 
         private void OpenShopEditor(object sender, EventArgs e)
         {
-            ShopEditorForm sef = new();
+            ShopEditorForm sef = new(controller.GetGameData());
             sef.Show();
-            gameData.SetModified(GameDataSet.DataField.ShopTables);
+            controller.SetDataFieldModified(GameDataSet.DataField.ShopTables);
         }
 
         private void OpenWildEncounterEditors(object sender, EventArgs e)
         {
-            WildEncounterForm wef = new();
+            WildEncounterForm wef = new(controller.GetGameData());
             wef.Show();
         }
 
         private void OpenTrainerEditor(object sender, EventArgs e)
         {
-            TrainerEditorForm tef = new();
+            TrainerEditorForm tef = new(controller.GetGameData());
             tef.Show();
-            gameData.SetModified(GameDataSet.DataField.Trainers);
+            controller.SetDataFieldModified(GameDataSet.DataField.Trainers);
         }
 
 
 
         private void OpenTypeMatchupEditor(object sender, EventArgs e)
         {
-            TypeMatchupEditorForm tmef = new();
+            TypeMatchupEditorForm tmef = new(controller.GetGameData());
             tmef.Show();
-            gameData.SetModified(GameDataSet.DataField.GlobalMetadata);
+            controller.SetDataFieldModified(GameDataSet.DataField.GlobalMetadata);
         }
 
         private void OpenGlobalMetadataEditor(object sender, EventArgs e)
         {
-            GlobalMetadataEditorForm gmef = new();
+            GlobalMetadataEditorForm gmef = new(controller.GetGameData());
             gmef.Show();
-            gameData.SetModified(GameDataSet.DataField.GlobalMetadata);
+            controller.SetDataFieldModified(GameDataSet.DataField.GlobalMetadata);
         }
 
         private void OpenPokemonInserter(object sender, EventArgs e)
         {
-            PokemonInserterForm pif = new();
+            PokemonInserterForm pif = new(controller.GetGameData());
             pif.Show();
         }
 
@@ -506,23 +353,23 @@ namespace ImpostersOrdeal
         //Battle Tower Trainer Button
         private void Button34_Click(object sender, EventArgs e)
         {
-            BattleTowerTrainerEditorForm tef = new();
+            BattleTowerTrainerEditorForm tef = new(controller.GetGameData());
             tef.Show();
-            gameData.SetModified(GameDataSet.DataField.Trainers);
+            controller.SetDataFieldModified(GameDataSet.DataField.Trainers);
         }
         //Battle Tower Pokemon Button
         /*   private void button35_Click(object sender, EventArgs e)
            {
                BattleTowerPokemonForm tef = new();
                tef.Show();
-               gameData.SetModified(GameDataSet.DataField.Trainers);
+               controller.SetDataFieldModified(GameDataSet.DataField.Trainers);
            }*/
 
         private void Button35_Click_1(object sender, EventArgs e)
         {
-            BattleTowerPokemonForm tef = new();
+            BattleTowerPokemonForm tef = new(controller.GetGameData());
             tef.Show();
-            gameData.SetModified(GameDataSet.DataField.Trainers);
+            controller.SetDataFieldModified(GameDataSet.DataField.Trainers);
         }
     }
 }

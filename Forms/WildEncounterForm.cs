@@ -1,33 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
     public partial class WildEncounterForm : Form
     {
-        public WildEncounterForm()
+        private GameDataSet gameData;
+
+        public WildEncounterForm(GameDataSet gameData)
         {
+            this.gameData = gameData;
+
             InitializeComponent();
         }
 
         private void OpenEcounterTableEditor(object sender, EventArgs e)
         {
-            EncounterTableEditorForm etef = new();
+            EncounterTableEditorForm etef = new(gameData);
             etef.Show();
             gameData.SetModified(GameDataSet.DataField.EncounterTableFiles);
         }
 
         private void OpenUndergroundEncounterEditor(object sender, EventArgs e)
         {
-            UgEncounterEditorForm ueef = new();
+            UgEncounterEditorForm ueef = new(gameData);
             ueef.Show();
             gameData.SetModified(GameDataSet.DataField.UgAreas);
             gameData.SetModified(GameDataSet.DataField.UgEncounterFiles);
@@ -37,7 +33,7 @@ namespace ImpostersOrdeal
 
         private void OpenMiscEncounterEditor(object sender, EventArgs e)
         {
-            MiscEncounterEditorForm meef = new();
+            MiscEncounterEditorForm meef = new(gameData);
             meef.Show();
             gameData.SetModified(GameDataSet.DataField.EncounterTableFiles);
         }

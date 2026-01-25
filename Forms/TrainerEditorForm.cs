@@ -1,30 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ImpostersOrdeal.GameDataTypes;
-using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
     public partial class TrainerEditorForm : Form
     {
-        public List<Trainer> trainers;
+        private GameDataSet gameData;
+
+        public List<TrainerTable.SheetTrainerData> trainers;
         private Dictionary<int, string> trainerTypeLabels;
         public Dictionary<int, string> trainerTypeNames;
         private Dictionary<int, int> trainerTypeToCC;
         private Dictionary<string, string> labelToTrainerName;
+        private Dictionary<TrainerTable.SheetTrainerData, int> trainerToID;
         public List<string> items;
-        public Trainer t;
+        public TrainerTable.SheetTrainerData t;
         private TrainerPokemonEditorForm tpef;
         private TrainerShowdownEditorForm tsef;
-        private Trainer trainerClipboard;
-        private List<TrainerPokemon> tpClipboard;
+        private TrainerTable.SheetTrainerData trainerClipboard;
+        private List<TrainerTable.SheetTrainerData.TrainerPoke> tpClipboard;
 
         private readonly string[] sortNames = new string[]
         {
@@ -32,37 +29,50 @@ namespace ImpostersOrdeal
             "Sort by name",
             "Sort by level"
         };
-        private readonly Comparison<Trainer>[] sortComparisons = new Comparison<Trainer>[]
+        private readonly Comparison<TrainerTable.SheetTrainerData>[] sortComparisons = new Comparison<TrainerTable.SheetTrainerData>[]
         {
-            (t1, t2) => t1.GetID().CompareTo(t2.GetID()),
+            // TODO: Setup sorting
+            (t1, t2) => t1.TypeID.CompareTo(t2.TypeID),
+            /*(t1, t2) => t1.GetID().CompareTo(t2.GetID()),
             (t1, t2) => t1.GetName().CompareTo(t2.GetName()),
-            (t1, t2) => t1.GetAvgLevel().CompareTo(t2.GetAvgLevel())
+            (t1, t2) => t1.GetAvgLevel().CompareTo(t2.GetAvgLevel())*/
         };
 
-        public TrainerEditorForm()
+        public TrainerEditorForm(GameDataSet gameData)
         {
+            this.gameData = gameData;
+
             trainerTypeLabels = new();
             trainerTypeNames = new();
             trainerTypeToCC = new();
             trainerTypeLabels.Add(-1, "None");
             trainerTypeNames.Add(-1, "None");
             trainerTypeToCC.Add(-1, 0);
-            for (int i = 0; i < gameData.trainerTypes.Count; i++)
+
+            for (int i = 0; i < gameData.trainerTable.TrainerType.Count; i++)
             {
-                TrainerType tt = gameData.trainerTypes[i];
-                trainerTypeLabels.Add(tt.GetID(), tt.label);
-                trainerTypeNames.Add(tt.GetID(), tt.GetName());
-                trainerTypeToCC.Add(tt.GetID(), i + 1);
+                var tt = gameData.trainerTable.TrainerType[i];
+
+                // Ignore type IDs of -1, since they can't be used anyways
+                if (tt.TypeID == -1)
+                    continue;
+
+                trainerTypeLabels.Add(tt.TypeID, tt.LabelTrType);
+                trainerTypeNames.Add(tt.TypeID, gameData.GetLabelByName(Constants.TRAINERTYPE_MESSAGEFILE_NAME, tt.LabelTrType));
+                trainerTypeToCC.Add(tt.TypeID, trainerTypeToCC.Count);
             }
-            labelToTrainerName = gameData.trainerNames;
-            items = gameData.items.Select(o => o.GetName()).ToList();
+            labelToTrainerName = gameData.GetAllLabelsDictionary(Constants.TRAINERNAME_MESSAGEFILE_NAME);
+            items = gameData.GetAllLabels(Constants.ITEM_MESSAGEFILE_NAME);
 
             InitializeComponent();
-            tpef = new(this);
-            tsef = new(this);
+            tpef = new(this, gameData);
+            tsef = new(this, gameData);
 
             trainers = new();
-            trainers.AddRange(gameData.trainerTable);
+            trainers.AddRange(gameData.trainerTable.TrainerData);
+            trainerToID = new Dictionary<TrainerTable.SheetTrainerData, int>();
+            for (int i=0; i<trainers.Count; i++)
+                trainerToID[trainers[i]] = i;
 
             sortByComboBox.DataSource = sortNames;
             sortByComboBox.SelectedIndex = 0;
@@ -108,19 +118,29 @@ namespace ImpostersOrdeal
         {
             RefreshTextBoxDisplay();
 
-            trainerTypeComboBox.SelectedIndex = trainerTypeToCC[t.trainerTypeID];
-            trainerNameComboBox.SelectedItem = labelToTrainerName[t.nameLabel];
-            arenaIDNumericUpDown.Value = t.arenaID;
-            effectIDNumericUpDown.Value = t.effectID;
+            trainerTypeComboBox.SelectedIndex = trainerTypeToCC[t.TypeID];
+            trainerNameComboBox.SelectedItem = labelToTrainerName[t.NameLabel];
+            arenaIDNumericUpDown.Value = t.ArenaID;
+            effectIDNumericUpDown.Value = t.EffectID;
 
-            doubleBattleCheckBox.Checked = t.fightType == 1;
-            prizeMoneyNumericUpDown.Value = t.gold;
-            item1ComboBox.SelectedIndex = t.useItem1;
-            item2ComboBox.SelectedIndex = t.useItem2;
-            item3ComboBox.SelectedIndex = t.useItem3;
-            item4ComboBox.SelectedIndex = t.useItem4;
+            doubleBattleCheckBox.Checked = t.FightType == 1;
+            prizeMoneyNumericUpDown.Value = t.Gold;
 
-            bool[] aiFlags = t.GetAIFlags();
+            if (t.UseItem.Count >= 1) item1ComboBox.SelectedIndex = t.UseItem[0];
+            else item1ComboBox.SelectedIndex = 0;
+
+            if (t.UseItem.Count >= 2) item2ComboBox.SelectedIndex = t.UseItem[1];
+            else item2ComboBox.SelectedIndex = 0;
+
+            if (t.UseItem.Count >= 3) item3ComboBox.SelectedIndex = t.UseItem[2];
+            else item3ComboBox.SelectedIndex = 0;
+
+            if (t.UseItem.Count >= 4) item4ComboBox.SelectedIndex = t.UseItem[3];
+            else item4ComboBox.SelectedIndex = 0;
+
+            // TODO: AI Flags
+            //bool[] aiFlags = t.GetAIFlags();
+            bool[] aiFlags = Enumerable.Range(0, 32).Select(i => true).ToArray();
             checkBox1.Checked = aiFlags[0];
             checkBox2.Checked = aiFlags[1];
             checkBox3.Checked = aiFlags[2];
@@ -134,16 +154,16 @@ namespace ImpostersOrdeal
 
         private void CommitEdit(object sender, EventArgs e)
         {
-            t.trainerTypeID = trainerTypeNames.Keys.ToArray()[trainerTypeComboBox.SelectedIndex];
-            t.arenaID = (int)arenaIDNumericUpDown.Value;
-            t.effectID = (int)effectIDNumericUpDown.Value;
+            t.TypeID = trainerTypeNames.Keys.ToArray()[trainerTypeComboBox.SelectedIndex];
+            t.ArenaID = (int)arenaIDNumericUpDown.Value;
+            t.EffectID = (int)effectIDNumericUpDown.Value;
 
-            t.fightType = (byte)(doubleBattleCheckBox.Checked ? 1 : 0);
-            t.gold = (byte)prizeMoneyNumericUpDown.Value;
-            t.useItem1 = (ushort)(item1ComboBox.SelectedIndex == -1 ? 0 : item1ComboBox.SelectedIndex);
-            t.useItem2 = (ushort)(item2ComboBox.SelectedIndex == -1 ? 0 : item2ComboBox.SelectedIndex);
-            t.useItem3 = (ushort)(item3ComboBox.SelectedIndex == -1 ? 0 : item3ComboBox.SelectedIndex);
-            t.useItem4 = (ushort)(item4ComboBox.SelectedIndex == -1 ? 0 : item4ComboBox.SelectedIndex);
+            t.FightType = (byte)(doubleBattleCheckBox.Checked ? 1 : 0);
+            t.Gold = (byte)prizeMoneyNumericUpDown.Value;
+            t.UseItem[0] = (ushort)(item1ComboBox.SelectedIndex == -1 ? 0 : item1ComboBox.SelectedIndex);
+            t.UseItem[1] = (ushort)(item2ComboBox.SelectedIndex == -1 ? 0 : item2ComboBox.SelectedIndex);
+            t.UseItem[2] = (ushort)(item3ComboBox.SelectedIndex == -1 ? 0 : item3ComboBox.SelectedIndex);
+            t.UseItem[3] = (ushort)(item4ComboBox.SelectedIndex == -1 ? 0 : item4ComboBox.SelectedIndex);
 
             bool[] aiFlags = new bool[32];
             aiFlags[0] = checkBox1.Checked;
@@ -153,7 +173,8 @@ namespace ImpostersOrdeal
             aiFlags[4] = checkBox5.Checked;
             aiFlags[5] = checkBox6.Checked;
             aiFlags[6] = checkBox7.Checked;
-            t.SetAIFlags(aiFlags);
+            // TODO: AI Flags
+            //t.SetAIFlags(aiFlags);
 
             RefreshTextBoxDisplay();
         }
@@ -162,8 +183,7 @@ namespace ImpostersOrdeal
         {
             DeactivateControls();
 
-            t.nameLabel = labelToTrainerName.Keys.ToArray()[trainerNameComboBox.SelectedIndex];
-            t.name = (string)trainerNameComboBox.SelectedItem;
+            t.NameLabel = labelToTrainerName.Keys.ToArray()[trainerNameComboBox.SelectedIndex];
             PopulateListBox();
             RefreshTextBoxDisplay();
 
@@ -228,15 +248,17 @@ namespace ImpostersOrdeal
 
         private void RefreshTextBoxDisplay()
         {
-            trainerDisplayTextBox.Text = t.GetID() + " - " + trainerTypeNames[t.trainerTypeID] + " " + t.GetName();
+            trainerDisplayTextBox.Text = string.Format("{0} - {1} {2}", t.TypeID, trainerTypeNames[t.TypeID], labelToTrainerName[t.NameLabel]);
         }
 
         private void PopulatePartyDataGridView()
         {
             partyDataGridView.Rows.Clear();
-            foreach (TrainerPokemon tp in t.trainerPokemon)
+            foreach (var tp in t.Pokes)
             {
-                partyDataGridView.Rows.Add(new object[] { gameData.GetTPDisplayName(tp), "Configure" });
+                // TODO: name stuff
+                //partyDataGridView.Rows.Add(new object[] { gameData.GetTPDisplayName(tp), "Configure" });
+                partyDataGridView.Rows.Add(new object[] { "TODO asjfhkja", "Configure" });
             }
         }
 
@@ -246,8 +268,12 @@ namespace ImpostersOrdeal
 
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
-                if (e.RowIndex == t.trainerPokemon.Count)
-                    t.trainerPokemon.Add(t.trainerPokemon.Count > 0 ? new(t.trainerPokemon.Last()) : new());
+                if (e.RowIndex == t.Pokes.Count)
+                {
+                    // TODO: poke stuff
+                    //t.Pokes.Add(t.Pokes.Count > 0 ? new(t.Pokes.Last()) : new());
+                    t.Pokes.Add(new());
+                }
                 else
                 {
                     tpef.SetTP(t, e.RowIndex);
@@ -260,15 +286,19 @@ namespace ImpostersOrdeal
 
         private void UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
-            t.trainerPokemon.RemoveAt(e.Row.Index);
+            t.Pokes.RemoveAt(e.Row.Index);
         }
 
         private void CopyTPButtonClick(object sender, EventArgs e)
         {
+            // TODO: poke stuff
             tpClipboard = new();
             foreach (DataGridViewRow row in partyDataGridView.SelectedRows)
-                if (row.Index >= 0 && row.Index < t.trainerPokemon.Count)
-                    tpClipboard.Add(new(t.trainerPokemon[row.Index]));
+                if (row.Index >= 0 && row.Index < t.Pokes.Count)
+                {
+                    //tpClipboard.Add(new(t.trainerPokemon[row.Index]));
+                    tpClipboard.Add(new());
+                }
         }
 
         private void PasteTPButtonClick(object sender, EventArgs e)
@@ -276,20 +306,34 @@ namespace ImpostersOrdeal
             if (tpClipboard == null)
                 return;
 
-            List<TrainerPokemon> newParty = new();
+            List<TrainerTable.SheetTrainerData.TrainerPoke> newParty = new();
             List<DataGridViewRow> selection = new();
             foreach (DataGridViewRow row in partyDataGridView.SelectedRows)
                 selection.Add(row);
 
-            int firstIndex = selection.Count > 0 ? selection.Select(r => r.Index).Min() : t.trainerPokemon.Count;
-            int lastIndex = selection.Count > 0 ? selection.Select(r => r.Index).Max() : t.trainerPokemon.Count;
+            int firstIndex = selection.Count > 0 ? selection.Select(r => r.Index).Min() : t.Pokes.Count;
+            int lastIndex = selection.Count > 0 ? selection.Select(r => r.Index).Max() : t.Pokes.Count;
+
+            // TODO: poke stuff
             for (int i = 0; i < firstIndex; i++)
-                newParty.Add(new(t.trainerPokemon[i]));
-            foreach (TrainerPokemon tp in tpClipboard)
-                newParty.Add(new(tp));
-            for (int i = lastIndex + 1; i < t.trainerPokemon.Count; i++)
-                newParty.Add(new(t.trainerPokemon[i]));
-            t.trainerPokemon = newParty;
+            {
+                //newParty.Add(new(t.Pokes[i]));
+                newParty.Add(new());
+            }
+            
+            foreach (var tp in tpClipboard)
+            {
+                //newParty.Add(new(tp));
+                newParty.Add(new());
+            }
+            
+            for (int i = lastIndex + 1; i < t.Pokes.Count; i++)
+            {
+                //newParty.Add(new(t.Pokes[i]));
+                newParty.Add(new());
+            }
+
+            t.Pokes = newParty;
 
             PopulatePartyDataGridView();
         }
@@ -303,7 +347,9 @@ namespace ImpostersOrdeal
 
         private void CopyTrainerButtonClick(object sender, EventArgs e)
         {
-            trainerClipboard = new(t);
+            // TODO: poke stuff
+            //trainerClipboard = new(t);
+            trainerClipboard = new();
         }
 
         private void PasteTrainerButtonClick(object sender, EventArgs e)
@@ -311,9 +357,10 @@ namespace ImpostersOrdeal
             if (trainerClipboard != null)
             {
                 DeactivateControls();
-                int id = trainers[listBox.SelectedIndex].trainerID;
+                // TODO: trainer stuff
+                /*int id = trainers[listBox.SelectedIndex].TypeID;
                 trainers[listBox.SelectedIndex].SetAll(trainerClipboard);
-                trainers[listBox.SelectedIndex].trainerID = id;
+                trainers[listBox.SelectedIndex].trainerID = id;*/
                 PopulateListBox();
                 ActivateControls();
 
@@ -326,7 +373,8 @@ namespace ImpostersOrdeal
             int index = listBox.SelectedIndex;
             if (index < 0)
                 index = 0;
-            listBox.DataSource = trainers.Select(o => o.GetID() + " - " + o.GetName()).ToArray();
+
+            listBox.DataSource = trainers.Select(o => string.Format("{0} - {1}", trainerToID[o], labelToTrainerName[o.NameLabel])).ToArray();
             listBox.SelectedIndex = index;
         }
     }

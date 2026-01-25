@@ -1,36 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ImpostersOrdeal.GameDataTypes;
-using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
     public partial class TMEditorForm : Form
     {
-        List<TM> tms;
-        List<Item> items;
-        TM t;
-        Item i;
-        public TMEditorForm()
+        GameDataSet gameData;
+
+        List<ItemTable.SheetWazaMachine> tms;
+        List<ItemTable.SheetItem> items;
+        ItemTable.SheetWazaMachine t;
+        ItemTable.SheetItem i;
+
+        public TMEditorForm(GameDataSet gameData)
         {
-            tms = gameData.tms;
-            items = gameData.items;
+            this.gameData = gameData;
+
+            tms = gameData.itemTable.WazaMachine;
+            items = gameData.itemTable.Item;
             InitializeComponent();
 
             PopulateListBox();
             listBox.SelectedIndex = 0;
             t = tms[0];
-            i = items[t.itemID];
+            i = items[t.itemNo];
 
-            itemComboBox.DataSource = items.Select(i => i.GetName()).ToArray();
-            moveComboBox.DataSource = gameData.moves.Select(m => m.GetName()).ToArray();
+            itemComboBox.DataSource = items.Select(i => string.Format("{0}", gameData.GetLabelByIndex(Constants.ITEM_MESSAGEFILE_NAME, i.no))).ToArray();
+            moveComboBox.DataSource = gameData.moveTable.Waza.Select(m => string.Format("{0}", gameData.GetLabelByIndex(Constants.MOVE_MESSAGEFILE_NAME, m.wazaNo))).ToArray();
 
             RefreshTMDisplay();
             ActivateControls();
@@ -41,7 +40,7 @@ namespace ImpostersOrdeal
             DeactivateControls();
 
             t = tms[listBox.SelectedIndex];
-            i = items[t.itemID];
+            i = items[t.itemNo];
             RefreshTMDisplay();
 
             ActivateControls();
@@ -49,31 +48,30 @@ namespace ImpostersOrdeal
 
         private void RefreshTMDisplay()
         {
-            itemComboBox.SelectedIndex = t.itemID;
-            moveComboBox.SelectedIndex = t.moveID;
-            compatibilityNumericUpDown.Value = i.groupID;
+            itemComboBox.SelectedIndex = t.itemNo;
+            moveComboBox.SelectedIndex = t.wazaNo;
+            compatibilityNumericUpDown.Value = i.group_id;
         }
 
         private void CommitEdit(object sender, EventArgs e)
         {
             DeactivateControls();
 
-            if (t.itemID != itemComboBox.SelectedIndex)
+            if (t.itemNo != itemComboBox.SelectedIndex)
             {
-                t.itemID = itemComboBox.SelectedIndex == -1 ? 0 : itemComboBox.SelectedIndex;
-                t.name = gameData.items[t.itemID].GetName();
+                t.itemNo = itemComboBox.SelectedIndex == -1 ? 0 : itemComboBox.SelectedIndex;
                 PopulateListBox();
-                i = items[t.itemID];
+                i = items[t.itemNo];
                 RefreshTMDisplay();
             }
 
-            if (t.moveID != moveComboBox.SelectedIndex)
+            if (t.wazaNo != moveComboBox.SelectedIndex)
             {
-                t.moveID = moveComboBox.SelectedIndex == -1 ? 0 : moveComboBox.SelectedIndex;
+                t.wazaNo = moveComboBox.SelectedIndex == -1 ? 0 : moveComboBox.SelectedIndex;
                 PopulateListBox();
             }
 
-            i.groupID = (byte)compatibilityNumericUpDown.Value;
+            i.group_id = (byte)compatibilityNumericUpDown.Value;
 
             ActivateControls();
         }
@@ -97,7 +95,7 @@ namespace ImpostersOrdeal
         private void PopulateListBox()
         {
             int i = listBox.SelectedIndex;
-            listBox.DataSource = tms.Select(t => t.GetFullName()).ToArray();
+            listBox.DataSource = tms.Select(t => string.Format("{0}", gameData.GetLabelByIndex(Constants.ITEM_MESSAGEFILE_NAME, t.itemNo))).ToArray();
             listBox.SelectedIndex = i;
         }
     }

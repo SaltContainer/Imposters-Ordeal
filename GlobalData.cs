@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
+using static ImpostersOrdeal.Analyzer;
 using static ImpostersOrdeal.GameDataTypes;
-using static ImpostersOrdeal.ExternalJsonStructs;
 
 namespace ImpostersOrdeal
 {
@@ -13,162 +11,8 @@ namespace ImpostersOrdeal
     /// </summary>
     public static class GlobalData
     {
-        public class GameDataSet
-        {
-            public EvDataCollection evScriptFiles;
-            public PickupTable pickupTable;
-            public ShopTable shopTable;
-            public TrainerTable trainerTable;
-            public BattleTowerTable battleTowerTable;
-            public FieldEncountTableCollection encounterTableFiles;
-            public MessageFileTable messageFileTable;
-            public GrowTable growthRateTable;
-            public UgHideawayTable ugHideawayTable;
-            public UgEncounterTableCollection ugEncounterFiles;
-            public UgEncounterLevelTable ugEncounterLevelTable;
-            public UgPokemonDataTable ugPokemonDataTable;
-            public PokemonDataTable pokemonDataTable; //Ordered, idx=personalID
-            public ItemTable itemTable; //Ordered, idx=itemID, tmID
-            public MoveTable moveTable; //Ordered, idx=moveID
-            public DelphisMain delphisMainBank;
-            public GlobalMetadata globalMetadata;
-            public DprBin dprBin;
-
-            // TODO: Remove these?
-            public List<Ability> abilities; //Readonly
-            public List<Typing> typings; //Readonly
-            public List<DamageCategory> damageCategories; //Readonly
-            public List<Nature> natures; //Readonly
-            public List<TrainerType> trainerTypes; //Readonly
-            public List<DexEntry> dexEntries; //Ordered, idx=dexID
-
-            public List<BattleMasterdatas.MotionTimingData> motionTimingData;
-            public List<Masterdatas.PokemonInfoCatalog> pokemonInfos;
-            public List<PersonalMasterdatas.AddPersonalTable> addPersonalTables;
-            public List<UIMasterdatas.PokemonIcon> uiPokemonIcon;
-            public List<UIMasterdatas.AshiatoIcon> uiAshiatoIcon;
-            public List<UIMasterdatas.PokemonVoice> uiPokemonVoice;
-            public List<UIMasterdatas.ZukanDisplay> uiZukanDisplay;
-            public List<UIMasterdatas.ZukanCompareHeight> uiZukanCompareHeights;
-            public List<UIMasterdatas.SearchPokeIconSex> uiSearchPokeIconSex;
-            public UIMasterdatas.DistributionTable uiDistributionTable;
-            public List<ResultMotion> contestResultMotion;
-
-            public List<(string name, Starter obj)> externalStarters;
-            public List<(string name, HoneyTreeZone obj)> externalHoneyTrees;
-
-            public Dictionary<string, string> trainerNames;
-            public StringBuilder audioSourceLog;
-            public ModArgs modArgs;
-
-            private readonly bool[] fieldStates = new bool[Enum.GetNames(typeof(DataField)).Length];
-
-            public enum DataField
-            {
-                EvScripts,
-                MapWarpAssets,
-                PickupItems,
-                ShopTables,
-                Trainers,
-                BattleTowerTrainers,
-                battleTowerTrainerPokemons,
-                EncounterTableFiles,
-                MessageFileSets,
-                GrowthRates,
-                UgAreas,
-                UgEncounterFiles,
-                UgEncounterLevelSets,
-                UgSpecialEncounters,
-                UgPokemonData,
-                Abilities,
-                Typings,
-                DamageCategories,
-                Natures,
-                PersonalEntries,
-                DexEntries,
-                Items,
-                TMs,
-                Moves,
-                AudioData,
-                GlobalMetadata,
-                UIMasterdatas,
-                AddPersonalTable,
-                MotionTimingData,
-                PokemonInfo,
-                ContestResultMotion,
-                DprBin,
-                ExternalStarters,
-                ExternalHoneyTrees
-            }
-
-            public bool IsModified(DataField d)
-            {
-                return fieldStates[(int)d];
-            }
-
-            public void SetModified(DataField d)
-            {
-                fieldStates[(int)d] = true;
-            }
-
-            public Pokemon GetPokemon(int dexID, int formID)
-            {
-                return dexEntries[dexID].forms[formID];
-            }
-
-            public string GetTPDisplayName(TrainerPokemon tp)
-            {
-                return "Lv. " + tp.level + " " + GetPokemon(tp.dexID, tp.formID).GetName();
-            }
-
-            public bool UgVersionsUnbounded()
-            {
-                return modArgs != null ? modArgs.ugVersionsUnbounded : ugEncounterFiles
-                    .SelectMany(o => o.ugEncounters)
-                    .Any(e => e.version < 1 || e.version > 3);
-            }
-
-            public bool Uint16UgTables()
-            {
-                return modArgs != null ? modArgs.uint16UgTables : ugEncounterFiles
-                    .SelectMany(ugef => ugef.ugEncounters)
-                    .Any(uge => (uint)uge.dexID > 0xFFFF); 
-            }
-
-            public bool Uint16EncounterTables()
-            {
-                return modArgs != null ? modArgs.uint16EncounterTables : encounterTableFiles
-                    .Any(etf => etf.encounterTables
-                    .Any(o => o.GetAllTables()
-                    .Any(l => l
-                    .Any(e => (uint)e.dexID > 0xFFFF))));
-            }
-
-            public int GetEvolutionMethodCount()
-            {
-                int emCount = modArgs != null ? modArgs.evolutionMethodCount : 0;
-                if (emCount == 0)
-                    emCount = Math.Max(48, (int)personalEntries.SelectMany(p => p.evolutionPaths.Select(em => em.method)).Max());
-                return emCount;
-            }
-
-            public bool FormDescriptionsExist()
-            {
-                return messageFileSets.SelectMany(mfs => mfs.messageFiles)
-                    .First(mf => mf.mName.Contains("dp_pokedex_diamond"))
-                    .labelDatas.Count >= personalEntries.Count - 1;
-            }
-
-            public int GetTMCompatibilitySetSize()
-            {
-                return personalEntries.First(p => p.IsValid()).GetTMCompatibility().Length;
-            }
-        }
-
         public static FileManager fileManager;
-        public static ParserCollection parserCollection;
         public static Dictionary<PathEnum, string> randomizerPaths = new();
-        public static GameDataSet gameData;
         public static DataTable absoluteBoundaries = new();
 
         public static DataRow GetBoundaries(AbsoluteBoundary a)
@@ -289,6 +133,27 @@ namespace ImpostersOrdeal
             absoluteBoundaries.Rows.Add(new Object[] { "EV", 0, 255, 1 });
             absoluteBoundaries.Rows.Add(new Object[] { "EV Total", 0, 510, 1 });
             absoluteBoundaries.Rows.Add(new Object[] { "Price", 10, 999990, 10 });
+        }
+
+        /// <summary>
+        ///  Finds the particular correlation of typings between two Pokémon.
+        /// </summary>
+        public static TypingCorrelation CompareTyping(this Pokemon p1, Pokemon p2)
+        {
+            List<int> typing1 = p1.GetTyping();
+            List<int> typing2 = p2.GetTyping();
+            int matches = 0;
+            if (typing1.Contains(typing2[0]))
+                matches++;
+            if (typing2.Count > 1 && typing1.Contains(typing2[1]))
+                matches++;
+            if (matches == 0 && !(typing1.Count == 1 && typing2.Count == 1))
+                return TypingCorrelation.NoCorrelation;
+            if (matches == 2 || typing1.Count == 1 && typing2.Count == 1 && matches == 1)
+                return TypingCorrelation.Identical;
+            if (typing1.Count != typing2.Count)
+                return TypingCorrelation.Addition;
+            return TypingCorrelation.Swap;
         }
     }
 }

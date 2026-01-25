@@ -1,31 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ImpostersOrdeal.GameDataTypes;
-using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
     public partial class ShopEditorForm : Form
     {
-        List<MartItem> martItems;
-        List<FixedShopItem> fixedShopItems;
-        List<BpShopItem> bpShopItems;
+        GameDataSet gameData;
+
+        List<ShopTable.SheetFS> martItems;
+        List<ShopTable.SheetFixedShop> fixedShopItems;
+        List<ShopTable.SheetBPShop> bpShopItems;
         List<string> items;
         List<string> zones;
 
-        public ShopEditorForm()
+        public ShopEditorForm(GameDataSet gameData)
         {
-            martItems = gameData.shopTable.martItems;
-            fixedShopItems = gameData.shopTable.fixedShopItems;
-            bpShopItems = gameData.shopTable.bpShopItems;
-            items = gameData.items.Select(i => i.GetName()).ToList();
+            this.gameData = gameData;
+
+            martItems = gameData.shopTable.FS;
+            fixedShopItems = gameData.shopTable.FixedShop;
+            bpShopItems = gameData.shopTable.BPShop;
+
+            items = gameData.GetAllLabels(Constants.ITEM_MESSAGEFILE_NAME);
             zones = Zones.zoneNames.ToList();
             zones[zones.Count - 1] = "All";
 
@@ -39,14 +37,14 @@ namespace ImpostersOrdeal
             bpItemColumn.DataSource = items.ToArray();
             npcColumn.ValueType = typeof(int);
 
-            foreach (MartItem m in martItems)
-                martDataGridView.Rows.Add(new object[] { items[m.itemID], m.badgeNum, m.zoneID == -1 ? zones.Last() : zones[m.zoneID] });
+            foreach (var m in martItems)
+                martDataGridView.Rows.Add(new object[] { items[m.ItemNo], m.BadgeNum, m.ZoneID == ZoneID.UNKNOWN ? zones.Last() : zones[(int)m.ZoneID] });
 
-            foreach (FixedShopItem f in fixedShopItems)
-                fixedShopDataGridView.Rows.Add(new object[] { items[f.itemID], f.shopID });
+            foreach (var f in fixedShopItems)
+                fixedShopDataGridView.Rows.Add(new object[] { items[f.ItemNo], f.ShopID });
 
-            foreach (BpShopItem b in bpShopItems)
-                bpShopDataGridView.Rows.Add(new object[] { items[b.itemID], b.npcID });
+            foreach (var b in bpShopItems)
+                bpShopDataGridView.Rows.Add(new object[] { items[b.ItemNo], b.NPCID });
 
             ActivateControls();
         }
@@ -61,15 +59,15 @@ namespace ImpostersOrdeal
                     row.Cells[2].Value == null ||
                     items.IndexOf((string)row.Cells[0].Value) == 0)
                     continue;
-                MartItem m = new();
-                m.itemID = (ushort)items.IndexOf((string)row.Cells[0].Value);
-                m.badgeNum = (int)row.Cells[1].Value;
-                m.zoneID = zones.IndexOf((string)row.Cells[2].Value);
-                if (m.zoneID == zones.Count - 1)
-                    m.zoneID = -1;
+                var m = new ShopTable.SheetFS();
+                m.ItemNo = (ushort)items.IndexOf((string)row.Cells[0].Value);
+                m.BadgeNum = (int)row.Cells[1].Value;
+                m.ZoneID = (ZoneID)zones.IndexOf((string)row.Cells[2].Value);
+                if ((int)m.ZoneID == zones.Count - 1)
+                    m.ZoneID = ZoneID.UNKNOWN;
                 martItems.Add(m);
             }
-            gameData.shopTable.martItems = martItems;
+            gameData.shopTable.FS = martItems;
 
             fixedShopItems = new();
             foreach (DataGridViewRow row in fixedShopDataGridView.Rows)
@@ -78,12 +76,12 @@ namespace ImpostersOrdeal
                     row.Cells[1].Value == null ||
                     items.IndexOf((string)row.Cells[0].Value) == 0)
                     continue;
-                FixedShopItem f = new();
-                f.itemID = (ushort)items.IndexOf((string)row.Cells[0].Value);
-                f.shopID = (int)row.Cells[1].Value;
+                var f = new ShopTable.SheetFixedShop();
+                f.ItemNo = (ushort)items.IndexOf((string)row.Cells[0].Value);
+                f.ShopID = (int)row.Cells[1].Value;
                 fixedShopItems.Add(f);
             }
-            gameData.shopTable.fixedShopItems = fixedShopItems;
+            gameData.shopTable.FixedShop = fixedShopItems;
 
             bpShopItems = new();
             foreach (DataGridViewRow row in bpShopDataGridView.Rows)
@@ -92,12 +90,12 @@ namespace ImpostersOrdeal
                     row.Cells[1].Value == null ||
                     items.IndexOf((string)row.Cells[0].Value) == 0)
                     continue;
-                BpShopItem b = new();
-                b.itemID = (ushort)items.IndexOf((string)row.Cells[0].Value);
-                b.npcID = (int)row.Cells[1].Value;
+                var b = new ShopTable.SheetBPShop();
+                b.ItemNo = (ushort)items.IndexOf((string)row.Cells[0].Value);
+                b.NPCID = (int)row.Cells[1].Value;
                 bpShopItems.Add(b);
             }
-            gameData.shopTable.bpShopItems = bpShopItems;
+            gameData.shopTable.BPShop = bpShopItems;
         }
 
         private void ActivateControls()

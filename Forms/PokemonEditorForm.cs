@@ -4,20 +4,20 @@ using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using static ImpostersOrdeal.GameDataTypes;
-using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
     public partial class PokemonEditorForm : Form
     {
-        private List<DexEntry> dexEntries;
+        private GameDataSet gameData;
+
         public List<string> pokemon;
         public List<string> moves;
         public List<string> typings;
         public List<string> items;
         public List<string> abilities;
         public Dictionary<int, string> tms;
-        public Pokemon p;
+        public PokemonDataTable.PokemonData p;
 
         public readonly string[] colors = new string[]
             {
@@ -31,26 +31,32 @@ namespace ImpostersOrdeal
                 "Human-Like", "Water 3", "Mineral", "Amorphous", "Water 2", "Ditto", "Dragon", "Undiscovered"
             };
 
-        public PokemonEditorForm()
+        public PokemonEditorForm(GameDataSet gameData)
         {
+            this.gameData = gameData;
+
             InitializeComponent();
 
-            dexEntries = gameData.dexEntries;
-            pokemon = dexEntries.Select(m => m.GetName()).ToList();
-            moves = gameData.moves.Select(m => m.GetName()).ToList();
-            typings = gameData.typings.Select(t => t.GetName()).ToList();
-            items = gameData.items.Select(i => i.GetName()).ToList();
-            abilities = gameData.abilities.Select(a => a.GetName()).ToList();
+            pokemon = gameData.GetAllLabels(Constants.POKEMONSPECIES_MESSAGEFILE_NAME);
+            moves = gameData.GetAllLabels(Constants.MOVE_MESSAGEFILE_NAME);
+            typings = gameData.GetAllLabels(Constants.TYPE_MESSAGEFILE_NAME);
+            items = gameData.GetAllLabels(Constants.ITEM_MESSAGEFILE_NAME);
+            abilities = gameData.GetAllLabels(Constants.ABILITY_MESSAGEFILE_NAME);
             tms = new();
-            for (int tmID = 0; tmID < gameData.tms.Count; tmID++)
-                if (gameData.tms[tmID].IsValid() && !tms.ContainsKey(gameData.items[gameData.tms[tmID].itemID].groupID - 1))
-                    tms[gameData.items[gameData.tms[tmID].itemID].groupID - 1] = gameData.tms[tmID].GetFullName();
 
-            dexIDComboBox.DataSource = dexEntries.Select(d => d.GetName()).ToArray();
+            // TODO: TM validity stuff
+            /*for (int tmID = 0; tmID < gameData.itemTable.WazaMachine.Count; tmID++)
+                if (gameData.itemTable.WazaMachine[tmID].IsValid() && !tms.ContainsKey(gameData.itemTable.Item[gameData.itemTable.WazaMachine[tmID].itemNo].group_id - 1))
+                    tms[gameData.itemTable.Item[gameData.itemTable.WazaMachine[tmID].itemNo].group_id - 1] = gameData.itemTable.WazaMachine[tmID].GetFullName();*/
+            for (int tmID = 0; tmID < gameData.itemTable.WazaMachine.Count; tmID++)
+                if (!tms.ContainsKey(gameData.itemTable.Item[gameData.itemTable.WazaMachine[tmID].itemNo].group_id - 1))
+                    tms[gameData.itemTable.Item[gameData.itemTable.WazaMachine[tmID].itemNo].group_id - 1] = string.Format("TM{0}", gameData.itemTable.WazaMachine[tmID].machineNo);
+
+            dexIDComboBox.DataSource = pokemon;
             dexIDComboBox.SelectedIndex = 0;
-            formIDComboBox.DataSource = dexEntries[0].forms.Select((p, i) => i).ToArray();
+            formIDComboBox.DataSource = gameData.GetAllFormNames(0);
             formIDComboBox.SelectedIndex = 0;
-            p = dexEntries[0].forms[0];
+            p = gameData.pokemonDataTable.Data[0];
 
             type1ComboBox.DataSource = typings.ToArray();
             type2ComboBox.DataSource = typings.ToArray();
@@ -66,7 +72,9 @@ namespace ImpostersOrdeal
             colorComboBox.DataSource = colors;
             eggGroup1ComboBox.DataSource = eggGroups.ToArray();
             eggGroup2ComboBox.DataSource = eggGroups.ToArray();
-            growthComboBox.DataSource = gameData.growthRates.Select(g => g.GetName()).ToArray();
+            // TODO: Name stuff
+            //growthComboBox.DataSource = gameData.growthRates.Select(g => g.GetName()).ToArray();
+            growthComboBox.DataSource = gameData.growthRateTable.Rates.Select(g => string.Format("{0}", g.id)).ToArray();
 
             tmCompatibilityCheckedListBox.Items.Clear();
             tmCompatibilityCheckedListBox.Items.AddRange(tms.Values.ToArray());
@@ -84,9 +92,9 @@ namespace ImpostersOrdeal
         {
             DeactivateControls();
 
-            formIDComboBox.DataSource = dexEntries[dexIDComboBox.SelectedIndex].forms.Select((p, i) => i).ToList();
+            formIDComboBox.DataSource = gameData.GetAllFormNames(dexIDComboBox.SelectedIndex);
             formIDComboBox.SelectedIndex = 0;
-            p = dexEntries[dexIDComboBox.SelectedIndex].forms[0];
+            p = gameData.pokemonDataTable.Data[dexIDComboBox.SelectedIndex];
             RefreshPokemonDisplay();
 
             ActivateControls();
@@ -96,7 +104,7 @@ namespace ImpostersOrdeal
         {
             DeactivateControls();
 
-            p = dexEntries[dexIDComboBox.SelectedIndex].forms[formIDComboBox.SelectedIndex];
+            p = gameData.pokemonDataTable.Data[dexIDComboBox.SelectedIndex];
             RefreshPokemonDisplay();
 
             ActivateControls();
@@ -104,17 +112,20 @@ namespace ImpostersOrdeal
 
         private void RefreshPokemonDisplay()
         {
-            personalIDTextBox.Text = p.personalID.ToString();
+            personalIDTextBox.Text = p.personal.id.ToString();
 
-            numericUpDown1.Value = p.basicHp;
-            numericUpDown2.Value = p.basicAtk;
-            numericUpDown3.Value = p.basicDef;
-            numericUpDown4.Value = p.basicSpAtk;
-            numericUpDown5.Value = p.basicSpDef;
-            numericUpDown6.Value = p.basicSpd;
-            bstTextBox.Text = p.GetBST().ToString();
+            numericUpDown1.Value = p.personal.basic_hp;
+            numericUpDown2.Value = p.personal.basic_atk;
+            numericUpDown3.Value = p.personal.basic_def;
+            numericUpDown4.Value = p.personal.basic_spatk;
+            numericUpDown5.Value = p.personal.basic_spdef;
+            numericUpDown6.Value = p.personal.basic_agi;
+            //bstTextBox.Text = p.GetBST().ToString();
+            bstTextBox.Text = string.Format("{0}", numericUpDown1.Value + numericUpDown2.Value + numericUpDown3.Value + numericUpDown4.Value + numericUpDown5.Value + numericUpDown6.Value);
 
-            int[] evYield = p.GetEvYield();
+            // TODO: evyield
+            //int[] evYield = p.GetEvYield();
+            int[] evYield = new int[] {0, 0, 0, 0, 0, 0};
             numericUpDown7.Value = evYield[0];
             numericUpDown8.Value = evYield[1];
             numericUpDown9.Value = evYield[2];
@@ -122,59 +133,63 @@ namespace ImpostersOrdeal
             numericUpDown11.Value = evYield[5];
             numericUpDown12.Value = evYield[3];
 
-            type1ComboBox.SelectedIndex = p.typingID1;
-            type2ComboBox.SelectedIndex = p.typingID2;
+            type1ComboBox.SelectedIndex = p.personal.type1;
+            type2ComboBox.SelectedIndex = p.personal.type2;
 
-            item1ComboBox.SelectedIndex = p.item1;
-            item2ComboBox.SelectedIndex = p.item2;
-            item3ComboBox.SelectedIndex = p.item3;
+            item1ComboBox.SelectedIndex = p.personal.item1;
+            item2ComboBox.SelectedIndex = p.personal.item2;
+            item3ComboBox.SelectedIndex = p.personal.item3;
 
-            ability1ComboBox.SelectedIndex = p.abilityID1;
-            ability2ComboBox.SelectedIndex = p.abilityID2;
-            hiddenAbilityComboBox.SelectedIndex = p.abilityID3;
+            ability1ComboBox.SelectedIndex = p.personal.tokusei1;
+            ability2ComboBox.SelectedIndex = p.personal.tokusei2;
+            hiddenAbilityComboBox.SelectedIndex = p.personal.tokusei3;
 
-            colorComboBox.SelectedIndex = p.color;
-            numericUpDown13.Value = p.graNo;
-            numericUpDown14.Value = p.getRate;
-            numericUpDown15.Value = p.rank;
-            numericUpDown16.Value = p.sex;
-            numericUpDown17.Value = p.eggBirth;
-            numericUpDown18.Value = p.initialFriendship;
-            eggGroup1ComboBox.SelectedIndex = p.eggGroup1;
-            eggGroup2ComboBox.SelectedIndex = p.eggGroup2;
-            growthComboBox.SelectedIndex = p.grow;
-            numericUpDown19.Value = p.giveExp;
-            numericUpDown20.Value = p.height;
-            numericUpDown21.Value = p.weight;
+            colorComboBox.SelectedIndex = p.personal.color;
+            numericUpDown13.Value = p.personal.gra_no;
+            numericUpDown14.Value = p.personal.get_rate;
+            numericUpDown15.Value = p.personal.rank;
+            numericUpDown16.Value = p.personal.sex;
+            numericUpDown17.Value = p.personal.egg_birth;
+            numericUpDown18.Value = p.personal.initial_friendship;
+            eggGroup1ComboBox.SelectedIndex = p.personal.egg_group1;
+            eggGroup2ComboBox.SelectedIndex = p.personal.egg_group2;
+            growthComboBox.SelectedIndex = p.personal.grow;
+            numericUpDown19.Value = p.personal.give_exp;
+            numericUpDown20.Value = p.personal.height;
+            numericUpDown21.Value = p.personal.weight;
 
-            bool[] tmCompatibility = p.GetTMCompatibility();
+            // TODO: tmcompat
+            //bool[] tmCompatibility = p.GetTMCompatibility();
+            bool[] tmCompatibility = Enumerable.Range(0, 256).Select(i => true).ToArray();
             int[] tmKeys = tms.Keys.ToArray();
             for (int i = 0; i < tmCompatibilityCheckedListBox.Items.Count; i++)
-                if (tmKeys[i] < tmCompatibility.Length)
+                if (tmKeys[i] >= 0 && tmKeys[i] < tmCompatibility.Length)
                     tmCompatibilityCheckedListBox.SetItemChecked(i, tmCompatibility[tmKeys[i]]);
                 else
                     tmCompatibilityCheckedListBox.SetItemChecked(i, false);
 
             levelUpMoveDataGridView.Rows.Clear();
-            for (int i = 0; i < p.levelUpMoves.Count; i++)
-                levelUpMoveDataGridView.Rows.Add(new object[] { p.levelUpMoves[i].level, moves[p.levelUpMoves[i].moveID] });
+            for (int i = 0; i < p.levelUpMoves.moves.Count; i++)
+                levelUpMoveDataGridView.Rows.Add(new object[] { p.levelUpMoves.moves[i].level, moves[p.levelUpMoves.moves[i].move] });
 
             eggMoveDataGridView.Rows.Clear();
-            for (int i = 0; i < p.eggMoves.Count; i++)
-                eggMoveDataGridView.Rows.Add(new object[] { moves[p.eggMoves[i]] });
+            for (int i = 0; i < p.eggMoves.wazaNo.Count; i++)
+                eggMoveDataGridView.Rows.Add(new object[] { moves[p.eggMoves.wazaNo[i]] });
         }
 
         private void CommitEdit(object sender, EventArgs e)
         {
-            p.basicHp = (byte)numericUpDown1.Value;
-            p.basicAtk = (byte)numericUpDown2.Value;
-            p.basicDef = (byte)numericUpDown3.Value;
-            p.basicSpAtk = (byte)numericUpDown4.Value;
-            p.basicSpDef = (byte)numericUpDown5.Value;
-            p.basicSpd = (byte)numericUpDown6.Value;
-            bstTextBox.Text = p.GetBST().ToString();
+            p.personal.basic_hp = (byte)numericUpDown1.Value;
+            p.personal.basic_atk = (byte)numericUpDown2.Value;
+            p.personal.basic_def = (byte)numericUpDown3.Value;
+            p.personal.basic_spatk = (byte)numericUpDown4.Value;
+            p.personal.basic_spdef = (byte)numericUpDown5.Value;
+            p.personal.basic_agi = (byte)numericUpDown6.Value;
+            //bstTextBox.Text = p.GetBST().ToString();
+            bstTextBox.Text = string.Format("{0}", numericUpDown1.Value + numericUpDown2.Value + numericUpDown3.Value + numericUpDown4.Value + numericUpDown5.Value + numericUpDown6.Value);
 
-            p.SetEvYield(new int[]
+            // TODO: evyield
+            /*p.SetEvYield(new int[]
             {
                 (int)numericUpDown7.Value,
                 (int)numericUpDown8.Value,
@@ -182,52 +197,53 @@ namespace ImpostersOrdeal
                 (int)numericUpDown12.Value,
                 (int)numericUpDown10.Value,
                 (int)numericUpDown11.Value
-            });
+            });*/
 
-            p.typingID1 = (byte)(type1ComboBox.SelectedIndex == -1 ? 0 : type1ComboBox.SelectedIndex);
-            p.typingID2 = (byte)(type2ComboBox.SelectedIndex == -1 ? 0 : type2ComboBox.SelectedIndex);
+            p.personal.type1 = (byte)(type1ComboBox.SelectedIndex == -1 ? 0 : type1ComboBox.SelectedIndex);
+            p.personal.type2 = (byte)(type2ComboBox.SelectedIndex == -1 ? 0 : type2ComboBox.SelectedIndex);
 
-            p.item1 = (ushort)(item1ComboBox.SelectedIndex == -1 ? 0 : item1ComboBox.SelectedIndex);
-            p.item2 = (ushort)(item2ComboBox.SelectedIndex == -1 ? 0 : item2ComboBox.SelectedIndex);
-            p.item3 = (ushort)(item3ComboBox.SelectedIndex == -1 ? 0 : item3ComboBox.SelectedIndex);
+            p.personal.item1 = (ushort)(item1ComboBox.SelectedIndex == -1 ? 0 : item1ComboBox.SelectedIndex);
+            p.personal.item2 = (ushort)(item2ComboBox.SelectedIndex == -1 ? 0 : item2ComboBox.SelectedIndex);
+            p.personal.item3 = (ushort)(item3ComboBox.SelectedIndex == -1 ? 0 : item3ComboBox.SelectedIndex);
 
-            p.abilityID1 = (ushort)(ability1ComboBox.SelectedIndex == -1 ? 0 : ability1ComboBox.SelectedIndex);
-            p.abilityID2 = (ushort)(ability2ComboBox.SelectedIndex == -1 ? 0 : ability2ComboBox.SelectedIndex);
-            p.abilityID3 = (ushort)(hiddenAbilityComboBox.SelectedIndex == -1 ? 0 : hiddenAbilityComboBox.SelectedIndex);
+            p.personal.tokusei1 = (ushort)(ability1ComboBox.SelectedIndex == -1 ? 0 : ability1ComboBox.SelectedIndex);
+            p.personal.tokusei2 = (ushort)(ability2ComboBox.SelectedIndex == -1 ? 0 : ability2ComboBox.SelectedIndex);
+            p.personal.tokusei3 = (ushort)(hiddenAbilityComboBox.SelectedIndex == -1 ? 0 : hiddenAbilityComboBox.SelectedIndex);
 
-            p.color = (byte)(colorComboBox.SelectedIndex == -1 ? 0 : colorComboBox.SelectedIndex);
-            p.graNo = (ushort)numericUpDown13.Value;
-            p.getRate = (byte)numericUpDown14.Value;
-            p.rank = (byte)numericUpDown15.Value;
-            p.sex = (byte)numericUpDown16.Value;
-            p.eggBirth = (byte)numericUpDown17.Value;
-            p.initialFriendship = (byte)numericUpDown18.Value;
-            p.eggGroup1 = (byte)(eggGroup1ComboBox.SelectedIndex == -1 ? 0 : eggGroup1ComboBox.SelectedIndex);
-            p.eggGroup2 = (byte)(eggGroup2ComboBox.SelectedIndex == -1 ? 0 : eggGroup2ComboBox.SelectedIndex);
-            p.grow = (byte)(growthComboBox.SelectedIndex == -1 ? 0 : growthComboBox.SelectedIndex);
-            p.giveExp = (ushort)numericUpDown19.Value;
-            p.height = (ushort)numericUpDown20.Value;
-            p.weight = (ushort)numericUpDown21.Value;
+            p.personal.color = (byte)(colorComboBox.SelectedIndex == -1 ? 0 : colorComboBox.SelectedIndex);
+            p.personal.gra_no = (ushort)numericUpDown13.Value;
+            p.personal.get_rate = (byte)numericUpDown14.Value;
+            p.personal.rank = (byte)numericUpDown15.Value;
+            p.personal.sex = (byte)numericUpDown16.Value;
+            p.personal.egg_birth = (byte)numericUpDown17.Value;
+            p.personal.initial_friendship = (byte)numericUpDown18.Value;
+            p.personal.egg_group1 = (byte)(eggGroup1ComboBox.SelectedIndex == -1 ? 0 : eggGroup1ComboBox.SelectedIndex);
+            p.personal.egg_group2 = (byte)(eggGroup2ComboBox.SelectedIndex == -1 ? 0 : eggGroup2ComboBox.SelectedIndex);
+            p.personal.grow = (byte)(growthComboBox.SelectedIndex == -1 ? 0 : growthComboBox.SelectedIndex);
+            p.personal.give_exp = (ushort)numericUpDown19.Value;
+            p.personal.height = (ushort)numericUpDown20.Value;
+            p.personal.weight = (ushort)numericUpDown21.Value;
 
-            bool[] tmCompatibility = new bool[gameData.GetTMCompatibilitySetSize()];
+            // TODO: tmcompat
+            /*bool[] tmCompatibility = new bool[gameData.GetTMCompatibilitySetSize()];
             for (int i = 0; i < tmCompatibilityCheckedListBox.Items.Count; i++)
                 tmCompatibility[tms.Keys.ToArray()[i]] = tmCompatibilityCheckedListBox.GetItemChecked(i);
-            p.SetTMCompatibility(tmCompatibility);
+            p.SetTMCompatibility(tmCompatibility);*/
 
-            List<LevelUpMove> levelUpMoves = new();
+            List<PokemonDataTable.PokemonData.SheetWazaOboe.LearnedMove> levelUpMoves = new();
             for (int i = 0; i < levelUpMoveDataGridView.Rows.Count; i++)
             {
                 if (levelUpMoveDataGridView.Rows[i].Cells[0].Value == null ||
                     levelUpMoveDataGridView.Rows[i].Cells[1].Value == null ||
                     moves.IndexOf((string)levelUpMoveDataGridView.Rows[i].Cells[1].Value) == 0)
                     continue;
-                LevelUpMove l = new();
+                var l = new PokemonDataTable.PokemonData.SheetWazaOboe.LearnedMove();
                 l.level = (ushort)levelUpMoveDataGridView.Rows[i].Cells[0].Value;
-                l.moveID = (ushort)moves.IndexOf((string)levelUpMoveDataGridView.Rows[i].Cells[1].Value);
+                l.move = (ushort)moves.IndexOf((string)levelUpMoveDataGridView.Rows[i].Cells[1].Value);
                 levelUpMoves.Add(l);
             }
             levelUpMoves.Sort((l1, l2) => l1.level.CompareTo(l2.level));
-            p.levelUpMoves = levelUpMoves;
+            p.levelUpMoves.moves = levelUpMoves;
 
             List<ushort> eggMoves = new();
             for (int i = 0; i < eggMoveDataGridView.Rows.Count; i++)
@@ -237,7 +253,7 @@ namespace ImpostersOrdeal
                     continue;
                 eggMoves.Add((ushort)moves.IndexOf((string)eggMoveDataGridView.Rows[i].Cells[0].Value));
             }
-            p.eggMoves = eggMoves;
+            p.eggMoves.wazaNo = eggMoves;
         }
 
         private void ActivateControls()
@@ -345,7 +361,7 @@ namespace ImpostersOrdeal
 
         private void OpenEvolutionEditor(object sender, EventArgs e)
         {
-            EvolutionEditorForm eef = new(this);
+            EvolutionEditorForm eef = new(this, gameData);
             eef.Show();
         }
     }

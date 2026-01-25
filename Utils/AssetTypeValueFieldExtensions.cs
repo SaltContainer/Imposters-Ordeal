@@ -1,9 +1,7 @@
 ﻿using AssetsTools.NET;
 using AssetsTools.NET.Extra;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 
 namespace ImpostersOrdeal.Utils
@@ -72,6 +70,22 @@ namespace ImpostersOrdeal.Utils
             self["x"].AsFloat = value.X;
             self["y"].AsFloat = value.X;
             self["z"].AsFloat = value.X;
+        }
+
+        /// <summary>
+        /// Gets the elements of this byte array-typed AssetTypeValueField.
+        /// </summary>
+        public static byte[] GetAsByteArray(this AssetTypeValueField self)
+        {
+            return GetInnerArrayField(self).AsByteArray;
+        }
+
+        /// <summary>
+        /// Sets the elements of this byte array-typed AssetTypeValueField.
+        /// </summary>
+        public static void SetAsByteArray(this AssetTypeValueField self, byte[] value)
+        {
+            GetInnerArrayField(self).AsByteArray = value;
         }
 
         private static AssetTypeValueField GetInnerArrayField(AssetTypeValueField self)

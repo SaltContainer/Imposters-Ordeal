@@ -214,7 +214,7 @@ namespace ImpostersOrdeal
                 if (trainerRematchField != null)
                 {
                     for (int j=1; j<=5; j++)
-                        trainerData.Rematches.Add(trainerPokeField[string.Format(REMATCH_GENERIC_FIELD, IntHelper.ConvertToString(j))].AsInt);
+                        trainerData.Rematches.Add(trainerRematchField[string.Format(REMATCH_GENERIC_FIELD, IntHelper.ConvertToString(j))].AsInt);
                 }
 
                 data.TrainerData.Add(trainerData);

@@ -8,8 +8,11 @@ using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
+    // TODO: Reimplement UG Editor
     public partial class UgEncounterEditorForm : Form
     {
+        private GameDataSet gameData;
+
         private List<UgArea> areas;
         private List<UgEncounterFile> encounterFiles;
         private List<UgEncounterLevelSet> levelSets;
@@ -84,26 +87,29 @@ namespace ImpostersOrdeal
             "Nat Dex"
         };
 
-        public UgEncounterEditorForm()
+        public UgEncounterEditorForm(GameDataSet gameData)
         {
-            areas = gameData.ugAreas;
+            this.gameData = gameData;
+
+            /*areas = gameData.ugHideawayTable.hideawayData.hideaways;
             encounterFiles = gameData.ugEncounterFiles;
             levelSets = gameData.ugEncounterLevelSets;
             specialEncounters = gameData.ugSpecialEncounters;
             dexEntries = gameData.dexEntries.Select(d => d.GetName()).ToList();
-            versionNames = versions;
+            versionNames = versions;*/
 
             InitializeComponent();
 
             //encounterFiles[0].ugEncounters[0].version = 0;
             //encounterFiles[0].ugEncounters[0].dexID = 0xFFFF + 1;
             mode = Mode.Normal;
-            if (gameData.Uint16UgTables())
+            // TODO: data settings stuff
+            /*if (gameData.Uint16UgTables())
                 mode = Mode.Uint16DexID;
             else if (gameData.UgVersionsUnbounded())
-                mode = Mode.VersionUnbounded;
+                mode = Mode.VersionUnbounded;*/
 
-            if (mode == Mode.Uint16DexID)
+            /*if (mode == Mode.Uint16DexID)
             {
                 DataGridViewTextBoxColumn formColumn = new();
                 string formIDColumnName = "FormID";
@@ -150,7 +156,7 @@ namespace ImpostersOrdeal
 
             RefreshAreaDisplay();
             RefreshEncounterFileDisplay();
-            ActivateControls();
+            ActivateControls();*/
         }
 
         private void AreaChanged(object sender, EventArgs e)
@@ -193,7 +199,7 @@ namespace ImpostersOrdeal
 
         private void CommitEdit(object sender, EventArgs e)
         {
-            a.fileName = areaTableComboBox.Text;
+            /*a.fileName = areaTableComboBox.Text;
 
             for (int i = 0; i < levelSets.Count; i++)
             {
@@ -244,7 +250,7 @@ namespace ImpostersOrdeal
             }
             newSpecialEncounters.Sort((use0, use1) => use0.id.CompareTo(use1.id));
             gameData.ugSpecialEncounters = newSpecialEncounters;
-            specialEncounters = newSpecialEncounters;
+            specialEncounters = newSpecialEncounters;*/
         }
 
         private void ActivateControls()

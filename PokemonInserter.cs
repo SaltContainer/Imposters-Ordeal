@@ -10,7 +10,6 @@ using static ImpostersOrdeal.GlobalData;
 using static ImpostersOrdeal.Wwise;
 using SmartPoint.AssetAssistant;
 using System.Text.RegularExpressions;
-using static Mono.CompilerServices.SymbolWriter.CodeBlockEntry;
 using System.Xml.Linq;
 using SmartPoint.AssetAssistant.UnityExtensions;
 
@@ -18,7 +17,7 @@ namespace ImpostersOrdeal
 {
     class PokemonInserter
     {
-        enum AssetClassID
+        /*enum AssetClassID
         {
             GameObject = 1,
             Material = 21,
@@ -1292,7 +1291,7 @@ namespace ImpostersOrdeal
                 AssetsReplacerFromMemory arfm = new(0, afie.index, (int)afie.curFileType, AssetHelper.GetScriptIndex(afi.file, afie), b);
                 ars.Add(arfm);
             }
-            */
+            
             List<AssetTypeValueField> assetBundles = afi.table.GetAssetsOfType((int)AssetClassID.AssetBundle).Select(afie => am.GetTypeInstance(afi, afie).GetBaseField()).ToList();
             AssetTypeValueField assetBundle;
             for (int i = 0; i < assetBundles.Count; i++)
@@ -1344,6 +1343,6 @@ namespace ImpostersOrdeal
                 "romfs\\Data\\StreamingAssets\\AssetAssistant\\Pokemon Database\\" + dstPath.Replace('/', '\\'), ars, "CAB-" + newCAB);
 
             return c;
-        }
+        }*/
     }
 }

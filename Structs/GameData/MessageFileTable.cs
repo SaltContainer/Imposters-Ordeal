@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ImpostersOrdeal
@@ -25,7 +26,27 @@ namespace ImpostersOrdeal
         {
             return messageFilesByLanguage[lang]
                 .First(m => m.m_Name == FormatMessageFileNameForLanguage(fileName, lang, isKanji) && m.isKanji == isKanji)?
-                .labelDataArray.Find(l => l.labelIndex == index);
+                .labelDataArray[index];
+        }
+
+        /// <summary>
+        /// Gets all the labels of a message file in a specific language.
+        /// </summary>
+        public List<MsbtData.LabelData> GetAllLabels(string fileName, MessageEnumData.MsgLangId lang = MessageEnumData.MsgLangId.USA, bool isKanji = false)
+        {
+            return messageFilesByLanguage[lang]
+                .First(m => m.m_Name == FormatMessageFileNameForLanguage(fileName, lang, isKanji) && m.isKanji == isKanji)?
+                .labelDataArray;
+        }
+
+        /// <summary>
+        /// Gets all the labels of a message file in a specific language that match a predicate.
+        /// </summary>
+        public List<MsbtData.LabelData> GetAllLabels(string fileName, Func<MsbtData.LabelData, bool> predicate, MessageEnumData.MsgLangId lang = MessageEnumData.MsgLangId.USA, bool isKanji = false)
+        {
+            return messageFilesByLanguage[lang]
+                .First(m => m.m_Name == FormatMessageFileNameForLanguage(fileName, lang, isKanji) && m.isKanji == isKanji)?
+                .labelDataArray.Where(predicate).ToList();
         }
 
         /// <summary>

@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ImpostersOrdeal.GameDataTypes;
-using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
     public partial class EvolutionEditorForm : Form
     {
+        private GameDataSet gameData;
+
         private readonly PokemonEditorForm pef;
-        private readonly Pokemon p;
-        private EvolutionPath m;
+        private readonly PokemonDataTable.PokemonData p;
+        private PokemonDataTable.PokemonData.SheetEvolve.EvolutionPath m;
 
         private readonly string[] evolutionMethods = new string[]
         {
@@ -62,17 +58,19 @@ namespace ImpostersOrdeal
             None, Item, Move, Pokemon, Typing, GameVersion, Byte
         }
 
-        public EvolutionEditorForm(PokemonEditorForm pef)
+        public EvolutionEditorForm(PokemonEditorForm pef, GameDataSet gameData)
         {
             this.pef = pef;
             p = pef.p;
-            InitializeComponent();
-            Text = "Evolution Editor: " + p.GetName();
+            this.gameData = gameData;
 
-            destinationDexIDColumn.DataSource = gameData.dexEntries.Select(d => d.GetName()).ToArray();
+            InitializeComponent();
+            Text = string.Format("Evolution Editor: {0}", gameData.GetLabelByIndex(Constants.POKEMONSPECIES_MESSAGEFILE_NAME, p.personal.monsno));
+
+            destinationDexIDColumn.DataSource = gameData.GetAllLabels(Constants.POKEMONSPECIES_MESSAGEFILE_NAME);
             methodColumn.DataSource = GetEvolutionMethods();
 
-            p.evolutionPaths.ForEach(e => dataGridView.Rows.Add(new object[] { gameData.GetPokemon(e.destDexID, e.destFormID).GetName(), GetEvolutionMethods()[e.method] }));
+            p.evolutionPaths.paths.ForEach(e => dataGridView.Rows.Add(new object[] { gameData.GetAllFormNames(e.toMonsno)[e.toFormno], GetEvolutionMethods()[e.method] }));
 
             RefreshEvolutionPathDisplay();
 
@@ -81,28 +79,31 @@ namespace ImpostersOrdeal
 
         private List<string> GetEvolutionMethods()
         {
+            // TODO: support extra evos
             List<string> ems = evolutionMethods.ToList();
-            int emCount = gameData.GetEvolutionMethodCount();
+            /*int emCount = gameData.GetEvolutionMethodCount();
             for (int i = ems.Count; i < emCount; i++)
-                ems.Add(i.ToString());
+                ems.Add(i.ToString());*/
             return ems;
         }
 
         private List<bool> GetLvReqMethods()
         {
+            // TODO: support extra evos
             List<bool> lrms = lvReqMethods.ToList();
-            int emCount = gameData.GetEvolutionMethodCount();
+            /*int emCount = gameData.GetEvolutionMethodCount();
             for (int i = lrms.Count; i < emCount; i++)
-                lrms.Add(true);
+                lrms.Add(true);*/
             return lrms;
         }
 
         private List<EvolutionParamType> GetParamTypes()
         {
+            // TODO: support extra evos
             List<EvolutionParamType> pts = paramTypes.ToList();
-            int emCount = gameData.GetEvolutionMethodCount();
+            /*int emCount = gameData.GetEvolutionMethodCount();
             for (int i = pts.Count; i < emCount; i++)
-                pts.Add(EvolutionParamType.Byte);
+                pts.Add(EvolutionParamType.Byte);*/
             return pts;
         }
 
@@ -110,10 +111,10 @@ namespace ImpostersOrdeal
         {
             DeactivateControls();
 
-            if (dataGridView.CurrentCell == null || dataGridView.CurrentCell.RowIndex >= p.evolutionPaths.Count)
+            if (dataGridView.CurrentCell == null || dataGridView.CurrentCell.RowIndex >= p.evolutionPaths.paths.Count)
                 m = null;
             else
-                m = p.evolutionPaths[dataGridView.CurrentCell.RowIndex];
+                m = p.evolutionPaths.paths[dataGridView.CurrentCell.RowIndex];
 
             RefreshEvolutionPathDisplay();
             ActivateControls();
@@ -125,20 +126,20 @@ namespace ImpostersOrdeal
             if (m == null)
             {
                 m = new();
-                p.evolutionPaths.Add(m);
+                p.evolutionPaths.paths.Add(m);
             }
             if (e.ColumnIndex == 0)
             {
-                m.destDexID = (ushort)pef.pokemon.IndexOf((string)dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
-                if (m.destDexID == ushort.MaxValue)
-                    m.destDexID = 0;
-                m.destFormID = 0;
+                m.toMonsno = (ushort)pef.pokemon.IndexOf((string)dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+                if (m.toMonsno == ushort.MaxValue)
+                    m.toMonsno = 0;
+                m.toFormno = 0;
             }
             if (e.ColumnIndex == 1)
             {
                 int evoMethod = GetEvolutionMethods().IndexOf((string)dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
                 m.method = evoMethod == -1 ? (ushort)0 : (ushort)evoMethod;
-                m.parameter = 0;
+                m.param = 0;
             }
 
             RefreshEvolutionPathDisplay();
@@ -147,7 +148,7 @@ namespace ImpostersOrdeal
 
         private void UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
-            p.evolutionPaths.RemoveAt(e.Row.Index);
+            p.evolutionPaths.paths.RemoveAt(e.Row.Index);
         }
 
         private void RefreshEvolutionPathDisplay()
@@ -166,8 +167,8 @@ namespace ImpostersOrdeal
 
             label1.Visible = true;
             formIDComboBox.Visible = true;
-            formIDComboBox.DataSource = gameData.dexEntries[m.destDexID].forms.Select((p, i) => i.ToString()).ToArray();
-            formIDComboBox.SelectedIndex = m.destFormID;
+            formIDComboBox.DataSource = gameData.GetAllFormNames(m.toMonsno);
+            formIDComboBox.SelectedIndex = m.toFormno;
 
             if (GetLvReqMethods()[m.method])
             {
@@ -193,7 +194,7 @@ namespace ImpostersOrdeal
                     label3.Text = "Item";
                     evoParamComboBox.Visible = true;
                     evoParamComboBox.DataSource = pef.items.ToArray();
-                    evoParamComboBox.SelectedIndex = m.parameter;
+                    evoParamComboBox.SelectedIndex = m.param;
                     break;
 
                 case EvolutionParamType.Move:
@@ -201,7 +202,7 @@ namespace ImpostersOrdeal
                     label3.Text = "Move";
                     evoParamComboBox.Visible = true;
                     evoParamComboBox.DataSource = pef.moves.ToArray();
-                    evoParamComboBox.SelectedIndex = m.parameter;
+                    evoParamComboBox.SelectedIndex = m.param;
                     break;
 
                 case EvolutionParamType.Pokemon:
@@ -209,7 +210,7 @@ namespace ImpostersOrdeal
                     label3.Text = "Pokémon";
                     evoParamComboBox.Visible = true;
                     evoParamComboBox.DataSource = pef.pokemon.ToArray();
-                    evoParamComboBox.SelectedIndex = m.parameter;
+                    evoParamComboBox.SelectedIndex = m.param;
                     break;
 
                 case EvolutionParamType.Typing:
@@ -217,7 +218,7 @@ namespace ImpostersOrdeal
                     label3.Text = "Type";
                     evoParamComboBox.Visible = true;
                     evoParamComboBox.DataSource = pef.typings.ToArray();
-                    evoParamComboBox.SelectedIndex = m.parameter;
+                    evoParamComboBox.SelectedIndex = m.param;
                     break;
 
                 case EvolutionParamType.GameVersion:
@@ -225,7 +226,7 @@ namespace ImpostersOrdeal
                     label3.Text = "Game Version";
                     evoParamComboBox.Visible = true;
                     evoParamComboBox.DataSource = Enumerable.Range(0, 256).Select(i => i.ToString()).ToArray();
-                    evoParamComboBox.SelectedIndex = m.parameter;
+                    evoParamComboBox.SelectedIndex = m.param;
                     break;
 
                 case EvolutionParamType.Byte:
@@ -233,7 +234,7 @@ namespace ImpostersOrdeal
                     label3.Text = "Argument";
                     evoParamComboBox.Visible = true;
                     evoParamComboBox.DataSource = Enumerable.Range(0, 256).Select(i => i.ToString()).ToArray();
-                    evoParamComboBox.SelectedIndex = m.parameter;
+                    evoParamComboBox.SelectedIndex = m.param;
                     break;
             }
         }
@@ -241,11 +242,11 @@ namespace ImpostersOrdeal
         private void CommitEdit(object sender, EventArgs e)
         {
             if (formIDComboBox.Visible)
-                m.destFormID = (ushort)(formIDComboBox.SelectedIndex == -1 ? 0 : formIDComboBox.SelectedIndex);
+                m.toFormno = (ushort)(formIDComboBox.SelectedIndex == -1 ? 0 : formIDComboBox.SelectedIndex);
             if (lvReqNumericUpDown.Visible)
                 m.level = (ushort)lvReqNumericUpDown.Value;
             if (evoParamComboBox.Visible)
-                m.parameter = (ushort)(evoParamComboBox.SelectedIndex == -1 ? 0 : evoParamComboBox.SelectedIndex);
+                m.param = (ushort)(evoParamComboBox.SelectedIndex == -1 ? 0 : evoParamComboBox.SelectedIndex);
         }
 
         private void ActivateControls()

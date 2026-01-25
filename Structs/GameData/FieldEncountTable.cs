@@ -40,7 +40,7 @@ namespace ImpostersOrdeal
             public int encRate_sugoi;
             public List<MonsLv> sugoi_mons = new List<MonsLv>();
 
-            public struct MonsLv
+            public class MonsLv
             {
                 public int maxlv;
                 public int minlv;

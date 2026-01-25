@@ -75,10 +75,10 @@ namespace ImpostersOrdeal
             UpdateTable(rubyDataGridView, etef.encounterTable.gbaRuby);
 
             // Sapphire GBA slot
-            UpdateTable(sapphireDataGridView, etef.encounterTable.gbaSapphire);
+            UpdateTable(sapphireDataGridView, etef.encounterTable.gbaSapp);
 
             // Emerald GBA slot
-            UpdateTable(emeraldDataGridView, etef.encounterTable.gbaEmerald);
+            UpdateTable(emeraldDataGridView, etef.encounterTable.gbaEme);
 
             // Fire Red GBA slot
             UpdateTable(fireDataGridView, etef.encounterTable.gbaFire);
@@ -87,18 +87,18 @@ namespace ImpostersOrdeal
             UpdateTable(leafDataGridView, etef.encounterTable.gbaLeaf);
         }
 
-        private void UpdateTable(DataGridView dgv, List<Encounter> es)
+        private void UpdateTable(DataGridView dgv, List<FieldEncountTable.Sheettable.MonsLv> es)
         {
             dgv.Rows.Clear();
             for (int i = 0; i < es.Count; i++)
             {
-                Encounter e = es[i];
+                var e = es[i];
                 if (etef.uint16DexID)
-                    dgv.Rows.Add(new object[] { etef.pokemon[(ushort)e.dexID],
-                        e.minLv, e.maxLv, GetGBASlotRate(i), (ushort)(e.dexID >> 16) });
+                    dgv.Rows.Add(new object[] { etef.pokemon[(ushort)e.monsNo],
+                        e.minlv, e.maxlv, GetGBASlotRate(i), (ushort)(e.monsNo >> 16) });
                 else
-                    dgv.Rows.Add(new object[] { etef.pokemon[(ushort)e.dexID],
-                        e.minLv, e.maxLv, GetGBASlotRate(i) });
+                    dgv.Rows.Add(new object[] { etef.pokemon[(ushort)e.monsNo],
+                        e.minlv, e.maxlv, GetGBASlotRate(i) });
             }
         }
 
@@ -115,10 +115,10 @@ namespace ImpostersOrdeal
             CommitTable(rubyDataGridView, etef.encounterTable.gbaRuby);
 
             // Sapphire GBA slot
-            CommitTable(sapphireDataGridView, etef.encounterTable.gbaSapphire);
+            CommitTable(sapphireDataGridView, etef.encounterTable.gbaSapp);
 
             // Emerald GBA slot
-            CommitTable(emeraldDataGridView, etef.encounterTable.gbaEmerald);
+            CommitTable(emeraldDataGridView, etef.encounterTable.gbaEme);
 
             // Fire Red GBA slot
             CommitTable(fireDataGridView, etef.encounterTable.gbaFire);
@@ -127,15 +127,15 @@ namespace ImpostersOrdeal
             CommitTable(leafDataGridView, etef.encounterTable.gbaLeaf);
         }
 
-        private void CommitTable(DataGridView dgv, List<Encounter> es)
+        private void CommitTable(DataGridView dgv, List<FieldEncountTable.Sheettable.MonsLv> es)
         {
             for (int i = 0; i < es.Count; i++)
             {
-                es[i].dexID = etef.pokemon.IndexOf((string)dgv.Rows[i].Cells[0].Value);
-                es[i].minLv = (int)dgv.Rows[i].Cells[1].Value;
-                es[i].maxLv = (int)dgv.Rows[i].Cells[2].Value;
+                es[i].monsNo = etef.pokemon.IndexOf((string)dgv.Rows[i].Cells[0].Value);
+                es[i].minlv = (int)dgv.Rows[i].Cells[1].Value;
+                es[i].maxlv = (int)dgv.Rows[i].Cells[2].Value;
                 if (etef.uint16DexID)
-                    es[i].dexID += (ushort)dgv.Rows[i].Cells[4].Value << 16;
+                    es[i].monsNo += (ushort)dgv.Rows[i].Cells[4].Value << 16;
             }
         }
 

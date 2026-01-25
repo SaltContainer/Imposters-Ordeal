@@ -13,11 +13,14 @@ using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
+    // TODO: Pokémon inserter
     public partial class PokemonInserterForm : Form
     {
-        private List<DexEntry> dexEntries;
-        private DexEntry srcDE;
-        private DexEntry dstDE;
+        private GameDataSet gameData;
+
+        //private List<DexEntry> dexEntries;
+        //private DexEntry srcDE;
+        //private DexEntry dstDE;
         private InserterMode inserterMode;
 
         private enum InserterMode
@@ -30,14 +33,17 @@ namespace ImpostersOrdeal
             None, MaleOnly, FemaleOnly, Normal, Variations, Genderless
         }
 
-        public PokemonInserterForm()
+        public PokemonInserterForm(GameDataSet gameData)
         {
-            dexEntries = gameData.dexEntries;
+            this.gameData = gameData;
+
+            // TODO: name stuff
+            //dexEntries = gameData.dexEntries;
             inserterMode = InserterMode.Form;
 
             InitializeComponent();
 
-            srcDE = dexEntries[0];
+            /*srcDE = dexEntries[0];
             srcDexIDComboBox.DataSource = dexEntries.Select(o => o.GetName()).ToArray();
             srcDexIDComboBox.SelectedIndex = 0;
 
@@ -52,18 +58,18 @@ namespace ImpostersOrdeal
             RefreshGenderInfoDisplay();
             RefreshDstDexEntryDisplay();
             RefreshModeDisplay();
-            ActivateControls();
+            ActivateControls();*/
         }
 
         private void SrcDexEntryChanged(object sender, EventArgs e)
         {
-            DeactivateControls();
+            /*DeactivateControls();
 
             srcDE = dexEntries[srcDexIDComboBox.SelectedIndex];
             RefreshSrcDexEntryDisplay();
             RefreshGenderInfoDisplay();
 
-            ActivateControls();
+            ActivateControls();*/
         }
 
         private void FormIDChanged(object sender, EventArgs e)
@@ -77,12 +83,12 @@ namespace ImpostersOrdeal
 
         private void DstDexEntryChanged(object sender, EventArgs e)
         {
-            DeactivateControls();
+            /*DeactivateControls();
 
             dstDE = dexEntries[dstDexIDComboBox.SelectedIndex];
             RefreshDstDexEntryDisplay();
 
-            ActivateControls();
+            ActivateControls();*/
         }
 
         private void ModeChanged(object sender, EventArgs e)
@@ -97,13 +103,13 @@ namespace ImpostersOrdeal
 
         private void RefreshSrcDexEntryDisplay()
         {
-            formIDComboBox.DataSource = srcDE.forms.Select((o, i) => i).ToArray();
-            formIDComboBox.SelectedIndex = 0;
+            /*formIDComboBox.DataSource = srcDE.forms.Select((o, i) => i).ToArray();
+            formIDComboBox.SelectedIndex = 0;*/
         }
 
         private void RefreshGenderInfoDisplay()
         {
-            switch (GetGenderConfig(srcDE.dexID, formIDComboBox.SelectedIndex))
+            /*switch (GetGenderConfig(srcDE.dexID, formIDComboBox.SelectedIndex))
             {
                 case GenderConfig.None: genderConfigTextBox.Text = "None"; break;
                 case GenderConfig.MaleOnly: genderConfigTextBox.Text = "Male only"; break;
@@ -111,17 +117,17 @@ namespace ImpostersOrdeal
                 case GenderConfig.Normal: genderConfigTextBox.Text = "Male/Female"; break;
                 case GenderConfig.Variations: genderConfigTextBox.Text = "Male/Female variants"; break;
                 case GenderConfig.Genderless: genderConfigTextBox.Text = "Genderless"; break;
-            }
+            }*/
         }
 
         private void RefreshDstDexEntryDisplay()
         {
-            label3.Text = inserterMode == InserterMode.Form ? "Form " + dstDE.forms.Count + " Name:" : "Form 0 Name:";
+            //label3.Text = inserterMode == InserterMode.Form ? "Form " + dstDE.forms.Count + " Name:" : "Form 0 Name:";
         }
 
         private void RefreshModeDisplay()
         {
-            dstDexIDComboBox.Enabled = inserterMode == InserterMode.Form;
+            /*dstDexIDComboBox.Enabled = inserterMode == InserterMode.Form;
             label5.Enabled = inserterMode == InserterMode.Form;
             speciesNameTextBox.Enabled = inserterMode == InserterMode.Species;
             label2.Enabled = inserterMode == InserterMode.Species;
@@ -129,7 +135,7 @@ namespace ImpostersOrdeal
             if (inserterMode == InserterMode.Species)
                 formNameTextBox.Text = "";
             else
-                formNameTextBox.Text = "New Form";
+                formNameTextBox.Text = "New Form";*/
         }
 
         private void ActivateControls()
@@ -152,7 +158,7 @@ namespace ImpostersOrdeal
 
         private void AddFormClick(object sender, EventArgs e)
         {
-            if (srcDexIDComboBox.SelectedIndex == -1)
+            /*if (srcDexIDComboBox.SelectedIndex == -1)
             {
                 MessageBox.Show("I have never heard of this species...\n\"" + srcDexIDComboBox.Text + "\"",
                     "Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -197,12 +203,12 @@ namespace ImpostersOrdeal
             srcDexIDComboBox.DataSource = dexEntries.Select(o => o.GetName()).ToArray();
             dstDexIDComboBox.DataSource = dexEntries.Select(o => o.GetName()).ToArray();
             srcDexIDComboBox.SelectedIndex = srcIdx;
-            dstDexIDComboBox.SelectedIndex = dstIdx;
+            dstDexIDComboBox.SelectedIndex = dstIdx;*/
         }
 
         private GenderConfig GetGenderConfig(int dexID, int formID)
         {
-            List<PokemonInfoCatalog> pics = gameData.pokemonInfos.Where(pic => pic.MonsNo == dexID && pic.FormNo == formID && !pic.Rare).ToList();
+            /*List<PokemonInfoCatalog> pics = gameData.pokemonInfos.Where(pic => pic.MonsNo == dexID && pic.FormNo == formID && !pic.Rare).ToList();
             if (pics.Count == 0)
                 return GenderConfig.None;
             if (pics.Count > 2)
@@ -216,7 +222,9 @@ namespace ImpostersOrdeal
                 }
             if (pics[0].AssetBundleName == pics[1].AssetBundleName)
                 return GenderConfig.Normal;
-            return GenderConfig.Variations;
+            return GenderConfig.Variations;*/
+
+            return GenderConfig.None;
         }
     }
 }

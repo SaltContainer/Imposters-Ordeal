@@ -1,32 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ImpostersOrdeal.GameDataTypes;
-using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
     public partial class MiscEncounterEditorForm : Form
     {
-        EncounterTableFile[] encounterTableFiles;
+        GameDataSet gameData;
+
+        FieldEncountTableCollection encounterTableFiles;
         List<string> dexEntries;
-        EncounterTableFile f;
+        FieldEncountTable f;
 
         private readonly string[] gameVersions = new string[]
         {
             "Diamond", "Pearl"
         };
 
-        public MiscEncounterEditorForm()
+        public MiscEncounterEditorForm(GameDataSet gameData)
         {
+            this.gameData = gameData;
+
             encounterTableFiles = gameData.encounterTableFiles;
-            dexEntries = gameData.dexEntries.Select(d => d.GetName()).ToList();
+
+            dexEntries = gameData.GetAllLabels(Constants.POKEMONSPECIES_MESSAGEFILE_NAME);
 
             InitializeComponent();
 
@@ -58,34 +56,34 @@ namespace ImpostersOrdeal
         private void RefreshFileDisplay()
         {
             trophyGardenDataGridView.Rows.Clear();
-            for (int i = 0; i < f.trophyGardenMons.Count; i++)
-                trophyGardenDataGridView.Rows.Add(new object[] { dexEntries[f.trophyGardenMons[i]] });
+            for (int i = 0; i < f.urayama.Count; i++)
+                trophyGardenDataGridView.Rows.Add(new object[] { dexEntries[f.urayama[i].monsNo] });
 
+            // TODO: Rework the honey tree stuff to actually use honey tree encounters
             honeyTreeDataGridView.Rows.Clear();
-            for (int i = 0; i < f.honeyTreeEnconters.Count; i++)
-                honeyTreeDataGridView.Rows.Add(new object[] { f.honeyTreeEnconters[i].rate, dexEntries[f.honeyTreeEnconters[i].normalDexID],
-                    dexEntries[f.honeyTreeEnconters[i].rareDexID], dexEntries[f.honeyTreeEnconters[i].superRareDexID] });
+            for (int i = 0; i < f.mistu.Count; i++)
+                honeyTreeDataGridView.Rows.Add(new object[] { f.mistu[i].Rate, dexEntries[f.mistu[i].Normal], dexEntries[f.mistu[i].Rare], dexEntries[f.mistu[i].SuperRare] });
 
             safariDataGridView.Rows.Clear();
-            for (int i = 0; i < f.safariMons.Count; i++)
-                safariDataGridView.Rows.Add(new object[] { dexEntries[f.safariMons[i]] });
+            for (int i = 0; i < f.safari.Count; i++)
+                safariDataGridView.Rows.Add(new object[] { dexEntries[f.safari[i].MonsNo] });
         }
 
         private void CommitEdit(object sender, EventArgs e)
         {
-            for (int i = 0; i < f.trophyGardenMons.Count; i++)
-                f.trophyGardenMons[i] = dexEntries.ToList().IndexOf((string)trophyGardenDataGridView.Rows[i].Cells[0].Value);
+            for (int i = 0; i < f.urayama.Count; i++)
+                f.urayama[i].monsNo = dexEntries.ToList().IndexOf((string)trophyGardenDataGridView.Rows[i].Cells[0].Value);
 
-            for (int i = 0; i < f.honeyTreeEnconters.Count; i++)
+            for (int i = 0; i < f.mistu.Count; i++)
             {
-                f.honeyTreeEnconters[i].rate = (int)honeyTreeDataGridView.Rows[i].Cells[0].Value;
-                f.honeyTreeEnconters[i].normalDexID = dexEntries.ToList().IndexOf((string)honeyTreeDataGridView.Rows[i].Cells[1].Value);
-                f.honeyTreeEnconters[i].rareDexID = dexEntries.ToList().IndexOf((string)honeyTreeDataGridView.Rows[i].Cells[2].Value);
-                f.honeyTreeEnconters[i].superRareDexID = dexEntries.ToList().IndexOf((string)honeyTreeDataGridView.Rows[i].Cells[3].Value);
+                f.mistu[i].Rate = (int)honeyTreeDataGridView.Rows[i].Cells[0].Value;
+                f.mistu[i].Normal = dexEntries.ToList().IndexOf((string)honeyTreeDataGridView.Rows[i].Cells[1].Value);
+                f.mistu[i].Rare = dexEntries.ToList().IndexOf((string)honeyTreeDataGridView.Rows[i].Cells[2].Value);
+                f.mistu[i].SuperRare = dexEntries.ToList().IndexOf((string)honeyTreeDataGridView.Rows[i].Cells[3].Value);
             }
 
-            for (int i = 0; i < f.safariMons.Count; i++)
-                f.safariMons[i] = dexEntries.ToList().IndexOf((string)safariDataGridView.Rows[i].Cells[0].Value);
+            for (int i = 0; i < f.safari.Count; i++)
+                f.safari[i].MonsNo = dexEntries.ToList().IndexOf((string)safariDataGridView.Rows[i].Cells[0].Value);
         }
 
         private void ActivateControls()

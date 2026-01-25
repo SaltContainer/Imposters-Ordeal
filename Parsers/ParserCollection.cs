@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ImpostersOrdeal
 {
@@ -11,6 +12,14 @@ namespace ImpostersOrdeal
         public ParserCollection(FileManager fileManager)
         {
             this.fileManager = fileManager;
+        }
+
+        public void ParseAllDataForSet(GameDataSet set)
+        {
+            var fields = set.GetType().GetFields().Where(f => f.IsDefined(typeof(ParsableDataAttribute), false));
+
+            foreach (var field in fields)
+                field.SetValue(set, GetParserForType(field.FieldType).ParseFromSources(fileManager));
         }
 
         public T ParseFromSources<T>()
@@ -36,6 +45,11 @@ namespace ImpostersOrdeal
         private IParser<T> GetParserForType<T>()
         {
             return (IParser<T>)parsers[typeof(T)];
+        }
+
+        private IParser GetParserForType(Type t)
+        {
+            return parsers[t];
         }
     }
 }

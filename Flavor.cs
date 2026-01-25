@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
@@ -13,6 +9,7 @@ namespace ImpostersOrdeal
     public class Flavor
     {
         private Random rng = new();
+        private Controller controller;
 
         private readonly string[] verbs = new string[]
         {
@@ -84,6 +81,11 @@ namespace ImpostersOrdeal
             "\"And if there's still more bugs, I am going to...\" - Nifyr"
         };
 
+        public Flavor(Controller controller)
+        {
+            this.controller = controller;
+        }
+
         public string GetSubTask()
         {
             if (rng.Next(10) != 0)
@@ -94,10 +96,12 @@ namespace ImpostersOrdeal
         private string GetRandomName()
         {
             List<List<string>> strLists = new();
-            strLists.Add(gameData.abilities.Select(o => o.GetName()).ToList());
-            strLists.Add(gameData.dexEntries.Select(o => o.GetName()).ToList());
-            strLists.Add(gameData.items.Where(o => o.IsPurchasable()).Select(o => o.GetName()).ToList());
-            strLists.Add(gameData.moves.Where(o => o.isValid == 1).Select(o => o.GetName()).ToList());
+
+            // TODO: For items and abilities, check validity
+            strLists.Add(controller.GetGameData().GetAllLabels(Constants.ABILITY_MESSAGEFILE_NAME));
+            strLists.Add(controller.GetGameData().GetAllLabels(Constants.POKEMONSPECIES_MESSAGEFILE_NAME));
+            strLists.Add(controller.GetGameData().GetAllLabels(Constants.ITEM_MESSAGEFILE_NAME));
+            strLists.Add(controller.GetGameData().GetAllLabels(Constants.ABILITY_MESSAGEFILE_NAME));
 
             int listIdx = rng.Next(strLists.Count);
             return strLists[listIdx][rng.Next(strLists[listIdx].Count)];

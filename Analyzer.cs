@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static ImpostersOrdeal.GlobalData;
 using static ImpostersOrdeal.Distributions;
 using static ImpostersOrdeal.GameDataTypes;
@@ -12,17 +10,17 @@ namespace ImpostersOrdeal
     /// <summary>
     ///  Responsible for figuring out a good starting configuration given the loaded files.
     /// </summary>
-    public static class Analyzer
+    public class Analyzer
     {
         /// <summary>
         ///  Generates RandomizerSetupConfig through statistical analysis of gamefiles.
         /// </summary>
-        public static MainForm.RandomizerSetupConfig GetSetupConfig()
+        public RandomizerSetupConfig GetSetupConfig(GameDataSet gameData)
         {
-            MainForm.RandomizerSetupConfig randomizerSetupConfig = new();
+            RandomizerSetupConfig randomizerSetupConfig = new();
 
             //Evolution Destinations
-            int[] instances = new int[gameData.personalEntries.Count];
+            /*int[] instances = new int[gameData.pokemonDataTable.Data.Count];
             List<INamedEntity> entities = gameData.personalEntries.Select(o => (INamedEntity)o).ToList();
             for (int personalID = 1; personalID < gameData.personalEntries.Count; personalID++)
             {
@@ -471,7 +469,7 @@ namespace ImpostersOrdeal
             randomizerSetupConfig.typeMatchups = (affinityDistributions, affinities, 0);
 
             //Level Coefficient
-            randomizerSetupConfig.levelCoefficient = 1;
+            randomizerSetupConfig.levelCoefficient = 1;*/
 
             return randomizerSetupConfig;
         }
@@ -482,99 +480,6 @@ namespace ImpostersOrdeal
             Addition,
             Swap,
             NoCorrelation
-        }
-
-        /// <summary>
-        ///  Finds the particular correlation of typings between two Pokémon.
-        /// </summary>
-        public static TypingCorrelation CompareTyping(this Pokemon p1, Pokemon p2)
-        {
-            List<int> typing1 = p1.GetTyping();
-            List<int> typing2 = p2.GetTyping();
-            int matches = 0;
-            if (typing1.Contains(typing2[0]))
-                matches++;
-            if (typing2.Count > 1 && typing1.Contains(typing2[1]))
-                matches++;
-            if (matches == 0 && !(typing1.Count == 1 && typing2.Count == 1))
-                return TypingCorrelation.NoCorrelation;
-            if (matches == 2 || typing1.Count == 1 && typing2.Count == 1 && matches == 1)
-                return TypingCorrelation.Identical;
-            if (typing1.Count != typing2.Count)
-                return TypingCorrelation.Addition;
-            return TypingCorrelation.Swap;
-        }
-
-        /// <summary>
-        ///  Calculates the frequency at which a certian predicate is true for items in a list.
-        /// </summary>
-        private static double GetOccurrencePercent<T>(List<T> objects, Func<T, bool> f)
-        {
-            int occurrences = objects.Where(f).Count();
-            return 100.0 * occurrences / objects.Count;
-        }
-
-        /// <summary>
-        ///  Generates numeric distribution objects.
-        /// </summary>
-        private static (IDistribution[], int) GetNumericDistributionConfig<T>(List<T> objects, Func<T, int> f, AbsoluteBoundary ab = AbsoluteBoundary.None)
-        {
-            List<int> observations = new();
-            for (int item = 0; item < objects.Count; item++)
-                if (IsWithin(ab, f.Invoke(objects[item])))
-                    observations.Add(f.Invoke(objects[item]));
-            return ToNumericDistributionConfig(observations);
-        }
-
-        /// <summary>
-        ///  Generates numeric distribution objects from a list of observations.
-        /// </summary>
-        private static (IDistribution[], int) ToNumericDistributionConfig(List<int> observations)
-        {
-            double min = observations.Count > 0 ? observations.Min() : 0;
-            double max = observations.Count > 0 ? observations.Max() : 0;
-            double uniAvg = (min + max) / 2.0;
-            double avg = observations.Count > 0 ? observations.Average() : 0;
-            double std = observations.StandardDeviation();
-
-            IDistribution[] distributions = new IDistribution[]
-            {
-                new UniformConstant(100, min, max),
-                new UniformRelative(100, (min-uniAvg)/2, (max-uniAvg)/2),
-                new UniformProportional(100, (min+uniAvg)/(2*uniAvg == 0 ? 1 : 2*uniAvg), (max+uniAvg)/(2*uniAvg == 0 ? 1 : 2*uniAvg)),
-                new NormalConstant(100, avg, std),
-                new NormalRelative(100, std/2),
-                new NormalProportional(100, std/(2*avg == 0 ? 1 : 2*avg))
-            };
-            return (distributions, 4);
-        }
-
-        /// <summary>
-        ///  Generates item distribution objects.
-        /// </summary>
-        private static (IDistribution[], List<string>, int) GetItemDistributionConfig<T>(List<T> objects, Func<T, int> f, List<INamedEntity> entities)
-        {
-            int[] instances = new int[entities.Count];
-            for (int item = 0; item < objects.Count; item++)
-            {
-                int instanceID = f.Invoke(objects[item]);
-                instances[instanceID]++;
-            }
-            return ToItemDistributionConfig(instances, entities);
-        }
-
-        /// <summary>
-        ///  Generates item distribution objects from an array of instances.
-        /// </summary>
-        private static (IDistribution[], List<string>, int) ToItemDistributionConfig(int[] instances, List<INamedEntity> entities)
-        {
-            IDistribution[] distributions = new IDistribution[]
-            {
-                new Empirical(100, instances.ToList()),
-                new UniformSelection(100, entities.Select(e => e.IsValid()).ToList())
-            };
-            List<string> names = entities.Select(t => t.GetName()).ToList();
-            return (distributions, names, 0);
         }
     }
 }

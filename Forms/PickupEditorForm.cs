@@ -1,26 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ImpostersOrdeal.GameDataTypes;
-using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
     public partial class PickupEditorForm : Form
     {
-        List<PickupItem> pickupItems;
+        GameDataSet gameData;
+
+        List<PickupTable.PickupItem> pickupItems;
         List<string> items;
 
-        public PickupEditorForm()
+        public PickupEditorForm(GameDataSet gameData)
         {
-            pickupItems = gameData.pickupTable;
-            items = gameData.items.Select(i => i.GetName()).ToList();
+            this.gameData = gameData;
+
+            pickupItems = gameData.pickupTable.PickupItems;
+            items = gameData.GetAllLabels(Constants.ITEM_MESSAGEFILE_NAME);
             InitializeComponent();
 
             ItemColumn.DataSource = items.ToArray();
@@ -35,11 +31,11 @@ namespace ImpostersOrdeal
             Lv90Column.ValueType = typeof(int);
             Lv100Column.ValueType = typeof(int);
 
-            foreach (PickupItem p in pickupItems)
-                dataGridView.Rows.Add(items[p.itemID], (int)p.ratios[0],
-                    (int)p.ratios[1], (int)p.ratios[2], (int)p.ratios[3],
-                    (int)p.ratios[4], (int)p.ratios[5], (int)p.ratios[6],
-                    (int)p.ratios[7], (int)p.ratios[8], (int)p.ratios[9]);
+            foreach (var p in pickupItems)
+                dataGridView.Rows.Add(items[p.ID], (int)p.Ratios[0],
+                    (int)p.Ratios[1], (int)p.Ratios[2], (int)p.Ratios[3],
+                    (int)p.Ratios[4], (int)p.Ratios[5], (int)p.Ratios[6],
+                    (int)p.Ratios[7], (int)p.Ratios[8], (int)p.Ratios[9]);
 
             ActivateControls();
         }
@@ -49,14 +45,14 @@ namespace ImpostersOrdeal
             pickupItems = new();
             foreach (DataGridViewRow row in dataGridView.Rows)
             {
-                PickupItem p = new();
-                p.ratios = new();
-                p.itemID = (ushort)items.IndexOf((string)row.Cells[0].Value);
+                var p = new PickupTable.PickupItem();
+                p.Ratios = new();
+                p.ID = (ushort)items.IndexOf((string)row.Cells[0].Value);
                 for (int i = 0; i < 10; i++)
-                    p.ratios.Add((byte)(int)row.Cells[1 + i].Value);
+                    p.Ratios.Add((byte)(int)row.Cells[1 + i].Value);
                 pickupItems.Add(p);
             }
-            gameData.pickupTable = pickupItems;
+            gameData.pickupTable.PickupItems = pickupItems;
         }
 
         private void ActivateControls()

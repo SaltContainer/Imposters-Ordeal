@@ -1,25 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ImpostersOrdeal.GameDataTypes;
-using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
     public partial class MoveEditorForm : Form
     {
-        private List<Move> moves;
+        private GameDataSet gameData;
+
+        private List<MoveTable.SheetWaza> moves;
         private Dictionary<int, string> statusEffects = new();
         private List<string> moveSequences;
         private List<string> typings;
         private List<string> damageCategoies;
-        private Move m;
+        private MoveTable.SheetWaza m;
 
         private string[] moveCategories = new string[]
         {
@@ -70,8 +66,10 @@ namespace ImpostersOrdeal
             "All Stats"
         };
 
-        public MoveEditorForm()
+        public MoveEditorForm(GameDataSet gameData)
         {
+            this.gameData = gameData;
+
             statusEffects[0] = "None";
             statusEffects[1] = "Paralysis";
             statusEffects[2] = "Sleep";
@@ -122,14 +120,15 @@ namespace ImpostersOrdeal
             InitializeComponent();
 
             moves = new();
-            moves.AddRange(gameData.moves);
-            moves.Sort((m1, m2) => m1.GetName().CompareTo(m2.GetName()));
-            typings = gameData.typings.Select(t => t.GetName()).ToList();
-            damageCategoies = gameData.damageCategories.Select(d => d.GetName()).ToList();
+            moves.AddRange(gameData.moveTable.Waza);
+            moves.Sort((m1, m2) => gameData.GetLabelByIndex(Constants.MOVE_MESSAGEFILE_NAME, m1.wazaNo).CompareTo(gameData.GetLabelByIndex(Constants.MOVE_MESSAGEFILE_NAME, m2.wazaNo)));
+            typings = gameData.GetAllLabels(Constants.TYPE_MESSAGEFILE_NAME);
+            // TODO: Find a better way to get this list?
+            damageCategoies = new List<string>() { "Physical", "Special", "Status" };
 
             //moves.Sort((m1, m2) => m1.rankEffType1 - m2.rankEffType1);
 
-            listBox.DataSource = moves.Select(m => m.GetName()).ToArray();
+            listBox.DataSource = moves.Select(m => string.Format("{0} - {1}", FormatNumber(m.wazaNo, 3), gameData.GetLabelByIndex(Constants.MOVE_MESSAGEFILE_NAME, m.wazaNo))).ToArray();
             listBox.SelectedIndex = 0;
             m = moves[0];
 
@@ -161,10 +160,10 @@ namespace ImpostersOrdeal
 
         private void RefreshMoveDisplay()
         {
-            moveDisplayTextBox.Text = FormatNumber(m.GetID(), 3) + " - " + m.GetName();
-            isValidCheckBox.Checked = m.isValid == 1;
-            typingComboBox.SelectedIndex = m.typingID;
-            damageCategoryComboBox.SelectedIndex = m.damageCategoryID;
+            moveDisplayTextBox.Text = string.Format("{0} - {1}", FormatNumber(m.wazaNo, 3), gameData.GetLabelByIndex(Constants.MOVE_MESSAGEFILE_NAME, m.wazaNo));
+            isValidCheckBox.Checked = m.isValid;
+            typingComboBox.SelectedIndex = m.type;
+            damageCategoryComboBox.SelectedIndex = m.damageType;
             numericUpDown1.Value = m.power;
             numericUpDown2.Value = m.hitPer;
             numericUpDown3.Value = m.basePP;
@@ -196,7 +195,9 @@ namespace ImpostersOrdeal
             numericUpDown11.Value = m.hpRecoverRatio;
             targetingComboBox.SelectedIndex = m.target;
 
-            bool[] flags = m.GetFlags();
+            // TODO: move flag stuff
+            //bool[] flags = m.GetFlags();
+            bool[] flags = Enumerable.Range(0, 32).Select(i => true).ToArray();
             checkBox1.Checked = flags[0];
             checkBox2.Checked = flags[1];
             checkBox3.Checked = flags[2];
@@ -219,9 +220,9 @@ namespace ImpostersOrdeal
 
         private void CommitEdit(object sender, EventArgs e)
         {
-            m.isValid = isValidCheckBox.Checked ? (byte)1 : (byte)0;
-            m.typingID = (byte)(typingComboBox.SelectedIndex == -1 ? 0 : typingComboBox.SelectedIndex);
-            m.damageCategoryID = (byte)(damageCategoryComboBox.SelectedIndex == -1 ? 0 : damageCategoryComboBox.SelectedIndex);
+            m.isValid = isValidCheckBox.Checked;
+            m.type = (byte)(typingComboBox.SelectedIndex == -1 ? 0 : typingComboBox.SelectedIndex);
+            m.damageType = (byte)(damageCategoryComboBox.SelectedIndex == -1 ? 0 : damageCategoryComboBox.SelectedIndex);
             m.power = (byte)numericUpDown1.Value;
             m.hitPer = (byte)numericUpDown2.Value;
             m.basePP = (byte)numericUpDown3.Value;
@@ -272,7 +273,8 @@ namespace ImpostersOrdeal
             flags[15] = checkBox16.Checked;
             flags[16] = checkBox17.Checked;
             flags[17] = checkBox18.Checked;
-            m.SetFlags(flags);
+            // TODO: move flag stuff
+            //m.SetFlags(flags);
         }
 
         private void ActivateControls()
@@ -403,7 +405,8 @@ namespace ImpostersOrdeal
             {
                 moveSequences = new();
                 moveSequences.Add("");
-                moveSequences.AddRange(fileManager.GetMoveSequences());
+                // TODO move seq sstuff
+                //moveSequences.AddRange(fileManager.GetMoveSequences());
             }
             MoveAnimationEditorForm maef = new(m, moveSequences);
             maef.Show();

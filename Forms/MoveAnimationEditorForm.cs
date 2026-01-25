@@ -12,16 +12,19 @@ using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
+    // TODO: Add animation stuff to parsed data
     public partial class MoveAnimationEditorForm : Form
     {
-        private readonly Move m;
-        public MoveAnimationEditorForm(Move m, List<string> moveSequences)
+        private readonly MoveTable.SheetWaza m;
+        public MoveAnimationEditorForm(MoveTable.SheetWaza m, List<string> moveSequences)
         {
             this.m = m;
             InitializeComponent();
-            Text = "Move Animation Editor: " + m.GetName();
+            // TODO: name stuff
+            //Text = "Move Animation Editor: " + m.GetName();
+            Text = string.Format("Move Animation Editor: {0}", "TODO ASFJkajfl");
 
-            comboBox1.DataSource = moveSequences.ToArray();
+            /*comboBox1.DataSource = moveSequences.ToArray();
             comboBox1.SelectedItem = m.cmdSeqName;
             comboBox2.DataSource = moveSequences.ToArray();
             comboBox2.SelectedItem = m.cmdSeqNameLegend;
@@ -36,21 +39,21 @@ namespace ImpostersOrdeal
             comboBox7.DataSource = moveSequences.ToArray();
             comboBox7.SelectedItem = m.turnType3;
             comboBox8.DataSource = moveSequences.ToArray();
-            comboBox8.SelectedItem = m.turnType4;
+            comboBox8.SelectedItem = m.turnType4;*/
 
             ActivateControls();
         }
 
         private void CommitEdit(object sender, EventArgs e)
         {
-            m.cmdSeqName = (string)comboBox1.SelectedItem;
+            /*m.cmdSeqName = (string)comboBox1.SelectedItem;
             m.cmdSeqNameLegend = (string)comboBox2.SelectedItem;
             m.notShortenTurnType0 = (string)comboBox3.SelectedItem;
             m.notShortenTurnType1 = (string)comboBox4.SelectedItem;
             m.turnType1 = (string)comboBox5.SelectedItem;
             m.turnType2 = (string)comboBox6.SelectedItem;
             m.turnType3 = (string)comboBox7.SelectedItem;
-            m.turnType4 = (string)comboBox8.SelectedItem;
+            m.turnType4 = (string)comboBox8.SelectedItem;*/
         }
 
         private void ActivateControls()

@@ -9,7 +9,7 @@ namespace ImpostersOrdeal.Utils
         /// </summary>
         public static string ConvertToString(int n)
         {
-            return n.ToString("{G}", CultureInfo.InvariantCulture);
+            return n.ToString("G", CultureInfo.InvariantCulture);
         }
     }
 }

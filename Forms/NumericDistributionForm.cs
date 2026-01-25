@@ -13,8 +13,8 @@ namespace ImpostersOrdeal
 {
     public partial class NumericDistributionForm : Form
     {
-        private MainForm.NumericDistributionControl ndc;
-        public NumericDistributionForm(MainForm.NumericDistributionControl ndc)
+        private NumericDistributionControl ndc;
+        public NumericDistributionForm(NumericDistributionControl ndc)
         {
             this.ndc = ndc;
 

@@ -21,8 +21,7 @@ namespace ImpostersOrdeal
 
         public AssetsManager AssetsManager => am;
 
-        // TODO: Get from FileManager
-        private string DumpPath => string.Empty;
+        private string DumpPath => fileManager.DumpPath;
 
         public AssetsToolsAssetBundleIO(FileManager fileManager)
         {
@@ -110,9 +109,13 @@ namespace ImpostersOrdeal
             bundles.Remove(path);
         }
 
-        private void LoadBundleAtPath(string path)
+        private void LoadBundleAtPath(string path, FileManager.FileSource source = FileManager.FileSource.Dump)
         {
-            var bfi = am.LoadBundleFile(path);
+            var fullPath = path;
+            if (source == FileManager.FileSource.Dump)
+                fullPath = Path.Combine(DumpPath, path);
+
+            var bfi = am.LoadBundleFile(fullPath);
             var afi = am.LoadAssetsFileFromBundle(bfi, 0);
 
             bundles.Add(path, new AssetsToolsAssetBundle()

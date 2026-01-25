@@ -1,43 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ImpostersOrdeal.GlobalData;
-using static ImpostersOrdeal.GameDataTypes;
 
 namespace ImpostersOrdeal
 {
     public partial class GlobalMetadataEditorForm : Form
     {
-        GlobalMetadata gm;
-        ImageDefinition id;
-        TypeDefinition td;
-        FieldDefinition fd;
+        GameDataSet gameData;
 
-        public GlobalMetadataEditorForm()
+        GlobalMetadata gm;
+        GlobalMetadata.ImageDefinition id;
+        GlobalMetadata.TypeDefinition td;
+        GlobalMetadata.FieldDefinition fd;
+
+        public GlobalMetadataEditorForm(GameDataSet gameData)
         {
+            this.gameData = gameData;
+
             gm = gameData.globalMetadata;
             InitializeComponent();
 
             imageListBox.DataSource = GetValidChildren(gm.images);
-            id = (ImageDefinition)imageListBox.SelectedItem;
+            id = (GlobalMetadata.ImageDefinition)imageListBox.SelectedItem;
             typeListBox.DataSource = GetValidChildren(id.types);
-            td = (TypeDefinition)typeListBox.SelectedItem;
+            td = (GlobalMetadata.TypeDefinition)typeListBox.SelectedItem;
             fieldListBox.DataSource = GetValidChildren(td.fields, false);
-            fd = (FieldDefinition)fieldListBox.SelectedItem;
+            fd = (GlobalMetadata.FieldDefinition)fieldListBox.SelectedItem;
             RefreshByteDisplay();
 
             ActivateControls();
         }
 
-        private static List<IGMObject> GetValidChildren(IEnumerable<IGMObject> t, bool sort = true)
+        private static List<GlobalMetadata.IGMObject> GetValidChildren(IEnumerable<GlobalMetadata.IGMObject> t, bool sort = true)
         {
-            List<IGMObject> l = t.Where(o => o.HasDefault()).ToList();
+            List<GlobalMetadata.IGMObject> l = t.Where(o => o.HasDefault()).ToList();
             if (sort)
                 l.Sort((o1, o2) => o1.ToString().CompareTo(o2.ToString()));
             return l;
@@ -45,14 +44,14 @@ namespace ImpostersOrdeal
 
         private void ImageChanged(object sender, EventArgs e)
         {
-            id = (ImageDefinition)imageListBox.SelectedItem;
+            id = (GlobalMetadata.ImageDefinition)imageListBox.SelectedItem;
             typeListBox.DataSource = GetValidChildren(id.types);
             typeListBox.SelectedIndex = 0;
         }
 
         private void TypeChanged(object sender, EventArgs e)
         {
-            td = (TypeDefinition)typeListBox.SelectedItem;
+            td = (GlobalMetadata.TypeDefinition)typeListBox.SelectedItem;
             fieldListBox.DataSource = GetValidChildren(td.fields, false);
             fieldListBox.SelectedIndex = 0;
         }
@@ -61,7 +60,7 @@ namespace ImpostersOrdeal
         {
             DeactivateControls();
 
-            fd = (FieldDefinition)fieldListBox.SelectedItem;
+            fd = (GlobalMetadata.FieldDefinition)fieldListBox.SelectedItem;
             RefreshByteDisplay();
 
             ActivateControls();
@@ -279,14 +278,14 @@ namespace ImpostersOrdeal
             return bytes;
         }
 
-        private byte[] GetBytes(FieldDefaultValue fdv)
+        private byte[] GetBytes(GlobalMetadata.FieldDefaultValue fdv)
         {
             byte[] b = new byte[fdv.length];
             Buffer.BlockCopy(gm.buffer, (int)fdv.offset, b, 0, b.Length);
             return b;
         }
 
-        private void SetBytes(FieldDefaultValue fdv, byte[] b)
+        private void SetBytes(GlobalMetadata.FieldDefaultValue fdv, byte[] b)
         {
             Buffer.BlockCopy(b, 0, gm.buffer, (int)fdv.offset, Math.Min(b.Length, fdv.length));
         }

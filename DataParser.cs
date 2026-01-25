@@ -18,7 +18,7 @@ namespace ImpostersOrdeal
     /// </summary>
     static public class DataParser
     {
-        static Dictionary<PathEnum, Task<List<AssetTypeValueField>>> monoBehaviourCollection;
+        /*static Dictionary<PathEnum, Task<List<AssetTypeValueField>>> monoBehaviourCollection;
 
         static AssetTypeTemplateField tagDataTemplate = null;
         static AssetTypeTemplateField attributeValueTemplate = null;
@@ -3831,6 +3831,6 @@ namespace ImpostersOrdeal
         private static int ConvertToInt(float n)
         {
             return BitConverter.ToInt32(BitConverter.GetBytes(n));
-        }
+        }*/
     }
 }

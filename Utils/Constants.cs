@@ -5,15 +5,16 @@ namespace ImpostersOrdeal
     public static class Constants
     {
         // Folder names
-        private static readonly string ROMFS_FOLDER = "romfs";
-        private static readonly string DATA_FOLDER = "Data";
-        private static readonly string MANAGED_FOLDER = "Managed";
-        private static readonly string METADATA_FOLDER = "Metadata";
-        private static readonly string STREAMINGASSETS_FOLDER = "StreamingAssets";
-        private static readonly string ASSETASSISTANT_FOLDER = "AssetAssistant";
-        private static readonly string AUDIO_FOLDER = "Audio";
-        private static readonly string GENERATEDSOUNDBANKS_FOLDER = "GeneratedSoundBanks";
-        private static readonly string SWITCH_FOLDER = "Switch";
+        public static readonly string ROMFS_FOLDER = "romfs";
+        public static readonly string EXEFS_FOLDER = "exefs";
+        public static readonly string DATA_FOLDER = "Data";
+        public static readonly string MANAGED_FOLDER = "Managed";
+        public static readonly string METADATA_FOLDER = "Metadata";
+        public static readonly string STREAMINGASSETS_FOLDER = "StreamingAssets";
+        public static readonly string ASSETASSISTANT_FOLDER = "AssetAssistant";
+        public static readonly string AUDIO_FOLDER = "Audio";
+        public static readonly string GENERATEDSOUNDBANKS_FOLDER = "GeneratedSoundBanks";
+        public static readonly string SWITCH_FOLDER = "Switch";
 
         private static readonly string BATTLE_FOLDER = "Battle";
         private static readonly string CONTEST_FOLDER = "Contest";
@@ -79,8 +80,19 @@ namespace ImpostersOrdeal
         private static readonly string DPRBIN_FILE = "Dpr.bin";
 
         // Binary file paths
-        public static readonly string DELPHISMAIN_PATH =    Path.Combine(ROMFS_FOLDER, DATA_FOLDER, AUDIO_FOLDER,           GENERATEDSOUNDBANKS_FOLDER, SWITCH_FOLDER, DELPHISMAIN_FILE);
-        public static readonly string GLOBALMETADATA_PATH = Path.Combine(ROMFS_FOLDER, DATA_FOLDER, MANAGED_FOLDER,         METADATA_FOLDER,            GLOBALMETADATA_FILE);
-        public static readonly string DPRBIN_PATH =         Path.Combine(ROMFS_FOLDER, DATA_FOLDER, STREAMINGASSETS_FOLDER, ASSETASSISTANT_FOLDER,      DPRBIN_FILE);
+        public static readonly string DELPHISMAIN_PATH =    Path.Combine(ROMFS_FOLDER, DATA_FOLDER, STREAMINGASSETS_FOLDER, AUDIO_FOLDER,          GENERATEDSOUNDBANKS_FOLDER, SWITCH_FOLDER, DELPHISMAIN_FILE);
+        public static readonly string GLOBALMETADATA_PATH = Path.Combine(ROMFS_FOLDER, DATA_FOLDER, MANAGED_FOLDER,         METADATA_FOLDER,       GLOBALMETADATA_FILE);
+        public static readonly string DPRBIN_PATH =         Path.Combine(ROMFS_FOLDER, DATA_FOLDER, STREAMINGASSETS_FOLDER, ASSETASSISTANT_FOLDER, DPRBIN_FILE);
+
+        // Message File names
+        public static readonly string ABILITY_MESSAGEFILE_NAME = "ss_tokusei";
+        public static readonly string ITEM_MESSAGEFILE_NAME = "ss_itemname";
+        public static readonly string MOVE_MESSAGEFILE_NAME = "ss_wazaname";
+        public static readonly string NATURE_MESSAGEFILE_NAME = "ss_seikaku";
+        public static readonly string POKEMONSPECIES_MESSAGEFILE_NAME = "ss_monsname";
+        public static readonly string POKEMONFORM_MESSAGEFILE_NAME = "ss_zkn_form";
+        public static readonly string TRAINERNAME_MESSAGEFILE_NAME = "dp_trainers_name";
+        public static readonly string TRAINERTYPE_MESSAGEFILE_NAME = "dp_trainers_type";
+        public static readonly string TYPE_MESSAGEFILE_NAME = "ss_typename";
     }
 }

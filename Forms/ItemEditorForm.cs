@@ -1,25 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ImpostersOrdeal.GameDataTypes;
-using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
     public partial class ItemEditorForm : Form
     {
-        List<Item> items;
+        GameDataSet gameData;
+
+        List<ItemTable.SheetItem> items;
         Dictionary<int, string> itemTypes = new();
         Dictionary<int, string> typings0 = new();
         Dictionary<int, string> itemGroups = new();
         Dictionary<int, string> fieldFunctions = new();
-        Item i;
+        ItemTable.SheetItem i;
 
         private string[] pluckEffects = new string[]
         {
@@ -71,8 +67,10 @@ namespace ImpostersOrdeal
             "Escape"
         };
 
-        public ItemEditorForm()
+        public ItemEditorForm(GameDataSet gameData)
         {
+            this.gameData = gameData;
+
             itemTypes[0] = "Bag Pocket";
             itemTypes[1] = "Medicine";
             itemTypes[2] = "Hold Item";
@@ -86,8 +84,9 @@ namespace ImpostersOrdeal
             itemTypes[10] = "Treasure";
             itemTypes[255] = "None";
 
-            for (int i = 0; i < gameData.typings.Count; i++)
-                typings0[i] = gameData.typings[i].GetName();
+            var types = gameData.GetAllLabels(Constants.TYPE_MESSAGEFILE_NAME);
+            for (int i = 0; i < types.Count; i++)
+                typings0[i] = types[i];
             typings0[31] = "None";
 
             itemGroups[0] = "None";
@@ -132,12 +131,10 @@ namespace ImpostersOrdeal
             fieldFunctions[29] = "DS Sounds";
 
             items = new();
-            items.AddRange(gameData.items);
+            items.AddRange(gameData.itemTable.Item);
             InitializeComponent();
 
-            //items.Sort((i1, i2) => i1.battleFunc - i2.battleFunc);
-
-            listBox.DataSource = items.Select(i => i.GetName()).ToArray();
+            listBox.DataSource = gameData.GetAllLabels(Constants.ITEM_MESSAGEFILE_NAME);
             listBox.SelectedIndex = 0;
             i = items[0];
 
@@ -167,50 +164,53 @@ namespace ImpostersOrdeal
 
         private void RefreshItemDisplay()
         {
-            textBox.Text = i.GetID().ToString() + " - " + i.GetName();
-            bool[] flags = i.GetFlags();
+            textBox.Text = string.Format("{0} - {1}", i.no, gameData.GetLabelByIndex(Constants.ITEM_MESSAGEFILE_NAME, i.no));
+
+            // TODO: item flag stuff
+            //bool[] flags = i.GetFlags();
+            bool[] flags = Enumerable.Range(0, 32).Select(i => true).ToArray();
 
             checkBox25.Checked = !flags[31];
-            iconIDNumericUpDown.Value = i.iconID;
+            iconIDNumericUpDown.Value = i.iconid;
             priceNumericUpDown.Value = i.price;
-            bpPriceNumericUpDown.Value = i.bpPrice;
+            bpPriceNumericUpDown.Value = i.bp_price;
 
             itemTypeComboBox.SelectedItem = itemTypes[i.type];
             sortNumericUpDown.Value = i.sort;
             itemGroupComboBox.SelectedItem = itemGroups[i.group];
-            groupIDNumericUpDown.Value = i.groupID;
-            bagPocketComboBox.SelectedIndex = i.fldPocket;
+            groupIDNumericUpDown.Value = i.group_id;
+            bagPocketComboBox.SelectedIndex = i.fld_pocket;
 
-            flingPowerNumericUpDown.Value = i.nageAtc;
+            flingPowerNumericUpDown.Value = i.nage_atc;
             checkBox1.Checked = flags[0];
-            naturalGiftTypeComboBox.SelectedItem = typings0[i.sizenType];
-            naturalGiftPowerNumericUpDown.Value = i.sizenAtc;
-            pluckEffectComboBox.SelectedIndex = i.tuibamuEff;
+            naturalGiftTypeComboBox.SelectedItem = typings0[i.sizen_type];
+            naturalGiftPowerNumericUpDown.Value = i.sizen_atc;
+            pluckEffectComboBox.SelectedIndex = i.tuibamu_eff;
 
-            fieldFunctionComboBox.SelectedItem = fieldFunctions[i.fieldFunc];
-            numericUpDown10.Value = i.hpEvIncrease;
-            numericUpDown11.Value = i.atkEvIncrease;
-            numericUpDown12.Value = i.defEvIncrease;
-            numericUpDown13.Value = i.spAtkEvIncrease;
-            numericUpDown14.Value = i.spDefEvIncrease;
-            numericUpDown15.Value = i.spdEvIncrease;
-            numericUpDown16.Value = i.friendshipIncrease1;
-            numericUpDown17.Value = i.friendshipIncrease2;
-            numericUpDown18.Value = i.friendshipIncrease3;
+            fieldFunctionComboBox.SelectedItem = fieldFunctions[i.field_func];
+            numericUpDown10.Value = i.wk_prm_hp_exp;
+            numericUpDown11.Value = i.wk_prm_pow_exp;
+            numericUpDown12.Value = i.wk_prm_def_exp;
+            numericUpDown13.Value = i.wk_prm_spa_exp;
+            numericUpDown14.Value = i.wk_prm_spd_exp;
+            numericUpDown15.Value = i.wk_prm_agi_exp;
+            numericUpDown16.Value = i.wk_friend1;
+            numericUpDown17.Value = i.wk_friend2;
+            numericUpDown18.Value = i.wk_friend3;
             checkBox9.Checked = flags[9];
             checkBox12.Checked = flags[12];
             checkBox13.Checked = flags[13];
             checkBox14.Checked = flags[14];
-            battleFunctionComboBox.SelectedIndex = i.battleFunc;
-            numericUpDown3.Value = i.criticalRanks;
-            numericUpDown4.Value = i.atkStages;
-            numericUpDown5.Value = i.defStages;
-            numericUpDown6.Value = i.spAtkStages;
-            numericUpDown7.Value = i.spDefStages;
-            numericUpDown8.Value = i.spdStages;
-            numericUpDown9.Value = i.accStages;
-            numericUpDown1.Value = i.hpRestoreAmount;
-            numericUpDown2.Value = i.ppRestoreAmount;
+            battleFunctionComboBox.SelectedIndex = i.battle_func;
+            numericUpDown3.Value = i.wk_critical_up;
+            numericUpDown4.Value = i.wk_atc_up;
+            numericUpDown5.Value = i.wk_def_up;
+            numericUpDown6.Value = i.wk_spa_up;
+            numericUpDown7.Value = i.wk_spd_up;
+            numericUpDown8.Value = i.wk_agi_up;
+            numericUpDown9.Value = i.wk_hit_up;
+            numericUpDown1.Value = i.wk_prm_hp_rcv;
+            numericUpDown2.Value = i.wk_prm_pp_rcv;
             checkBox8.Checked = flags[8];
             checkBox10.Checked = flags[10];
             checkBox11.Checked = flags[11];
@@ -236,41 +236,41 @@ namespace ImpostersOrdeal
 
         private void CommitEdit(object sender, EventArgs e)
         {
-            i.iconID = (int)iconIDNumericUpDown.Value;
+            i.iconid = (int)iconIDNumericUpDown.Value;
             i.price = (int)priceNumericUpDown.Value;
-            i.bpPrice = (int)bpPriceNumericUpDown.Value;
+            i.bp_price = (int)bpPriceNumericUpDown.Value;
 
             i.type = (byte)itemTypes.Keys.ToArray()[itemTypeComboBox.SelectedIndex];
             i.sort = (byte)sortNumericUpDown.Value;
             i.group = (byte)itemGroups.Keys.ToArray()[itemGroupComboBox.SelectedIndex];
-            i.groupID = (byte)groupIDNumericUpDown.Value;
-            i.fldPocket = (byte)(bagPocketComboBox.SelectedIndex == -1 ? 0 : bagPocketComboBox.SelectedIndex);
+            i.group_id = (byte)groupIDNumericUpDown.Value;
+            i.fld_pocket = (byte)(bagPocketComboBox.SelectedIndex == -1 ? 0 : bagPocketComboBox.SelectedIndex);
 
-            i.nageAtc = (byte)flingPowerNumericUpDown.Value;
-            i.sizenType = (byte)typings0.Keys.ToArray()[naturalGiftTypeComboBox.SelectedIndex];
-            i.sizenAtc = (byte)naturalGiftPowerNumericUpDown.Value;
-            i.tuibamuEff = (byte)(pluckEffectComboBox.SelectedIndex == -1 ? 0 : pluckEffectComboBox.SelectedIndex);
+            i.nage_atc = (byte)flingPowerNumericUpDown.Value;
+            i.sizen_type = (byte)typings0.Keys.ToArray()[naturalGiftTypeComboBox.SelectedIndex];
+            i.sizen_atc = (byte)naturalGiftPowerNumericUpDown.Value;
+            i.tuibamu_eff = (byte)(pluckEffectComboBox.SelectedIndex == -1 ? 0 : pluckEffectComboBox.SelectedIndex);
 
-            i.fieldFunc = (byte)fieldFunctions.Keys.ToArray()[fieldFunctionComboBox.SelectedIndex];
-            i.hpEvIncrease = (sbyte)numericUpDown10.Value;
-            i.atkEvIncrease = (sbyte)numericUpDown11.Value;
-            i.defEvIncrease = (sbyte)numericUpDown12.Value;
-            i.spAtkEvIncrease = (sbyte)numericUpDown13.Value;
-            i.spDefEvIncrease = (sbyte)numericUpDown14.Value;
-            i.spdEvIncrease = (sbyte)numericUpDown15.Value;
-            i.friendshipIncrease1 = (sbyte)numericUpDown16.Value;
-            i.friendshipIncrease2 = (sbyte)numericUpDown17.Value;
-            i.friendshipIncrease3 = (sbyte)numericUpDown18.Value;
-            i.battleFunc = (byte)(battleFunctionComboBox.SelectedIndex == -1 ? 0 : battleFunctionComboBox.SelectedIndex);
-            i.criticalRanks = (byte)numericUpDown3.Value;
-            i.atkStages = (byte)numericUpDown4.Value;
-            i.defStages = (byte)numericUpDown5.Value;
-            i.spAtkStages = (byte)numericUpDown6.Value;
-            i.spDefStages = (byte)numericUpDown7.Value;
-            i.spdStages = (byte)numericUpDown8.Value;
-            i.accStages = (byte)numericUpDown9.Value;
-            i.hpRestoreAmount = (byte)numericUpDown1.Value;
-            i.ppRestoreAmount = (byte)numericUpDown2.Value;
+            i.field_func = (byte)fieldFunctions.Keys.ToArray()[fieldFunctionComboBox.SelectedIndex];
+            i.wk_prm_hp_exp = (sbyte)numericUpDown10.Value;
+            i.wk_prm_pow_exp = (sbyte)numericUpDown11.Value;
+            i.wk_prm_def_exp = (sbyte)numericUpDown12.Value;
+            i.wk_prm_spa_exp = (sbyte)numericUpDown13.Value;
+            i.wk_prm_spd_exp = (sbyte)numericUpDown14.Value;
+            i.wk_prm_agi_exp = (sbyte)numericUpDown15.Value;
+            i.wk_friend1 = (sbyte)numericUpDown16.Value;
+            i.wk_friend2 = (sbyte)numericUpDown17.Value;
+            i.wk_friend3 = (sbyte)numericUpDown18.Value;
+            i.battle_func = (byte)(battleFunctionComboBox.SelectedIndex == -1 ? 0 : battleFunctionComboBox.SelectedIndex);
+            i.wk_critical_up = (byte)numericUpDown3.Value;
+            i.wk_atc_up = (byte)numericUpDown4.Value;
+            i.wk_def_up = (byte)numericUpDown5.Value;
+            i.wk_spa_up = (byte)numericUpDown6.Value;
+            i.wk_spd_up = (byte)numericUpDown7.Value;
+            i.wk_agi_up = (byte)numericUpDown8.Value;
+            i.wk_hit_up = (byte)numericUpDown9.Value;
+            i.wk_prm_hp_rcv = (byte)numericUpDown1.Value;
+            i.wk_prm_pp_rcv = (byte)numericUpDown2.Value;
 
             bool[] flags = new bool[32];
             flags[0] = checkBox1.Checked;
@@ -299,7 +299,9 @@ namespace ImpostersOrdeal
             flags[23] = checkBox23.Checked;
             flags[24] = checkBox24.Checked;
             flags[31] = !checkBox25.Checked;
-            i.SetFlags(flags);
+
+            // TODO: item flags
+            //i.SetFlags(flags);
         }
 
         private void ActivateControls()

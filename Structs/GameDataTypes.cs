@@ -1063,8 +1063,8 @@ namespace ImpostersOrdeal
             public List<DexEntry> GetPastEntries()
             {
                 List<DexEntry> past = new();
-                foreach (Pokemon pokemon in forms)
-                    past = past.Union(pokemon.pastPokemon.Select(p => GlobalData.gameData.dexEntries[p.dexID])).ToList();
+                /*foreach (Pokemon pokemon in forms)
+                    past = past.Union(pokemon.pastPokemon.Select(p => GlobalData.gameData.dexEntries[p.dexID])).ToList();*/
 
                 return past;
             }
@@ -1072,8 +1072,8 @@ namespace ImpostersOrdeal
             public List<DexEntry> GetNextEntries()
             {
                 List<DexEntry> next = new();
-                foreach (Pokemon pokemon in forms)
-                    next = next.Union(pokemon.nextPokemon.Select(p => GlobalData.gameData.dexEntries[p.dexID])).ToList();
+                /*foreach (Pokemon pokemon in forms)
+                    next = next.Union(pokemon.nextPokemon.Select(p => GlobalData.gameData.dexEntries[p.dexID])).ToList();*/
 
                 return next;
             }
@@ -1213,7 +1213,7 @@ namespace ImpostersOrdeal
 
             public string GetFullName()
             {
-                return GetName() + " " + GlobalData.gameData.moves[moveID].GetName();
+                return GetName(); //+ " " + GlobalData.gameData.moves[moveID].GetName();
             }
 
             public int GetID()
@@ -1228,10 +1228,11 @@ namespace ImpostersOrdeal
 
             public bool IsValid()
             {
-                return GlobalData.gameData.items[itemID].IsActive() &&
+                return false;
+                /*return GlobalData.gameData.items[itemID].IsActive() &&
                     GlobalData.gameData.items[itemID].fieldFunc == 2 &&
                     GlobalData.gameData.items[itemID].groupID <= GlobalData.gameData.GetTMCompatibilitySetSize() &&
-                    GlobalData.gameData.items[itemID].groupID > 0;
+                    GlobalData.gameData.items[itemID].groupID > 0;*/
             }
         }
 

@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
-using static ImpostersOrdeal.GameDataTypes;
-using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
     public partial class BattleTowerPokemonShowdownEditorForm : Form
     {
+        private GameDataSet gameData;
+
         private List<string> dexEntries;
         private List<string> natures;
         private List<string> abilities;
         private List<string> moves;
         private List<string> items;
-        private BattleTowerTrainerPokemon bttMon;
+        private BattleTowerTable.TowerTrainerTable.SheetTrainerPoke bttMon;
 
         private readonly string[] genders = new string[]
         {
@@ -30,24 +30,26 @@ namespace ImpostersOrdeal
         private readonly Dictionary<string, int[]> monForms = PokemonFormes.monForms;
 
 
-        public void SetBTP(BattleTowerTrainerPokemon btp)
+        public void SetBTP(BattleTowerTable.TowerTrainerTable.SheetTrainerPoke btp)
         {
             bttMon = btp;
-            Text = "Battle Tower Pokémon Editor: " + bttMon.GetID() + " " + bttMon.GetName();
+            Text = string.Format("Battle Tower Pokémon Editor: {0} {1}", btp.ID, dexEntries[bttMon.MonsNo]);
         }
 
-        public BattleTowerPokemonShowdownEditorForm()
+        public BattleTowerPokemonShowdownEditorForm(GameDataSet gameData)
         {
+            this.gameData = gameData;
+
             Init();
         }
 
         private void Init()
         {
-            dexEntries = gameData.dexEntries.Select(p => p.GetName()).ToList();
-            natures = gameData.natures.Select(n => n.GetName()).ToList();
-            abilities = gameData.abilities.Select(a => a.GetName()).ToList();
-            moves = gameData.moves.Select(m => m.GetName()).ToList();
-            items = gameData.items.Select(m => m.GetName()).ToList();
+            dexEntries = gameData.GetAllLabels(Constants.POKEMONSPECIES_MESSAGEFILE_NAME);
+            natures = gameData.GetAllLabels(Constants.NATURE_MESSAGEFILE_NAME);
+            abilities = gameData.GetAllLabels(Constants.ABILITY_MESSAGEFILE_NAME);
+            moves = gameData.GetAllLabels(Constants.MOVE_MESSAGEFILE_NAME);
+            items = gameData.GetAllLabels(Constants.ITEM_MESSAGEFILE_NAME);
 
             InitializeComponent();
         }
@@ -74,7 +76,7 @@ namespace ImpostersOrdeal
         {
             try
             {
-                BattleTowerTrainerPokemon tempMon = new();
+                var tempMon = new BattleTowerTable.TowerTrainerTable.SheetTrainerPoke();
                 ShowdownToData(richTextBox1.Text, tempMon);
                 richTextBox2.Text = ToShowdownText(tempMon);
             }
@@ -84,15 +86,15 @@ namespace ImpostersOrdeal
             }
         }
 
-        private void ShowdownToData(String showdownText, BattleTowerTrainerPokemon tp)
+        private void ShowdownToData(string showdownText, BattleTowerTable.TowerTrainerTable.SheetTrainerPoke tp)
         {
-            String[] pokemon = showdownText.Trim('\r', '\n', ' ').Split("\n");
+            string[] pokemon = showdownText.Trim('\r', '\n', ' ').Split("\n");
             
             //Default values
-            tp.isRare = 0;
-            tp.level = 100;
-            tp.natureID = 0;
-            tp.sex = 3; //Default to random
+            tp.IsRare = false;
+            tp.Level = 100;
+            tp.Seikaku = 0;
+            tp.Sex = 3; //Default to random
 
             //Counter Values
             int moveNum = 0;
@@ -101,50 +103,50 @@ namespace ImpostersOrdeal
             List<byte> EVs = new() { 0, 0, 0, 0, 0, 0 };
             List<byte> IVs = new() { 31, 31, 31, 31, 31, 31 };
 
-            String firstline = pokemon[0];
-            String mon = firstline.Split(" ")[0];
+            string firstline = pokemon[0];
+            string mon = firstline.Split(" ")[0];
             if (monForms.ContainsKey(mon))
             {
-                tp.dexID = (ushort) monForms[mon][0];
-                tp.formID = (ushort) monForms[mon][1];
+                tp.MonsNo = (ushort) monForms[mon][0];
+                tp.FormNo = (ushort) monForms[mon][1];
             }
             else
             {
-                tp.dexID = (ushort) dexEntries.IndexOf(mon);
-                tp.formID = 0;
+                tp.MonsNo = (ushort) dexEntries.IndexOf(mon);
+                tp.FormNo = 0;
             }
             //Mr. Mime and Mime Jr. are both two word pokemon
             //-1 is 65535 for ushort numbers
-            if (tp.dexID == 65535)
+            if (tp.MonsNo == 65535)
             {
                 mon = firstline.Split(" ")[0] + " " + firstline.Split(" ")[1];
-                tp.dexID = (ushort) dexEntries.IndexOf(mon);
-                tp.formID = 0;
+                tp.MonsNo = (ushort) dexEntries.IndexOf(mon);
+                tp.FormNo = 0;
             }
 
             //Gender
             if (firstline.Contains("("))
             {
                 int index = firstline.IndexOf("(");
-                String genderStr = firstline.Substring(index, 3);
-                tp.sex = (byte) Array.IndexOf(genders, genderStr);
+                string genderStr = firstline.Substring(index, 3);
+                tp.Sex = (byte) Array.IndexOf(genders, genderStr);
             }
             else
             {
-                tp.sex = 3; //Random Gender
+                tp.Sex = 3; //Random Gender
             }
 
             //Item
             if (firstline.Contains("@"))
             {
                 int Index = firstline.IndexOf("@");
-                String itemStr = firstline[(Index + 1)..].Trim();
-                tp.itemID = (ushort) items.IndexOf(itemStr);
+                string itemStr = firstline[(Index + 1)..].Trim();
+                tp.Item = (ushort) items.IndexOf(itemStr);
             }
 
             for (int i = 1; i < pokemon.Length; i++)
             {
-                String data = pokemon[i];
+                string data = pokemon[i];
 
                 if (data.ToUpper().StartsWith("-"))
                 {
@@ -157,20 +159,20 @@ namespace ImpostersOrdeal
                 }
                 else if (data.ToUpper().StartsWith("ABILITY"))
                 {
-                    tp.abilityID = (ushort) abilities.IndexOf(data[9..]);
+                    tp.Tokusei = (ushort) abilities.IndexOf(data[9..]);
                 }
                 else if (data.ToUpper().Contains("NATURE"))
                 {
-                    String nature = data.Split(' ')[0];
-                    tp.natureID = (byte) natures.IndexOf(nature);
+                    string nature = data.Split(' ')[0];
+                    tp.Seikaku = (byte) natures.IndexOf(nature);
                 }
                 else if (data.ToUpper().StartsWith("SHINY"))
                 {
-                    tp.isRare = 1;
+                    tp.IsRare = true;
                 }
                 else if (data.ToUpper().StartsWith("LEVEL"))
                 {
-                    tp.level = Byte.Parse((data.Split(" ")[1]));
+                    tp.Level = byte.Parse((data.Split(" ")[1]));
                 }
                 else if (data.ToUpper().StartsWith("EVS"))
                 {
@@ -199,29 +201,29 @@ namespace ImpostersOrdeal
             }
 
             //Repack into tp
-            tp.moveID1 = newMoves[0];
-            tp.moveID2 = newMoves[1];
-            tp.moveID3 = newMoves[2];
-            tp.moveID4 = newMoves[3];
+            tp.Waza1 = newMoves[0];
+            tp.Waza2 = newMoves[1];
+            tp.Waza3 = newMoves[2];
+            tp.Waza4 = newMoves[3];
 
-            tp.hpIV = IVs[0];
-            tp.atkIV = IVs[1];
-            tp.defIV = IVs[2];
-            tp.spAtkIV = IVs[3];
-            tp.spDefIV = IVs[4];
-            tp.spdIV = IVs[5];
+            tp.TalentHp = IVs[0];
+            tp.TalentAtk = IVs[1];
+            tp.TalentDef = IVs[2];
+            tp.TalentSpAtk = IVs[3];
+            tp.TalentSpDef = IVs[4];
+            tp.TalentAgi = IVs[5];
 
-            tp.hpEV = EVs[0];
-            tp.atkEV = EVs[1];
-            tp.defEV = EVs[2];
-            tp.spAtkEV = EVs[3];
-            tp.spDefEV = EVs[4];
-            tp.spdEV = EVs[5];
+            tp.EffortHp = EVs[0];
+            tp.EffortAtk = EVs[1];
+            tp.EffortDef = EVs[2];
+            tp.EffortSpAtk = EVs[3];
+            tp.EffortSpDef = EVs[4];
+            tp.EffortAgi = EVs[5];
         }
 
-        private String GetForm(int[] formArray)
+        private string GetForm(int[] formArray)
         {
-            foreach (KeyValuePair<String, int[]> entry in monForms)
+            foreach (KeyValuePair<string, int[]> entry in monForms)
             {
                 if (Enumerable.SequenceEqual(formArray, entry.Value))
                 {
@@ -231,21 +233,21 @@ namespace ImpostersOrdeal
             return null;
         }
 
-        private String ToShowdownText(BattleTowerTrainerPokemon bttp)
+        private string ToShowdownText(BattleTowerTable.TowerTrainerTable.SheetTrainerPoke bttp)
         {
-            String showdownText = "";
+            string showdownText = "";
 
-            int[] formArray = new int[] { bttp.dexID, (int) bttp.formID };
-            String formName = GetForm(formArray);
+            int[] formArray = new int[] { bttp.MonsNo, (int) bttp.FormNo };
+            string formName = GetForm(formArray);
 
-            if (bttp.dexID < dexEntries.Count) {
+            if (bttp.MonsNo < dexEntries.Count) {
                 if (formName != null)
                 {
                     showdownText += formName;
                 }
                 else
                 {
-                    showdownText += dexEntries[bttp.dexID];
+                    showdownText += dexEntries[bttp.MonsNo];
                 }
             }
             else
@@ -253,44 +255,44 @@ namespace ImpostersOrdeal
                 showdownText += "Unrecognized";
             }
             showdownText += " ";
-            if (bttp.sex != 255) //Gender defaults to 255
+            if (bttp.Sex != 255) //Gender defaults to 255
             {
-                showdownText += genders[bttp.sex];
+                showdownText += genders[bttp.Sex];
 
-                if (genders[bttp.sex] != "")
+                if (genders[bttp.Sex] != "")
                 {
                         showdownText += " ";
                 }
             }
 
-            if (bttp.itemID != 0)
+            if (bttp.Item != 0)
             {
-                showdownText += String.Format("@ {0}", items[bttp.itemID]);
+                showdownText += string.Format("@ {0}", items[bttp.Item]);
             }
 
-            if (bttp.level != 100) //Level 100 isn't shown
+            if (bttp.Level != 100) //Level 100 isn't shown
             {
                 showdownText += "\n";
-                showdownText += String.Format("Level: {0}", bttp.level);
+                showdownText += string.Format("Level: {0}", bttp.Level);
             }
 
             showdownText += "\n";
 
-            showdownText += "Ability: " + abilities[bttp.abilityID];
+            showdownText += "Ability: " + abilities[bttp.Tokusei];
 
             showdownText += "\n";
 
-            if (bttp.isRare == 1)
+            if (bttp.IsRare)
             {
                 showdownText += "Shiny: Yes\n";
             }
 
-            showdownText += GetEVText(new List<byte>() {bttp.hpEV, bttp.atkEV, bttp.defEV, bttp.spAtkEV, bttp.spDefEV, bttp.spdEV});
+            showdownText += GetEVText(new List<byte>() {bttp.EffortHp, bttp.EffortAtk, bttp.EffortDef, bttp.EffortSpAtk, bttp.EffortSpDef, bttp.EffortAgi });
 
-            showdownText += String.Format("{0} Nature", natures[bttp.natureID]);
+            showdownText += string.Format("{0} Nature", natures[bttp.Seikaku]);
             showdownText += "\n";
 
-            showdownText += GetIVText(new List<byte>() {bttp.hpIV, bttp.atkIV, bttp.defIV, bttp.spAtkIV, bttp.spDefIV, bttp.spdIV});
+            showdownText += GetIVText(new List<byte>() {bttp.TalentHp, bttp.TalentAtk, bttp.TalentDef, bttp.TalentSpAtk, bttp.TalentSpDef, bttp.TalentAgi });
             
             List<int> moveList = new()
             {
@@ -298,17 +300,17 @@ namespace ImpostersOrdeal
                 0,
                 0,
                 0,
-                bttp.moveID1,
-                bttp.moveID2,
-                bttp.moveID3,
-                bttp.moveID4
+                bttp.Waza1,
+                bttp.Waza2,
+                bttp.Waza3,
+                bttp.Waza4
             };
 
             foreach (ushort moveID in moveList.Select(v => (ushort)v))
             {
                 if (moveID != 0 && moveID != 65535)
                 {
-                    showdownText += String.Format("- {0}\n", moves[moveID]);
+                    showdownText += string.Format("- {0}\n", moves[moveID]);
                 }
             }
 
@@ -317,10 +319,10 @@ namespace ImpostersOrdeal
         }
 
         //0 Is implied EVs
-        private String GetEVText(List<Byte> EVList)
+        private string GetEVText(List<byte> EVList)
         {
             bool hasEV = false;
-            String returnString = "";
+            string returnString = "";
             byte b;
 
             //Format a HP / b Atk / c Def / d SpA / e SpD / f Spe  
@@ -334,7 +336,7 @@ namespace ImpostersOrdeal
                         returnString += "EVs: ";
                         hasEV = true;
                     }
-                    returnString = returnString += String.Format("{0} {1} / ", b, stats[i]);
+                    returnString = returnString += string.Format("{0} {1} / ", b, stats[i]);
                 }
             }
 
@@ -348,10 +350,10 @@ namespace ImpostersOrdeal
         }
 
         //31 Is implied IVs
-        private String GetIVText(List<Byte> IVList)
+        private string GetIVText(List<byte> IVList)
         {
             bool hasIV = false;
-            String returnString = "";
+            string returnString = "";
             byte b;
 
             //Format a HP / b Atk / c Def / d SpA / e SpD / f Spe  
@@ -365,7 +367,7 @@ namespace ImpostersOrdeal
                         returnString += "IVs: ";
                         hasIV = true;
                     }
-                    returnString += String.Format("{0} {1} / ", b, stats[i]);
+                    returnString += string.Format("{0} {1} / ", b, stats[i]);
                 }
             }
 
@@ -378,7 +380,7 @@ namespace ImpostersOrdeal
             return returnString;
         }
 
-        private List<int> FormatStats(String statString, int defaultVal)
+        private List<int> FormatStats(string statString, int defaultVal)
         {
             List<int> returnList = new();
 
@@ -387,12 +389,12 @@ namespace ImpostersOrdeal
                 returnList.Add(defaultVal);
             }
 
-            String[] statList = statString[4..].TrimEnd('/', ' ').Split("/");
-            foreach (String stat in statList)
+            string[] statList = statString[4..].TrimEnd('/', ' ').Split("/");
+            foreach (string stat in statList)
             {
-                String[] statSplit = stat.Trim().Split(" ");
+                string[] statSplit = stat.Trim().Split(" ");
                 int statVal = int.Parse(statSplit[0]);
-                String statName = statSplit[1];
+                string statName = statSplit[1];
 
                 int index = Array.IndexOf(stats, statName);
 

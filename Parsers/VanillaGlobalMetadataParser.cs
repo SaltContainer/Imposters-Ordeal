@@ -39,9 +39,9 @@ namespace ImpostersOrdeal
         {
             var data = new GlobalMetadata();
 
-            var delphisMainBank = fileManager.GetDelphisMainBank();
+            var globalMetadataFile = fileManager.GetGlobalMetadataFile();
 
-            byte[] buffer = fileManager.GetGlobalMetadataBuffer();
+            byte[] buffer = globalMetadataFile.GetRawData();
             data.buffer = buffer;
 
             data.stringOffset = BitConverter.ToUInt32(buffer, 0x18);

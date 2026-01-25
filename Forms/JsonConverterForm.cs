@@ -48,7 +48,7 @@ namespace ImpostersOrdeal
 
         public JsonConverterForm()
         {
-            typings = MakeDistinct(gameData.typings.Select(n => n.GetName()));
+            /*typings = MakeDistinct(gameData.typings.Select(n => n.GetName()));
             items = MakeDistinct(gameData.items.Select(n => n.GetName()));
             growthRates = MakeDistinct(gameData.growthRates.Select(n => n.GetName()));
             abilities = MakeDistinct(gameData.abilities.Select(n => n.GetName()));
@@ -58,7 +58,7 @@ namespace ImpostersOrdeal
             tms = new();
             for (int tmID = 0; tmID < gameData.tms.Count; tmID++)
                 if (gameData.tms[tmID].IsValid() && !tms.ContainsKey(gameData.items[gameData.tms[tmID].itemID].groupID - 1))
-                    tms[gameData.items[gameData.tms[tmID].itemID].groupID - 1] = gameData.tms[tmID].GetFullName();
+                    tms[gameData.items[gameData.tms[tmID].itemID].groupID - 1] = gameData.tms[tmID].GetFullName();*/
 
             InitializeComponent();
 
@@ -98,7 +98,7 @@ namespace ImpostersOrdeal
                 RestoreDirectory = true
             };
             object data = null;
-            switch (modeComboBox.SelectedIndex)
+            /*switch (modeComboBox.SelectedIndex)
             {
                 case 0:
                     sfd.FileName = pokemonFileName;
@@ -112,7 +112,7 @@ namespace ImpostersOrdeal
                     sfd.FileName = textFileName;
                     data = GenerateTextStructs(gameData.messageFileSets.ToList());
                     break;
-            }
+            }*/
             if (data == null)
                 return;
             if (sfd.ShowDialog() == DialogResult.Cancel)
@@ -321,7 +321,7 @@ namespace ImpostersOrdeal
                 return;
             try
             {
-                switch (modeComboBox.SelectedIndex)
+                /*switch (modeComboBox.SelectedIndex)
                 {
                     case 0:
                         List<JsonConverterStructs.Pokemon> p =
@@ -347,7 +347,7 @@ namespace ImpostersOrdeal
                         gameData.messageFileSets = ParseTextStructs(mfs, gameData.messageFileSets.ToList()).ToArray();
                         gameData.SetModified(GameDataSet.DataField.MessageFileSets);
                         break;
-                }
+                }*/
                 ShowSuccessMessage();
             }
             catch (Exception ex)
@@ -545,8 +545,8 @@ namespace ImpostersOrdeal
                     if (jtp.moveset.Count > 4)
                         throw new ArgumentException("Invalid input. You gave a pokémon of trainer ID " + gt.trainerID + " " + jtp.moveset.Count + " moves, buddy.");
                     gtp.SetMoves(jt.party[tpIdx].moveset.Select(s => (ushort)GetIndex(moves, s)).ToList());
-                    if (jtp.formID >= gameData.dexEntries[gtp.dexID].forms.Count)
-                        throw new ArgumentException("Invalid input. You gave a " + jtp.species + " of trainer ID " + gt.trainerID + " a formID of " + jtp.formID + ", chompsky honk.");
+                    /*if (jtp.formID >= gameData.dexEntries[gtp.dexID].forms.Count)
+                        throw new ArgumentException("Invalid input. You gave a " + jtp.species + " of trainer ID " + gt.trainerID + " a formID of " + jtp.formID + ", chompsky honk.");*/
                 }
 
                 trainers.Add(gt);

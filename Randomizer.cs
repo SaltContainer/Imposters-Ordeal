@@ -24,10 +24,15 @@ namespace ImpostersOrdeal
             rng = new();
         }
 
+        public Randomizer()
+        {
+            rng = new();
+        }
+
         /// <summary>
         ///  Randomizes everything in accordance with current configuration.
         /// </summary>
-        public void Randomize()
+        /*public void Randomize()
         {
             if (m.checkBox57.Checked)
                 ScaleEvolutionLevels((double)m.numericUpDown8.Value);
@@ -1463,6 +1468,6 @@ namespace ImpostersOrdeal
 
             DataParser.SetFamilies();
             gameData.SetModified(GameDataSet.DataField.PersonalEntries);
-        }
+        }*/
     }
 }

@@ -36,7 +36,7 @@ namespace ImpostersOrdeal
                 var pickupItem = new PickupTable.PickupItem();
 
                 pickupItem.ID = pickupItemField[ID_FIELD].AsUShort;
-                pickupItem.Ratios = pickupItemField[RATIOS_FIELD].GetArrayElements().Select(f => f.AsByte).ToList();
+                pickupItem.Ratios = pickupItemField[RATIOS_FIELD].GetAsByteArray().ToList();
 
                 data.PickupItems.Add(pickupItem);
             }
@@ -52,7 +52,7 @@ namespace ImpostersOrdeal
             monoBehaviour[MONOHIROI_FIELD].SetArrayElementsAndInit(data.PickupItems, (pickupItemField, pickupItem) =>
             {
                 pickupItemField[ID_FIELD].AsUShort = pickupItem.ID;
-                pickupItemField[RATIOS_FIELD].SetArrayElementsAndInit(pickupItem.Ratios, (f, v) => f.AsByte = v);
+                pickupItemField[RATIOS_FIELD].SetAsByteArray(pickupItem.Ratios.ToArray());
             });
 
             dprMasterdatasBundle.SetMonoByPathID(pathID, monoBehaviour);

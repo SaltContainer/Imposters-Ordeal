@@ -1,29 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ImpostersOrdeal.GameDataTypes;
-using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
     public partial class BattleTowerPokemonForm : Form
     {
+        private GameDataSet gameData;
+
         private List<string> dexEntries;
         private List<string> natures;
         private List<string> abilities;
         private List<string> moves;
-        private BattleTowerTrainerPokemon tp;
-        public List<BattleTowerTrainerPokemon> battleTowerTrainerPokemons;
+        private BattleTowerTable.TowerTrainerTable.SheetTrainerPoke tp;
+        public List<BattleTowerTable.TowerTrainerTable.SheetTrainerPoke> battleTowerTrainerPokemons;
         public Dictionary<int, string> trainerTypeNames;
         public List<string> items;
-        public BattleTowerTrainerPokemon t;
+        public BattleTowerTable.TowerTrainerTable.SheetTrainerPoke t;
         public string pokemonName;
         private BattleTowerPokemonShowdownEditorForm btpsef;
 
@@ -34,28 +29,32 @@ namespace ImpostersOrdeal
             "Sort by species name"
         };
 
-        private readonly Comparison<BattleTowerTrainerPokemon>[] sortComparisons = new Comparison<BattleTowerTrainerPokemon>[]
-        {
-            (t1, t2) => t1.GetID().CompareTo(t2.GetID()),
-            (t1, t2) => t1.GetName().CompareTo(t2.GetName()),
-            (t1, t2) => String.Compare(gameData.dexEntries[t1.dexID].GetName(), gameData.dexEntries[t2.dexID].GetName(), StringComparison.Ordinal),
-        };
+        private readonly Comparison<BattleTowerTable.TowerTrainerTable.SheetTrainerPoke>[] sortComparisons;
 
         private readonly string[] genders = new string[]
         {
             "Male", "Female", "Genderless", "Random"
         };
 
-        public BattleTowerPokemonForm()
+        public BattleTowerPokemonForm(GameDataSet gameData)
         {
-            dexEntries = gameData.dexEntries.Select(p => p.GetName()).ToList();
-            natures = gameData.natures.Select(n => n.GetName()).ToList();
-            abilities = gameData.abilities.Select(a => a.GetName()).ToList();
-            moves = gameData.moves.Select(m => m.GetName()).ToList();
-            items = gameData.items.Select(m => m.GetName()).ToList();
-            tp = gameData.battleTowerTrainerPokemons[0];
+            this.gameData = gameData;
+
+            sortComparisons = new Comparison<BattleTowerTable.TowerTrainerTable.SheetTrainerPoke>[]
+            {
+                (t1, t2) => t1.ID.CompareTo(t2.ID),
+                (t1, t2) => string.Compare(gameData.GetLabelByIndex(Constants.POKEMONSPECIES_MESSAGEFILE_NAME, t1.MonsNo), gameData.GetLabelByIndex(Constants.POKEMONSPECIES_MESSAGEFILE_NAME, t2.MonsNo), StringComparison.Ordinal),
+            };
+
+            dexEntries = gameData.GetAllLabels(Constants.POKEMONSPECIES_MESSAGEFILE_NAME);
+            natures = gameData.GetAllLabels(Constants.NATURE_MESSAGEFILE_NAME);
+            abilities = gameData.GetAllLabels(Constants.ABILITY_MESSAGEFILE_NAME);
+            moves = gameData.GetAllLabels(Constants.MOVE_MESSAGEFILE_NAME);
+            items = gameData.GetAllLabels(Constants.ITEM_MESSAGEFILE_NAME);
+
+            tp = gameData.battleTowerTable.TowerTrainer.TrainerPoke[0];
             InitializeComponent();
-            pokemonName = gameData.dexEntries[2].GetName();
+            pokemonName = dexEntries[2];
             speciesComboBox.DataSource = dexEntries.ToArray();
             comboBox3.DataSource = genders.ToArray();
             comboBox4.DataSource = natures.ToArray();
@@ -67,49 +66,49 @@ namespace ImpostersOrdeal
             comboBox10.DataSource = moves.ToArray();
             //Add Data
             battleTowerTrainerPokemons = new();
-            battleTowerTrainerPokemons.AddRange(gameData.battleTowerTrainerPokemons);
+            battleTowerTrainerPokemons.AddRange(gameData.battleTowerTable.TowerTrainer.TrainerPoke);
 
             sortByComboBox.DataSource = sortNames;
             sortByComboBox.SelectedIndex = 0;
             battleTowerTrainerPokemons.Sort(sortComparisons[sortByComboBox.SelectedIndex]);
             PopulateListBox();
 
-            btpsef = new();
+            btpsef = new(gameData);
         }
 
 
         private void OnLoad(object sender, EventArgs e)
         {
-            speciesComboBox.SelectedIndex = tp.dexID;
+            speciesComboBox.SelectedIndex = tp.MonsNo;
             ResetFormComboBox();
-            levelNumericUpDown.Value = tp.level;
+            levelNumericUpDown.Value = tp.Level;
 
-            numericUpDown4.Value = tp.hpIV;
-            numericUpDown5.Value = tp.atkIV;
-            numericUpDown6.Value = tp.defIV;
-            numericUpDown7.Value = tp.spAtkIV;
-            numericUpDown8.Value = tp.spDefIV;
-            numericUpDown9.Value = tp.spdIV;
+            numericUpDown4.Value = tp.TalentHp;
+            numericUpDown5.Value = tp.TalentAtk;
+            numericUpDown6.Value = tp.TalentDef;
+            numericUpDown7.Value = tp.TalentSpAtk;
+            numericUpDown8.Value = tp.TalentSpDef;
+            numericUpDown9.Value = tp.TalentAgi;
 
-            checkBox1.Checked = tp.isRare == 1;
-            numericUpDown2.Value = tp.ballID;
-            numericUpDown3.Value = tp.seal;
+            checkBox1.Checked = tp.IsRare;
+            numericUpDown2.Value = tp.Ball;
+            numericUpDown3.Value = tp.Seal;
 
-            numericUpDown15.Value = tp.hpEV;
-            numericUpDown14.Value = tp.atkEV;
-            numericUpDown13.Value = tp.defEV;
-            numericUpDown12.Value = tp.spAtkEV;
-            numericUpDown11.Value = tp.spDefEV;
-            numericUpDown10.Value = tp.spdEV;
+            numericUpDown15.Value = tp.EffortHp;
+            numericUpDown14.Value = tp.EffortAtk;
+            numericUpDown13.Value = tp.EffortDef;
+            numericUpDown12.Value = tp.EffortSpAtk;
+            numericUpDown11.Value = tp.EffortSpDef;
+            numericUpDown10.Value = tp.EffortAgi;
 
-            comboBox3.SelectedIndex = tp.sex;
-            comboBox4.SelectedIndex = tp.natureID;
-            comboBox5.SelectedIndex = tp.abilityID;
-            comboBox6.SelectedIndex = tp.itemID;
-            comboBox7.SelectedIndex = tp.moveID1;
-            comboBox8.SelectedIndex = tp.moveID2;
-            comboBox9.SelectedIndex = tp.moveID3;
-            comboBox10.SelectedIndex = tp.moveID4;
+            comboBox3.SelectedIndex = tp.Sex;
+            comboBox4.SelectedIndex = tp.Seikaku;
+            comboBox5.SelectedIndex = tp.Tokusei;
+            comboBox6.SelectedIndex = tp.Item;
+            comboBox7.SelectedIndex = tp.Waza1;
+            comboBox8.SelectedIndex = tp.Waza2;
+            comboBox9.SelectedIndex = tp.Waza3;
+            comboBox10.SelectedIndex = tp.Waza4;
             RefreshTextBoxDisplay();
             ActivateControls();
         }
@@ -123,7 +122,7 @@ namespace ImpostersOrdeal
         {
             DeactivateControls();
 
-            tp.dexID = (ushort)(speciesComboBox.SelectedIndex == -1 ? 0 : speciesComboBox.SelectedIndex);
+            tp.MonsNo = speciesComboBox.SelectedIndex == -1 ? 0 : speciesComboBox.SelectedIndex;
             ResetFormComboBox();
             PopulateListBox();
             CommitEdit(sender, e);
@@ -147,76 +146,77 @@ namespace ImpostersOrdeal
 
         private void RefreshTextBoxDisplay()
         {
-            string nameDisplay = pokemonName = gameData.dexEntries[tp.dexID].GetName();
-            trainerDisplayTextBox.Text = tp.GetID() + " - " + " " + nameDisplay;
+            pokemonName = dexEntries[tp.MonsNo];
+            string nameDisplay = pokemonName;
+            trainerDisplayTextBox.Text = string.Format("{0} - {1}", tp.ID, nameDisplay);
         }
 
         private void PopulatePartyDataGridView()
         {
-            speciesComboBox.SelectedIndex = tp.dexID;
-            levelNumericUpDown.Value = tp.level;
+            speciesComboBox.SelectedIndex = tp.MonsNo;
+            levelNumericUpDown.Value = tp.Level;
 
-            numericUpDown4.Value = tp.hpIV;
-            numericUpDown5.Value = tp.atkIV;
-            numericUpDown6.Value = tp.defIV;
-            numericUpDown7.Value = tp.spAtkIV;
-            numericUpDown8.Value = tp.spDefIV;
-            numericUpDown9.Value = tp.spdIV;
+            numericUpDown4.Value = tp.TalentHp;
+            numericUpDown5.Value = tp.TalentAtk;
+            numericUpDown6.Value = tp.TalentDef;
+            numericUpDown7.Value = tp.TalentSpAtk;
+            numericUpDown8.Value = tp.TalentSpDef;
+            numericUpDown9.Value = tp.TalentAgi;
 
-            checkBox1.Checked = tp.isRare == 1;
-            numericUpDown2.Value = tp.ballID;
-            numericUpDown3.Value = tp.seal;
+            checkBox1.Checked = tp.IsRare;
+            numericUpDown2.Value = tp.Ball;
+            numericUpDown3.Value = tp.Seal;
 
-            numericUpDown15.Value = tp.hpEV;
-            numericUpDown14.Value = tp.atkEV;
-            numericUpDown13.Value = tp.defEV;
-            numericUpDown12.Value = tp.spAtkEV;
-            numericUpDown11.Value = tp.spDefEV;
-            numericUpDown10.Value = tp.spdEV;
+            numericUpDown15.Value = tp.EffortHp;
+            numericUpDown14.Value = tp.EffortAtk;
+            numericUpDown13.Value = tp.EffortDef;
+            numericUpDown12.Value = tp.EffortSpAtk;
+            numericUpDown11.Value = tp.EffortSpDef;
+            numericUpDown10.Value = tp.EffortAgi;
 
-            comboBox3.SelectedIndex = tp.sex;
-            comboBox4.SelectedIndex = tp.natureID;
-            comboBox5.SelectedIndex = tp.abilityID;
-            comboBox6.SelectedIndex = tp.itemID;
+            comboBox3.SelectedIndex = tp.Sex;
+            comboBox4.SelectedIndex = tp.Seikaku;
+            comboBox5.SelectedIndex = tp.Tokusei;
+            comboBox6.SelectedIndex = tp.Item;
 
-            comboBox7.SelectedIndex = tp.moveID1;
-            comboBox8.SelectedIndex = tp.moveID2;
-            comboBox9.SelectedIndex = tp.moveID3;
-            comboBox10.SelectedIndex = tp.moveID4;
+            comboBox7.SelectedIndex = tp.Waza1;
+            comboBox8.SelectedIndex = tp.Waza2;
+            comboBox9.SelectedIndex = tp.Waza3;
+            comboBox10.SelectedIndex = tp.Waza4;
         }
 
         private void CommitEdit(object sender, EventArgs e)
         {
-            tp.formID = (ushort)(formComboBox.SelectedIndex == -1 ? 0 : formComboBox.SelectedIndex);
-            tp.level = (byte)levelNumericUpDown.Value;
+            tp.FormNo = (ushort)(formComboBox.SelectedIndex == -1 ? 0 : formComboBox.SelectedIndex);
+            tp.Level = (byte)levelNumericUpDown.Value;
 
-            tp.hpIV = (byte)numericUpDown4.Value;
-            tp.atkIV = (byte)numericUpDown5.Value;
-            tp.defIV = (byte)numericUpDown6.Value;
-            tp.spAtkIV = (byte)numericUpDown7.Value;
-            tp.spDefIV = (byte)numericUpDown8.Value;
-            tp.spdIV = (byte)numericUpDown9.Value;
+            tp.TalentHp = (byte)numericUpDown4.Value;
+            tp.TalentAtk = (byte)numericUpDown5.Value;
+            tp.TalentDef = (byte)numericUpDown6.Value;
+            tp.TalentSpAtk = (byte)numericUpDown7.Value;
+            tp.TalentSpDef = (byte)numericUpDown8.Value;
+            tp.TalentAgi = (byte)numericUpDown9.Value;
 
-            tp.isRare = (byte)(checkBox1.Checked ? 1 : 0);
-            tp.ballID = (byte)numericUpDown2.Value;
-            tp.seal = (int)numericUpDown3.Value;
+            tp.IsRare = checkBox1.Checked;
+            tp.Ball = (byte)numericUpDown2.Value;
+            tp.Seal = (int)numericUpDown3.Value;
 
-            tp.hpEV = (byte)numericUpDown15.Value;
-            tp.atkEV = (byte)numericUpDown14.Value;
-            tp.defEV = (byte)numericUpDown13.Value;
-            tp.spAtkEV = (byte)numericUpDown12.Value;
-            tp.spDefEV = (byte)numericUpDown11.Value;
-            tp.spdEV = (byte)numericUpDown10.Value;
+            tp.EffortHp = (byte)numericUpDown15.Value;
+            tp.EffortAtk = (byte)numericUpDown14.Value;
+            tp.EffortDef = (byte)numericUpDown13.Value;
+            tp.EffortSpAtk = (byte)numericUpDown12.Value;
+            tp.EffortSpDef = (byte)numericUpDown11.Value;
+            tp.EffortAgi = (byte)numericUpDown10.Value;
 
-            tp.sex = (byte)(comboBox3.SelectedIndex == -1 ? 0 : comboBox3.SelectedIndex);
-            tp.natureID = (byte)(comboBox4.SelectedIndex == -1 ? 0 : comboBox4.SelectedIndex);
-            tp.abilityID = (ushort)(comboBox5.SelectedIndex == -1 ? 0 : comboBox5.SelectedIndex);
-            tp.itemID = (ushort)(comboBox6.SelectedIndex == -1 ? 0 : comboBox6.SelectedIndex);
+            tp.Sex = (byte)(comboBox3.SelectedIndex == -1 ? 0 : comboBox3.SelectedIndex);
+            tp.Seikaku = (byte)(comboBox4.SelectedIndex == -1 ? 0 : comboBox4.SelectedIndex);
+            tp.Tokusei = (ushort)(comboBox5.SelectedIndex == -1 ? 0 : comboBox5.SelectedIndex);
+            tp.Item = (ushort)(comboBox6.SelectedIndex == -1 ? 0 : comboBox6.SelectedIndex);
 
-            tp.moveID1 = (ushort)(comboBox7.SelectedIndex == -1 ? 0 : comboBox7.SelectedIndex);
-            tp.moveID2 = (ushort)(comboBox8.SelectedIndex == -1 ? 0 : comboBox8.SelectedIndex);
-            tp.moveID3 = (ushort)(comboBox9.SelectedIndex == -1 ? 0 : comboBox9.SelectedIndex);
-            tp.moveID4 = (ushort)(comboBox10.SelectedIndex == -1 ? 0 : comboBox10.SelectedIndex);
+            tp.Waza1 = (ushort)(comboBox7.SelectedIndex == -1 ? 0 : comboBox7.SelectedIndex);
+            tp.Waza2 = (ushort)(comboBox8.SelectedIndex == -1 ? 0 : comboBox8.SelectedIndex);
+            tp.Waza3 = (ushort)(comboBox9.SelectedIndex == -1 ? 0 : comboBox9.SelectedIndex);
+            tp.Waza4 = (ushort)(comboBox10.SelectedIndex == -1 ? 0 : comboBox10.SelectedIndex);
         }
 
         private void ActivateControls()
@@ -296,9 +296,8 @@ namespace ImpostersOrdeal
         private void ResetFormComboBox()
         {
             formComboBox.SelectedIndex = -1;
-            formComboBox.DataSource = gameData.dexEntries[tp.dexID].forms.Select((p, i) => i.ToString()).ToArray();
-            int convertedFormID = (int)tp.formID;
-            formComboBox.SelectedIndex = convertedFormID;
+            formComboBox.DataSource = gameData.GetAllFormNames(tp.MonsNo);
+            formComboBox.SelectedIndex = tp.FormNo;
         }
 
         private void ShowdownButtonClick(object sender, EventArgs e)
@@ -317,7 +316,8 @@ namespace ImpostersOrdeal
             int index = listBox.SelectedIndex;
             if (index < 0)
                 index = 0;
-            listBox.DataSource = battleTowerTrainerPokemons.Select(o => o.GetID() + " - " + String.Join(", ", gameData.dexEntries[o.dexID].GetName())).ToArray();
+
+            listBox.DataSource = battleTowerTrainerPokemons.Select(o => string.Format("{0} - {1}", o.ID, string.Join(", ", dexEntries[o.MonsNo]))).ToArray();
             listBox.SelectedIndex = index;
         }
         private void SortChanged(object sender, EventArgs e)

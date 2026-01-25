@@ -14,20 +14,23 @@ using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
+    // TODO: Reowrk this entire thing to not have both singles and doubles in the same list
     public partial class BattleTowerTrainerEditorForm : Form
     {
-        public List<BattleTowerTrainer> battleTowertrainers;
-        public List<BattleTowerTrainer> battleTowertrainersDoubles;
+        private GameDataSet gameData;
+
+        public List<BattleTowerTable.TowerSingleStockTable.SheetTowerSingleStock> battleTowertrainers;
+        public List<BattleTowerTable.TowerDoubleStockTable.SheetTowerDoubleStock> battleTowertrainersDoubles;
         private Dictionary<int, string> trainerTypeLabels;
         public Dictionary<int, string> trainerTypeNames;
         private Dictionary<int, int> trainerTypeToCC;
         public List<string> items;
-        public BattleTowerTrainer t;
-        public List<BattleTowerTrainerPokemon> battleTowerTrainerPokemons;
-        private BattleTowerTrainerPokemon trainerPokemon1;
-        private BattleTowerTrainerPokemon trainerPokemon2;
-        private BattleTowerTrainerPokemon trainerPokemon3;
-        private BattleTowerTrainerPokemon trainerPokemon4;
+        public BattleTowerTable.TowerTrainerTable.SheetTrainerData t;
+        public List<BattleTowerTable.TowerTrainerTable.SheetTrainerPoke> battleTowerTrainerPokemons;
+        private BattleTowerTable.TowerTrainerTable.SheetTrainerPoke trainerPokemon1;
+        private BattleTowerTable.TowerTrainerTable.SheetTrainerPoke trainerPokemon2;
+        private BattleTowerTable.TowerTrainerTable.SheetTrainerPoke trainerPokemon3;
+        private BattleTowerTable.TowerTrainerTable.SheetTrainerPoke trainerPokemon4;
         private TrainerShowdownEditorForm tsef;
         private int mostRecentModifiedRowIndex = -1;
         private bool doubleTrainerMode = false;
@@ -45,25 +48,29 @@ namespace ImpostersOrdeal
             (t1, t2) => t1.GetName().CompareTo(t2.GetName()),
         };
 
-        public BattleTowerTrainerEditorForm()
+        public BattleTowerTrainerEditorForm(GameDataSet gameData)
         {
-            trainerTypeLabels = new();
+            this.gameData = gameData;
+
+            /*trainerTypeLabels = new();
             trainerTypeNames = new();
             trainerTypeToCC = new();
             trainerTypeLabels.Add(-1, "None");
             trainerTypeNames.Add(-1, "None");
             trainerTypeToCC.Add(-1, 0);
-            for (int i = 0; i < gameData.trainerTypes.Count; i++)
+            for (int i = 0; i < gameData.trainerTable.TrainerType.Count; i++)
             {
-                TrainerType tt = gameData.trainerTypes[i];
-                trainerTypeLabels.Add(tt.GetID(), tt.label);
-                trainerTypeNames.Add(tt.GetID(), tt.GetName());
-                trainerTypeToCC.Add(tt.GetID(), i + 1);
-            }
+                var tt = gameData.trainerTable.TrainerType[i];
+                //trainerTypeLabels.Add(tt.TypeID, tt.label);
+                //trainerTypeNames.Add(tt.TypeID, tt.GetName());
+                trainerTypeLabels.Add(tt.TypeID, "TODO asjfkla");
+                trainerTypeNames.Add(tt.TypeID, "TODO sadfaf");
+                trainerTypeToCC.Add(tt.TypeID, i + 1);
+            }*/
             InitializeComponent();
-            tsef = new(this);
+            /*tsef = new(this);
             battleTowertrainers = new();
-            battleTowertrainers.AddRange(gameData.battleTowerTrainers);
+            battleTowertrainers.AddRange(gameData.battleTowerTable.TowerDoubleStock.Items);
             battleTowertrainersDoubles = new();
             battleTowertrainersDoubles.AddRange(gameData.battleTowerTrainersDouble);
             sortByComboBox.DataSource = sortNames;
@@ -76,12 +83,12 @@ namespace ImpostersOrdeal
             PopulateListBox(false);
             t = battleTowertrainers[0];
             RefreshTrainerDisplay();
-            ActivateControls();
+            ActivateControls();*/
         }
 
         private void TrainerChanged(object sender, EventArgs e)
         {
-            DeactivateControls();
+            /*DeactivateControls();
             if (doubleTrainerMode == false)
             {
                 t = battleTowertrainers[listBox.SelectedIndex];
@@ -92,12 +99,12 @@ namespace ImpostersOrdeal
             }
             RefreshTrainerDisplay();
 
-            ActivateControls();
+            ActivateControls();*/
         }
 
         private void SortChanged(object sender, EventArgs e)
         {
-            DeactivateControls();
+            /*DeactivateControls();
             if (doubleTrainerMode == false)
             {
                 battleTowertrainers.Sort(sortComparisons[sortByComboBox.SelectedIndex]);
@@ -111,19 +118,19 @@ namespace ImpostersOrdeal
                 listBox.SelectedIndex = battleTowertrainersDoubles.IndexOf(t);
             }
 
-            ActivateControls();
+            ActivateControls();*/
         }
 
         private void RefreshTrainerDisplay()
         {
-            RefreshTextBoxDisplay();
-            PopulatePartyDataGridView();
+            /*RefreshTextBoxDisplay();
+            PopulatePartyDataGridView();*/
         }
 
         private void CommitEdit(object sender, EventArgs e)
         {
             //Get the values needed
-            int rowIndex = mostRecentModifiedRowIndex; ;
+            /*int rowIndex = mostRecentModifiedRowIndex; ;
             int columnIndex = partyDataGridView.Columns["pokemonSelector"].Index;
             DataGridViewComboBoxCell comboBoxCell1 = (DataGridViewComboBoxCell)partyDataGridView.Rows[rowIndex].Cells[columnIndex];
             string selectedValue = comboBoxCell1.Value.ToString();
@@ -145,49 +152,49 @@ namespace ImpostersOrdeal
                     break;
             }
             RefreshTextBoxDisplay();
-            PopulatePartyDataGridView();
+            PopulatePartyDataGridView();*/
         }
         private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            mostRecentModifiedRowIndex = e.RowIndex;
+            /*mostRecentModifiedRowIndex = e.RowIndex;*/
         }
 
         private void CommitNameEdit(object sender, EventArgs e)
         {
-            DeactivateControls();
+            /*DeactivateControls();
             PopulateListBox(false);
             RefreshTextBoxDisplay();
 
-            ActivateControls();
+            ActivateControls();*/
         }
 
         private void ActivateControls()
         {
-            sortByComboBox.SelectedIndexChanged += SortChanged;
+            /*sortByComboBox.SelectedIndexChanged += SortChanged;
             listBox.SelectedIndexChanged += TrainerChanged;
             partyDataGridView.CellContentClick += ConfigureTP;
             partyDataGridView.CellValueChanged += DataGridView1_CellValueChanged;
-            partyDataGridView.CellValueChanged += CommitEdit;
+            partyDataGridView.CellValueChanged += CommitEdit;*/
 
         }
 
         private void DeactivateControls()
         {
-            sortByComboBox.SelectedIndexChanged -= SortChanged;
+            /*sortByComboBox.SelectedIndexChanged -= SortChanged;
             listBox.SelectedIndexChanged -= TrainerChanged;
             partyDataGridView.CellValueChanged -= DataGridView1_CellValueChanged;
             partyDataGridView.CellValueChanged -= CommitEdit;
-            partyDataGridView.CellContentClick -= ConfigureTP;
+            partyDataGridView.CellContentClick -= ConfigureTP;*/
         }
 
         private void RefreshTextBoxDisplay()
         {
-            trainerDisplayTextBox.Text = t.GetID() + " - " + t.GetName();
+            /*trainerDisplayTextBox.Text = t.GetID() + " - " + t.GetName();*/
         }
 
         private void PopulatePartyDataGridView()
         {
-            partyDataGridView.Rows.Clear();
+            /*partyDataGridView.Rows.Clear();
 
             trainerPokemon1 = gameData.battleTowerTrainerPokemons.FirstOrDefault(t1 => t1.pokemonID == t.battleTowerPokemonID1);
             trainerPokemon2 = gameData.battleTowerTrainerPokemons.FirstOrDefault(t1 => t1.pokemonID == t.battleTowerPokemonID2);
@@ -203,7 +210,7 @@ namespace ImpostersOrdeal
                 trainerPokemon4 = gameData.battleTowerTrainerPokemons.FirstOrDefault(t1 => t1.pokemonID == t.battleTowerPokemonID4);
                 string nameTrainerPokemon4 = gameData.dexEntries[trainerPokemon4.dexID].GetName();
                 partyDataGridView.Rows.Add(new object[] { t.battleTowerPokemonID4 + " - " + nameTrainerPokemon4 });
-            }
+            }*/
         }
 
         private void ConfigureTP(object sender, DataGridViewCellEventArgs e)
@@ -212,14 +219,14 @@ namespace ImpostersOrdeal
 
         private void ShowdownButtonClick(object sender, EventArgs e)
         {
-            tsef.SetBTTP(t);
+            /*tsef.SetBTTP(t);
             tsef.ShowDialog();
-            PopulatePartyDataGridView();
+            PopulatePartyDataGridView();*/
         }
 
         private void PopulateListBox(bool resetIndex)
         {
-            int index = 0;
+            /*int index = 0;
             if (resetIndex == false)
             {
                 index = listBox.SelectedIndex;
@@ -235,21 +242,21 @@ namespace ImpostersOrdeal
             {
                 listBox.DataSource = battleTowertrainersDoubles.Select(o => o.GetID() + " - " + o.GetName()).ToArray();
                 listBox.SelectedIndex = index;
-            }
+            }*/
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            doubleTrainerMode = true;
-            PopulateListBox(true);
+            /*doubleTrainerMode = true;
+            PopulateListBox(true);*/
         }
 
         private void Button2_Click(object sender, EventArgs e)
         {
-            doubleTrainerMode = false;
+            /*doubleTrainerMode = false;
             //Todo
             //Add trainer type to editor
-            PopulateListBox(true);
+            PopulateListBox(true);*/
         }
     }
 }
