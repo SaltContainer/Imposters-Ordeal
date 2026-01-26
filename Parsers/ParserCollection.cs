@@ -22,6 +22,17 @@ namespace ImpostersOrdeal
                 field.SetValue(set, GetParserForType(field.FieldType).ParseFromSources(fileManager));
         }
 
+        public void SaveAllChangedDataForSet(GameDataSet set)
+        {
+            var fields = set.GetType().GetFields().Where(f => f.IsDefined(typeof(ParsableDataAttribute), false));
+
+            foreach (var field in fields)
+            {
+                if (set.IsModified(field.FieldType))
+                    GetParserForType(field.FieldType).SaveToSources(fileManager, field.GetValue(set));
+            }
+        }
+
         public T ParseFromSources<T>()
         {
             return GetParserForType<T>().ParseFromSources(fileManager);

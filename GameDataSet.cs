@@ -146,9 +146,22 @@ namespace ImpostersOrdeal
             return new List<string>() { baseFormName }.Concat(otherFormNames).ToList();
         }
 
-        private readonly bool[] fieldStates = new bool[Enum.GetNames(typeof(DataField)).Length];
+        protected readonly Dictionary<Type, bool> fieldStates = new Dictionary<Type, bool>();
 
-        public enum DataField
+        public bool IsModified(Type t)
+        {
+            if (fieldStates.ContainsKey(t))
+                return fieldStates[t];
+            else
+                return false;
+        }
+
+        public void SetModified(Type t)
+        {
+            fieldStates[t] = true;
+        }
+
+        /*public enum DataField
         {
             EvScripts,
             MapWarpAssets,
@@ -184,17 +197,9 @@ namespace ImpostersOrdeal
             DprBin,
             ExternalStarters,
             ExternalHoneyTrees
-        }
+        }*/
 
-        public bool IsModified(DataField d)
-        {
-            return fieldStates[(int)d];
-        }
 
-        public void SetModified(DataField d)
-        {
-            fieldStates[(int)d] = true;
-        }
 
         /*public Pokemon GetPokemon(int dexID, int formID)
         {

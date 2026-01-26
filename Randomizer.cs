@@ -10,6 +10,7 @@ using static ImpostersOrdeal.GlobalData;
 
 namespace ImpostersOrdeal
 {
+    // TODO: Fix randomizer
     /// <summary>
     ///  Responsible for all randomization related logic and execution.
     /// </summary>

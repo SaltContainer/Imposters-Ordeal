@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 
 namespace ImpostersOrdeal
 {
@@ -86,14 +87,14 @@ namespace ImpostersOrdeal
             absoluteBoundaries.Rows.Add(new object[] { "Price", 10, 999990, 10 });
         }
 
-        public bool IsDataFieldModified(GameDataSet.DataField d)
+        public bool IsDataTypeModified(Type t)
         {
-            return gameData.IsModified(d);
+            return gameData.IsModified(t);
         }
 
-        public void SetDataFieldModified(GameDataSet.DataField d)
+        public void SetDataTypeModified(Type t)
         {
-            gameData.SetModified(d);
+            gameData.SetModified(t);
         }
 
         public DataTable GetAbsoluteBoundariesTable()
@@ -115,6 +116,16 @@ namespace ImpostersOrdeal
         {
             parserCollection.ParseAllDataForSet(gameData);
             fileManager.FreeAll();
+        }
+
+        public void SaveAllData()
+        {
+            parserCollection.SaveAllChangedDataForSet(gameData);
+        }
+
+        public void ExportMod()
+        {
+            fileManager.ExportMod();
         }
 
         public RandomizerSetupConfig GetSetupConfig()

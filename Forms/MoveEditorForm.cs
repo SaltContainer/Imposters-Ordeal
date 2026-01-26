@@ -124,7 +124,7 @@ namespace ImpostersOrdeal
             moves.Sort((m1, m2) => gameData.GetLabelByIndex(Constants.MOVE_MESSAGEFILE_NAME, m1.wazaNo).CompareTo(gameData.GetLabelByIndex(Constants.MOVE_MESSAGEFILE_NAME, m2.wazaNo)));
             typings = gameData.GetAllLabels(Constants.TYPE_MESSAGEFILE_NAME);
             // TODO: Find a better way to get this list?
-            damageCategoies = new List<string>() { "Physical", "Special", "Status" };
+            damageCategoies = new List<string>() { "Status", "Physical", "Special" };
 
             //moves.Sort((m1, m2) => m1.rankEffType1 - m2.rankEffType1);
 

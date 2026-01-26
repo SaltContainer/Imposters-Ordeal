@@ -240,21 +240,24 @@ namespace ImpostersOrdeal
         private void Export(object sender, EventArgs e)
         {
             //Notify if not randomized.
-            /*if (!randomizeClicked && MessageBox.Show("I haven't randomized anything yet...\n" +
+            if (!randomizeClicked && MessageBox.Show("I haven't randomized anything yet...\n" +
                 "Just thought I'd mention it in case you forgot.\n" +
                 "Proceed anyway? I'll still export any changed files for you.",
                    "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.No)
                 return;
 
-            loadingForm = new("Finishing up...", flavor.GetThought());
+            loadingForm = new("Finishing up...", controller.GetFlavorThought());
             loadingDisplay = new(StartLoadingDisplay);
             loadingDisplay.Start();
-            Thread.Sleep(100);
-            DataParser.CommitChanges();
 
-            loadingForm.UpdateSubTask(flavor.GetThought());
-            fileManager.ExportMod();
-            fileManager.DeleteTemporaryFiles();
+            Thread.Sleep(100);
+
+            controller.SaveAllData();
+
+            loadingForm.UpdateSubTask(controller.GetFlavorThought());
+
+            controller.ExportMod();
+
             loadingForm.Finish();
 
             MessageBox.Show(
@@ -263,50 +266,50 @@ namespace ImpostersOrdeal
                 "Oh, and if you wonder where it is, I placed it right\n" +
                 "alongside my executable, \"" + FileManager.outputModName + "\".",
                   "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            Close();*/
+            Close();
         }
 
         private void OpenPokemonEditor(object sender, EventArgs e)
         {
             PokemonEditorForm pef = new(controller.GetGameData());
             pef.Show();
-            controller.SetDataFieldModified(GameDataSet.DataField.PersonalEntries);
+            controller.SetDataTypeModified(typeof(PokemonDataTable));
         }
 
+        // TODO: Set Data Types as modified
         private void OpenMoveEditor(object sender, EventArgs e)
         {
             MoveEditorForm mef = new(controller.GetGameData());
             mef.Show();
-            controller.SetDataFieldModified(GameDataSet.DataField.Moves);
+            controller.SetDataTypeModified(typeof(MoveTable));
         }
 
         private void OpenTMEditor(object sender, EventArgs e)
         {
             TMEditorForm tmef = new(controller.GetGameData());
             tmef.Show();
-            controller.SetDataFieldModified(GameDataSet.DataField.TMs);
-            controller.SetDataFieldModified(GameDataSet.DataField.Items);
+            controller.SetDataTypeModified(typeof(ItemTable));
         }
 
         private void OpenItemEditor(object sender, EventArgs e)
         {
             ItemEditorForm ief = new(controller.GetGameData());
             ief.Show();
-            controller.SetDataFieldModified(GameDataSet.DataField.Items);
+            controller.SetDataTypeModified(typeof(ItemTable));
         }
 
         private void OpenPickupEditor(object sender, EventArgs e)
         {
             PickupEditorForm pef = new(controller.GetGameData());
             pef.Show();
-            controller.SetDataFieldModified(GameDataSet.DataField.PickupItems);
+            controller.SetDataTypeModified(typeof(PickupTable));
         }
 
         private void OpenShopEditor(object sender, EventArgs e)
         {
             ShopEditorForm sef = new(controller.GetGameData());
             sef.Show();
-            controller.SetDataFieldModified(GameDataSet.DataField.ShopTables);
+            controller.SetDataTypeModified(typeof(ShopTable));
         }
 
         private void OpenWildEncounterEditors(object sender, EventArgs e)
@@ -319,23 +322,21 @@ namespace ImpostersOrdeal
         {
             TrainerEditorForm tef = new(controller.GetGameData());
             tef.Show();
-            controller.SetDataFieldModified(GameDataSet.DataField.Trainers);
+            controller.SetDataTypeModified(typeof(TrainerTable));
         }
-
-
 
         private void OpenTypeMatchupEditor(object sender, EventArgs e)
         {
             TypeMatchupEditorForm tmef = new(controller.GetGameData());
             tmef.Show();
-            controller.SetDataFieldModified(GameDataSet.DataField.GlobalMetadata);
+            controller.SetDataTypeModified(typeof(GlobalMetadata));
         }
 
         private void OpenGlobalMetadataEditor(object sender, EventArgs e)
         {
             GlobalMetadataEditorForm gmef = new(controller.GetGameData());
             gmef.Show();
-            controller.SetDataFieldModified(GameDataSet.DataField.GlobalMetadata);
+            controller.SetDataTypeModified(typeof(GlobalMetadata));
         }
 
         private void OpenPokemonInserter(object sender, EventArgs e)
@@ -355,21 +356,15 @@ namespace ImpostersOrdeal
         {
             BattleTowerTrainerEditorForm tef = new(controller.GetGameData());
             tef.Show();
-            controller.SetDataFieldModified(GameDataSet.DataField.Trainers);
+            controller.SetDataTypeModified(typeof(BattleTowerTable));
         }
-        //Battle Tower Pokemon Button
-        /*   private void button35_Click(object sender, EventArgs e)
-           {
-               BattleTowerPokemonForm tef = new();
-               tef.Show();
-               controller.SetDataFieldModified(GameDataSet.DataField.Trainers);
-           }*/
 
+        //Battle Tower Pokemon Button
         private void Button35_Click_1(object sender, EventArgs e)
         {
             BattleTowerPokemonForm tef = new(controller.GetGameData());
             tef.Show();
-            controller.SetDataFieldModified(GameDataSet.DataField.Trainers);
+            controller.SetDataTypeModified(typeof(BattleTowerTable));
         }
     }
 }

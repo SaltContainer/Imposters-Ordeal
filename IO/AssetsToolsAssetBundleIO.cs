@@ -98,6 +98,8 @@ namespace ImpostersOrdeal
                             tempBundle.Pack(writer, compression);
                             tempBundle.Close();
                         }
+
+                        File.Delete(tempPath);
                     }
                     break;
             }

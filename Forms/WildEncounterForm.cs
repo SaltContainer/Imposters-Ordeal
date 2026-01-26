@@ -18,24 +18,24 @@ namespace ImpostersOrdeal
         {
             EncounterTableEditorForm etef = new(gameData);
             etef.Show();
-            gameData.SetModified(GameDataSet.DataField.EncounterTableFiles);
+            gameData.SetModified(typeof(FieldEncountTable));
         }
 
         private void OpenUndergroundEncounterEditor(object sender, EventArgs e)
         {
             UgEncounterEditorForm ueef = new(gameData);
             ueef.Show();
-            gameData.SetModified(GameDataSet.DataField.UgAreas);
-            gameData.SetModified(GameDataSet.DataField.UgEncounterFiles);
-            gameData.SetModified(GameDataSet.DataField.UgEncounterLevelSets);
-            gameData.SetModified(GameDataSet.DataField.UgSpecialEncounters);
+            gameData.SetModified(typeof(UgHideawayTable));
+            gameData.SetModified(typeof(UgEncounterTableCollection));
+            gameData.SetModified(typeof(UgEncounterLevelTable));
+            gameData.SetModified(typeof(UgPokemonDataTable));
         }
 
         private void OpenMiscEncounterEditor(object sender, EventArgs e)
         {
             MiscEncounterEditorForm meef = new(gameData);
             meef.Show();
-            gameData.SetModified(GameDataSet.DataField.EncounterTableFiles);
+            gameData.SetModified(typeof(FieldEncountTable));
         }
     }
 }
