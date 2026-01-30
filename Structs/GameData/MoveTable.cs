@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ImpostersOrdeal.Utils;
+using System.Collections.Generic;
 
 namespace ImpostersOrdeal
 {
@@ -42,6 +43,8 @@ namespace ImpostersOrdeal
             public byte rankEffPer3;
             public uint flags;
             public uint contestWazaNo;
+
+            public bool[] Flags { get => flags.GetBitArray(); set => flags = value.ConvertBitArrayToUint(); }
         }
 
         public class SheetYubiwohuru

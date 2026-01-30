@@ -146,6 +146,20 @@ namespace ImpostersOrdeal
             return new List<string>() { baseFormName }.Concat(otherFormNames).ToList();
         }
 
+        /// <summary>
+        /// Gets the form name of a specific Pokémon species in a specific language.
+        /// </summary>
+        public string GetFormName(int dexID, int formID, MessageEnumData.MsgLangId language = MessageEnumData.MsgLangId.USA, bool isKanji = false)
+        {
+            if (messageFileTable == null)
+                return string.Empty;
+
+            if (formID == 0)
+                return messageFileTable.GetLabelByIndex(Constants.POKEMONSPECIES_MESSAGEFILE_NAME, dexID, language, isKanji)?.ToString() ?? string.Empty;
+
+            return GetLabelByName(Constants.POKEMONFORM_MESSAGEFILE_NAME, string.Format("ZKN_FORM_{0:D3}_{1:D3}", dexID, formID), language, isKanji);
+        }
+
         protected readonly Dictionary<Type, bool> fieldStates = new Dictionary<Type, bool>();
 
         public bool IsModified(Type t)

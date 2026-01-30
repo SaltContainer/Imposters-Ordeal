@@ -2,18 +2,22 @@
 using AssetsTools.NET.Extra;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace ImpostersOrdeal
 {
     public abstract class Bundle : DataSource
     {
-        protected AssetsToolsAssetBundleIO.AssetsToolsAssetBundle assetBundle;
+        protected AssetsManager am;
+        protected BundleFileInstance bundle;
+        protected AssetsFileInstance assetsFile;
+
         protected Dictionary<long, AssetTypeValueField> monoBehaviours;
         protected Dictionary<long, string> monoScriptNames;
 
-        protected bool IsBundleLoaded => assetBundle?.bundle != null;
-        protected bool IsAssetsFileLoaded => assetBundle?.assetsFile != null;
+        protected bool IsBundleLoaded => bundle != null;
+        protected bool IsAssetsFileLoaded => assetsFile != null;
         protected bool AreMonosLoaded => monoBehaviours != null;
         protected bool AreScriptNamesLoaded => monoScriptNames != null;
 
@@ -39,7 +43,10 @@ namespace ImpostersOrdeal
             }
         }
 
-        public Bundle(FileManager fileManager, string path) : base(fileManager, path) { }
+        public Bundle(string path, string rootPath) : base(path, rootPath)
+        {
+            am = new AssetsManager();
+        }
 
         public KeyValuePair<long, AssetTypeValueField> GetMonoByName(string name)
         {
@@ -84,26 +91,29 @@ namespace ImpostersOrdeal
         {
             if (dirty)
             {
-                fileManager.assetBundleIO.SaveAssetsToBundle(assetBundle, MonoBehaviours);
-                fileManager.assetBundleIO.SaveAssetsFileToBundle(assetBundle);
-                fileManager.assetBundleIO.SaveBundleToFile(assetBundle, outputPath);
+                SaveAssetsToBundle(MonoBehaviours);
+                SaveAssetsFileToBundle();
+                SaveBundleToFile(outputPath);
             }
         }
 
         protected void ClearMonoCollection()
         {
+            monoBehaviours?.Clear();
             monoBehaviours = null;
         }
 
         protected void UnloadBundleFromFile()
         {
-            fileManager.assetBundleIO.UnloadBundleAtPath(path);
-            assetBundle = null;
+            am.UnloadBundleFile(path);
+            bundle = null;
+            assetsFile = null;
         }
 
         protected void LoadBundleFromFile()
         {
-            assetBundle = fileManager.assetBundleIO.GetBundleAtPath(path);
+            bundle = am.LoadBundleFile(System.IO.Path.Combine(rootPath, path));
+            assetsFile = am.LoadAssetsFileFromBundle(bundle, 0);
         }
 
         protected void LoadAllMonoBehavioursFromAssetsFile()
@@ -111,7 +121,7 @@ namespace ImpostersOrdeal
             if (!IsBundleLoaded || !IsAssetsFileLoaded)
                 LoadBundleFromFile();
 
-            monoBehaviours = fileManager.assetBundleIO.GetAllAssetsOfTypeFromBundle(assetBundle, AssetClassID.MonoBehaviour);
+            monoBehaviours = GetAllAssetsOfTypeFromBundle(AssetClassID.MonoBehaviour);
         }
 
         protected void LoadAllMonoScriptNamesFromAssetsFile()
@@ -119,7 +129,70 @@ namespace ImpostersOrdeal
             if (!IsBundleLoaded || !IsAssetsFileLoaded)
                 LoadBundleFromFile();
 
-            monoScriptNames = fileManager.assetBundleIO.GetAllAssetsOfTypeFromBundle(assetBundle, AssetClassID.MonoScript).ToDictionary(kvp => kvp.Key, kvp => kvp.Value["m_Name"].AsString);
+            monoScriptNames = GetAllAssetsOfTypeFromBundle(AssetClassID.MonoScript).ToDictionary(kvp => kvp.Key, kvp => kvp.Value["m_Name"].AsString);
+        }
+
+        protected Dictionary<long, AssetTypeValueField> GetAllAssetsOfTypeFromBundle(AssetClassID classID)
+        {
+            return assetsFile.file.GetAssetsOfType(classID).ToDictionary(afie => afie.PathId, afie => am.GetBaseField(assetsFile, afie));
+        }
+
+        protected void SaveAssetsToBundle(Dictionary<long, AssetTypeValueField> assets)
+        {
+            foreach (var asset in assets)
+                assetsFile.file.GetAssetInfo(asset.Key).SetNewData(asset.Value);
+        }
+
+        protected void SaveAssetsFileToBundle()
+        {
+            bundle.file.BlockAndDirInfo.DirectoryInfos[0].SetNewData(assetsFile.file);
+        }
+
+        protected void SaveBundleToFile(string outputPath, AssetBundleCompressionType compression = AssetBundleCompressionType.LZ4)
+        {
+            // Create directories if needed
+            Directory.CreateDirectory(System.IO.Path.Combine(outputPath, System.IO.Path.GetDirectoryName(path)));
+
+            switch (compression)
+            {
+                case AssetBundleCompressionType.None:
+                    {
+                        // Write directly to file if no compression
+                        using FileStream stream = File.OpenWrite(System.IO.Path.Combine(outputPath, path));
+                        using AssetsFileWriter bundleWriter = new AssetsFileWriter(stream);
+                        bundle.file.Write(bundleWriter);
+                        bundleWriter.Close();
+                    }
+                    break;
+
+                default:
+                    {
+                        // Write to a temp file and then write to the actual file if compressed
+                        string tempPath = System.IO.Path.Combine(outputPath, path) + ".temp";
+
+                        using (FileStream tempStream = File.OpenWrite(tempPath))
+                        {
+                            using AssetsFileWriter tempBundleWriter = new AssetsFileWriter(tempStream);
+                            bundle.file.Write(tempBundleWriter);
+                            tempBundleWriter.Close();
+                        }
+
+                        var tempBundle = new AssetBundleFile();
+
+                        using (FileStream tempReadStream = File.OpenRead(tempPath))
+                        {
+                            using AssetsFileReader tempBundleReader = new AssetsFileReader(tempReadStream);
+                            tempBundle.Read(tempBundleReader);
+
+                            using AssetsFileWriter writer = new AssetsFileWriter(System.IO.Path.Combine(outputPath, path));
+                            tempBundle.Pack(writer, compression);
+                            tempBundle.Close();
+                        }
+
+                        File.Delete(tempPath);
+                    }
+                    break;
+            }
         }
     }
 }

@@ -44,12 +44,8 @@ namespace ImpostersOrdeal
             abilities = gameData.GetAllLabels(Constants.ABILITY_MESSAGEFILE_NAME);
             tms = new();
 
-            // TODO: TM validity stuff
-            /*for (int tmID = 0; tmID < gameData.itemTable.WazaMachine.Count; tmID++)
-                if (gameData.itemTable.WazaMachine[tmID].IsValid() && !tms.ContainsKey(gameData.itemTable.Item[gameData.itemTable.WazaMachine[tmID].itemNo].group_id - 1))
-                    tms[gameData.itemTable.Item[gameData.itemTable.WazaMachine[tmID].itemNo].group_id - 1] = gameData.itemTable.WazaMachine[tmID].GetFullName();*/
             for (int tmID = 0; tmID < gameData.itemTable.WazaMachine.Count; tmID++)
-                if (!tms.ContainsKey(gameData.itemTable.Item[gameData.itemTable.WazaMachine[tmID].itemNo].group_id - 1))
+                if (gameData.itemTable.IsTMValid(tmID) && !tms.ContainsKey(gameData.itemTable.Item[gameData.itemTable.WazaMachine[tmID].itemNo].group_id - 1))
                     tms[gameData.itemTable.Item[gameData.itemTable.WazaMachine[tmID].itemNo].group_id - 1] = string.Format("TM{0}", gameData.itemTable.WazaMachine[tmID].machineNo);
 
             dexIDComboBox.DataSource = pokemon;
@@ -120,12 +116,9 @@ namespace ImpostersOrdeal
             numericUpDown4.Value = p.personal.basic_spatk;
             numericUpDown5.Value = p.personal.basic_spdef;
             numericUpDown6.Value = p.personal.basic_agi;
-            //bstTextBox.Text = p.GetBST().ToString();
-            bstTextBox.Text = string.Format("{0}", numericUpDown1.Value + numericUpDown2.Value + numericUpDown3.Value + numericUpDown4.Value + numericUpDown5.Value + numericUpDown6.Value);
+            bstTextBox.Text = string.Format("{0}", p.personal.BST);
 
-            // TODO: evyield
-            //int[] evYield = p.GetEvYield();
-            int[] evYield = new int[] {0, 0, 0, 0, 0, 0};
+            var evYield = p.personal.EVYields;
             numericUpDown7.Value = evYield[0];
             numericUpDown8.Value = evYield[1];
             numericUpDown9.Value = evYield[2];
@@ -158,9 +151,7 @@ namespace ImpostersOrdeal
             numericUpDown20.Value = p.personal.height;
             numericUpDown21.Value = p.personal.weight;
 
-            // TODO: tmcompat
-            //bool[] tmCompatibility = p.GetTMCompatibility();
-            bool[] tmCompatibility = Enumerable.Range(0, 256).Select(i => true).ToArray();
+            bool[] tmCompatibility = p.personal.TMFlags;
             int[] tmKeys = tms.Keys.ToArray();
             for (int i = 0; i < tmCompatibilityCheckedListBox.Items.Count; i++)
                 if (tmKeys[i] >= 0 && tmKeys[i] < tmCompatibility.Length)
@@ -185,19 +176,16 @@ namespace ImpostersOrdeal
             p.personal.basic_spatk = (byte)numericUpDown4.Value;
             p.personal.basic_spdef = (byte)numericUpDown5.Value;
             p.personal.basic_agi = (byte)numericUpDown6.Value;
-            //bstTextBox.Text = p.GetBST().ToString();
-            bstTextBox.Text = string.Format("{0}", numericUpDown1.Value + numericUpDown2.Value + numericUpDown3.Value + numericUpDown4.Value + numericUpDown5.Value + numericUpDown6.Value);
+            bstTextBox.Text = string.Format("{0}", p.personal.BST);
 
-            // TODO: evyield
-            /*p.SetEvYield(new int[]
-            {
-                (int)numericUpDown7.Value,
-                (int)numericUpDown8.Value,
-                (int)numericUpDown9.Value,
-                (int)numericUpDown12.Value,
-                (int)numericUpDown10.Value,
-                (int)numericUpDown11.Value
-            });*/
+            p.personal.EVYields = [
+                (byte)numericUpDown7.Value,
+                (byte)numericUpDown8.Value,
+                (byte)numericUpDown9.Value,
+                (byte)numericUpDown12.Value,
+                (byte)numericUpDown10.Value,
+                (byte)numericUpDown11.Value,
+            ];
 
             p.personal.type1 = (byte)(type1ComboBox.SelectedIndex == -1 ? 0 : type1ComboBox.SelectedIndex);
             p.personal.type2 = (byte)(type2ComboBox.SelectedIndex == -1 ? 0 : type2ComboBox.SelectedIndex);
@@ -224,11 +212,10 @@ namespace ImpostersOrdeal
             p.personal.height = (ushort)numericUpDown20.Value;
             p.personal.weight = (ushort)numericUpDown21.Value;
 
-            // TODO: tmcompat
-            /*bool[] tmCompatibility = new bool[gameData.GetTMCompatibilitySetSize()];
+            var tmCompatibility = new bool[tms.Keys.Max()+1];
             for (int i = 0; i < tmCompatibilityCheckedListBox.Items.Count; i++)
                 tmCompatibility[tms.Keys.ToArray()[i]] = tmCompatibilityCheckedListBox.GetItemChecked(i);
-            p.SetTMCompatibility(tmCompatibility);*/
+            p.personal.TMFlags = tmCompatibility;
 
             List<PokemonDataTable.PokemonData.SheetWazaOboe.LearnedMove> levelUpMoves = new();
             for (int i = 0; i < levelUpMoveDataGridView.Rows.Count; i++)

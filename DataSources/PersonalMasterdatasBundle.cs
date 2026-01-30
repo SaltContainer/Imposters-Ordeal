@@ -2,6 +2,6 @@
 {
     public class PersonalMasterdatasBundle : Bundle
     {
-        public PersonalMasterdatasBundle(FileManager fileManager, string path) : base(fileManager, path) { }
+        public PersonalMasterdatasBundle(string path, string rootPath) : base(path, rootPath) { }
     }
 }

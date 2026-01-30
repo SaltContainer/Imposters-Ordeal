@@ -1,12 +1,14 @@
-﻿namespace ImpostersOrdeal
+﻿using System.IO;
+
+namespace ImpostersOrdeal
 {
     public abstract class BinaryFile : DataSource
     {
-        protected BinaryFileIO.BinaryFile file;
+        protected byte[] data;
 
-        public BinaryFile(FileManager fileManager, string path) : base(fileManager, path) { }
+        public BinaryFile(string path, string rootPath) : base(path, rootPath) { }
 
-        protected bool IsRawDataLoaded => file?.data != null;
+        protected bool IsRawDataLoaded => data != null;
 
         protected byte[] RawData
         {
@@ -15,7 +17,7 @@
                 if (!IsRawDataLoaded)
                     LoadBinaryFileFromFile();
 
-                return file?.data;
+                return data;
             }
         }
 
@@ -26,26 +28,35 @@
 
         public void SetDataFromBuffer(byte[] buffer)
         {
-            file.data = buffer;
+            data = buffer;
             dirty = true;
         }
 
         public override void Free()
         {
-            file.data = null;
+            data = null;
         }
 
         public override void Save(string outputPath)
         {
             if (dirty)
             {
-                fileManager.binaryFileIO.SaveBinaryFileToFile(file, outputPath);
+                SaveBinaryFileToFile(outputPath);
             }
         }
 
         protected void LoadBinaryFileFromFile()
         {
-            file = fileManager.binaryFileIO.GetBinaryFileAtPath(path);
+            data = File.ReadAllBytes(System.IO.Path.Combine(rootPath, path));
+        }
+
+        protected void SaveBinaryFileToFile(string outputPath)
+        {
+            // Create directories if needed
+            Directory.CreateDirectory(System.IO.Path.Combine(outputPath, System.IO.Path.GetDirectoryName(path)));
+
+            using FileStream stream = File.OpenWrite(System.IO.Path.Combine(outputPath, path));
+            stream.Write(data);
         }
     }
 }

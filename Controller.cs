@@ -128,6 +128,11 @@ namespace ImpostersOrdeal
             fileManager.ExportMod();
         }
 
+        public bool AddMod()
+        {
+            return fileManager.AddMod();
+        }
+
         public RandomizerSetupConfig GetSetupConfig()
         {
             return analyzer.GetSetupConfig(gameData);

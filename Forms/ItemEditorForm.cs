@@ -166,11 +166,9 @@ namespace ImpostersOrdeal
         {
             textBox.Text = string.Format("{0} - {1}", i.no, gameData.GetLabelByIndex(Constants.ITEM_MESSAGEFILE_NAME, i.no));
 
-            // TODO: item flag stuff
-            //bool[] flags = i.GetFlags();
-            bool[] flags = Enumerable.Range(0, 32).Select(i => true).ToArray();
+            bool[] flags = i.Flags;
 
-            checkBox25.Checked = !flags[31];
+            checkBox25.Checked = i.IsEnabled();
             iconIDNumericUpDown.Value = i.iconid;
             priceNumericUpDown.Value = i.price;
             bpPriceNumericUpDown.Value = i.bp_price;
@@ -300,8 +298,7 @@ namespace ImpostersOrdeal
             flags[24] = checkBox24.Checked;
             flags[31] = !checkBox25.Checked;
 
-            // TODO: item flags
-            //i.SetFlags(flags);
+            i.Flags = flags;
         }
 
         private void ActivateControls()

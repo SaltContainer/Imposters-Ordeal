@@ -5,19 +5,32 @@
     /// </summary>
     public abstract class DataSource
     {
-        protected FileManager fileManager;
         protected string path;
+        protected string rootPath;
         protected bool dirty = false;
 
         /// <summary>
-        /// The path in the file system for the data source.
+        /// The relative path based on the root path for the data source.
         /// </summary>
         public string Path { get => path; }
 
-        public DataSource(FileManager fileManager, string path)
+        /// <summary>
+        /// The absolute root path for the data source.
+        /// </summary>
+        public string RootPath { get => rootPath; }
+
+        public DataSource(string path, string rootPath)
         {
-            this.fileManager = fileManager;
             this.path = path;
+            this.rootPath = rootPath;
+        }
+
+        /// <summary>
+        /// Sets the data source as having been modified.
+        /// </summary>
+        public void SetModified()
+        {
+            dirty = true;
         }
 
         /// <summary>

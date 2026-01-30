@@ -5,7 +5,7 @@ namespace ImpostersOrdeal.Utils
     public static class IntHelper
     {
         /// <summary>
-        /// Converts an int32 to a string in a culture-invariant way.
+        /// Converts an int to a string in a culture-invariant way.
         /// </summary>
         public static string ConvertToString(int n)
         {

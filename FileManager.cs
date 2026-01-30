@@ -18,164 +18,202 @@ namespace ImpostersOrdeal
     /// </summary>
     public class FileManager
     {
-        public AssetsToolsAssetBundleIO assetBundleIO;
-        public BinaryFileIO binaryFileIO;
-
         private Dictionary<string, DataSource> sources = new Dictionary<string, DataSource>();
 
-        public AssetsManager AssetsManager => assetBundleIO.AssetsManager;
         public string DumpPath { get; set; } = string.Empty;
 
-        public FileManager()
-        {
-            assetBundleIO = new AssetsToolsAssetBundleIO(this);
-            binaryFileIO = new BinaryFileIO(this);
-        }
+        public FileManager() { }
 
         /// <summary>
         /// Obtains a reference to the Battle/battle_masterdatas bundle data source.
         /// </summary>
         public BattleMasterdatasBundle GetBattleMasterdatasBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.BATTLEMASTERDATAS_PATH, p => new BattleMasterdatasBundle(this, p));
+            GetDataSourceOfTypeAtPath<BattleMasterdatasBundle>(Constants.BATTLEMASTERDATAS_PATH);
 
         /// <summary>
         /// Obtains a reference to the Contest/md/contest_masterdatas bundle data source.
         /// </summary>
         public ContestMasterdatasBundle GetContestMasterdatasBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.CONTESTMASTERDATAS_PATH, p => new ContestMasterdatasBundle(this, p));
+            GetDataSourceOfTypeAtPath<ContestMasterdatasBundle>(Constants.CONTESTMASTERDATAS_PATH);
 
         /// <summary>
         /// Obtains a reference to the Dpr/ev_script bundle data source.
         /// </summary>
         public EvScriptBundle GetEvScriptBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.EVSCRIPT_PATH, p => new EvScriptBundle(this, p));
+            GetDataSourceOfTypeAtPath<EvScriptBundle>(Constants.EVSCRIPT_PATH);
 
         /// <summary>
         /// Obtains a reference to the Dpr/masterdatas bundle data source.
         /// </summary>
         public DprMasterdatasBundle GetDprMasterdatasBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.DPRMASTERDATAS_PATH, p => new DprMasterdatasBundle(this, p));
+            GetDataSourceOfTypeAtPath<DprMasterdatasBundle>(Constants.DPRMASTERDATAS_PATH);
 
         /// <summary>
         /// Obtains a reference to the Dpr/scriptableobjects/gamesettings bundle data source.
         /// </summary>
         public GameSettingsBundle GetGameSettingsBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.GAMESETTINGS_PATH, p => new GameSettingsBundle(this, p));
+            GetDataSourceOfTypeAtPath<GameSettingsBundle>(Constants.GAMESETTINGS_PATH);
 
         /// <summary>
         /// Obtains a reference to the Message/common_msbt bundle data source.
         /// </summary>
         public CommonMsbtBundle GetCommonMsbtBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.COMMONMSBT_PATH, p => new CommonMsbtBundle(this, p));
+            GetDataSourceOfTypeAtPath<CommonMsbtBundle>(Constants.COMMONMSBT_PATH);
 
         /// <summary>
         /// Obtains a reference to the Message/english bundle data source.
         /// </summary>
         public EnglishMessageBundle GetEnglishMessageBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.ENGLISH_MESSAGE_PATH, p => new EnglishMessageBundle(this, p));
+            GetDataSourceOfTypeAtPath<EnglishMessageBundle>(Constants.ENGLISH_MESSAGE_PATH);
 
         /// <summary>
         /// Obtains a reference to the Message/french bundle data source.
         /// </summary>
         public FrenchMessageBundle GetFrenchMessageBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.FRENCH_MESSAGE_PATH, p => new FrenchMessageBundle(this, p));
+            GetDataSourceOfTypeAtPath<FrenchMessageBundle>(Constants.FRENCH_MESSAGE_PATH);
 
         /// <summary>
         /// Obtains a reference to the Message/german bundle data source.
         /// </summary>
         public GermanMessageBundle GetGermanMessageBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.GERMAN_MESSAGE_PATH, p => new GermanMessageBundle(this, p));
+            GetDataSourceOfTypeAtPath<GermanMessageBundle>(Constants.GERMAN_MESSAGE_PATH);
 
         /// <summary>
         /// Obtains a reference to the Message/italian bundle data source.
         /// </summary>
         public ItalianMessageBundle GetItalianMessageBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.ITALIAN_MESSAGE_PATH, p => new ItalianMessageBundle(this, p));
+            GetDataSourceOfTypeAtPath<ItalianMessageBundle>(Constants.ITALIAN_MESSAGE_PATH);
 
         /// <summary>
         /// Obtains a reference to the Message/jpn bundle data source.
         /// </summary>
         public JapaneseMessageBundle GetJapaneseMessageBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.JAPANESE_MESSAGE_PATH, p => new JapaneseMessageBundle(this, p));
+            GetDataSourceOfTypeAtPath<JapaneseMessageBundle>(Constants.JAPANESE_MESSAGE_PATH);
 
         /// <summary>
         /// Obtains a reference to the Message/jpn_kanji bundle data source.
         /// </summary>
         public JapaneseKanjiMessageBundle GetJapaneseKanjiMessageBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.JAPANESEKANJI_MESSAGE_PATH, p => new JapaneseKanjiMessageBundle(this, p));
+            GetDataSourceOfTypeAtPath<JapaneseKanjiMessageBundle>(Constants.JAPANESEKANJI_MESSAGE_PATH);
 
         /// <summary>
         /// Obtains a reference to the Message/korean bundle data source.
         /// </summary>
         public KoreanMessageBundle GetKoreanMessageBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.KOREAN_MESSAGE_PATH, p => new KoreanMessageBundle(this, p));
+            GetDataSourceOfTypeAtPath<KoreanMessageBundle>(Constants.KOREAN_MESSAGE_PATH);
 
         /// <summary>
         /// Obtains a reference to the Message/simp_chinese bundle data source.
         /// </summary>
         public SimplifiedChineseMessageBundle GetSimplifiedChineseMessageBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.SIMPLIFIEDCHINESE_MESSAGE_PATH, p => new SimplifiedChineseMessageBundle(this, p));
+            GetDataSourceOfTypeAtPath<SimplifiedChineseMessageBundle>(Constants.SIMPLIFIEDCHINESE_MESSAGE_PATH);
 
         /// <summary>
         /// Obtains a reference to the Message/spanish bundle data source.
         /// </summary>
         public SpanishMessageBundle GetSpanishMessageBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.SPANISH_MESSAGE_PATH, p => new SpanishMessageBundle(this, p));
+            GetDataSourceOfTypeAtPath<SpanishMessageBundle>(Constants.SPANISH_MESSAGE_PATH);
 
         /// <summary>
         /// Obtains a reference to the Message/trad_chinese bundle data source.
         /// </summary>
         public TraditionalChineseMessageBundle GetTraditionalChineseMessageBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.TRADITIONALCHINESE_MESSAGE_PATH, p => new TraditionalChineseMessageBundle(this, p));
+            GetDataSourceOfTypeAtPath<TraditionalChineseMessageBundle>(Constants.TRADITIONALCHINESE_MESSAGE_PATH);
 
         /// <summary>
         /// Obtains a reference to the Pml/personal_masterdatas bundle data source.
         /// </summary>
         public PersonalMasterdatasBundle GetPersonalMasterdatasBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.PERSONALMASTERDATAS_PATH, p => new PersonalMasterdatasBundle(this, p));
+            GetDataSourceOfTypeAtPath<PersonalMasterdatasBundle>(Constants.PERSONALMASTERDATAS_PATH);
 
         /// <summary>
         /// Obtains a reference to the UIs/masterdatas/uimasterdatas bundle data source.
         /// </summary>
         public UIMasterdatasBundle GetUIMasterdatasBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.UIMASTERDATAS_PATH, p => new UIMasterdatasBundle(this, p));
+            GetDataSourceOfTypeAtPath<UIMasterdatasBundle>(Constants.UIMASTERDATAS_PATH);
 
         /// <summary>
         /// Obtains a reference to the UnderGround/data/ugdata bundle data source.
         /// </summary>
         public UGDataBundle GetUGDataBundle() =>
-            GetDataSourceOfTypeAtPath(Constants.UGDATA_PATH, p => new UGDataBundle(this, p));
+            GetDataSourceOfTypeAtPath<UGDataBundle>(Constants.UGDATA_PATH);
 
         /// <summary>
         /// Obtains a reference to the Delphis_Main bank data source.
         /// </summary>
         public DelphisMainBank GetDelphisMainBank() =>
-            GetDataSourceOfTypeAtPath(Constants.DELPHISMAIN_PATH, p => new DelphisMainBank(this, p));
+            GetDataSourceOfTypeAtPath<DelphisMainBank>(Constants.DELPHISMAIN_PATH);
 
         /// <summary>
         /// Obtains a reference to the GlobalMetadata file data source.
         /// </summary>
         public GlobalMetadataFile GetGlobalMetadataFile() =>
-            GetDataSourceOfTypeAtPath(Constants.GLOBALMETADATA_PATH, p => new GlobalMetadataFile(this, p));
+            GetDataSourceOfTypeAtPath<GlobalMetadataFile>(Constants.GLOBALMETADATA_PATH);
 
         /// <summary>
         /// Obtains a reference to the Dpr.bin Asset Bundle Download Manifest file data source.
         /// </summary>
         public DprBinABDM GetDprBinFile() =>
-            GetDataSourceOfTypeAtPath(Constants.DPRBIN_PATH, p => new DprBinABDM(this, p));
+            GetDataSourceOfTypeAtPath<DprBinABDM>(Constants.DPRBIN_PATH);
 
         /// <summary>
         /// Obtains a reference to a specific subclass of a data source, to a specific path.
         /// </summary>
-        private T GetDataSourceOfTypeAtPath<T>(string path, Func<string, T> initFunc) where T : DataSource
+        private T GetDataSourceOfTypeAtPath<T>(string path) where T : DataSource
         {
             DataSource source;
             if (sources.TryGetValue(path, out source))
                 return source as T;
 
-            source = initFunc.Invoke(path);
+            return null;
+        }
+
+        /// <summary>
+        /// Adds a data source by path to the internal dictionary.
+        /// </summary>
+        private void AddDataSourceAtPath(string path, DataSource source)
+        {
             sources[path] = source;
-            return source as T;
+        }
+
+        /// <summary>
+        /// Replaces a data source by path in the internal dictionary.
+        /// </summary>
+        private void ReplaceDataSourceAtPath(string path, string rootPath)
+        {
+            var currentSource = sources[path];
+            var type = currentSource.GetType();
+            sources[path] = Activator.CreateInstance(type, new object[] { path, rootPath }) as DataSource;
+            sources[path].SetModified();
+        }
+
+        /// <summary>
+        /// Adds all data sources from a dump by path to the internal dictionary.
+        /// </summary>
+        private void SetupDumpDataSources(string rootPath)
+        {
+            AddDataSourceAtPath(Constants.BATTLEMASTERDATAS_PATH,          new BattleMasterdatasBundle(Constants.BATTLEMASTERDATAS_PATH, rootPath));
+            AddDataSourceAtPath(Constants.CONTESTMASTERDATAS_PATH,         new ContestMasterdatasBundle(Constants.CONTESTMASTERDATAS_PATH, rootPath));
+            AddDataSourceAtPath(Constants.EVSCRIPT_PATH,                   new EvScriptBundle(Constants.EVSCRIPT_PATH, rootPath));
+            AddDataSourceAtPath(Constants.DPRMASTERDATAS_PATH,             new DprMasterdatasBundle(Constants.DPRMASTERDATAS_PATH, rootPath));
+            AddDataSourceAtPath(Constants.GAMESETTINGS_PATH,               new GameSettingsBundle(Constants.GAMESETTINGS_PATH, rootPath));
+            AddDataSourceAtPath(Constants.COMMONMSBT_PATH,                 new CommonMsbtBundle(Constants.COMMONMSBT_PATH, rootPath));
+            AddDataSourceAtPath(Constants.ENGLISH_MESSAGE_PATH,            new EnglishMessageBundle(Constants.ENGLISH_MESSAGE_PATH, rootPath));
+            AddDataSourceAtPath(Constants.FRENCH_MESSAGE_PATH,             new FrenchMessageBundle(Constants.FRENCH_MESSAGE_PATH, rootPath));
+            AddDataSourceAtPath(Constants.GERMAN_MESSAGE_PATH,             new GermanMessageBundle(Constants.GERMAN_MESSAGE_PATH, rootPath));
+            AddDataSourceAtPath(Constants.ITALIAN_MESSAGE_PATH,            new ItalianMessageBundle(Constants.ITALIAN_MESSAGE_PATH, rootPath));
+            AddDataSourceAtPath(Constants.JAPANESE_MESSAGE_PATH,           new JapaneseMessageBundle(Constants.JAPANESE_MESSAGE_PATH, rootPath));
+            AddDataSourceAtPath(Constants.JAPANESEKANJI_MESSAGE_PATH,      new JapaneseKanjiMessageBundle(Constants.JAPANESEKANJI_MESSAGE_PATH, rootPath));
+            AddDataSourceAtPath(Constants.KOREAN_MESSAGE_PATH,             new KoreanMessageBundle(Constants.KOREAN_MESSAGE_PATH, rootPath));
+            AddDataSourceAtPath(Constants.SIMPLIFIEDCHINESE_MESSAGE_PATH,  new SimplifiedChineseMessageBundle(Constants.SIMPLIFIEDCHINESE_MESSAGE_PATH, rootPath));
+            AddDataSourceAtPath(Constants.SPANISH_MESSAGE_PATH,            new SpanishMessageBundle(Constants.SPANISH_MESSAGE_PATH, rootPath));
+            AddDataSourceAtPath(Constants.TRADITIONALCHINESE_MESSAGE_PATH, new TraditionalChineseMessageBundle(Constants.TRADITIONALCHINESE_MESSAGE_PATH, rootPath));
+            AddDataSourceAtPath(Constants.PERSONALMASTERDATAS_PATH,        new PersonalMasterdatasBundle(Constants.PERSONALMASTERDATAS_PATH, rootPath));
+            AddDataSourceAtPath(Constants.UIMASTERDATAS_PATH,              new UIMasterdatasBundle(Constants.UIMASTERDATAS_PATH, rootPath));
+            AddDataSourceAtPath(Constants.UGDATA_PATH,                     new UGDataBundle(Constants.UGDATA_PATH, rootPath));
+            AddDataSourceAtPath(Constants.DELPHISMAIN_PATH,                new DelphisMainBank(Constants.DELPHISMAIN_PATH, rootPath));
+            AddDataSourceAtPath(Constants.GLOBALMETADATA_PATH,             new GlobalMetadataFile(Constants.GLOBALMETADATA_PATH, rootPath));
+            AddDataSourceAtPath(Constants.DPRBIN_PATH,                     new DprBinABDM(Constants.DPRBIN_PATH, rootPath));
         }
 
         /// <summary>
@@ -245,6 +283,8 @@ namespace ImpostersOrdeal
 
             SetAppConfigValue("dumpPath", fbd.SelectedPath);
             DumpPath = fbd.SelectedPath;
+            SetupDumpDataSources(DumpPath);
+
             return true;
         }
 
@@ -288,6 +328,123 @@ namespace ImpostersOrdeal
             }*/
 
             DumpPath = dumpPath;
+            SetupDumpDataSources(DumpPath);
+
+            return true;
+        }
+
+        /// <summary>
+        ///  Gets a mod directory from user and loads all the files it contains into fileArchive.
+        /// </summary>
+        public bool AddMod()
+        {
+            //Get the dump path from user.
+            FolderBrowserDialog fbd = new();
+            fbd.Description = "Select a mod folder containing the romfs/exefs.";
+            if (fbd.ShowDialog() != DialogResult.OK)
+                return false;
+
+            //Check that it's a game directory
+            if (!IsGameDirectory(fbd.SelectedPath, true))
+            {
+                MessageBox.Show("Path does not contain a romfs folder.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            //Loads all files
+            var modFilePaths = Directory.GetFiles(fbd.SelectedPath, "*", SearchOption.AllDirectories);
+            List<(int, string)> conflicts = new();
+            for (int fileIdx = 0; fileIdx < modFilePaths.Length; fileIdx++)
+            {
+                string rootPath = fbd.SelectedPath;
+                string path = modFilePaths[fileIdx].Substring(rootPath.Length + 1, modFilePaths[fileIdx].Length - rootPath.Length - 1);
+
+                if (sources.ContainsKey(path))
+                {
+                    ReplaceDataSourceAtPath(path, rootPath);
+                }
+
+                /*if (!fileArchive.ContainsKey(gamePath))
+                {
+                    FileData fd = new();
+                    fd.fileLocation = modFilePaths[fileIdx];
+                    fd.gamePath = gamePath;
+                    fd.fileSource = FileSource.UnrelatedMod;
+                    fileArchive[gamePath] = fd;
+                    continue;
+                }
+
+                if (fileArchive[gamePath].fileSource == FileSource.Dump)
+                {
+                    fileArchive[gamePath].fileLocation = modFilePaths[fileIdx];
+                    fileArchive[gamePath].fileSource = FileSource.Mod;
+                    if (fileArchive[gamePath].IsBundle())
+                    {
+                        fileArchive[gamePath].bundle = am.LoadBundleFile(modFilePaths[fileIdx], false);
+                        DecompressBundle(fileArchive[gamePath].bundle);
+                    }
+                    reanalysisNecessary = true;
+                    continue;
+                }
+
+                if (fileArchive[gamePath].fileSource == FileSource.Mod || fileArchive[gamePath].fileSource == FileSource.App)
+                {
+                    BundleFileInstance bfi = am.LoadBundleFile(modFilePaths[fileIdx], false);
+                    DecompressBundle(bfi);
+                    if (!Merge(fileArchive[gamePath], bfi))
+                    {
+                        MainForm.ShowParserError("Unable to merge instances of:\n" +
+                            gamePath + "\n" +
+                            "Asset count mismatch.");
+                        continue;
+                    }
+                    fileArchive[gamePath].fileSource = FileSource.Mod;
+                    reanalysisNecessary = true;
+                    continue;
+                }
+
+                if (fileArchive[gamePath].fileSource == FileSource.UnrelatedMod)
+                {
+                    //Loads unrelated bundle if possible
+                    if (!fileArchive[gamePath].IsBundle() && gamePath.Contains("AssetAssistant") && Path.GetExtension(gamePath) == "")
+                        try
+                        {
+                            fileArchive[gamePath].bundle = am.LoadBundleFile(fileArchive[gamePath].fileLocation, false);
+                            DecompressBundle(fileArchive[gamePath].bundle);
+                        }
+                        catch (Exception) { }
+
+                    if (fileArchive[gamePath].IsBundle())
+                    {
+                        BundleFileInstance bfi = am.LoadBundleFile(modFilePaths[fileIdx], false);
+                        DecompressBundle(bfi);
+                        if (!Merge(fileArchive[gamePath], bfi))
+                            MainForm.ShowParserError("Unable to merge instances of:\n" +
+                                gamePath + "\n" +
+                                "Asset count mismatch.");
+                    }
+                    else
+                        conflicts.Add((fileIdx, Path.GetFileName(fileArchive[gamePath].fileLocation)));
+                    continue;
+                }*/
+            }
+
+            /*if (conflicts.Count == 0)
+                return reanalysisNecessary;
+
+            //Resolve file conflicts
+            List<int> overwrites = new();
+            FileSelectForm fsf = new(conflicts, overwrites);
+            fsf.ShowDialog();
+            for (int i = 0; i < overwrites.Count; i++)
+            {
+                int fileIdx = overwrites[i];
+                string absolutePath = fbd.SelectedPath;
+                string gamePath = modFilePaths[fileIdx].Substring(absolutePath.Length + 1, modFilePaths[fileIdx].Length - absolutePath.Length - 1);
+                fileArchive[gamePath].fileLocation = modFilePaths[fileIdx];
+            }
+            return reanalysisNecessary;*/
+
             return true;
         }
 

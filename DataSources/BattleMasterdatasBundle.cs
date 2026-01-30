@@ -2,6 +2,6 @@
 {
     public class BattleMasterdatasBundle : Bundle
     {
-        public BattleMasterdatasBundle(FileManager fileManager, string path) : base(fileManager, path) { }
+        public BattleMasterdatasBundle(string path, string rootPath) : base(path, rootPath) { }
     }
 }

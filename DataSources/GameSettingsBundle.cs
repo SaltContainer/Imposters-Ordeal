@@ -2,6 +2,6 @@
 {
     public class GameSettingsBundle : Bundle
     {
-        public GameSettingsBundle(FileManager fileManager, string path) : base(fileManager, path) { }
+        public GameSettingsBundle(string path, string rootPath) : base(path, rootPath) { }
     }
 }

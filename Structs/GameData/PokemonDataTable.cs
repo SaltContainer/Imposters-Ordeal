@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using ImpostersOrdeal.Utils;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ImpostersOrdeal
 {
@@ -67,6 +69,40 @@ namespace ImpostersOrdeal
                 public ushort egg_formno;
                 public ushort egg_formno_kawarazunoishi;
                 public bool egg_form_inherit_kawarazunoishi;
+
+                public bool[] TMFlags
+                {
+                    get => [
+                        ..machine1.GetBitArray(),
+                        ..machine2.GetBitArray(),
+                        ..machine3.GetBitArray(),
+                        ..machine4.GetBitArray(),
+                        ..hiden_machine.GetBitArray(),
+                    ];
+                    set
+                    {
+                        machine1 = value.Skip(0).Take(32).ToArray().ConvertBitArrayToUint();
+                        machine2 = value.Skip(32).Take(32).ToArray().ConvertBitArrayToUint();
+                        machine3 = value.Skip(64).Take(32).ToArray().ConvertBitArrayToUint();
+                        machine4 = value.Skip(96).Take(32).ToArray().ConvertBitArrayToUint();
+                        hiden_machine = value.Skip(128).Take(32).ToArray().ConvertBitArrayToUint();
+                    }
+                }
+
+                public byte[] EVYields
+                {
+                    get => Enumerable.Range(0, 6)
+                        .Select(i => (byte)((exp_value & (3 << (2 * i))) >> (2 * i)))
+                        .ToArray();
+                    set
+                    {
+                        exp_value = 0;
+                        for (int i=0; i<6; i++)
+                            exp_value |= (ushort)(value[i] << (2 * i));
+                    }
+                }
+
+                public int BST => basic_hp + basic_atk + basic_def + basic_agi + basic_spatk + basic_spdef;
             }
 
             public class SheetWazaOboe

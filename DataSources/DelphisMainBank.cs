@@ -2,6 +2,6 @@
 {
     public class DelphisMainBank : BinaryFile
     {
-        public DelphisMainBank(FileManager fileManager, string path) : base(fileManager, path) { }
+        public DelphisMainBank(string path, string rootPath) : base(path, rootPath) { }
     }
 }

@@ -195,9 +195,8 @@ namespace ImpostersOrdeal
             numericUpDown11.Value = m.hpRecoverRatio;
             targetingComboBox.SelectedIndex = m.target;
 
-            // TODO: move flag stuff
-            //bool[] flags = m.GetFlags();
-            bool[] flags = Enumerable.Range(0, 32).Select(i => true).ToArray();
+            bool[] flags = m.Flags;
+
             checkBox1.Checked = flags[0];
             checkBox2.Checked = flags[1];
             checkBox3.Checked = flags[2];
@@ -273,8 +272,8 @@ namespace ImpostersOrdeal
             flags[15] = checkBox16.Checked;
             flags[16] = checkBox17.Checked;
             flags[17] = checkBox18.Checked;
-            // TODO: move flag stuff
-            //m.SetFlags(flags);
+
+            m.Flags = flags;
         }
 
         private void ActivateControls()

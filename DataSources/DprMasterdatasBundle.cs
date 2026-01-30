@@ -2,6 +2,6 @@
 {
     public class DprMasterdatasBundle : Bundle
     {
-        public DprMasterdatasBundle(FileManager fileManager, string path) : base(fileManager, path) { }
+        public DprMasterdatasBundle(string path, string rootPath) : base(path, rootPath) { }
     }
 }

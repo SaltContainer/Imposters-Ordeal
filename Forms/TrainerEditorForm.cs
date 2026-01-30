@@ -29,14 +29,7 @@ namespace ImpostersOrdeal
             "Sort by name",
             "Sort by level"
         };
-        private readonly Comparison<TrainerTable.SheetTrainerData>[] sortComparisons = new Comparison<TrainerTable.SheetTrainerData>[]
-        {
-            // TODO: Setup sorting
-            (t1, t2) => t1.TypeID.CompareTo(t2.TypeID),
-            /*(t1, t2) => t1.GetID().CompareTo(t2.GetID()),
-            (t1, t2) => t1.GetName().CompareTo(t2.GetName()),
-            (t1, t2) => t1.GetAvgLevel().CompareTo(t2.GetAvgLevel())*/
-        };
+        private readonly Comparison<TrainerTable.SheetTrainerData>[] sortComparisons;
 
         public TrainerEditorForm(GameDataSet gameData)
         {
@@ -73,6 +66,13 @@ namespace ImpostersOrdeal
             trainerToID = new Dictionary<TrainerTable.SheetTrainerData, int>();
             for (int i=0; i<trainers.Count; i++)
                 trainerToID[trainers[i]] = i;
+
+            sortComparisons =
+            [
+                (t1, t2) => trainerToID[t1].CompareTo(trainerToID[t2]),
+                (t1, t2) => labelToTrainerName[t1.NameLabel].CompareTo(labelToTrainerName[t2.NameLabel]),
+                (t1, t2) => t1.AverageLevel.CompareTo(t2.AverageLevel)
+            ];
 
             sortByComboBox.DataSource = sortNames;
             sortByComboBox.SelectedIndex = 0;
@@ -138,9 +138,7 @@ namespace ImpostersOrdeal
             if (t.UseItem.Count >= 4) item4ComboBox.SelectedIndex = t.UseItem[3];
             else item4ComboBox.SelectedIndex = 0;
 
-            // TODO: AI Flags
-            //bool[] aiFlags = t.GetAIFlags();
-            bool[] aiFlags = Enumerable.Range(0, 32).Select(i => true).ToArray();
+            bool[] aiFlags = t.AIFlags;
             checkBox1.Checked = aiFlags[0];
             checkBox2.Checked = aiFlags[1];
             checkBox3.Checked = aiFlags[2];
@@ -173,8 +171,7 @@ namespace ImpostersOrdeal
             aiFlags[4] = checkBox5.Checked;
             aiFlags[5] = checkBox6.Checked;
             aiFlags[6] = checkBox7.Checked;
-            // TODO: AI Flags
-            //t.SetAIFlags(aiFlags);
+            t.AIFlags = aiFlags;
 
             RefreshTextBoxDisplay();
         }
@@ -256,9 +253,8 @@ namespace ImpostersOrdeal
             partyDataGridView.Rows.Clear();
             foreach (var tp in t.Pokes)
             {
-                // TODO: name stuff
-                //partyDataGridView.Rows.Add(new object[] { gameData.GetTPDisplayName(tp), "Configure" });
-                partyDataGridView.Rows.Add(new object[] { "TODO asjfhkja", "Configure" });
+                var name = string.Format("Lv. {0} {1}", tp.Level, gameData.GetFormName(tp.MonsNo, tp.FormNo));
+                partyDataGridView.Rows.Add(new object[] { name, "Configure" });
             }
         }
 

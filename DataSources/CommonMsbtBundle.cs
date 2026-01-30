@@ -2,6 +2,6 @@
 {
     public class CommonMsbtBundle : MessageBundle
     {
-        public CommonMsbtBundle(FileManager fileManager, string path) : base(fileManager, path) { }
+        public CommonMsbtBundle(string path, string rootPath) : base(path, rootPath) { }
     }
 }

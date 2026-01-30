@@ -2,6 +2,6 @@
 {
     public class UIMasterdatasBundle : Bundle
     {
-        public UIMasterdatasBundle(FileManager fileManager, string path) : base(fileManager, path) { }
+        public UIMasterdatasBundle(string path, string rootPath) : base(path, rootPath) { }
     }
 }

@@ -2,6 +2,6 @@
 {
     public class SimplifiedChineseMessageBundle : MessageBundle
     {
-        public SimplifiedChineseMessageBundle(FileManager fileManager, string path) : base(fileManager, path) { }
+        public SimplifiedChineseMessageBundle(string path, string rootPath) : base(path, rootPath) { }
     }
 }

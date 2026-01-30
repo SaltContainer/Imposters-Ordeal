@@ -2,6 +2,6 @@
 {
     public class UGDataBundle : Bundle
     {
-        public UGDataBundle(FileManager fileManager, string path) : base(fileManager, path) { }
+        public UGDataBundle(string path, string rootPath) : base(path, rootPath) { }
     }
 }

@@ -2,6 +2,6 @@
 {
     public class DprBinABDM : BinaryFile
     {
-        public DprBinABDM(FileManager fileManager, string path) : base(fileManager, path) { }
+        public DprBinABDM(string path, string rootPath) : base(path, rootPath) { }
     }
 }

@@ -1,5 +1,8 @@
 ﻿using System.Numerics;
 using System.Collections.Generic;
+using ImpostersOrdeal.Utils;
+using static ImpostersOrdeal.JsonConverterStructs;
+using System.Linq;
 
 namespace ImpostersOrdeal
 {
@@ -60,6 +63,10 @@ namespace ImpostersOrdeal
 
             // Maximum is 5
             public List<int> Rematches = new List<int>();
+
+            public bool[] AIFlags { get => AIBit.GetBitArray(); set => AIBit = value.ConvertBitArrayToUint(); }
+
+            public double AverageLevel => Pokes.Count == 0 ? 0 : Pokes.Average(p => p.Level);
 
             public class TrainerPoke
             {

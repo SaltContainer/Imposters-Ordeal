@@ -2,6 +2,6 @@
 {
     public class ContestMasterdatasBundle : Bundle
     {
-        public ContestMasterdatasBundle(FileManager fileManager, string path) : base(fileManager, path) { }
+        public ContestMasterdatasBundle(string path, string rootPath) : base(path, rootPath) { }
     }
 }

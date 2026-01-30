@@ -2,6 +2,6 @@
 {
     public class MessageBundle : Bundle
     {
-        public MessageBundle(FileManager fileManager, string path) : base(fileManager, path) { }
+        public MessageBundle(string path, string rootPath) : base(path, rootPath) { }
     }
 }

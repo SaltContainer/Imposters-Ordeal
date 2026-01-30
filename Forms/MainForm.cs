@@ -196,23 +196,25 @@ namespace ImpostersOrdeal
 
         private void AddMod(object sender, EventArgs e)
         {
-            /*if (MessageBox.Show("Fancy! Let's see if we can merge in a mod, shall we?\n" +
+            if (MessageBox.Show("Fancy! Let's see if we can merge in a mod, shall we?\n" +
                    "Gimme a folder that's got a \"romfs\" or \"exefs\" in it.",
                    "Add Mod", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.Cancel)
                 return;
 
-            if (fileManager.AddMod())
+            if (controller.AddMod())
             {
-                loadingForm = new("Some stuff changed...", flavor.GetSubTask());
+                loadingForm = new("Some stuff changed...", controller.GetFlavorSubTask());
                 loadingDisplay = new(StartLoadingDisplay);
                 loadingDisplay.Start();
-                Thread.Sleep(100);
-                DataParser.PrepareAnalysis();
 
-                loadingForm.UpdateSubTask(flavor.GetSubTask());
-                SetupConfig(Analyzer.GetSetupConfig());
+                Thread.Sleep(100);
+
+                controller.ParseAllData();
+
+                loadingForm.UpdateSubTask(controller.GetFlavorSubTask());
+                SetupConfig(controller.GetSetupConfig());
                 loadingForm.Finish();
-            }*/
+            }
         }
 
         private void Randomize(object sender, EventArgs e)
@@ -264,7 +266,7 @@ namespace ImpostersOrdeal
                 "And that should be it! Your very own mod has\n" +
                 "been created! I'll see myself out now.\n" +
                 "Oh, and if you wonder where it is, I placed it right\n" +
-                "alongside my executable, \"" + FileManager.outputModName + "\".",
+                "alongside my executable, inside \"" + Constants.OUTPUT_FOLDER + "\".",
                   "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Close();
         }
@@ -276,7 +278,6 @@ namespace ImpostersOrdeal
             controller.SetDataTypeModified(typeof(PokemonDataTable));
         }
 
-        // TODO: Set Data Types as modified
         private void OpenMoveEditor(object sender, EventArgs e)
         {
             MoveEditorForm mef = new(controller.GetGameData());

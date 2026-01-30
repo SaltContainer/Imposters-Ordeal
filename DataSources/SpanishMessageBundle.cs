@@ -2,6 +2,6 @@
 {
     public class SpanishMessageBundle : MessageBundle
     {
-        public SpanishMessageBundle(FileManager fileManager, string path) : base(fileManager, path) { }
+        public SpanishMessageBundle(string path, string rootPath) : base(path, rootPath) { }
     }
 }

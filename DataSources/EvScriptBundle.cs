@@ -2,6 +2,6 @@
 {
     public class EvScriptBundle : Bundle
     {
-        public EvScriptBundle(FileManager fileManager, string path) : base(fileManager, path) { }
+        public EvScriptBundle(string path, string rootPath) : base(path, rootPath) { }
     }
 }
