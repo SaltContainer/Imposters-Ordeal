@@ -10,6 +10,7 @@ using SmartPoint.AssetAssistant;
 using System.Configuration;
 using System.Text;
 using Newtonsoft.Json;
+using ImpostersOrdeal.DataSources;
 
 namespace ImpostersOrdeal
 {
@@ -179,12 +180,13 @@ namespace ImpostersOrdeal
         /// <summary>
         /// Replaces a data source by path in the internal dictionary.
         /// </summary>
-        private void ReplaceDataSourceAtPath(string path, string rootPath)
+        private DataSource ReplaceDataSourceAtPath(string path, string rootPath)
         {
             var currentSource = sources[path];
             var type = currentSource.GetType();
-            sources[path] = Activator.CreateInstance(type, new object[] { path, rootPath }) as DataSource;
-            sources[path].SetModified();
+            var newSource = Activator.CreateInstance(type, new object[] { path, rootPath }) as DataSource;
+            sources[path] = newSource;
+            return newSource;
         }
 
         /// <summary>
@@ -336,8 +338,10 @@ namespace ImpostersOrdeal
         /// <summary>
         ///  Gets a mod directory from user and loads all the files it contains into fileArchive.
         /// </summary>
-        public bool AddMod()
+        public bool AddMod(out List<Type> updatedSourceTypes)
         {
+            updatedSourceTypes = new List<Type>();
+
             //Get the dump path from user.
             FolderBrowserDialog fbd = new();
             fbd.Description = "Select a mod folder containing the romfs/exefs.";
@@ -354,14 +358,18 @@ namespace ImpostersOrdeal
             //Loads all files
             var modFilePaths = Directory.GetFiles(fbd.SelectedPath, "*", SearchOption.AllDirectories);
             List<(int, string)> conflicts = new();
-            for (int fileIdx = 0; fileIdx < modFilePaths.Length; fileIdx++)
+            foreach (var modFilePath in modFilePaths)
             {
                 string rootPath = fbd.SelectedPath;
-                string path = modFilePaths[fileIdx].Substring(rootPath.Length + 1, modFilePaths[fileIdx].Length - rootPath.Length - 1);
+                string path = modFilePath.Substring(rootPath.Length + 1, modFilePath.Length - rootPath.Length - 1);
 
                 if (sources.ContainsKey(path))
                 {
-                    ReplaceDataSourceAtPath(path, rootPath);
+                    updatedSourceTypes.Add(ReplaceDataSourceAtPath(path, rootPath).GetType());
+                }
+                else
+                {
+                    AddDataSourceAtPath(path, new UnknownFile(path, rootPath));
                 }
 
                 /*if (!fileArchive.ContainsKey(gamePath))

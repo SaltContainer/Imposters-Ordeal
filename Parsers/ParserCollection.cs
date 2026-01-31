@@ -16,21 +16,36 @@ namespace ImpostersOrdeal
 
         public void ParseAllDataForSet(GameDataSet set)
         {
-            var fields = set.GetType().GetFields().Where(f => f.IsDefined(typeof(ParsableDataAttribute), false));
-
-            foreach (var field in fields)
+            foreach (var field in set.GetAllParsableFields())
                 field.SetValue(set, GetParserForType(field.FieldType).ParseFromSources(fileManager));
+        }
+
+        public void ParseSpecificDataForSet(GameDataSet set, List<Type> typesToParse)
+        {
+            foreach (var field in set.GetAllParsableFields())
+                if (typesToParse.Contains(field.FieldType))
+                    field.SetValue(set, GetParserForType(field.FieldType).ParseFromSources(fileManager));
         }
 
         public void SaveAllChangedDataForSet(GameDataSet set)
         {
-            var fields = set.GetType().GetFields().Where(f => f.IsDefined(typeof(ParsableDataAttribute), false));
-
-            foreach (var field in fields)
+            foreach (var field in set.GetAllParsableFields())
             {
                 if (set.IsModified(field.FieldType))
                     GetParserForType(field.FieldType).SaveToSources(fileManager, field.GetValue(set));
             }
+        }
+
+        public List<Type> GetAllGameDataTypesUsingSourceTypes(List<Type> sourceTypes)
+        {
+            var setFields = new List<Type>();
+            foreach (var parser in parsers)
+            {
+                if (parser.Value.GetRequiredDataSources().Any(sourceTypes.Contains))
+                    setFields.Add(parser.Key);
+            }
+
+            return setFields;
         }
 
         public T ParseFromSources<T>()

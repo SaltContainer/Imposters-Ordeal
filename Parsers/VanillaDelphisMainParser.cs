@@ -1,9 +1,14 @@
-﻿namespace ImpostersOrdeal
+﻿using System.Collections.Generic;
+using System;
+
+namespace ImpostersOrdeal
 {
     public class VanillaDelphisMainParser : IParser<DelphisMain>
     {
         object IParser.ParseFromSources(FileManager fileManager) => ParseFromSources(fileManager);
         void IParser.SaveToSources(FileManager fileManager, object data) => SaveToSources(fileManager, (DelphisMain)data);
+
+        public IEnumerable<Type> GetRequiredDataSources() => [typeof(DelphisMainBank)];
 
         public DelphisMain ParseFromSources(FileManager fileManager)
         {

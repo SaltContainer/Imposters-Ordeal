@@ -200,21 +200,18 @@ namespace ImpostersOrdeal
                    "Gimme a folder that's got a \"romfs\" or \"exefs\" in it.",
                    "Add Mod", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.Cancel)
                 return;
+            
+            loadingForm = new("Some stuff changed...", controller.GetFlavorSubTask());
+            loadingDisplay = new(StartLoadingDisplay);
+            loadingDisplay.Start();
 
-            if (controller.AddMod())
-            {
-                loadingForm = new("Some stuff changed...", controller.GetFlavorSubTask());
-                loadingDisplay = new(StartLoadingDisplay);
-                loadingDisplay.Start();
+            Thread.Sleep(100);
 
-                Thread.Sleep(100);
+            controller.AddMod();
 
-                controller.ParseAllData();
-
-                loadingForm.UpdateSubTask(controller.GetFlavorSubTask());
-                SetupConfig(controller.GetSetupConfig());
-                loadingForm.Finish();
-            }
+            loadingForm.UpdateSubTask(controller.GetFlavorSubTask());
+            SetupConfig(controller.GetSetupConfig());
+            loadingForm.Finish();
         }
 
         private void Randomize(object sender, EventArgs e)

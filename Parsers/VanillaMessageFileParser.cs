@@ -1,5 +1,6 @@
 ﻿using AssetsTools.NET;
 using ImpostersOrdeal.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,6 +10,20 @@ namespace ImpostersOrdeal
     {
         object IParser.ParseFromSources(FileManager fileManager) => ParseFromSources(fileManager);
         void IParser.SaveToSources(FileManager fileManager, object data) => SaveToSources(fileManager, (MessageFileTable)data);
+
+        public IEnumerable<Type> GetRequiredDataSources() => [
+            typeof(CommonMsbtBundle),
+            typeof(JapaneseMessageBundle),
+            typeof(JapaneseKanjiMessageBundle),
+            typeof(EnglishMessageBundle),
+            typeof(FrenchMessageBundle),
+            typeof(ItalianMessageBundle),
+            typeof(GermanMessageBundle),
+            typeof(SpanishMessageBundle),
+            typeof(KoreanMessageBundle),
+            typeof(SimplifiedChineseMessageBundle),
+            typeof(TraditionalChineseMessageBundle),
+        ];
 
         // Arrays
         private static readonly string ATTRIBUTEVALUEARRAY_FIELD = "attributeValueArray";

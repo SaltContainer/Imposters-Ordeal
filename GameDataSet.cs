@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace ImpostersOrdeal
 {
@@ -162,6 +163,9 @@ namespace ImpostersOrdeal
 
         protected readonly Dictionary<Type, bool> fieldStates = new Dictionary<Type, bool>();
 
+        /// <summary>
+        /// Checks if a type has been modified.
+        /// </summary>
         public bool IsModified(Type t)
         {
             if (fieldStates.ContainsKey(t))
@@ -170,9 +174,20 @@ namespace ImpostersOrdeal
                 return false;
         }
 
+        /// <summary>
+        /// Sets a type as having been modified.
+        /// </summary>
         public void SetModified(Type t)
         {
             fieldStates[t] = true;
+        }
+
+        /// <summary>
+        /// Gets all the fields of this class that have the ParsableData Attribute through Reflection.
+        /// </summary>
+        public List<FieldInfo> GetAllParsableFields()
+        {
+            return GetType().GetFields().Where(f => f.IsDefined(typeof(ParsableDataAttribute), false)).ToList();
         }
 
         /*public enum DataField

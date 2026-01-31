@@ -1,4 +1,6 @@
 ﻿using ImpostersOrdeal.Utils;
+using System.Collections.Generic;
+using System;
 using System.Linq;
 
 namespace ImpostersOrdeal
@@ -7,6 +9,8 @@ namespace ImpostersOrdeal
     {
         object IParser.ParseFromSources(FileManager fileManager) => ParseFromSources(fileManager);
         void IParser.SaveToSources(FileManager fileManager, object data) => SaveToSources(fileManager, (UgHideawayTable)data);
+
+        public IEnumerable<Type> GetRequiredDataSources() => [typeof(UGDataBundle)];
 
         // Monos
         private static readonly string UGRANDMARK_MONONAME = "UgRandMark";
@@ -110,7 +114,7 @@ namespace ImpostersOrdeal
                 hideawayField[TYPERATE_FIELD].SetArrayElementsAndInit(hideaway.typerate, (f, v) => f.AsInt = v);
             });
 
-            ugSpecialPokemonMono[TABLE_FIELD].SetArrayElementsAndInit(data.rareEncounterTable.rareEncounters, (rareEncounterField, rareEncounter) =>
+            ugSpecialPokemonMono[SHEET1_FIELD].SetArrayElementsAndInit(data.rareEncounterTable.rareEncounters, (rareEncounterField, rareEncounter) =>
             {
                 rareEncounterField[ID_FIELD].AsInt = rareEncounter.id;
                 rareEncounterField[MONSNO_FIELD].AsInt = rareEncounter.monsno;

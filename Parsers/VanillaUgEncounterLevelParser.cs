@@ -1,4 +1,6 @@
 ﻿using ImpostersOrdeal.Utils;
+using System.Collections.Generic;
+using System;
 
 namespace ImpostersOrdeal
 {
@@ -6,6 +8,8 @@ namespace ImpostersOrdeal
     {
         object IParser.ParseFromSources(FileManager fileManager) => ParseFromSources(fileManager);
         void IParser.SaveToSources(FileManager fileManager, object data) => SaveToSources(fileManager, (UgEncounterLevelTable)data);
+
+        public IEnumerable<Type> GetRequiredDataSources() => [typeof(UGDataBundle)];
 
         // Monos
         private static readonly string UGENCOUNTLEVEL_MONONAME = "UgEncountLevel";

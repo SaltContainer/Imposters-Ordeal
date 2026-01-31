@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace ImpostersOrdeal
@@ -130,7 +131,17 @@ namespace ImpostersOrdeal
 
         public bool AddMod()
         {
-            return fileManager.AddMod();
+            var result = fileManager.AddMod(out List<Type> updatedSourceTypes);
+
+            if (result)
+            {
+                var gameDataToReparse = parserCollection.GetAllGameDataTypesUsingSourceTypes(updatedSourceTypes);
+                parserCollection.ParseSpecificDataForSet(gameData, gameDataToReparse);
+                foreach (var reparsedType in gameDataToReparse)
+                    gameData.SetModified(reparsedType);
+            }
+
+            return result;
         }
 
         public RandomizerSetupConfig GetSetupConfig()

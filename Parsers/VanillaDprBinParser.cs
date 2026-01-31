@@ -1,4 +1,6 @@
 ﻿using SmartPoint.AssetAssistant;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
@@ -8,6 +10,8 @@ namespace ImpostersOrdeal
     {
         object IParser.ParseFromSources(FileManager fileManager) => ParseFromSources(fileManager);
         void IParser.SaveToSources(FileManager fileManager, object data) => SaveToSources(fileManager, (DprBin)data);
+
+        public IEnumerable<Type> GetRequiredDataSources() => [typeof(DprBinABDM)];
 
         public DprBin ParseFromSources(FileManager fileManager)
         {

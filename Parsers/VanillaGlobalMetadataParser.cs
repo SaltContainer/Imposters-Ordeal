@@ -10,6 +10,8 @@ namespace ImpostersOrdeal
         object IParser.ParseFromSources(FileManager fileManager) => ParseFromSources(fileManager);
         void IParser.SaveToSources(FileManager fileManager, object data) => SaveToSources(fileManager, (GlobalMetadata)data);
 
+        public IEnumerable<Type> GetRequiredDataSources() => [typeof(GlobalMetadataFile)];
+
         // Array Names
         private static readonly string TYPEAFF_NORMAL_ARRAYNAME =    "A3758C06C7FB42A47D220A11FBA532C6E8C62A77";
         private static readonly string TYPEAFF_FIGHTING_ARRAYNAME =  "4B289ECFF3C0F0970CFBB23E3106E05803CB0010";

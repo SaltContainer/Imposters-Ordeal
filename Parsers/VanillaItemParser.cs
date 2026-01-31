@@ -1,4 +1,6 @@
 ﻿using ImpostersOrdeal.Utils;
+using System.Collections.Generic;
+using System;
 
 namespace ImpostersOrdeal
 {
@@ -6,6 +8,8 @@ namespace ImpostersOrdeal
     {
         object IParser.ParseFromSources(FileManager fileManager) => ParseFromSources(fileManager);
         void IParser.SaveToSources(FileManager fileManager, object data) => SaveToSources(fileManager, (ItemTable)data);
+
+        public IEnumerable<Type> GetRequiredDataSources() => [typeof(PersonalMasterdatasBundle)];
 
         // Monos
         private static readonly string ITEMTABLE_MONONAME = "ItemTable";

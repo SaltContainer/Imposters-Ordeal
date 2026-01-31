@@ -1,4 +1,6 @@
 ﻿using ImpostersOrdeal.Utils;
+using System.Collections.Generic;
+using System;
 using System.Linq;
 
 namespace ImpostersOrdeal
@@ -7,6 +9,8 @@ namespace ImpostersOrdeal
     {
         object IParser.ParseFromSources(FileManager fileManager) => ParseFromSources(fileManager);
         void IParser.SaveToSources(FileManager fileManager, object data) => SaveToSources(fileManager, (MoveTable)data);
+
+        public IEnumerable<Type> GetRequiredDataSources() => [typeof(PersonalMasterdatasBundle)];
 
         // Monos
         private static readonly string WAZATABLE_MONONAME = "WazaTable";

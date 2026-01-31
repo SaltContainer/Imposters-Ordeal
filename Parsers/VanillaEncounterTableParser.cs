@@ -1,5 +1,6 @@
 ﻿using AssetsTools.NET;
 using ImpostersOrdeal.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,6 +10,8 @@ namespace ImpostersOrdeal
     {
         object IParser.ParseFromSources(FileManager fileManager) => ParseFromSources(fileManager);
         void IParser.SaveToSources(FileManager fileManager, object data) => SaveToSources(fileManager, (FieldEncountTableCollection)data);
+
+        public IEnumerable<Type> GetRequiredDataSources() => [typeof(GameSettingsBundle)];
 
         // Monos
         private static readonly string FIELDENCOUNTTABLED_MONONAME = "FieldEncountTable_d";

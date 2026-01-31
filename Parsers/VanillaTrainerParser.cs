@@ -1,5 +1,6 @@
 ﻿using AssetsTools.NET;
 using ImpostersOrdeal.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -10,6 +11,8 @@ namespace ImpostersOrdeal
     {
         object IParser.ParseFromSources(FileManager fileManager) => ParseFromSources(fileManager);
         void IParser.SaveToSources(FileManager fileManager, object data) => SaveToSources(fileManager, (TrainerTable)data);
+
+        public IEnumerable<Type> GetRequiredDataSources() => [typeof(DprMasterdatasBundle)];
 
         // Monos
         private static readonly string TRAINERTABLE_MONONAME = "TrainerTable";

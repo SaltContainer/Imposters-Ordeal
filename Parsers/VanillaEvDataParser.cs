@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ImpostersOrdeal.Utils;
 
@@ -8,6 +9,8 @@ namespace ImpostersOrdeal
     {
         object IParser.ParseFromSources(FileManager fileManager) => ParseFromSources(fileManager);
         void IParser.SaveToSources(FileManager fileManager, object data) => SaveToSources(fileManager, (EvDataCollection)data);
+
+        public IEnumerable<Type> GetRequiredDataSources() => [typeof(EvScriptBundle)];
 
         // Monos
         private static readonly string EVDATA_MONOSCRIPTNAME = "EvData";
@@ -91,7 +94,7 @@ namespace ImpostersOrdeal
                 mono[SCRIPTS_FIELD].SetArrayElementsAndInit(evData.Scripts, (scriptField, script) =>
                 {
                     scriptField[LABEL_FIELD].AsString = script.Label;
-                    scriptField[SCRIPTS_FIELD].SetArrayElementsAndInit(script.Commands, (commandField, command) =>
+                    scriptField[COMMANDS_FIELD].SetArrayElementsAndInit(script.Commands, (commandField, command) =>
                     {
                         commandField[ARG_FIELD].SetArrayElementsAndInit(command.Arg, (argField, arg) =>
                         {

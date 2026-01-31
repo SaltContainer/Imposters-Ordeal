@@ -1,4 +1,6 @@
 ﻿using ImpostersOrdeal.Utils;
+using System.Collections.Generic;
+using System;
 using System.Linq;
 
 namespace ImpostersOrdeal
@@ -7,7 +9,9 @@ namespace ImpostersOrdeal
     {
         object IParser.ParseFromSources(FileManager fileManager) => ParseFromSources(fileManager);
         void IParser.SaveToSources(FileManager fileManager, object data) => SaveToSources(fileManager, (UgEncounterTableCollection)data);
-        
+
+        public IEnumerable<Type> GetRequiredDataSources() => [typeof(UGDataBundle)];
+
         // Monos
         private static readonly string UGENCOUNT_MONOSCRIPTNAME = "UgEncount";
 

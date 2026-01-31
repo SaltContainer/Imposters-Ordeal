@@ -11,6 +11,8 @@ namespace ImpostersOrdeal
         object IParser.ParseFromSources(FileManager fileManager) => ParseFromSources(fileManager);
         void IParser.SaveToSources(FileManager fileManager, object data) => SaveToSources(fileManager, (PokemonDataTable)data);
 
+        public IEnumerable<Type> GetRequiredDataSources() => [typeof(PersonalMasterdatasBundle)];
+
         // Monos
         private static readonly string EVOLVETABLE_MONONAME = "EvolveTable";
         private static readonly string PERSONALTABLE_MONONAME = "PersonalTable";

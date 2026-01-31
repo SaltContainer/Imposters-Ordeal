@@ -1,4 +1,6 @@
 ﻿using ImpostersOrdeal.Utils;
+using System.Collections.Generic;
+using System;
 using System.Linq;
 
 namespace ImpostersOrdeal
@@ -7,6 +9,8 @@ namespace ImpostersOrdeal
     {
         object IParser.ParseFromSources(FileManager fileManager) => ParseFromSources(fileManager);
         void IParser.SaveToSources(FileManager fileManager, object data) => SaveToSources(fileManager, (BattleTowerTable)data);
+
+        public IEnumerable<Type> GetRequiredDataSources() => [typeof(DprMasterdatasBundle)];
 
         // Monos
         private static readonly string TOWERTRAINERTABLE_MONONAME = "TowerTrainerTable";
@@ -179,7 +183,7 @@ namespace ImpostersOrdeal
             var (singlePathID, singleMono) = dprMasterdatasBundle.GetMonoByName(TOWERSINGLESTOCKTABLE_MONONAME);
             var (doublePathID, doubleMono) = dprMasterdatasBundle.GetMonoByName(TOWERDOUBLESTOCKTABLE_MONONAME);
 
-            trainerMono[TRAINERTYPE_FIELD].SetArrayElementsAndInit(data.TowerTrainer.TrainerData, (trainerField, trainer) =>
+            trainerMono[TRAINERDATA_FIELD].SetArrayElementsAndInit(data.TowerTrainer.TrainerData, (trainerField, trainer) =>
             {
                 trainerField[TRAINERTYPE_FIELD].AsInt = trainer.TrainerType;
                 trainerField[NAMELABEL_FIELD].AsString = trainer.NameLabel;
