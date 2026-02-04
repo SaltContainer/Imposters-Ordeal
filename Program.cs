@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ImpostersOrdeal
@@ -18,6 +14,21 @@ namespace ImpostersOrdeal
             Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            // Handle unhandled exceptions
+            Application.ThreadException += (sender, e) =>
+            {
+                MessageBox.Show($"An error occurred: {e.Exception.Message}\n\n{e.Exception.StackTrace}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            };
+
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            {
+                var ex = e.ExceptionObject as Exception;
+                MessageBox.Show($"A fatal error occurred: {ex?.Message}\n\n{ex?.StackTrace}",
+                    "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            };
+
             Application.Run(new MainForm());
         }
     }

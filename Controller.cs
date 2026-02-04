@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using ImpostersOrdeal.Plugins;
 
 namespace ImpostersOrdeal
 {
@@ -18,6 +19,31 @@ namespace ImpostersOrdeal
         private ParserCollection parserCollection;
         private DataTable absoluteBoundaries;
 
+        // Plugin system
+        private PluginLoader pluginLoader;
+        private PluginContext pluginContext;
+        private IDataSourceProvider activeProvider;
+
+        /// <summary>
+        /// The plugin loader instance.
+        /// </summary>
+        public PluginLoader PluginLoader => pluginLoader;
+
+        /// <summary>
+        /// The plugin context instance.
+        /// </summary>
+        public PluginContext PluginContext => pluginContext;
+
+        /// <summary>
+        /// The currently active data source provider.
+        /// </summary>
+        public IDataSourceProvider ActiveProvider => activeProvider;
+
+        /// <summary>
+        /// The FileManager instance (for backward compatibility).
+        /// </summary>
+        public FileManager FileManager => fileManager;
+
         public Controller()
         {
             fileManager = new FileManager();
@@ -26,6 +52,11 @@ namespace ImpostersOrdeal
             gameData = new GameDataSet();
             flavor = new Flavor(this);
 
+            // Initialize plugin system
+            pluginLoader = new PluginLoader();
+            pluginContext = new PluginContext(this, pluginLoader);
+            pluginLoader.SetContext(pluginContext);
+
             InitializeParsers();
             InitializeAbsoluteBoundaries();
         }
@@ -33,7 +64,11 @@ namespace ImpostersOrdeal
         private void InitializeParsers()
         {
             parserCollection = new(fileManager);
+            InitializeParsersInternal();
+        }
 
+        private void InitializeParsersInternal()
+        {
             parserCollection.AddParserForType(new VanillaEvDataParser());
             parserCollection.AddParserForType(new VanillaPickupParser());
             parserCollection.AddParserForType(new VanillaShopParser());
@@ -52,6 +87,22 @@ namespace ImpostersOrdeal
             parserCollection.AddParserForType(new VanillaDelphisMainParser());
             parserCollection.AddParserForType(new VanillaGlobalMetadataParser());
             parserCollection.AddParserForType(new VanillaDprBinParser());
+        }
+
+        /// <summary>
+        /// Adds a parser for a specific data type. Used by plugins to register custom parsers.
+        /// </summary>
+        public void AddParser<T>(IParser<T> parser)
+        {
+            parserCollection.AddParserForType(parser);
+        }
+
+        /// <summary>
+        /// Removes a parser for a specific data type.
+        /// </summary>
+        public void RemoveParser<T>(IParser<T> parser)
+        {
+            parserCollection.RemoveParserForType(parser);
         }
 
         private void InitializeAbsoluteBoundaries()
@@ -103,20 +154,60 @@ namespace ImpostersOrdeal
             return absoluteBoundaries;
         }
 
+        /// <summary>
+        /// Initializes the plugin system. Should be called after the main form is created.
+        /// </summary>
+        public void InitializePlugins()
+        {
+            pluginLoader.Initialize();
+        }
+
+        /// <summary>
+        /// Sets the active data source provider.
+        /// </summary>
+        /// <param name="provider">The provider to use.</param>
+        public void SetActiveProvider(IDataSourceProvider provider)
+        {
+            var oldProvider = activeProvider;
+            activeProvider = provider;
+
+            // Update fileManager reference for backward compatibility
+            if (provider != null)
+            {
+                fileManager = provider.GetFileManager();
+                // Recreate parser collection with new file manager
+                parserCollection = new ParserCollection(fileManager);
+                InitializeParsersInternal();
+            }
+
+            pluginContext.DataSourceProvider = provider;
+            pluginContext.RaiseDataSourceProviderChanged(oldProvider, provider);
+        }
+
         public bool InitializeFromConfig()
         {
+            if (activeProvider != null)
+                return activeProvider.InitializeFromConfig();
             return fileManager.InitializeFromConfig();
         }
 
         public bool InitializeFromInput()
         {
+            if (activeProvider != null)
+                return activeProvider.InitializeFromUserInput();
             return fileManager.InitializeFromInput();
         }
 
         public void ParseAllData()
         {
             parserCollection.ParseAllDataForSet(gameData);
-            fileManager.FreeAll();
+            if (activeProvider != null)
+                activeProvider.FreeAll();
+            else
+                fileManager.FreeAll();
+
+            // Notify plugins that game data is ready
+            pluginContext.RaiseGameDataReady();
         }
 
         public void SaveAllData()
@@ -126,12 +217,25 @@ namespace ImpostersOrdeal
 
         public void ExportMod()
         {
-            fileManager.ExportMod();
+            pluginContext.RaiseBeforeExport();
+
+            if (activeProvider != null)
+                activeProvider.ExportMod(System.IO.Path.Combine(Environment.CurrentDirectory, Constants.OUTPUT_FOLDER));
+            else
+                fileManager.ExportMod();
+
+            pluginContext.RaiseAfterExport();
         }
 
         public bool AddMod()
         {
-            var result = fileManager.AddMod(out List<Type> updatedSourceTypes);
+            bool result;
+            List<Type> updatedSourceTypes;
+
+            if (activeProvider != null)
+                result = activeProvider.AddMod(out updatedSourceTypes);
+            else
+                result = fileManager.AddMod(out updatedSourceTypes);
 
             if (result)
             {

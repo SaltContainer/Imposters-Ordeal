@@ -1,6 +1,8 @@
-﻿using System;
+using System;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using ImpostersOrdeal.Plugins;
 using static ImpostersOrdeal.Distributions;
 
 namespace ImpostersOrdeal
@@ -25,6 +27,9 @@ namespace ImpostersOrdeal
             InitializeComponent();
 
             controller = new Controller();
+
+            // Set up plugin context with reference to this form
+            controller.PluginContext.MainForm = this;
         }
 
         /// <summary>
@@ -106,25 +111,14 @@ namespace ImpostersOrdeal
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            //Check if valid dump path already is in config
-            if (!controller.InitializeFromConfig())
-            {
-                //Confirm with user to get dump path. Abort if cancel.
-                if (MessageBox.Show("Alright, to start out, could ya get me a dump of the game real quick?\n" +
-                    "Gimme the folder that's got the \"romfs\" in it.",
-                    "Load Dump", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.Cancel && RetryLoadDumpDialog() == DialogResult.No)
-                {
-                    this.Close();
-                    return;
-                }
+            // Initialize the plugin system first
+            controller.InitializePlugins();
 
-                //Load dump
-                while (!controller.InitializeFromInput())
-                    if (RetryLoadDumpDialog() == DialogResult.No)
-                    {
-                        this.Close();
-                        return;
-                    }
+            // Show provider selection if multiple providers are available
+            if (!SelectAndInitializeProvider())
+            {
+                this.Close();
+                return;
             }
 
             loadingForm = new("Ferociously investigating your dump...", controller.GetFlavorSubTask());
@@ -139,6 +133,11 @@ namespace ImpostersOrdeal
 
             loadingForm.UpdateSubTask(controller.GetFlavorSubTask());
             SetupConfig(controller.GetSetupConfig());
+
+            // Register plugin editors and tools
+            RegisterPluginEditors();
+            RegisterPluginTools();
+
             loadingForm.Finish();
 
             absoluteBoundaryDataGridView.DataSource = controller.GetAbsoluteBoundariesTable();
@@ -146,6 +145,136 @@ namespace ImpostersOrdeal
             {
                 if (c.Name == "Value")
                     c.FillWeight = 300;
+            }
+        }
+
+        /// <summary>
+        /// Selects and initializes a data source provider.
+        /// </summary>
+        private bool SelectAndInitializeProvider()
+        {
+            var providers = controller.PluginLoader.DataSourceProviders.ToList();
+
+            IDataSourceProvider selectedProvider = null;
+
+            // If multiple providers, show selection dialog
+            if (providers.Count > 1)
+            {
+                using var selectionForm = new ProviderSelectionForm(providers);
+                if (selectionForm.ShowDialog() != DialogResult.OK)
+                    return false;
+                selectedProvider = selectionForm.SelectedProvider;
+            }
+            else if (providers.Count == 1)
+            {
+                selectedProvider = providers[0];
+            }
+            else
+            {
+                MessageBox.Show("No data source providers available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            // Set the active provider
+            controller.SetActiveProvider(selectedProvider);
+
+            // Try to initialize from config first
+            if (selectedProvider.InitializeFromConfig())
+                return true;
+
+            // Ask user for input
+            if (MessageBox.Show($"Using {selectedProvider.ProviderName}.\n\n" +
+                "Alright, to start out, could ya get me a dump of the game real quick?\n" +
+                "Gimme the folder that's got the \"romfs\" in it.",
+                "Load Dump", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.Cancel)
+            {
+                if (RetryLoadDumpDialog() == DialogResult.No)
+                    return false;
+            }
+
+            // Load dump
+            while (!selectedProvider.InitializeFromUserInput())
+            {
+                if (RetryLoadDumpDialog() == DialogResult.No)
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Registers editor buttons from plugins.
+        /// </summary>
+        private void RegisterPluginEditors()
+        {
+            foreach (var editor in controller.PluginLoader.EditorPlugins)
+            {
+                try
+                {
+                    var button = new Button
+                    {
+                        Text = editor.ButtonText,
+                        AutoSize = true,
+                        Enabled = editor.IsEnabled(controller.PluginContext)
+                    };
+
+                    button.Click += (sender, e) =>
+                    {
+                        var form = editor.CreateEditorForm(controller.PluginContext);
+                        form?.Show();
+
+                        // Mark modified data types
+                        if (editor.ModifiedDataTypes != null)
+                        {
+                            foreach (var type in editor.ModifiedDataTypes)
+                                controller.SetDataTypeModified(type);
+                        }
+                    };
+
+                    flowLayoutPanel1?.Controls.Add(button);
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Failed to register editor plugin {editor.Id}: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Registers tool buttons from plugins.
+        /// </summary>
+        private void RegisterPluginTools()
+        {
+            foreach (var tool in controller.PluginLoader.ToolPlugins)
+            {
+                try
+                {
+                    var button = new Button
+                    {
+                        Text = tool.ButtonText,
+                        AutoSize = true,
+                        Enabled = tool.IsEnabled(controller.PluginContext)
+                    };
+
+                    button.Click += (sender, e) =>
+                    {
+                        var form = tool.CreateToolForm(controller.PluginContext);
+                        if (form != null)
+                        {
+                            form.Show();
+                        }
+                        else
+                        {
+                            tool.Execute(controller.PluginContext);
+                        }
+                    };
+
+                    flowLayoutPanel1?.Controls.Add(button);
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Failed to register tool plugin {tool.Id}: {ex.Message}");
+                }
             }
         }
 
