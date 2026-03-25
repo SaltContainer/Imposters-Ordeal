@@ -70,6 +70,8 @@ namespace ImpostersOrdeal
                 public ushort egg_formno_kawarazunoishi;
                 public bool egg_form_inherit_kawarazunoishi;
 
+                public bool Valid => valid_flag && id > 0;
+
                 public bool[] TMFlags
                 {
                     get => [
@@ -102,7 +104,51 @@ namespace ImpostersOrdeal
                     }
                 }
 
+                public int EVYieldTotal
+                {
+                    get
+                    {
+                        var yields = EVYields;
+                        return yields[0] + yields[1] + yields[2] + yields[3] + yields[4] + yields[5];
+                    }
+                }
+
+                public byte[] BaseStats
+                {
+                    get => [basic_hp, basic_atk, basic_def, basic_agi, basic_spatk, basic_spdef];
+                    set
+                    {
+                        basic_hp = value[0];
+                        basic_atk = value[1];
+                        basic_def = value[2];
+                        basic_agi = value[3];
+                        basic_spatk = value[4];
+                        basic_spdef = value[5];
+                    }
+                }
+
                 public int BST => basic_hp + basic_atk + basic_def + basic_agi + basic_spatk + basic_spdef;
+
+                public ushort[] Abilities
+                {
+                    get => [tokusei1, tokusei2, tokusei3];
+                    set
+                    {
+                        tokusei1 = value[0];
+                        tokusei2 = value[1];
+                        tokusei3 = value[2];
+                    }
+                }
+
+                public byte[] Types
+                {
+                    get => (type1 == type2) ? [type1] : [type1, type2];
+                    set
+                    {
+                        type1 = value[0];
+                        type2 = value.Length >= 2 ? value[1] : value[0];
+                    }
+                }
             }
 
             public class SheetWazaOboe
@@ -113,6 +159,15 @@ namespace ImpostersOrdeal
                 {
                     public ushort level;
                     public ushort move;
+
+                    public LearnedMove Clone()
+                    {
+                        return new LearnedMove()
+                        {
+                            level = level,
+                            move = move,
+                        };
+                    }
                 }
             }
 
@@ -134,6 +189,24 @@ namespace ImpostersOrdeal
                     public ushort level;
                 }
             }
+        }
+
+        public PokemonData GetDataForPokemon(int monsno, int formno)
+        {
+            var baseForm = Data[monsno];
+            if (formno == 0)
+                return baseForm;
+            else
+                return Data[baseForm.personal.form_index + formno - 1];
+        }
+
+        public List<PokemonData> GetAllFormsForPokemon(int monsno)
+        {
+            var baseForm = Data[monsno];
+            if (baseForm.personal.form_max > 1)
+                return Data.Skip(baseForm.personal.form_index).Take(baseForm.personal.form_max - 1).Prepend(baseForm).ToList();
+            else
+                return new List<PokemonData>() { baseForm };
         }
     }
 }

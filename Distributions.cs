@@ -219,29 +219,6 @@ namespace ImpostersOrdeal
             }
         }
 
-        /// <summary>
-        ///  Calculates the standard deviation of a sequence of double values.
-        /// </summary>
-        public static double StandardDeviation(this IList<double> observations)
-        {
-            double sum = 0;
-            if (observations.Count > 1)
-            {
-                double avg = observations.Average();
-                for (int i = 0; i < observations.Count; i++)
-                    sum += Math.Pow(avg - observations[i], 2) / (observations.Count - 1);
-            }
-            return Math.Sqrt(sum);
-        }
-
-        /// <summary>
-        ///  Calculates the standard deviation of a sequence of integer values.
-        /// </summary>
-        public static double StandardDeviation(this IList<int> observations)
-        {
-            return observations.Select(i => (double)i).ToList().StandardDeviation();
-        }
-
         public interface IDistribution
         {
             /// <summary>

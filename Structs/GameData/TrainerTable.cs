@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ImpostersOrdeal.Utils;
 using static ImpostersOrdeal.JsonConverterStructs;
 using System.Linq;
+using static ImpostersOrdeal.GameDataTypes;
 
 namespace ImpostersOrdeal
 {
@@ -33,6 +34,27 @@ namespace ImpostersOrdeal
             public float LoseLoopTime;
             public string TrainerEffect;
             public byte Age; // TrainerAge
+
+            // TODO: This would be different if someone changes the trainer types, see if there's an alternative
+            public int GetTypeTheme()
+            {
+                return TypeID switch
+                {
+                    80 => 1,
+                    69 => 4,
+                    65 => 5,
+                    68 => 6,
+                    81 => 7,
+                    67 => 8,
+                    70 => 9,
+                    79 => 10,
+                    78 => 11,
+                    83 => 12,
+                    71 => 13,
+                    82 => 14,
+                    _ => -1,
+                };
+            }
         }
 
         public class SheetTrainerData
@@ -68,6 +90,8 @@ namespace ImpostersOrdeal
 
             public double AverageLevel => Pokes.Count == 0 ? 0 : Pokes.Average(p => p.Level);
 
+            public bool ItemFlag { get => AIFlags[5]; set => AIFlags[5] = value; }
+
             public class TrainerPoke
             {
                 public ushort MonsNo;
@@ -96,6 +120,57 @@ namespace ImpostersOrdeal
                 public byte EffortSpAtk;
                 public byte EffortSpDef;
                 public byte EffortAgi;
+
+                public int TotalIVs => TalentHp + TalentAtk + TalentDef + TalentSpAtk + TalentSpDef + TalentAgi;
+                public int TotalEVs => EffortHp + EffortAtk + EffortDef + EffortSpAtk + EffortSpDef + EffortAgi;
+
+                public double AverageIVs => TotalIVs / 6;
+                public double AverageEVs => TotalEVs / 6;
+
+                public ushort[] Moves
+                {
+                    get => [Waza1, Waza2, Waza3, Waza4];
+                    set
+                    {
+                        Waza1 = (ushort)(value.Length >= 1 ? value[0] : 0);
+                        Waza2 = (ushort)(value.Length >= 2 ? value[1] : 0);
+                        Waza3 = (ushort)(value.Length >= 3 ? value[2] : 0);
+                        Waza4 = (ushort)(value.Length >= 4 ? value[3] : 0);
+                    }
+                }
+
+                public TrainerPoke Clone()
+                {
+                    return new()
+                    {
+                        MonsNo = MonsNo,
+                        FormNo = FormNo,
+                        IsRare = IsRare,
+                        Level = Level,
+                        Sex = Sex,
+                        Seikaku = Seikaku,
+                        Tokusei = Tokusei,
+                        Waza1 = Waza1,
+                        Waza2 = Waza2,
+                        Waza3 = Waza3,
+                        Waza4 = Waza4,
+                        Item = Item,
+                        Ball = Ball,
+                        Seal = Seal,
+                        TalentHp = TalentHp,
+                        TalentAtk = TalentAtk,
+                        TalentDef = TalentDef,
+                        TalentSpAtk = TalentSpAtk,
+                        TalentSpDef = TalentSpDef,
+                        TalentAgi = TalentAgi,
+                        EffortHp = EffortHp,
+                        EffortAtk = EffortAtk,
+                        EffortDef = EffortDef,
+                        EffortSpAtk = EffortSpAtk,
+                        EffortSpDef = EffortSpDef,
+                        EffortAgi = EffortAgi,
+                    };
+                }
             }
         }
 

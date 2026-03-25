@@ -168,7 +168,7 @@ namespace ImpostersOrdeal
 
             bool[] flags = i.Flags;
 
-            checkBox25.Checked = i.IsEnabled();
+            checkBox25.Checked = i.Enabled;
             iconIDNumericUpDown.Value = i.iconid;
             priceNumericUpDown.Value = i.price;
             bpPriceNumericUpDown.Value = i.bp_price;

@@ -3,89 +3,55 @@ using System.Collections.Generic;
 using System.Linq;
 using static ImpostersOrdeal.GlobalData;
 using static ImpostersOrdeal.Distributions;
-using static ImpostersOrdeal.GameDataTypes;
 
 namespace ImpostersOrdeal
 {
     /// <summary>
-    ///  Responsible for figuring out a good starting configuration given the loaded files.
+    /// Responsible for figuring out a good starting configuration given the loaded files.
     /// </summary>
     public class Analyzer
     {
         /// <summary>
-        ///  Generates RandomizerSetupConfig through statistical analysis of gamefiles.
+        /// Generates DistributionsSetupConfig through statistical analysis of gamefiles.
         /// </summary>
-        public RandomizerSetupConfig GetSetupConfig(GameDataSet gameData)
+        public DistributionsSetupConfig GetSetupConfig(GameDataSet gameData)
         {
-            RandomizerSetupConfig randomizerSetupConfig = new();
+            DistributionsSetupConfig distributionsSetupConfig = new();
 
-            //Evolution Destinations
-            /*int[] instances = new int[gameData.pokemonDataTable.Data.Count];
-            List<INamedEntity> entities = gameData.personalEntries.Select(o => (INamedEntity)o).ToList();
-            for (int personalID = 1; personalID < gameData.personalEntries.Count; personalID++)
-            {
-                List<Pokemon> nextPokemon = gameData.personalEntries[personalID].nextPokemon;
-                for (int evoPath = 0; evoPath < nextPokemon.Count; evoPath++)
-                    instances[nextPokemon[evoPath].GetID()]++;
-            }
-            randomizerSetupConfig.evolutionDestinationPokemon = ToItemDistributionConfig(instances, entities);
+            // Evolution Destinations
+            distributionsSetupConfig.Pokemon.EvolutionDestinationPokemonDists = gameData.pokemonDataTable.Data.Skip(1).SelectMany(p => p.nextPokemon)
+                .GetItemDistributionConfig(p => p.personal.id,
+                    gameData.pokemonDataTable.Data,
+                    e => e.personal.Valid,
+                    e => gameData.GetFormName(e.personal.monsno, e.formID));
 
-            //Evolution Levels
-            List<int> observations = new();
-            for (int personalID = 1; personalID < gameData.personalEntries.Count; personalID++)
-            {
-                for (int item = 0; item < gameData.personalEntries[personalID].evolutionPaths.Count; item++)
-                    if (IsWithin(AbsoluteBoundary.Level, gameData.personalEntries[personalID].evolutionPaths[item].level))
-                        observations.Add(gameData.personalEntries[personalID].evolutionPaths[item].level);
-            }
-            randomizerSetupConfig.evolutionLevel = ToNumericDistributionConfig(observations);
+            // Evolution Levels
+            distributionsSetupConfig.Pokemon.EvolutionLevelDists = gameData.pokemonDataTable.Data.Skip(1).SelectMany(p => p.evolutionPaths.paths)
+                .GetNumericDistributionConfig(p => p.level, AbsoluteBoundaries.Boundary.Level);
 
-            //Base Stats
-            observations = new();
-            for (int personalID = 1; personalID < gameData.personalEntries.Count; personalID++)
-            {
-                Pokemon p = gameData.personalEntries[personalID];
-                if (IsWithin(AbsoluteBoundary.BaseStat, p.basicHp))
-                    observations.Add(p.basicHp);
-                if (IsWithin(AbsoluteBoundary.BaseStat, p.basicAtk))
-                    observations.Add(p.basicAtk);
-                if (IsWithin(AbsoluteBoundary.BaseStat, p.basicDef))
-                    observations.Add(p.basicDef);
-                if (IsWithin(AbsoluteBoundary.BaseStat, p.basicSpAtk))
-                    observations.Add(p.basicSpAtk);
-                if (IsWithin(AbsoluteBoundary.BaseStat, p.basicSpDef))
-                    observations.Add(p.basicSpDef);
-                if (IsWithin(AbsoluteBoundary.BaseStat, p.basicSpd))
-                    observations.Add(p.basicSpd);
-            }
-            randomizerSetupConfig.baseStats = ToNumericDistributionConfig(observations);
+            // Base Stats
+            distributionsSetupConfig.Pokemon.BaseStatsDists = gameData.pokemonDataTable.Data.Skip(1).SelectMany(p => p.personal.BaseStats)
+                .GetNumericDistributionConfig(p => p, AbsoluteBoundaries.Boundary.BaseStat);
 
-            //Pokémon Typing
-            instances = new int[gameData.typings.Count];
-            entities = gameData.typings.Select(o => (INamedEntity)o).ToList();
-            for (int personalID = 1; personalID < gameData.personalEntries.Count; personalID++)
-            {
-                List<int> typing = gameData.personalEntries[personalID].GetTyping();
-                for (int i = 0; i < typing.Count; i++)
-                    instances[typing[i]]++;
-            }
-            randomizerSetupConfig.pokemonTyping = ToItemDistributionConfig(instances, entities);
+            // Pokémon Typing
+            distributionsSetupConfig.Pokemon.PokemonTypingDists = gameData.pokemonDataTable.Data.Skip(1).SelectMany(p => p.personal.Types)
+                .GetItemDistributionConfig(p => p,
+                    Enumerable.Range(0, 18).ToList(),
+                    e => true,
+                    e => gameData.GetLabelByIndex(Constants.TYPE_MESSAGEFILE_NAME, e));
 
-            //Pokémon Typing
-            randomizerSetupConfig.doubleTypingP = GetOccurrencePercent(gameData.personalEntries, p => p.typingID1 != p.typingID2);
+            // Pokémon Typing
+            distributionsSetupConfig.Pokemon.DoubleTypingP = gameData.pokemonDataTable.Data.GetOccurrencePercent(p => p.personal.type1 != p.personal.type2);
 
-            //Typing Evolution Logic
-            instances = new int[4];
-            for (int personalID = 1; personalID < gameData.personalEntries.Count; personalID++)
-            {
-                Pokemon p = gameData.personalEntries[personalID];
-                for (int path = 0; path < p.nextPokemon.Count; path++)
-                    instances[(int)p.CompareTyping(p.nextPokemon[path])]++;
-            }
-            randomizerSetupConfig.evolutionLogicTypingCorrelationDistribution = new Empirical(100, instances.ToList());
+            // Typing Evolution Logic
+            distributionsSetupConfig.Pokemon.PokemonTypingEvoLogicCorrelationDist = gameData.pokemonDataTable.Data.Skip(1).SelectMany(p => p.nextPokemon.Select(n => (p, n)))
+                .GetItemDistributionConfig(ps => (int)CompareTyping(ps.p, ps.n),
+                    gameData.pokemonDataTable.Data,
+                    e => e.personal.Valid,
+                    e => string.Empty).Item1[0]; // Only Empirical
 
             //TM Compatibility
-            instances = new int[gameData.tms.Count];
+            /*instances = new int[gameData.tms.Count];
             entities = gameData.tms.Select(o => (INamedEntity)o).ToList();
             for (int personalID = 1; personalID < gameData.personalEntries.Count; personalID++)
             {
@@ -471,7 +437,31 @@ namespace ImpostersOrdeal
             //Level Coefficient
             randomizerSetupConfig.levelCoefficient = 1;*/
 
-            return randomizerSetupConfig;
+            return distributionsSetupConfig;
+        }
+
+        /// <summary>
+        /// Finds the particular correlation of typings between two Pokémon.
+        /// </summary>
+        public static TypingCorrelation CompareTyping(PokemonDataTable.PokemonData p1, PokemonDataTable.PokemonData p2)
+        {
+            var typing1 = p1.personal.Types;
+            var typing2 = p2.personal.Types;
+
+            int matches = 0;
+            if (typing1.Contains(typing2[0]))
+                matches++;
+            if (typing2.Count() > 1 && typing1.Contains(typing2[1]))
+                matches++;
+
+            if (matches == 0 && !(typing1.Count() == 1 && typing2.Count() == 1))
+                return TypingCorrelation.NoCorrelation;
+            else if (matches == 2 || typing1.Count() == 1 && typing2.Count() == 1 && matches == 1)
+                return TypingCorrelation.Identical;
+            else if (typing1.Count() != typing2.Count())
+                return TypingCorrelation.Addition;
+            else
+                return TypingCorrelation.Swap;
         }
 
         public enum TypingCorrelation

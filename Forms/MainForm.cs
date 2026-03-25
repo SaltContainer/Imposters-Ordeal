@@ -6,7 +6,7 @@ using static ImpostersOrdeal.Distributions;
 namespace ImpostersOrdeal
 {
     /// <summary>
-    ///  Root form from which the rest of the application is accessible.
+    /// Root form from which the rest of the application is accessible.
     /// </summary>
     public partial class MainForm : Form
     {
@@ -28,7 +28,7 @@ namespace ImpostersOrdeal
         }
 
         /// <summary>
-        ///  Confirms with user to cancel loading dump.
+        /// Confirms with user to cancel loading dump.
         /// </summary>
         private static DialogResult RetryLoadDumpDialog()
         {
@@ -37,67 +37,86 @@ namespace ImpostersOrdeal
         }
 
         /// <summary>
-        ///  Initializes controls using the specified config.
+        /// Initializes controls using the specified config.
         /// </summary>
-        private void SetupConfig(RandomizerSetupConfig rsc)
+        private void SetupConfig(DistributionsSetupConfig dsc, RandomizerSetupConfig rsc)
         {
-            this.rsc = rsc;
+            if (rsc != null)
+                this.rsc = rsc;
 
-            button2.Initialize(rsc.evolutionDestinationPokemon);
-            groupBox1.Initialize(rsc.evolutionLevel);
-            numericDistributionControl1.Initialize(rsc.baseStats);
-            itemDistributionControl1.Initialize(rsc.pokemonTyping);
-            numericUpDown1.Value = (decimal)rsc.doubleTypingP;
-            numericUpDown2.Value = (decimal)rsc.tmCompatibilityP;
-            numericUpDown3.Value = (decimal)rsc.tmCompatibilityTypeBiasP;
-            itemDistributionControl2.Initialize(rsc.wildHeldItems);
-            itemDistributionControl3.Initialize(rsc.growthRate);
-            itemDistributionControl4.Initialize(rsc.abilities);
-            numericDistributionControl2.Initialize(rsc.catchRate);
-            numericDistributionControl3.Initialize(rsc.evYields);
-            numericDistributionControl4.Initialize(rsc.initialFriendship);
-            numericDistributionControl5.Initialize(rsc.expYield);
-            itemDistributionControl7.Initialize(rsc.eggMoves);
-            numericUpDown5.Value = (decimal)rsc.eggMoveTypeBiasP;
-            numericDistributionControl9.Initialize(rsc.eggMoveCount);
-            itemDistributionControl6.Initialize(rsc.levelUpMoves);
-            numericUpDown4.Value = (decimal)rsc.levelUpMoveTypeBiasP;
-            numericDistributionControl7.Initialize(rsc.levelUpMoveLevels);
-            numericDistributionControl6.Initialize(rsc.levelUpMoveCount);
-            itemDistributionControl8.Initialize(rsc.moveTyping);
-            itemDistributionControl9.Initialize(rsc.damageCategory);
-            itemDistributionControl18.Initialize(rsc.tmMoves);
-            numericDistributionControl8.Initialize(rsc.movePower);
-            numericDistributionControl10.Initialize(rsc.moveAccuracy);
-            numericDistributionControl11.Initialize(rsc.movePp);
-            numericDistributionControl18.Initialize(rsc.itemPrices);
-            itemDistributionControl16.Initialize(rsc.pickupItems);
-            itemDistributionControl19.Initialize(rsc.shopItems);
-            itemDistributionControl10.Initialize(rsc.wildPokemon);
-            numericDistributionControl12.Initialize(rsc.wildPokemonLevels);
-            itemDistributionControl11.Initialize(rsc.trainerItems);
-            numericDistributionControl13.Initialize(rsc.trainerItemCount);
-            itemDistributionControl12.Initialize(rsc.trainerPokemonSpecies);
-            itemDistributionControl15.Initialize(rsc.trainerPokemonHeldItems);
-            itemDistributionControl13.Initialize(rsc.trainerPokemonNatures);
-            numericUpDown7.Value = (decimal)rsc.trainerPokemonMoveTypeBiasP;
-            itemDistributionControl14.Initialize(rsc.trainerPokemonMoves);
-            numericUpDown6.Value = (decimal)rsc.trainerPokemonShinyP;
-            itemDistributionControl17.Initialize(rsc.trainerPokemonAbilities);
-            numericDistributionControl14.Initialize(rsc.trainerPokemonCount);
-            numericDistributionControl15.Initialize(rsc.trainerPokemonLevels);
-            numericDistributionControl16.Initialize(rsc.trainerPokemonIvs);
-            numericDistributionControl17.Initialize(rsc.trainerPokemonEvs);
-            itemDistributionControl5.Initialize(rsc.typeMatchups);
-            itemDistributionControl20.Initialize(rsc.scriptedPokemon);
-            itemDistributionControl21.Initialize(rsc.scriptedItems);
-            numericUpDown8.Value = (decimal)rsc.levelCoefficient;
+            button2.Initialize(dsc.Pokemon.EvolutionDestinationPokemonDists);
+            groupBox1.Initialize(dsc.Pokemon.EvolutionLevelDists);
+            numericDistributionControl1.Initialize(dsc.Pokemon.BaseStatsDists);
+            itemDistributionControl1.Initialize(dsc.Pokemon.PokemonTypingDists);
+            numericUpDown1.Value = (decimal)dsc.Pokemon.DoubleTypingP;
+            numericUpDown2.Value = (decimal)dsc.Pokemon.TMCompatibilityP;
+            numericUpDown3.Value = (decimal)dsc.Pokemon.TMCompatibilityTypeBiasP;
+            itemDistributionControl2.Initialize(dsc.Pokemon.WildHeldItemsDists);
+            itemDistributionControl3.Initialize(dsc.Pokemon.GrowthRateDists);
+            itemDistributionControl4.Initialize(dsc.Pokemon.AbilitiesDists);
+            numericDistributionControl2.Initialize(dsc.Pokemon.CatchRateDists);
+            numericDistributionControl3.Initialize(dsc.Pokemon.EVYieldDists);
+            numericDistributionControl4.Initialize(dsc.Pokemon.InitialFriendshipDists);
+            numericDistributionControl5.Initialize(dsc.Pokemon.ExpYieldDists);
+            itemDistributionControl7.Initialize(dsc.Pokemon.EggMovesDists);
+            numericUpDown5.Value = (decimal)dsc.Pokemon.EggMoveTypeBiasP;
+            numericDistributionControl9.Initialize(dsc.Pokemon.EggMovesCountDists);
+            itemDistributionControl6.Initialize(dsc.Pokemon.LevelUpMovesDists);
+            numericUpDown4.Value = (decimal)dsc.Pokemon.LevelUpMovesTypeBiasP;
+            numericDistributionControl7.Initialize(dsc.Pokemon.LevelUpMovesLevelDists);
+            numericDistributionControl6.Initialize(dsc.Pokemon.LevelUpMovesCountDists);
+
+            itemDistributionControl8.Initialize(dsc.MovesAndItems.MoveTypingDists);
+            itemDistributionControl9.Initialize(dsc.MovesAndItems.DamageCategoryDists);
+            itemDistributionControl18.Initialize(dsc.MovesAndItems.TMMovesDists);
+            numericDistributionControl8.Initialize(dsc.MovesAndItems.MovePowerDists);
+            numericDistributionControl10.Initialize(dsc.MovesAndItems.MoveAccuracyDists);
+            numericDistributionControl11.Initialize(dsc.MovesAndItems.MovePPDists);
+            numericDistributionControl18.Initialize(dsc.MovesAndItems.ItemPricesDists);
+            itemDistributionControl16.Initialize(dsc.MovesAndItems.PickupItemsDists);
+            itemDistributionControl19.Initialize(dsc.MovesAndItems.ShopItemsDists);
+
+            itemDistributionControl10.Initialize(dsc.Encounters.WildEncountersWildPokemonDists);
+            numericDistributionControl12.Initialize(dsc.Encounters.WildEncountersWildPokemonLevelsDists);
+            itemDistributionControl11.Initialize(dsc.Encounters.TrainerItemsDists);
+            numericDistributionControl13.Initialize(dsc.Encounters.TrainerItemCountDists);
+            itemDistributionControl12.Initialize(dsc.Encounters.TrainerSpeciesDists);
+            itemDistributionControl15.Initialize(dsc.Encounters.TrainerHeldItemsDists);
+            itemDistributionControl13.Initialize(dsc.Encounters.TrainerNaturesDists);
+            numericUpDown7.Value = (decimal)dsc.Encounters.TrainerMoveTypeBiasP;
+            itemDistributionControl14.Initialize(dsc.Encounters.TrainerMovesDists);
+            numericUpDown6.Value = (decimal)dsc.Encounters.TrainerShinyP;
+            itemDistributionControl17.Initialize(dsc.Encounters.TrainerAbilitiesDists);
+            numericDistributionControl14.Initialize(dsc.Encounters.TrainerPokemonCountDists);
+            numericDistributionControl15.Initialize(dsc.Encounters.TrainerLevelsDists);
+            numericDistributionControl16.Initialize(dsc.Encounters.TrainerIVsDists);
+            numericDistributionControl17.Initialize(dsc.Encounters.TrainerEVsDists);
+
+            itemDistributionControl5.Initialize(dsc.Misc.TypeMatchupsDists);
+            itemDistributionControl20.Initialize(dsc.Misc.RandomScriptedPokemonDists);
+            itemDistributionControl21.Initialize(dsc.Misc.RandomScriptedItemsDists);
+
+            this.rsc.Pokemon.PokemonTypingEvoLogicCorrelationDist = dsc.Pokemon.PokemonTypingEvoLogicCorrelationDist;
+            this.rsc.Pokemon.EvoMovesCountDist = dsc.Pokemon.EvoMovesCountDist;
 
             comboBox1.SelectedIndex = 0;
+
+            if (rsc != null)
+                SetupFormFromConfig();
+        }
+
+        private void SetupFormFromConfig()
+        {
+            // TODO: Update form from config
+        }
+
+        private void UpdateConfigFromForm()
+        {
+            // TODO: Update config from form
         }
 
         /// <summary>
-        ///  Starts up the LoadingForm.
+        /// Starts up the LoadingForm.
         /// </summary>
         private void StartLoadingDisplay()
         {
@@ -138,7 +157,7 @@ namespace ImpostersOrdeal
             controller.ParseAllData();
 
             loadingForm.UpdateSubTask(controller.GetFlavorSubTask());
-            SetupConfig(controller.GetSetupConfig());
+            SetupConfig(controller.GetInitialDistributionConfig(), new RandomizerSetupConfig());
             loadingForm.Finish();
 
             absoluteBoundaryDataGridView.DataSource = controller.GetAbsoluteBoundariesTable();
@@ -210,30 +229,32 @@ namespace ImpostersOrdeal
             controller.AddMod();
 
             loadingForm.UpdateSubTask(controller.GetFlavorSubTask());
-            SetupConfig(controller.GetSetupConfig());
+            SetupConfig(controller.GetInitialDistributionConfig(), null);
             loadingForm.Finish();
         }
 
         private void Randomize(object sender, EventArgs e)
         {
             //Notify if already randomized.
-            /*if (randomizeClicked && MessageBox.Show("You uh... You already made me randomize the files, and I\n" +
+            if (randomizeClicked && MessageBox.Show("You uh... You already made me randomize the files, and I\n" +
                 "wouldn't really recommend doing it multiple times...\n" +
                 "Randomize again anyway?",
                    "Again?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                 return;
 
-            loadingForm = new("Makin' a mess...", flavor.GetThought());
+            loadingForm = new("Makin' a mess...", controller.GetFlavorThought());
             loadingDisplay = new(StartLoadingDisplay);
             loadingDisplay.Start();
+
             Thread.Sleep(100);
-            randomizer.Randomize();
+
+            UpdateConfigFromForm();
+            controller.Randomize(rsc);
+
             loadingForm.Finish();
 
             randomizeClicked = true;
-            MessageBox.Show(
-                "Randomization complete!",
-                  "All done!", MessageBoxButtons.OK, MessageBoxIcon.Information);*/
+            MessageBox.Show("Randomization complete!", "All done!", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void Export(object sender, EventArgs e)
@@ -242,7 +263,7 @@ namespace ImpostersOrdeal
             if (!randomizeClicked && MessageBox.Show("I haven't randomized anything yet...\n" +
                 "Just thought I'd mention it in case you forgot.\n" +
                 "Proceed anyway? I'll still export any changed files for you.",
-                   "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.No)
+                   "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Information) != DialogResult.Yes)
                 return;
 
             loadingForm = new("Finishing up...", controller.GetFlavorThought());

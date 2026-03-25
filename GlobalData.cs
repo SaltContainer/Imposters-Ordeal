@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using static ImpostersOrdeal.Analyzer;
-using static ImpostersOrdeal.GameDataTypes;
 
 namespace ImpostersOrdeal
 {
@@ -14,30 +12,6 @@ namespace ImpostersOrdeal
         public static FileManager fileManager;
         public static Dictionary<PathEnum, string> randomizerPaths = new();
         public static DataTable absoluteBoundaries = new();
-
-        public static DataRow GetBoundaries(AbsoluteBoundary a)
-        {
-            if ((int)a == -1)
-                return null;
-            return absoluteBoundaries.Rows[(int)a];
-        }
-
-        public static bool IsWithin(AbsoluteBoundary a, int x)
-        {
-            if ((int)a == -1)
-                return true;
-            DataRow b = GetBoundaries(a);
-            return x >= (int)b[1] && x <= (int)b[2];
-        }
-
-        public static int Conform(AbsoluteBoundary a, int x)
-        {
-            if ((int)a == -1)
-                return x;
-            DataRow b = GetBoundaries(a);
-            x = (int)(Math.Round((double)x / (int)b[3]) * (int)b[3]);
-            return Math.Clamp(x, (int)b[1], (int)b[2]);
-        }
 
         public static string GetZoneName(int index)
         {
@@ -133,27 +107,6 @@ namespace ImpostersOrdeal
             absoluteBoundaries.Rows.Add(new Object[] { "EV", 0, 255, 1 });
             absoluteBoundaries.Rows.Add(new Object[] { "EV Total", 0, 510, 1 });
             absoluteBoundaries.Rows.Add(new Object[] { "Price", 10, 999990, 10 });
-        }
-
-        /// <summary>
-        ///  Finds the particular correlation of typings between two Pokémon.
-        /// </summary>
-        public static TypingCorrelation CompareTyping(this Pokemon p1, Pokemon p2)
-        {
-            List<int> typing1 = p1.GetTyping();
-            List<int> typing2 = p2.GetTyping();
-            int matches = 0;
-            if (typing1.Contains(typing2[0]))
-                matches++;
-            if (typing2.Count > 1 && typing1.Contains(typing2[1]))
-                matches++;
-            if (matches == 0 && !(typing1.Count == 1 && typing2.Count == 1))
-                return TypingCorrelation.NoCorrelation;
-            if (matches == 2 || typing1.Count == 1 && typing2.Count == 1 && matches == 1)
-                return TypingCorrelation.Identical;
-            if (typing1.Count != typing2.Count)
-                return TypingCorrelation.Addition;
-            return TypingCorrelation.Swap;
         }
     }
 }

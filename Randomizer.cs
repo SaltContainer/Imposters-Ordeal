@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImpostersOrdeal.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,24 +7,18 @@ using System.Threading.Tasks;
 using static ImpostersOrdeal.Distributions;
 using static ImpostersOrdeal.ExternalJsonStructs;
 using static ImpostersOrdeal.GameDataTypes;
-using static ImpostersOrdeal.GlobalData;
+using static ImpostersOrdeal.AbsoluteBoundaries;
 
 namespace ImpostersOrdeal
 {
     // TODO: Fix randomizer
     /// <summary>
-    ///  Responsible for all randomization related logic and execution.
+    /// Responsible for all randomization related logic and execution.
     /// </summary>
     public class Randomizer
     {
-        private readonly MainForm m;
+        //private readonly MainForm m;
         private readonly Random rng;
-
-        public Randomizer(MainForm m)
-        {
-            this.m = m;
-            rng = new();
-        }
 
         public Randomizer()
         {
@@ -31,113 +26,113 @@ namespace ImpostersOrdeal
         }
 
         /// <summary>
-        ///  Randomizes everything in accordance with current configuration.
+        /// Randomizes everything in accordance with current configuration.
         /// </summary>
-        /*public void Randomize()
+        public void Randomize(GameDataSet gameData, RandomizerSetupConfig config)
         {
-            if (m.checkBox57.Checked)
-                ScaleEvolutionLevels((double)m.numericUpDown8.Value);
-            if (m.checkBox58.Checked)
-                ScaleLevelUpMoves((double)m.numericUpDown8.Value);
-            if (m.checkBox59.Checked)
-                ScaleWildEncounters((double)m.numericUpDown8.Value);
-            if (m.checkBox60.Checked)
-                ScaleTrainerPokemon((double)m.numericUpDown8.Value);
+            if (config.Misc.LevelMultiplierEvolutionLevels)
+                ScaleEvolutionLevels(gameData, config.Misc.LevelMultiplierCoefficient);
+            if (config.Misc.LevelMultiplierLevelUpMoves)
+                ScaleLevelUpMoves(gameData, config.Misc.LevelMultiplierCoefficient);
+            if (config.Misc.LevelMultiplierWildEncounters)
+                ScaleWildEncounters(gameData, config.Misc.LevelMultiplierCoefficient);
+            if (config.Misc.LevelMultiplierTrainerLevels)
+                ScaleTrainerPokemon(gameData, config.Misc.LevelMultiplierCoefficient);
 
-            if (m.checkBox21.Checked)
-                RandomizeMoveTyping(m.itemDistributionControl8.Get());
-            if (m.checkBox22.Checked)
-                RandomizeDamageCategory(m.itemDistributionControl9.Get());
-            if (m.checkBox50.Checked)
-                RandomizeTMMoves(m.itemDistributionControl18.Get());
-            if (m.checkBox25.Checked)
-                RandomizePower(m.numericDistributionControl8.Get());
-            if (m.checkBox26.Checked)
-                RandomizeAccuracy(m.numericDistributionControl10.Get());
-            if (m.checkBox27.Checked)
-                RandomizePP(m.numericDistributionControl11.Get());
-            if (m.checkBox46.Checked)
-                RandomizePrices(m.numericDistributionControl18.Get());
-            if (m.checkBox47.Checked)
-                RandomizePickupItems(m.itemDistributionControl16.Get());
-            if (m.checkBox51.Checked)
-                RandomizeShopItems(m.itemDistributionControl19.Get(), m.checkBox52.Checked);
+            if (config.MovesAndItems.MoveTyping)
+                RandomizeMoveTyping(gameData, config.MovesAndItems.MoveTypingDist);
+            if (config.MovesAndItems.DamageCategory)
+                RandomizeDamageCategory(gameData, config.MovesAndItems.DamageCategoryDist);
+            if (config.MovesAndItems.TMMoves)
+                RandomizeTMMoves(gameData, config.MovesAndItems.TMMovesDist);
+            if (config.MovesAndItems.MovePower)
+                RandomizePower(gameData, config.MovesAndItems.MovePowerDist);
+            if (config.MovesAndItems.MoveAccuracy)
+                RandomizeAccuracy(gameData, config.MovesAndItems.MoveAccuracyDist);
+            if (config.MovesAndItems.MovePP)
+                RandomizePP(gameData, config.MovesAndItems.MovePPDist);
+            if (config.MovesAndItems.ItemPrices)
+                RandomizePrices(gameData, config.MovesAndItems.ItemPricesDist);
+            if (config.MovesAndItems.PickupItems)
+                RandomizePickupItems(gameData, config.MovesAndItems.PickupItemsDist);
+            if (config.MovesAndItems.ShopItems)
+                RandomizeShopItems(gameData, config.MovesAndItems.ShopItemsDist, config.MovesAndItems.ShopItemsPreserveRegularMart);
 
-            if (m.checkBox1.Checked)
-                RandomizeEvolutionDestinations(m.button2.Get(), m.checkBox3.Checked);
-            if (m.checkBox2.Checked)
-                RandomizeEvolutionLevels(m.groupBox1.Get());
-            if (m.checkBox5.Checked || m.checkBox7.Checked)
-                RandomizeStats(m.numericDistributionControl1.Get(), m.checkBox5.Checked, m.checkBox7.Checked, m.checkBox6.Checked);
-            if (m.checkBox8.Checked)
-                RandomizePokemonTyping(m.itemDistributionControl1.Get(), m.checkBox61.Checked, (double)m.numericUpDown1.Value, m.rsc.evolutionLogicTypingCorrelationDistribution);
-            if (m.checkBox15.Checked)
-                RandomizeTMCompatibility((double)m.numericUpDown2.Value, (double)m.numericUpDown3.Value, m.checkBox16.Checked);
-            if (m.checkBox10.Checked)
-                RandomizeWildHeldItems(m.itemDistributionControl2.Get());
-            if (m.checkBox12.Checked)
-                RandomizeGrowthRates(m.itemDistributionControl3.Get());
-            if (m.checkBox13.Checked)
-                RandomizePersonalAbilites(m.itemDistributionControl4.Get());
-            if (m.checkBox4.Checked)
-                RandomizeCatchRates(m.numericDistributionControl2.Get());
-            if (m.checkBox11.Checked)
-                RandomizeInitialFriendship(m.numericDistributionControl4.Get());
-            if (m.checkBox9.Checked)
-                RandomizeEvYields(m.numericDistributionControl3.Get());
-            if (m.checkBox14.Checked)
-                RandomizeExpYields(m.numericDistributionControl5.Get());
-            if (m.checkBox24.Checked)
-                RandomizeEggMoves(m.itemDistributionControl7.Get(), (double)m.numericUpDown5.Value, m.checkBox23.Checked, m.numericDistributionControl9.Get());
-            if (m.checkBox17.Checked || m.checkBox20.Checked)
-                RandomizeLevelUpMoves(m.checkBox17.Checked, m.itemDistributionControl6.Get(), m.checkBox20.Checked, m.numericDistributionControl7.Get(), (double)m.numericUpDown4.Value, m.checkBox19.Checked, m.numericDistributionControl6.Get(), m.checkBox18.Checked, m.rsc.evolutionMoveCount);
+            if (config.Pokemon.EvolutionRandomDestinations)
+                RandomizeEvolutionDestinations(gameData, config.Pokemon.EvolutionDestinationPokemonDist, config.Pokemon.EvolutionBSTLogic);
+            if (config.Pokemon.EvolutionLevel)
+                RandomizeEvolutionLevels(gameData, config.Pokemon.EvolutionLevelDist);
+            if (config.Pokemon.BaseStatsShuffle || config.Pokemon.BaseStats)
+                RandomizeStats(gameData, config.Pokemon.BaseStatsDist, config.Pokemon.BaseStatsShuffle, config.Pokemon.BaseStats, config.Pokemon.BaseStatsBSTLogic);
+            if (config.Pokemon.PokemonTyping)
+                RandomizePokemonTyping(gameData, config.Pokemon.PokemonTypingDist, config.Pokemon.PokemonTypingEvoLogic, config.Pokemon.DoubleTypingP, config.Pokemon.PokemonTypingEvoLogicCorrelationDist);
+            if (config.Pokemon.TMCompatibility)
+                RandomizeTMCompatibility(gameData, config.Pokemon.TMCompatibilityP, config.Pokemon.TMCompatibilityTypeBiasP, config.Pokemon.TMCompatibilityEvoLogic);
+            if (config.Pokemon.WildHeldItems)
+                RandomizeWildHeldItems(gameData, config.Pokemon.WildHeldItemsDist);
+            if (config.Pokemon.GrowthRate)
+                RandomizeGrowthRates(gameData, config.Pokemon.GrowthRateDist);
+            if (config.Pokemon.Abilities)
+                RandomizePersonalAbilites(gameData, config.Pokemon.AbilitiesDist);
+            if (config.Pokemon.CatchRate)
+                RandomizeCatchRates(gameData, config.Pokemon.CatchRateDist);
+            if (config.Pokemon.InitialFriendship)
+                RandomizeInitialFriendship(gameData, config.Pokemon.InitialFriendshipDist);
+            if (config.Pokemon.EVYield)
+                RandomizeEvYields(gameData, config.Pokemon.EVYieldDist);
+            if (config.Pokemon.ExpYield)
+                RandomizeExpYields(gameData, config.Pokemon.ExpYieldDist);
+            if (config.Pokemon.EggMoves)
+                RandomizeEggMoves(gameData, config.Pokemon.EggMovesDist, config.Pokemon.EggMoveTypeBiasP, config.Pokemon.EggMovesCount, config.Pokemon.EggMovesCountDist);
+            if (config.Pokemon.LevelUpMoves || config.Pokemon.LevelUpMovesLevel)
+                RandomizeLevelUpMoves(gameData, config.Pokemon.LevelUpMoves, config.Pokemon.LevelUpMovesDist, config.Pokemon.LevelUpMovesLevel, config.Pokemon.LevelUpMovesLevelDist, config.Pokemon.LevelUpMovesTypeBiasP, config.Pokemon.LevelUpMovesCount, config.Pokemon.LevelUpMovesCountDist, config.Pokemon.LevelUpMovesSortByPower, config.Pokemon.LevelUpMovesCountDist);
 
-            if (m.checkBox29.Checked || m.checkBox28.Checked)
-                RandomizeWildEncounters(m.checkBox29.Checked, m.itemDistributionControl10.Get(), m.checkBox28.Checked, m.numericDistributionControl12.Get(), m.checkBox31.Checked, m.checkBox30.Checked);
-            if (m.checkBox32.Checked)
-                RandomizeTrainerItems(m.itemDistributionControl11.Get(), m.checkBox33.Checked, m.numericDistributionControl13.Get());
-            if (m.checkBox36.Checked)
-                RandomizeTrainerPokemonCount(m.numericDistributionControl14.Get());
-            if (m.checkBox40.Checked)
-                RandomizeTrainerPokemonLevels(m.numericDistributionControl15.Get());
-            if (m.checkBox37.Checked)
-                RandomizeTrainerPokemonSpecies(m.itemDistributionControl12.Get(), m.checkBox34.Checked, m.checkBox38.Checked, m.checkBox35.Checked);
-            if (m.checkBox42.Checked)
-                RandomizeTrainerPokemonHeldItems(m.itemDistributionControl15.Get(), m.checkBox43.Checked);
-            if (m.checkBox41.Checked)
-                RandomizeTrainerPokemonNatures(m.itemDistributionControl13.Get());
-            if (m.comboBox1.SelectedIndex != 0)
-                RandomizeTrainerPokemonMoves(m.comboBox1.SelectedIndex == 1, m.itemDistributionControl14.Get(), (double)m.numericUpDown7.Value);
-            if (m.checkBox39.Checked)
-                RandomizeTrainerPokemonShininess((double)m.numericUpDown6.Value);
-            if (m.checkBox48.Checked)
-                RandomizeTrainerPokemonAbilities(m.checkBox49.Checked, m.itemDistributionControl17.Get());
-            if (m.checkBox44.Checked)
-                RandomizeTrainerPokemonIVs(m.numericDistributionControl16.Get());
-            if (m.checkBox44.Checked)
-                RandomizeTrainerPokemonEVs(m.numericDistributionControl17.Get());
+            if (config.Encounters.WildEncountersRandomPokemon || config.Encounters.WildEncountersWildPokemonLevels)
+                RandomizeWildEncounters(gameData, config.Encounters.WildEncountersRandomPokemon, config.Encounters.WildEncountersWildPokemonDist, config.Encounters.WildEncountersWildPokemonLevels, config.Encounters.WildEncountersWildPokemonLevelsDist, config.Encounters.WildEncountersHighLevelLegends, config.Encounters.WildEncountersEvolutionLogic);
+            if (config.Encounters.TrainerItems)
+                RandomizeTrainerItems(gameData, config.Encounters.TrainerItemsDist, config.Encounters.TrainerItemCount, config.Encounters.TrainerItemCountDist);
+            if (config.Encounters.TrainerPokemonCount)
+                RandomizeTrainerPokemonCount(gameData, config.Encounters.TrainerPokemonCountDist);
+            if (config.Encounters.TrainerLevels)
+                RandomizeTrainerPokemonLevels(gameData, config.Encounters.TrainerLevelsDist);
+            if (config.Encounters.TrainerRandomPokemon)
+                RandomizeTrainerPokemonSpecies(gameData, config.Encounters.TrainerSpeciesDist, config.Encounters.TrainerHighLevelLegends, config.Encounters.TrainerTypeThemes, config.Encounters.TrainerEvolutionLogic);
+            if (config.Encounters.TrainerHeldItems)
+                RandomizeTrainerPokemonHeldItems(gameData, config.Encounters.TrainerHeldItemsDist, config.Encounters.TrainerHighLevelHeldItems);
+            if (config.Encounters.TrainerNatures)
+                RandomizeTrainerPokemonNatures(gameData, config.Encounters.TrainerNaturesDist);
+            if (config.Encounters.TrainerMovesMode != 0)
+                RandomizeTrainerPokemonMoves(gameData, config.Encounters.TrainerMovesMode == 1, config.Encounters.TrainerMovesDist, config.Encounters.TrainerMoveTypeBiasP);
+            if (config.Encounters.TrainerShiny)
+                RandomizeTrainerPokemonShininess(gameData, config.Encounters.TrainerShinyP);
+            if (config.Encounters.TrainerAbilities)
+                RandomizeTrainerPokemonAbilities(gameData, config.Encounters.TrainerAbilitiesIncludeUnobtainable, config.Encounters.TrainerAbilitiesDist);
+            if (config.Encounters.TrainerIVs)
+                RandomizeTrainerPokemonIVs(gameData, config.Encounters.TrainerIVsDist);
+            if (config.Encounters.TrainerEVs)
+                RandomizeTrainerPokemonEVs(gameData, config.Encounters.TrainerEVsDist);
 
-            if (m.checkBox63.Checked)
-                RandomizeTypeMatchups(m.itemDistributionControl5.Get());
-            if (m.checkBox53.Checked)
-                RandomizeScriptedPokemon(m.itemDistributionControl20.Get());
-            if (m.checkBox54.Checked)
-                RandomizeScriptedItems(m.itemDistributionControl21.Get());
-            if (m.checkBox55.Checked)
-                RandomizeText(m.checkBox56.Checked);
+            if (config.Misc.TypeMatchups)
+                RandomizeTypeMatchups(gameData, config.Misc.TypeMatchupsDist);
+            if (config.Misc.RandomScriptedPokemon)
+                RandomizeScriptedPokemon(gameData, config.Misc.RandomScriptedPokemonDist);
+            if (config.Misc.RandomScriptedItems)
+                RandomizeScriptedItems(gameData, config.Misc.RandomScriptedItemsDist);
+            if (config.Misc.ShuffleText)
+                RandomizeText(gameData, config.Misc.ShuffleTextPreserveStringLength);
 
-            if (m.checkBox62.Checked)
-                RandomizeMusic();
+            if (config.Misc.ShuffleBGM)
+                RandomizeMusic(gameData);
         }
 
-        private void RandomizeTypeMatchups(IDistribution distribution)
+        private void RandomizeTypeMatchups(GameDataSet gameData, IDistribution distribution)
         {
             int typeCount = 18;
             for (int o = 0; o < typeCount; o++)
                 for (int d = 0; d < typeCount; d++)
                     gameData.globalMetadata.SetTypeMatchup(o, d, ToAffinity(distribution.Next(ToAffinityEnum(gameData.globalMetadata.GetTypeMatchup(o, d)))));
 
-            gameData.SetModified(GameDataSet.DataField.GlobalMetadata);
+            gameData.SetModified(gameData.globalMetadata.GetType());
         }
 
         private static int ToAffinityEnum(byte affinity)
@@ -164,7 +159,7 @@ namespace ImpostersOrdeal
             };
         }
 
-        private void RandomizeMusic()
+        private void RandomizeMusic(GameDataSet gameData)
         {
             uint[] groupIDs = {
                 2944413750, //BGM_BATTLE
@@ -185,7 +180,7 @@ namespace ImpostersOrdeal
                 1302076938, //SILENCE_BA013
             };
 
-            foreach (Wwise.WwiseObject wo in gameData.audioData.objectsByID.Values)
+            foreach (Wwise.WwiseObject wo in gameData.delphisMainBank.bankData.objectsByID.Values)
                 if (wo is Wwise.MusicSwitchCntr msc)
                 {
                     (Wwise.GameSync gs, int i) argumentIdx = msc.arguments.Select((gs, i) => (gs, i)).FirstOrDefault(p => groupIDs.Contains(p.gs.group));
@@ -199,72 +194,65 @@ namespace ImpostersOrdeal
                         nodes = nodes.SelectMany(n => n.nodes).ToList();
                     List<uint> anis = nodes.Select(n => n.audioNodeId).Distinct().ToList();
                     foreach (Wwise.Node n in nodes)
-                        n.audioNodeId = GetRandom(anis);
+                        n.audioNodeId = rng.RandomElement(anis);
                 }
-            gameData.SetModified(GameDataSet.DataField.AudioData);
+
+            gameData.SetModified(gameData.delphisMainBank.GetType());
         }
 
-        private void ScaleTrainerPokemon(double coefficient)
+        private void ScaleTrainerPokemon(GameDataSet gameData, double coefficient)
         {
-            foreach (Trainer trainer in gameData.trainerTable)
-                foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
-                    if (IsWithin(AbsoluteBoundary.Level, trainerPokemon.level))
-                        trainerPokemon.level = (byte)Conform(AbsoluteBoundary.Level, (int)(trainerPokemon.level * coefficient));
+            foreach (var trainer in gameData.trainerTable.TrainerData)
+                foreach (var trainerPokemon in trainer.Pokes)
+                    if (IsWithin(Boundary.Level, trainerPokemon.Level))
+                        trainerPokemon.Level = (byte)Conform(Boundary.Level, (int)(trainerPokemon.Level * coefficient));
 
-            gameData.SetModified(GameDataSet.DataField.Trainers);
+            gameData.SetModified(gameData.trainerTable.GetType());
         }
 
-        private void ScaleWildEncounters(double coefficient)
+        private void ScaleWildEncounters(GameDataSet gameData, double coefficient)
         {
-            foreach (EncounterTableFile encounterTableFile in gameData.encounterTableFiles)
-                foreach (EncounterTable encounterTable in encounterTableFile.encounterTables)
+            foreach (var encounterTableFile in gameData.encounterTableFiles)
+                foreach (var encounterTable in encounterTableFile.table)
                 {
-                    List<Encounter> encounters = new();
-                    encounters.AddRange(encounterTable.day);
-                    encounters.AddRange(encounterTable.goodRodMons);
-                    encounters.AddRange(encounterTable.groundMons);
-                    encounters.AddRange(encounterTable.night);
-                    encounters.AddRange(encounterTable.oldRodMons);
-                    encounters.AddRange(encounterTable.superRodMons);
-                    encounters.AddRange(encounterTable.swayGrass);
-                    encounters.AddRange(encounterTable.tairyo);
-                    encounters.AddRange(encounterTable.waterMons);
-                    foreach (Encounter encounter in encounters)
-                        if (IsWithin(AbsoluteBoundary.Level, (int)encounter.GetAvgLevel()))
+                    var encounters = encounterTable.GetAllTables().SelectMany(t => t);
+                    foreach (var encounter in encounters)
+                        if (IsWithin(Boundary.Level, (int)encounter.GetAvgLevel()))
                         {
-                            encounter.minLv = Conform(AbsoluteBoundary.Level, (int)(encounter.minLv * coefficient));
-                            encounter.maxLv = Conform(AbsoluteBoundary.Level, (int)(encounter.maxLv * coefficient));
+                            encounter.minlv = Conform(Boundary.Level, (int)(encounter.minlv * coefficient));
+                            encounter.maxlv = Conform(Boundary.Level, (int)(encounter.maxlv * coefficient));
                         }
                 }
 
-            foreach (UgEncounterLevelSet ugEncounterLevelSet in gameData.ugEncounterLevelSets)
-                if (IsWithin(AbsoluteBoundary.Level, (int)ugEncounterLevelSet.GetAvgLevel()))
+            // TODO: UG Encounters
+            /*foreach (UgEncounterLevelSet ugEncounterLevelSet in gameData.ugEncounterLevelSets)
+                if (IsWithin(Boundary.Level, (int)ugEncounterLevelSet.GetAvgLevel()))
                 {
-                    ugEncounterLevelSet.minLv = Conform(AbsoluteBoundary.Level, (int)(ugEncounterLevelSet.minLv * coefficient));
-                    ugEncounterLevelSet.maxLv = Conform(AbsoluteBoundary.Level, (int)(ugEncounterLevelSet.maxLv * coefficient));
-                }
+                    ugEncounterLevelSet.minLv = Conform(Boundary.Level, (int)(ugEncounterLevelSet.minLv * coefficient));
+                    ugEncounterLevelSet.maxLv = Conform(Boundary.Level, (int)(ugEncounterLevelSet.maxLv * coefficient));
+                }*/
 
-            gameData.SetModified(GameDataSet.DataField.EncounterTableFiles);
-            gameData.SetModified(GameDataSet.DataField.UgEncounterLevelSets);
+            gameData.SetModified(gameData.encounterTableFiles.GetType());
+            //gameData.SetModified(GameDataSet.DataField.UgEncounterLevelSets);
         }
 
-        private void ScaleLevelUpMoves(double coefficient)
+        private void ScaleLevelUpMoves(GameDataSet gameData, double coefficient)
         {
-            foreach (Pokemon pokemon in gameData.personalEntries)
-                foreach (LevelUpMove levelUpMove in pokemon.levelUpMoves)
-                    if (IsWithin(AbsoluteBoundary.Level, levelUpMove.level))
-                        levelUpMove.level = (ushort)Conform(AbsoluteBoundary.Level, (int)(levelUpMove.level * coefficient));
+            foreach (var pokemon in gameData.pokemonDataTable.Data)
+                foreach (var levelUpMove in pokemon.levelUpMoves.moves)
+                    if (IsWithin(Boundary.Level, levelUpMove.level))
+                        levelUpMove.level = (ushort)Conform(Boundary.Level, (int)(levelUpMove.level * coefficient));
 
-            gameData.SetModified(GameDataSet.DataField.PersonalEntries);
+            gameData.SetModified(gameData.pokemonDataTable.GetType());
         }
 
-        private void ScaleEvolutionLevels(double coefficient)
+        private void ScaleEvolutionLevels(GameDataSet gameData, double coefficient)
         {
-            foreach (Pokemon pokemon in gameData.personalEntries)
+            foreach (var pokemon in gameData.pokemonDataTable.Data)
             {
-                foreach (EvolutionPath evolutionPath in pokemon.evolutionPaths)
-                    if (IsWithin(AbsoluteBoundary.Level, evolutionPath.level))
-                        evolutionPath.level = (ushort)Conform(AbsoluteBoundary.Level, (int)(evolutionPath.level * coefficient));
+                foreach (var evolutionPath in pokemon.evolutionPaths.paths)
+                    if (IsWithin(Boundary.Level, evolutionPath.level))
+                        evolutionPath.level = (ushort)Conform(Boundary.Level, (int)(evolutionPath.level * coefficient));
                 pokemon.pastEvoLvs = (0, 0);
                 pokemon.nextEvoLvs = (ushort.MaxValue, ushort.MaxValue);
                 pokemon.pastPokemon = new();
@@ -273,171 +261,178 @@ namespace ImpostersOrdeal
                 pokemon.superiorForms = new();
             }
 
-            DataParser.SetFamilies();
-            gameData.SetModified(GameDataSet.DataField.PersonalEntries);
+            // TODO: Setup lists in data
+            //DataParser.SetFamilies();
+            gameData.SetModified(gameData.pokemonDataTable.GetType());
         }
 
-        private void RandomizeText(bool preserveStringLength)
+        private void RandomizeText(GameDataSet gameData, bool preserveStringLength)
         {
-            if (gameData.messageFileSets == null)
-                Task.WaitAll(DataParser.ParseAllMessageFiles());
-
-            foreach (MessageFileSet messageFileSet in gameData.messageFileSets)
-            {
-                List<LabelData> labelDatas = messageFileSet.GetStrings();
-                labelDatas.ForEach(l => l.wordDatas.Last().eventID = 7);
-
-                if (!preserveStringLength)
+            foreach (var (lang, messageFileSet) in gameData.messageFileTable.messageFilesByLanguage)
+                foreach (var messageFile in messageFileSet)
                 {
-                    Shuffle(labelDatas);
-                    messageFileSet.SetStrings(labelDatas);
-                    continue;
-                }
+                    var labelDatas = messageFile.labelDataArray;
+                    labelDatas.ForEach(l => l.wordDataArray.Last().eventID = MessageEnumData.MsgEventID.End);
 
-                List<int>[] indexes = new List<int>[10];
-                for (int i = 0; i < indexes.Length; i++)
-                    indexes[i] = new();
-                int[] targetLists = new int[labelDatas.Count];
-
-                for (int i = 0; i < labelDatas.Count; i++)
-                {
-                    int currentList;
-                    if (labelDatas[i].wordDatas.Count == 1)
+                    if (!preserveStringLength)
                     {
-                        if (labelDatas[i].GetString().Length < 3)
-                            currentList = 0;
-                        else if (labelDatas[i].GetString().Length < 8)
-                            currentList = 1;
-                        else if (labelDatas[i].GetString().Length < 21)
-                            currentList = 2;
-                        else if (labelDatas[i].GetString().Length < 55)
-                            currentList = 3;
-                        else
-                            currentList = 4;
+                        rng.Shuffle(labelDatas);
+                        messageFile.SetStrings(labelDatas);
+                        continue;
                     }
-                    else if (labelDatas[i].wordDatas.Count < 3)
-                        currentList = 5;
-                    else if (labelDatas[i].wordDatas.Count < 8)
-                        currentList = 6;
-                    else if (labelDatas[i].wordDatas.Count < 21)
-                        currentList = 7;
-                    else if (labelDatas[i].wordDatas.Count < 55)
-                        currentList = 8;
-                    else
-                        currentList = 9;
 
-                    targetLists[i] = currentList;
-                    indexes[currentList].Add(i);
+                    List<int>[] indexes = new List<int>[10];
+                    for (int i = 0; i < indexes.Length; i++)
+                        indexes[i] = new();
+                    int[] targetLists = new int[labelDatas.Count];
+
+                    for (int i = 0; i < labelDatas.Count; i++)
+                    {
+                        int currentList;
+                        if (labelDatas[i].wordDataArray.Count == 1)
+                        {
+                            if (labelDatas[i].GetString().Length < 3)
+                                currentList = 0;
+                            else if (labelDatas[i].GetString().Length < 8)
+                                currentList = 1;
+                            else if (labelDatas[i].GetString().Length < 21)
+                                currentList = 2;
+                            else if (labelDatas[i].GetString().Length < 55)
+                                currentList = 3;
+                            else
+                                currentList = 4;
+                        }
+                        else if (labelDatas[i].wordDataArray.Count < 3)
+                            currentList = 5;
+                        else if (labelDatas[i].wordDataArray.Count < 8)
+                            currentList = 6;
+                        else if (labelDatas[i].wordDataArray.Count < 21)
+                            currentList = 7;
+                        else if (labelDatas[i].wordDataArray.Count < 55)
+                            currentList = 8;
+                        else
+                            currentList = 9;
+
+                        targetLists[i] = currentList;
+                        indexes[currentList].Add(i);
+                    }
+
+                    var oldLabelDatas = new List<MsbtData.LabelData>();
+                    oldLabelDatas.AddRange(labelDatas);
+
+                    List<int>[] newIndexes = new List<int>[10];
+                    for (int i = 0; i < newIndexes.Length; i++)
+                    {
+                        newIndexes[i] = new();
+                        newIndexes[i].AddRange(indexes[i]);
+                        rng.Shuffle(newIndexes[i]);
+                    }
+
+                    for (int i = 0; i < labelDatas.Count; i++)
+                        labelDatas[newIndexes[targetLists[i]][indexes[targetLists[i]].IndexOf(i)]] = oldLabelDatas[i];
+
+                    messageFile.SetStrings(labelDatas);
                 }
 
-                List<LabelData> oldLabelDatas = new();
-                oldLabelDatas.AddRange(labelDatas);
-
-                List<int>[] newIndexes = new List<int>[10];
-                for (int i = 0; i < newIndexes.Length; i++)
-                {
-                    newIndexes[i] = new();
-                    newIndexes[i].AddRange(indexes[i]);
-                    Shuffle(newIndexes[i]);
-                }
-
-                for (int i = 0; i < labelDatas.Count; i++)
-                    labelDatas[newIndexes[targetLists[i]][indexes[targetLists[i]].IndexOf(i)]] = oldLabelDatas[i];
-
-                messageFileSet.SetStrings(labelDatas);
-            }
-
-            gameData.SetModified(GameDataSet.DataField.MessageFileSets);
+            gameData.SetModified(gameData.messageFileTable.GetType());
         }
 
-        private void RandomizeScriptedItems(IDistribution distribution)
+        private void RandomizeScriptedItems(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (EvScript evScript in gameData.evScriptFiles)
-                foreach (Script script in evScript.scripts)
-                    foreach (Command command in script.commands)
-                        if (command.cmdType == 187 && gameData.items[(int)command.args[0].data].IsPurchasable())
+            foreach (var evScript in gameData.evScriptFiles)
+                foreach (var script in evScript.Scripts)
+                    foreach (var command in script.Commands)
+                        if (command.Arg[0].data == 187 &&
+                            command.Arg[1].data >= 0 && command.Arg[1].data < gameData.itemTable.Item.Count &&
+                            gameData.itemTable.Item[command.Arg[1].data].Enabled)
                         {
-                            command.args[0].argType = 1;
-                            command.args[0].data = distribution.Next((int)command.args[0].data);
+                            command.Arg[1].argType = EvData.ArgType.Float;
+                            command.Arg[1].data = distribution.Next(command.Arg[1].data);
                         }
 
-            gameData.SetModified(GameDataSet.DataField.EvScripts);
+            gameData.SetModified(gameData.evScriptFiles.GetType());
         }
 
-        private void RandomizeScriptedPokemon(IDistribution distribution)
+        private void RandomizeScriptedPokemon(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (EvScript evScript in gameData.evScriptFiles)
-                foreach (Script script in evScript.scripts)
-                    foreach(Command command in script.commands)
-                        if (command.cmdType == 322)
+            foreach (var evScript in gameData.evScriptFiles)
+                foreach (var script in evScript.Scripts)
+                    foreach(var command in script.Commands)
+                        if (command.Arg[0].data == 322)
                         {
-                            command.args[1].argType = 1;
-                            command.args[1].data = distribution.Next((int)command.args[1].data);
+                            command.Arg[2].argType = EvData.ArgType.Float;
+                            command.Arg[2].data = distribution.Next(command.Arg[2].data);
                         }
 
-            gameData.SetModified(GameDataSet.DataField.EvScripts);
+            gameData.SetModified(gameData.evScriptFiles.GetType());
         }
 
-        private void RandomizeTrainerPokemonEVs(IDistribution distribution)
+        private void RandomizeTrainerPokemonEVs(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (Trainer trainer in gameData.trainerTable)
-                foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
+            foreach (var trainer in gameData.trainerTable.TrainerData)
+                foreach (var trainerPokemon in trainer.Pokes)
                 {
-                    int[] evs = new int[6];
-                    int evTotal = trainerPokemon.GetEVs().Sum();
-                    if (IsWithin(AbsoluteBoundary.EvTotal, evTotal))
-                        evTotal = Conform(AbsoluteBoundary.EvTotal, distribution.Next(evTotal));
+                    var evs = new byte[6];
+                    int evTotal = trainerPokemon.TotalEVs;
+                    if (IsWithin(Boundary.EvTotal, evTotal))
+                        evTotal = Conform(Boundary.EvTotal, distribution.Next(evTotal));
 
                     while (evTotal > 0)
                     {
                         int index = rng.Next(evs.Length);
-                        int room = (int)GetBoundaries(AbsoluteBoundary.Ev)[2] - evs[index];
+                        int room = (int)GetBoundaries(Boundary.Ev)[2] - evs[index];
                         int add = rng.Next(Math.Min(room, 1), Math.Min(room, evTotal));
-                        evs[index] += add;
+                        evs[index] += (byte)add;
                         evTotal -= add;
                     }
 
-                    trainerPokemon.SetEVs(evs);
+                    trainerPokemon.EffortHp = evs[0];
+                    trainerPokemon.EffortAtk = evs[1];
+                    trainerPokemon.EffortDef = evs[2];
+                    trainerPokemon.EffortSpAtk = evs[3];
+                    trainerPokemon.EffortSpDef = evs[4];
+                    trainerPokemon.EffortAgi = evs[5];
                 }
 
-            gameData.SetModified(GameDataSet.DataField.Trainers);
+            gameData.SetModified(gameData.trainerTable.GetType());
         }
 
-        private void RandomizeTrainerPokemonIVs(IDistribution distribution)
+        private void RandomizeTrainerPokemonIVs(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (Trainer trainer in gameData.trainerTable)
-                foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
-                    if (IsWithin(AbsoluteBoundary.Iv, (int)trainerPokemon.GetIVs().Average()))
+            foreach (var trainer in gameData.trainerTable.TrainerData)
+                foreach (var trainerPokemon in trainer.Pokes)
+                    if (IsWithin(Boundary.Iv, (int)trainerPokemon.AverageIVs))
                     {
-                        trainerPokemon.hpIV = (byte)Conform(AbsoluteBoundary.Iv, distribution.Next(trainerPokemon.hpIV));
-                        trainerPokemon.atkIV = (byte)Conform(AbsoluteBoundary.Iv, distribution.Next(trainerPokemon.atkIV));
-                        trainerPokemon.defIV = (byte)Conform(AbsoluteBoundary.Iv, distribution.Next(trainerPokemon.defIV));
-                        trainerPokemon.spAtkIV = (byte)Conform(AbsoluteBoundary.Iv, distribution.Next(trainerPokemon.spAtkIV));
-                        trainerPokemon.spDefIV = (byte)Conform(AbsoluteBoundary.Iv, distribution.Next(trainerPokemon.spDefIV));
-                        trainerPokemon.spdIV = (byte)Conform(AbsoluteBoundary.Iv, distribution.Next(trainerPokemon.spdIV));
+                        trainerPokemon.TalentHp = (byte)Conform(Boundary.Iv, distribution.Next(trainerPokemon.TalentHp));
+                        trainerPokemon.TalentAtk = (byte)Conform(Boundary.Iv, distribution.Next(trainerPokemon.TalentAtk));
+                        trainerPokemon.TalentDef = (byte)Conform(Boundary.Iv, distribution.Next(trainerPokemon.TalentDef));
+                        trainerPokemon.TalentSpAtk = (byte)Conform(Boundary.Iv, distribution.Next(trainerPokemon.TalentSpAtk));
+                        trainerPokemon.TalentSpDef = (byte)Conform(Boundary.Iv, distribution.Next(trainerPokemon.TalentSpDef));
+                        trainerPokemon.TalentAgi = (byte)Conform(Boundary.Iv, distribution.Next(trainerPokemon.TalentAgi));
                     }
 
-            gameData.SetModified(GameDataSet.DataField.Trainers);
+            gameData.SetModified(gameData.trainerTable.GetType());
         }
 
-        private void RandomizeTrainerPokemonLevels(IDistribution distribution)
+        private void RandomizeTrainerPokemonLevels(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (Trainer trainer in gameData.trainerTable)
-                foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
-                    if (IsWithin(AbsoluteBoundary.Level, trainerPokemon.level))
-                        trainerPokemon.level = (byte)Conform(AbsoluteBoundary.Level, distribution.Next(trainerPokemon.level));
+            foreach (var trainer in gameData.trainerTable.TrainerData)
+                foreach (var trainerPokemon in trainer.Pokes)
+                    if (IsWithin(Boundary.Level, trainerPokemon.Level))
+                        trainerPokemon.Level = (byte)Conform(Boundary.Level, distribution.Next(trainerPokemon.Level));
 
-            gameData.SetModified(GameDataSet.DataField.Trainers);
+            gameData.SetModified(gameData.trainerTable.GetType());
         }
 
-        private void RandomizeTrainerPokemonCount(IDistribution distribution)
+        private void RandomizeTrainerPokemonCount(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (Trainer trainer in gameData.trainerTable)
+            foreach (var trainer in gameData.trainerTable.TrainerData)
             {
-                List<TrainerPokemon> trainerPokemon = trainer.trainerPokemon;
+                var trainerPokemon = trainer.Pokes;
                 int trainerPokemonCount = trainerPokemon.Count;
-                if (IsWithin(AbsoluteBoundary.TrainerPokemonCount, trainerPokemonCount))
-                    trainerPokemonCount = Conform(AbsoluteBoundary.TrainerPokemonCount, distribution.Next(trainerPokemon.Count));
+                if (IsWithin(Boundary.TrainerPokemonCount, trainerPokemonCount))
+                    trainerPokemonCount = Conform(Boundary.TrainerPokemonCount, distribution.Next(trainerPokemon.Count));
+
                 while (trainerPokemon.Count < trainerPokemonCount)
                 {
                     if (trainerPokemon.Count == 0)
@@ -446,165 +441,132 @@ namespace ImpostersOrdeal
                         continue;
                     }
 
-                    trainerPokemon.Add(Copy(GetRandom(trainerPokemon)));
+                    trainerPokemon.Add(rng.RandomElement(trainerPokemon).Clone());
                 }
+
                 while (trainerPokemon.Count > trainerPokemonCount)
                     trainerPokemon.RemoveAt(rng.Next(trainerPokemon.Count));
             }
 
-            gameData.SetModified(GameDataSet.DataField.Trainers);
+            gameData.SetModified(gameData.trainerTable.GetType());
         }
 
-        /// <summary>
-        ///  Returns a separate identical instance of a TrainerPokemon object.
-        /// </summary>
-        private static TrainerPokemon Copy(TrainerPokemon o)
+        private void RandomizeTrainerPokemonAbilities(GameDataSet gameData, bool includeUnobtainable, IDistribution distribution)
         {
-            TrainerPokemon t = new()
-            {
-                abilityID = o.abilityID,
-                atkEV = o.atkEV,
-                atkIV = o.atkIV,
-                ballID = o.ballID,
-                defEV = o.defEV,
-                defIV = o.defIV,
-                dexID = o.dexID,
-                formID = o.formID,
-                hpEV = o.hpEV,
-                hpIV = o.hpIV,
-                isRare = o.isRare,
-                itemID = o.itemID,
-                level = o.level,
-                moveID1 = o.moveID1,
-                moveID2 = o.moveID2,
-                moveID3 = o.moveID3,
-                moveID4 = o.moveID4,
-                natureID = o.natureID,
-                seal = o.seal,
-                sex = o.sex,
-                spAtkEV = o.spAtkEV,
-                spAtkIV = o.spAtkIV,
-                spDefEV = o.spDefEV,
-                spDefIV = o.spDefIV,
-                spdEV = o.spdEV,
-                spdIV = o.spdIV
-            };
-            return t;
-        }
-        
-
-        private void RandomizeTrainerPokemonAbilities(bool includeUnobtainable, IDistribution distribution)
-        {
-            foreach (Trainer trainer in gameData.trainerTable)
-                foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
+            foreach (var trainer in gameData.trainerTable.TrainerData)
+                foreach (var trainerPokemon in trainer.Pokes)
                 {
                     if (includeUnobtainable)
                     {
-                        trainerPokemon.abilityID = (ushort)distribution.Next(trainerPokemon.abilityID);
+                        trainerPokemon.Tokusei = (ushort)distribution.Next(trainerPokemon.Tokusei);
                         continue;
                     }
 
-                    trainerPokemon.abilityID = (ushort)GetRandom(gameData.GetPokemon(trainerPokemon.dexID, trainerPokemon.formID).GetAbilities());
+                    trainerPokemon.Tokusei = rng.RandomElement(gameData.pokemonDataTable.GetDataForPokemon(trainerPokemon.MonsNo, trainerPokemon.FormNo).personal.Abilities);
                 }
 
-            gameData.SetModified(GameDataSet.DataField.Trainers);
+            gameData.SetModified(gameData.trainerTable.GetType());
         }
 
-        private void RandomizeTrainerPokemonShininess(double shinyP)
+        private void RandomizeTrainerPokemonShininess(GameDataSet gameData, double shinyP)
         {
-            foreach (Trainer trainer in gameData.trainerTable)
-                foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
-                    trainerPokemon.isRare = (byte)(P(shinyP) ? 1 : 0);
+            foreach (var trainer in gameData.trainerTable.TrainerData)
+                foreach (var trainerPokemon in trainer.Pokes)
+                    trainerPokemon.IsRare = rng.Percent(shinyP);
 
-            gameData.SetModified(GameDataSet.DataField.Trainers);
+            gameData.SetModified(gameData.trainerTable.GetType());
         }
 
-        private void RandomizeTrainerPokemonNatures(IDistribution distribution)
+        private void RandomizeTrainerPokemonNatures(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (Trainer trainer in gameData.trainerTable)
-                foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
-                    trainerPokemon.natureID = (byte)distribution.Next(trainerPokemon.natureID);
+            foreach (var trainer in gameData.trainerTable.TrainerData)
+                foreach (var trainerPokemon in trainer.Pokes)
+                    trainerPokemon.Seikaku = (byte)distribution.Next(trainerPokemon.Seikaku);
 
-            gameData.SetModified(GameDataSet.DataField.Trainers);
+            gameData.SetModified(gameData.trainerTable.GetType());
         }
 
-        private void RandomizeTrainerPokemonHeldItems(IDistribution distribution, bool levelLogic)
+        private void RandomizeTrainerPokemonHeldItems(GameDataSet gameData, IDistribution distribution, bool levelLogic)
         {
-            foreach (Trainer trainer in gameData.trainerTable)
-                foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
+            foreach (var trainer in gameData.trainerTable.TrainerData)
+                foreach (var trainerPokemon in trainer.Pokes)
                 {
-                    if (levelLogic && !P(trainerPokemon.level))
+                    if (levelLogic && !rng.Percent(trainerPokemon.Level))
                         continue;
 
-                    trainerPokemon.itemID = (ushort)distribution.Next(trainerPokemon.itemID);
+                    trainerPokemon.Item = (ushort)distribution.Next(trainerPokemon.Item);
                 }
 
-            gameData.SetModified(GameDataSet.DataField.Trainers);
+            gameData.SetModified(gameData.trainerTable.GetType());
         }
 
-        private void RandomizeTrainerPokemonMoves(bool setToLevelUpMoves, IDistribution distribution, double typeBiasP)
+        private void RandomizeTrainerPokemonMoves(GameDataSet gameData, bool setToLevelUpMoves, IDistribution distribution, double typeBiasP)
         {
-            foreach (Trainer trainer in gameData.trainerTable)
-                foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
+            foreach (var trainer in gameData.trainerTable.TrainerData)
+                foreach (var trainerPokemon in trainer.Pokes)
                 {
-                    List<ushort> moves = trainerPokemon.GetMoves();
-                    Pokemon pokemon = gameData.GetPokemon(trainerPokemon.dexID, trainerPokemon.formID);
+                    var moves = trainerPokemon.Moves;
+                    var pokemon = gameData.pokemonDataTable.GetDataForPokemon(trainerPokemon.MonsNo, trainerPokemon.FormNo);
 
                     if (setToLevelUpMoves)
                     {
-                        moves = pokemon.levelUpMoves.Where(l => l.level <= trainerPokemon.level).TakeLast(4).Select(l => l.moveID).ToList();
-                        trainerPokemon.SetMoves(moves);
+                        var newMoves = pokemon.levelUpMoves.moves.Where(l => l.level <= trainerPokemon.Level).TakeLast(4).Select(l => l.move);
+                        if (newMoves.Count() < 4)
+                            newMoves = newMoves.Concat(Enumerable.Repeat<ushort>(0, 4 - newMoves.Count()));
+
+                        trainerPokemon.Moves = newMoves.ToArray();
                         continue;
                     }
 
-                    for (int i = 0; i < moves.Count; i++)
+                    for (int i=0; i<moves.Count(); i++)
                     {
                         moves[i] = (ushort)distribution.Next(moves[i]);
-                        if (P(typeBiasP))
-                            while (!pokemon.GetTyping().Contains(gameData.moves[moves[i]].typingID))
+                        if (rng.Percent(typeBiasP))
+                            while (!pokemon.personal.Types.Contains(gameData.moveTable.Waza[moves[i]].type))
                                 moves[i] = (ushort)distribution.Next(moves[i]);
                     }
 
-                    trainerPokemon.SetMoves(moves);
+                    trainerPokemon.Moves = moves;
                 }
 
-            gameData.SetModified(GameDataSet.DataField.Trainers);
+            gameData.SetModified(gameData.trainerTable.GetType());
         }
 
-        private void RandomizeTrainerPokemonSpecies(IDistribution distribution, bool legendLogic, bool typeThemes, bool evolveLogic)
+        private void RandomizeTrainerPokemonSpecies(GameDataSet gameData, IDistribution distribution, bool legendLogic, bool typeThemes, bool evolveLogic)
         {
-            HashSet<int> legendaryDexIDs = gameData.dexEntries.Where(d => d.forms[0].legendary).Select(d => d.dexID).ToHashSet();
-            foreach (Trainer trainer in gameData.trainerTable)
+            var legendaries = gameData.encounterTableFiles[0].legendpoke;
+            foreach (var trainer in gameData.trainerTable.TrainerData)
             {
-                int typing = trainer.GetTypeTheme();
+                var typing = gameData.trainerTable.TrainerType[trainer.TypeID].GetTypeTheme();
 
-                foreach (TrainerPokemon trainerPokemon in trainer.trainerPokemon)
+                foreach (var trainerPokemon in trainer.Pokes)
                 {
-                    bool acceptLegendary = !legendLogic || P(trainerPokemon.level);
-                    Pokemon pokemon = gameData.GetPokemon(trainerPokemon.dexID, trainerPokemon.formID);
+                    bool acceptLegendary = !legendLogic || rng.Percent(trainerPokemon.Level);
+                    var pokemon = gameData.pokemonDataTable.GetDataForPokemon(trainerPokemon.MonsNo, trainerPokemon.FormNo);
                     do
                     {
-                        pokemon = GetRandom(gameData.dexEntries[distribution.Next(pokemon.dexID)].forms);
-                        if (evolveLogic)
-                            pokemon = FindStage(pokemon, trainerPokemon.level, false);
-                    } while (!pokemon.IsValid() ||
-                        typeThemes && typing != -1 && !pokemon.GetTyping().Contains(typing) ||
-                        !acceptLegendary && legendaryDexIDs.Contains(pokemon.dexID));
+                        pokemon = rng.RandomElement(gameData.pokemonDataTable.GetAllFormsForPokemon(distribution.Next(pokemon.personal.monsno)));
 
-                    trainerPokemon.dexID = pokemon.dexID;
-                    trainerPokemon.formID = (ushort)pokemon.formID;
-                    trainerPokemon.sex = 3;
+                        if (evolveLogic)
+                            pokemon = FindStage(pokemon, trainerPokemon.Level, false);
+                    } while ((!pokemon.personal.Valid) ||
+                        (typeThemes && typing != -1 && !pokemon.personal.Types.Contains((byte)typing)) ||
+                        (!acceptLegendary && legendaries.Any(l => l.monsNo == pokemon.personal.monsno && l.formNo == pokemon.formID)));
+
+                    trainerPokemon.MonsNo = pokemon.personal.monsno;
+                    trainerPokemon.FormNo = pokemon.formID;
+                    trainerPokemon.Sex = 3;
                 }
             }
 
-            gameData.SetModified(GameDataSet.DataField.Trainers);
+            gameData.SetModified(gameData.trainerTable.GetType());
         }
 
-        private void RandomizeTrainerItems(IDistribution itemDistribution, bool randomizeItemCount, IDistribution itemCountdistribution)
+        private void RandomizeTrainerItems(GameDataSet gameData, IDistribution itemDistribution, bool randomizeItemCount, IDistribution itemCountdistribution)
         {
-            foreach (Trainer trainer in gameData.trainerTable)
+            foreach (var trainer in gameData.trainerTable.TrainerData)
             {
-                List<int> items = trainer.GetItems();
+                var items = trainer.UseItem;
                 if (randomizeItemCount)
                 {
                     int itemCount = itemCountdistribution.Next(items.Count, 0, 4);
@@ -612,70 +574,81 @@ namespace ImpostersOrdeal
                     {
                         if (items.Count == 0)
                         {
-                            items.Add(itemDistribution.Next(1));
+                            items.Add((ushort)itemDistribution.Next(1));
                             continue;
                         }
 
-                        items.Add(GetRandom(items));
+                        items.Add(rng.RandomElement(items));
                     }
                     while (items.Count > itemCount)
                         items.RemoveAt(rng.Next(items.Count));
                 }
 
                 for (int i = 0; i < items.Count; i++)
-                    items[i] = itemDistribution.Next(items[i]);
+                    items[i] = (ushort)itemDistribution.Next(items[i]);
 
-                trainer.SetItems(items);
-                trainer.SetItemFlag();
+                trainer.UseItem = items;
+                trainer.ItemFlag = true;
             }
 
-            gameData.SetModified(GameDataSet.DataField.Trainers);
+            gameData.SetModified(gameData.trainerTable.GetType());
         }
 
-        private void RandomizeWildEncounters(bool randomizeSpecies, IDistribution speciesDistribution, bool randomizeLevels, IDistribution levelDistribution, bool legendLogic, bool evolveLogic)
+        private void RandomizeWildEncounters(GameDataSet gameData, bool randomizeSpecies, IDistribution speciesDistribution, bool randomizeLevels, IDistribution levelDistribution, bool legendLogic, bool evolveLogic)
         {
-            bool randomizeEncounterTableFormIDs = gameData.Uint16EncounterTables();
-            bool ugVersionsUnbounded = gameData.UgVersionsUnbounded();
-            bool uint16UgTables = gameData.Uint16UgTables();
-            bool randomizeUgEncounterTableFormIDs = ugVersionsUnbounded || uint16UgTables;
-            List<int> legendaryDexIDs = gameData.dexEntries.Where(d => d.forms[0].legendary).Select(d => d.dexID).ToList();
-            foreach (EncounterTableFile encounterTableFile in gameData.encounterTableFiles)
-            {
-                foreach (EncounterTable encounterTable in encounterTableFile.encounterTables)
-                {
-                    RandomizeEncounterList(encounterTable.day, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
-                    RandomizeEncounterList(encounterTable.goodRodMons, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
-                    RandomizeEncounterList(encounterTable.groundMons, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
-                    RandomizeEncounterList(encounterTable.night, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
-                    RandomizeEncounterList(encounterTable.oldRodMons, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
-                    RandomizeEncounterList(encounterTable.superRodMons, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
-                    RandomizeEncounterList(encounterTable.swayGrass, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
-                    RandomizeEncounterList(encounterTable.tairyo, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
-                    RandomizeEncounterList(encounterTable.waterMons, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
+            // TODO: Modded options
+            //bool randomizeEncounterTableFormIDs = gameData.Uint16EncounterTables();
+            //bool ugVersionsUnbounded = gameData.UgVersionsUnbounded();
+            //bool uint16UgTables = gameData.Uint16UgTables();
+            //bool randomizeUgEncounterTableFormIDs = ugVersionsUnbounded || uint16UgTables;
 
-                    // Unused tables too, why not?
-                    RandomizeEncounterList(encounterTable.gbaRuby, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
-                    RandomizeEncounterList(encounterTable.gbaSapphire, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
-                    RandomizeEncounterList(encounterTable.gbaEmerald, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
-                    RandomizeEncounterList(encounterTable.gbaFire, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
-                    RandomizeEncounterList(encounterTable.gbaLeaf, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
+            bool randomizeEncounterTableFormIDs = false;
+            bool ugVersionsUnbounded = false;
+            bool uint16UgTables = false;
+            bool randomizeUgEncounterTableFormIDs = false;
+
+            foreach (var encounterTableFile in gameData.encounterTableFiles)
+            {
+                var legendaries = encounterTableFile.legendpoke;
+
+                foreach (var encounterTable in encounterTableFile.table)
+                {
+                    RandomizeEncounterList(gameData, encounterTable.ground_mons, legendaries, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
+                    RandomizeEncounterList(gameData, encounterTable.tairyo, legendaries, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
+                    RandomizeEncounterList(gameData, encounterTable.day, legendaries, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
+                    RandomizeEncounterList(gameData, encounterTable.night, legendaries, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
+                    RandomizeEncounterList(gameData, encounterTable.swayGrass, legendaries, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
+                    RandomizeEncounterList(gameData, encounterTable.gbaRuby, legendaries, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
+                    RandomizeEncounterList(gameData, encounterTable.gbaSapp, legendaries, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
+                    RandomizeEncounterList(gameData, encounterTable.gbaEme, legendaries, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
+                    RandomizeEncounterList(gameData, encounterTable.gbaFire, legendaries, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
+                    RandomizeEncounterList(gameData, encounterTable.gbaLeaf, legendaries, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
+                    RandomizeEncounterList(gameData, encounterTable.water_mons, legendaries, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
+                    RandomizeEncounterList(gameData, encounterTable.boro_mons, legendaries, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
+                    RandomizeEncounterList(gameData, encounterTable.ii_mons, legendaries, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
+                    RandomizeEncounterList(gameData, encounterTable.sugoi_mons, legendaries, randomizeSpecies, speciesDistribution, randomizeLevels, levelDistribution, legendLogic, evolveLogic, randomizeEncounterTableFormIDs);
                 }
+
                 if (randomizeSpecies)
                 {
-                    foreach (HoneyTreeEncounter honeyTreeEncounter in encounterTableFile.honeyTreeEnconters)
+                    // TODO: Yes this is honey trees but re-check all of these (honeytree tables are for the table rates)
+                    foreach (var honeyTreeEncounter in encounterTableFile.mistu)
                     {
-                        honeyTreeEncounter.normalDexID = speciesDistribution.Next(honeyTreeEncounter.normalDexID);
-                        honeyTreeEncounter.rareDexID = speciesDistribution.Next(honeyTreeEncounter.rareDexID);
-                        honeyTreeEncounter.superRareDexID = speciesDistribution.Next(honeyTreeEncounter.superRareDexID);
+                        honeyTreeEncounter.Normal = speciesDistribution.Next(honeyTreeEncounter.Normal);
+                        honeyTreeEncounter.Rare = speciesDistribution.Next(honeyTreeEncounter.Rare);
+                        honeyTreeEncounter.SuperRare = speciesDistribution.Next(honeyTreeEncounter.SuperRare);
                     }
-                    for (int i = 0; i < encounterTableFile.safariMons.Count; i++)
-                        encounterTableFile.safariMons[i] = speciesDistribution.Next(encounterTableFile.safariMons[i]);
-                    for (int i = 0; i < encounterTableFile.trophyGardenMons.Count; i++)
-                        encounterTableFile.trophyGardenMons[i] = speciesDistribution.Next(encounterTableFile.trophyGardenMons[i]);
+
+                    foreach (var safariEncounter in encounterTableFile.safari)
+                        safariEncounter.MonsNo = speciesDistribution.Next(safariEncounter.MonsNo);
+
+                    foreach (var trophyGardenEncounter in encounterTableFile.urayama)
+                        trophyGardenEncounter.monsNo = speciesDistribution.Next(trophyGardenEncounter.monsNo);
                 }
             }
 
-            if (randomizeSpecies)
+            // TODO: UG Encounter stuff
+            /*if (randomizeSpecies)
                 foreach (UgEncounterFile ugEncounterFile in gameData.ugEncounterFiles)
                     for (int i = 0; i < ugEncounterFile.ugEncounters.Count; i++)
                     {
@@ -690,32 +663,33 @@ namespace ImpostersOrdeal
                             if (uint16UgTables)
                                 ugEncounterFile.ugEncounters[i].dexID += formID << 16;
                         }
-                    }
+                    }*/
 
-            if (randomizeSpecies)
+            /*if (randomizeSpecies)
                 foreach (UgSpecialEncounter ugSpecialEncounter in gameData.ugSpecialEncounters)
-                    ugSpecialEncounter.dexID = speciesDistribution.Next(ugSpecialEncounter.dexID);
+                    ugSpecialEncounter.dexID = speciesDistribution.Next(ugSpecialEncounter.dexID);*/
 
-            if (randomizeLevels)
+            /*if (randomizeLevels)
                 foreach (UgEncounterLevelSet ugEncounterLevelSet in gameData.ugEncounterLevelSets)
-                    if (IsWithin(AbsoluteBoundary.Level, (int)ugEncounterLevelSet.GetAvgLevel()))
+                    if (IsWithin(Boundary.Level, (int)ugEncounterLevelSet.GetAvgLevel()))
                     {
-                        ugEncounterLevelSet.minLv = Conform(AbsoluteBoundary.Level, levelDistribution.Next(ugEncounterLevelSet.minLv));
-                        ugEncounterLevelSet.maxLv = Conform(AbsoluteBoundary.Level, levelDistribution.Next(ugEncounterLevelSet.maxLv));
-                    }
+                        ugEncounterLevelSet.minLv = Conform(Boundary.Level, levelDistribution.Next(ugEncounterLevelSet.minLv));
+                        ugEncounterLevelSet.maxLv = Conform(Boundary.Level, levelDistribution.Next(ugEncounterLevelSet.maxLv));
+                    }*/
 
-            gameData.SetModified(GameDataSet.DataField.EncounterTableFiles);
-            gameData.SetModified(GameDataSet.DataField.UgEncounterFiles);
-            gameData.SetModified(GameDataSet.DataField.UgEncounterLevelSets);
-            gameData.SetModified(GameDataSet.DataField.UgSpecialEncounters);
+            gameData.SetModified(gameData.encounterTableFiles.GetType());
+            //gameData.SetModified(GameDataSet.DataField.UgEncounterFiles);
+            //gameData.SetModified(GameDataSet.DataField.UgEncounterLevelSets);
+            //gameData.SetModified(GameDataSet.DataField.UgSpecialEncounters);
 
-            if (gameData.externalStarters != null)
+            // TODO: External JSON encounters
+            /*if (gameData.externalStarters != null)
             {
                 foreach ((string _, Starter starter) in gameData.externalStarters)
                 {
-                    if (randomizeLevels && IsWithin(AbsoluteBoundary.Level, starter.level))
+                    if (randomizeLevels && IsWithin(Boundary.Level, starter.level))
                     {
-                        starter.level = Conform(AbsoluteBoundary.Level, levelDistribution.Next(starter.level));
+                        starter.level = Conform(Boundary.Level, levelDistribution.Next(starter.level));
 
                         if (evolveLogic)
                         {
@@ -749,10 +723,10 @@ namespace ImpostersOrdeal
                 foreach ((string _, HoneyTreeZone honeyTree) in gameData.externalHoneyTrees)
                     foreach (HoneyTreeSlot slot in honeyTree.slots)
                     {
-                        if (randomizeLevels && IsWithin(AbsoluteBoundary.Level, (int)slot.GetAvgLevel()))
+                        if (randomizeLevels && IsWithin(Boundary.Level, (int)slot.GetAvgLevel()))
                         {
-                            slot.minlv = Conform(AbsoluteBoundary.Level, levelDistribution.Next(slot.minlv));
-                            slot.maxlv = Conform(AbsoluteBoundary.Level, levelDistribution.Next(slot.maxlv));
+                            slot.minlv = Conform(Boundary.Level, levelDistribution.Next(slot.minlv));
+                            slot.maxlv = Conform(Boundary.Level, levelDistribution.Next(slot.maxlv));
 
                             if (slot.minlv > slot.maxlv)
                                 (slot.maxlv, slot.minlv) = (slot.minlv, slot.maxlv);
@@ -782,241 +756,240 @@ namespace ImpostersOrdeal
                         }
                     }
                 gameData.SetModified(GameDataSet.DataField.ExternalHoneyTrees);
-            }
+            }*/
         }
 
         /// <summary>
-        ///  Randomizes a list of Encounter objects.
+        /// Randomizes a list of Encounter objects.
         /// </summary>
-        private void RandomizeEncounterList(List<Encounter> encounters, bool randomizeSpecies, IDistribution speciesDistribution, bool randomizeLevels, IDistribution levelDistribution, bool legendLogic, bool evolveLogic, bool randomizeFormIDs)
+        private void RandomizeEncounterList(GameDataSet gameData, List<FieldEncountTable.Sheettable.MonsLv> encounters, List<FieldEncountTable.Sheetlegendpoke> legendaries, bool randomizeSpecies, IDistribution speciesDistribution, bool randomizeLevels, IDistribution levelDistribution, bool legendLogic, bool evolveLogic, bool randomizeFormIDs)
         {
-            List<int> legendaryDexIDs = gameData.dexEntries.Where(d => d.forms[0].legendary).Select(d => d.dexID).ToList();
-            foreach (Encounter encounter in encounters)
+            foreach (var encounter in encounters)
             {
-                if (randomizeLevels && IsWithin(AbsoluteBoundary.Level, (int)encounter.GetAvgLevel()))
+                if (randomizeLevels && IsWithin(Boundary.Level, (int)encounter.GetAvgLevel()))
                 {
-                    encounter.minLv = Conform(AbsoluteBoundary.Level, levelDistribution.Next(encounter.minLv));
-                    encounter.maxLv = Conform(AbsoluteBoundary.Level, levelDistribution.Next(encounter.maxLv));
+                    encounter.minlv = Conform(Boundary.Level, levelDistribution.Next(encounter.minlv));
+                    encounter.maxlv = Conform(Boundary.Level, levelDistribution.Next(encounter.maxlv));
 
-                    if (encounter.minLv > encounter.maxLv)
-                        (encounter.maxLv, encounter.minLv) = (encounter.minLv, encounter.maxLv);
+                    if (encounter.minlv > encounter.maxlv)
+                        (encounter.maxlv, encounter.minlv) = (encounter.minlv, encounter.maxlv);
 
                     if (evolveLogic)
                     {
                         if (randomizeFormIDs)
                         {
-                            Pokemon p = FindStage(gameData.GetPokemon((ushort)encounter.dexID, encounter.dexID >> 16), (int)encounter.GetAvgLevel(), true);
-                            encounter.dexID = p.dexID + (p.formID << 16);
+                            var p = FindStage(gameData.pokemonDataTable.GetDataForPokemon((ushort)encounter.monsNo, encounter.monsNo >> 16), (int)encounter.GetAvgLevel(), true);
+                            encounter.monsNo = p.personal.monsno + (p.formID << 16);
                         }
                         else
-                            encounter.dexID = FindStage(gameData.personalEntries[(ushort)encounter.dexID], (int)encounter.GetAvgLevel(), true).dexID;
+                            encounter.monsNo = FindStage(gameData.pokemonDataTable.Data[(ushort)encounter.monsNo], (int)encounter.GetAvgLevel(), true).personal.monsno;
                     }
                 }
 
                 if (randomizeSpecies)
                 {
-                    bool acceptLegendary = !legendLogic || P(encounter.GetAvgLevel());
-                    Func<Pokemon, Pokemon> resolveStage = evolveLogic ? p => FindStage(p, (int)encounter.GetAvgLevel(), true) : p => p;
+                    bool acceptLegendary = !legendLogic || rng.Percent(encounter.GetAvgLevel());
+                    Func<PokemonDataTable.PokemonData, PokemonDataTable.PokemonData> resolveStage = evolveLogic ? p => FindStage(p, (int)encounter.GetAvgLevel(), true) : p => p;
 
                     do
                     {
-                        encounter.dexID = speciesDistribution.Next((ushort)encounter.dexID);
+                        encounter.monsNo = speciesDistribution.Next((ushort)encounter.monsNo);
                         if (randomizeFormIDs)
                         {
-                            encounter.dexID += rng.Next(gameData.dexEntries[(ushort)encounter.dexID].forms.Count) << 16;
-                            Pokemon p = resolveStage(gameData.GetPokemon((ushort)encounter.dexID, encounter.dexID >> 16));
-                            encounter.dexID = p.dexID + (p.formID << 16);
+                            encounter.monsNo += rng.Next(gameData.pokemonDataTable.GetAllFormsForPokemon(encounter.monsNo).Count) << 16;
+                            var p = resolveStage(gameData.pokemonDataTable.GetDataForPokemon((ushort)encounter.monsNo, encounter.monsNo >> 16));
+                            encounter.monsNo = p.personal.monsno + (p.formID << 16);
                         }
                         else
-                            encounter.dexID = resolveStage(gameData.personalEntries[(ushort)encounter.dexID]).dexID;
-                    } while (!gameData.GetPokemon((ushort)encounter.dexID, encounter.dexID >> 16).IsValid() ||
-                        !acceptLegendary && legendaryDexIDs.Contains((ushort)encounter.dexID));
+                            encounter.monsNo = resolveStage(gameData.pokemonDataTable.Data[(ushort)encounter.monsNo]).personal.monsno;
+                    } while (!gameData.pokemonDataTable.GetDataForPokemon((ushort)encounter.monsNo, encounter.monsNo >> 16).personal.Valid ||
+                        !acceptLegendary && legendaries.Any(l => (!randomizeFormIDs && l.monsNo == encounter.monsNo) ||
+                        (randomizeFormIDs && l.monsNo == (ushort)encounter.monsNo && l.formNo == (encounter.monsNo >> 16))));
                 }
             }
         }
 
         /// <summary>
-        ///  Finds the evolution stage a certain pokemon is likely to be at for the specified level.
+        /// Finds the evolution stage a certain pokemon is likely to be at for the specified level.
         /// </summary>
-        private Pokemon FindStage(Pokemon pokemon, int level, bool wild)
+        private PokemonDataTable.PokemonData FindStage(PokemonDataTable.PokemonData pokemon, int level, bool wild)
         {
             //(wildLevel, trainerLevel)
             int pastEvoLevel = wild ? pokemon.pastEvoLvs.Item1 : pokemon.pastEvoLvs.Item2;
             if (pastEvoLevel > level)
-                return FindStage(GetRandom(pokemon.pastPokemon), level, wild);
+                return FindStage(rng.RandomElement(pokemon.pastPokemon), level, wild);
             int nextEvoLevel = wild ? pokemon.nextEvoLvs.Item1 : pokemon.nextEvoLvs.Item2;
             if (nextEvoLevel <= level)
-                return FindStage(GetRandom(pokemon.nextPokemon), level, wild);
+                return FindStage(rng.RandomElement(pokemon.nextPokemon), level, wild);
             return pokemon;
         }
 
-        private void RandomizeShopItems(IDistribution distribution, bool preserveRegularMarts)
+        private void RandomizeShopItems(GameDataSet gameData, IDistribution distribution, bool preserveRegularMarts)
         {
             if (!preserveRegularMarts)
-                foreach (MartItem item in gameData.shopTable.martItems)
-                    item.itemID = (ushort)distribution.Next(item.itemID);
+                foreach (var item in gameData.shopTable.FS)
+                    item.ItemNo = (ushort)distribution.Next(item.ItemNo);
 
-            foreach (FixedShopItem item in gameData.shopTable.fixedShopItems)
-                item.itemID = (ushort)distribution.Next(item.itemID);
+            foreach (var item in gameData.shopTable.FixedShop)
+                item.ItemNo = (ushort)distribution.Next(item.ItemNo);
 
-            foreach (BpShopItem item in gameData.shopTable.bpShopItems)
-                item.itemID = (ushort)distribution.Next(item.itemID);
+            foreach (var item in gameData.shopTable.BPShop)
+                item.ItemNo = (ushort)distribution.Next(item.ItemNo);
 
-            gameData.SetModified(GameDataSet.DataField.ShopTables);
+            gameData.SetModified(gameData.shopTable.GetType());
         }
 
-        private void RandomizePickupItems(IDistribution distribution)
+        private void RandomizePickupItems(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (PickupItem item in gameData.pickupTable)
-                item.itemID = (ushort)distribution.Next(item.itemID);
+            foreach (var item in gameData.pickupTable.PickupItems)
+                item.ID = (ushort)distribution.Next(item.ID);
 
-            gameData.SetModified(GameDataSet.DataField.PickupItems);
+            gameData.SetModified(gameData.pickupTable.GetType());
         }
 
-        private void RandomizePrices(IDistribution distribution)
+        private void RandomizePrices(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (Item item in gameData.items)
-                if (IsWithin(AbsoluteBoundary.Price, item.price))
-                    item.price = Conform(AbsoluteBoundary.Price, distribution.Next(item.price));
+            foreach (var item in gameData.itemTable.Item)
+                if (IsWithin(Boundary.Price, item.price))
+                    item.price = Conform(Boundary.Price, distribution.Next(item.price));
 
-            gameData.SetModified(GameDataSet.DataField.Items);
+            gameData.SetModified(gameData.itemTable.GetType());
         }
 
-        private void RandomizePP(IDistribution distribution)
+        private void RandomizePP(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (Move move in gameData.moves)
-                if (IsWithin(AbsoluteBoundary.Pp, move.basePP))
-                    move.basePP = (byte)Conform(AbsoluteBoundary.Pp, distribution.Next(move.basePP));
+            foreach (var move in gameData.moveTable.Waza)
+                if (IsWithin(Boundary.Pp, move.basePP))
+                    move.basePP = (byte)Conform(Boundary.Pp, distribution.Next(move.basePP));
 
-            gameData.SetModified(GameDataSet.DataField.Moves);
+            gameData.SetModified(gameData.moveTable.GetType());
         }
 
-        private void RandomizeAccuracy(IDistribution distribution)
+        private void RandomizeAccuracy(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (Move move in gameData.moves)
-                if (IsWithin(AbsoluteBoundary.Accuracy, move.hitPer))
-                    move.hitPer = (byte)Conform(AbsoluteBoundary.Accuracy, distribution.Next(move.hitPer));
+            foreach (var move in gameData.moveTable.Waza)
+                if (IsWithin(Boundary.Accuracy, move.hitPer))
+                    move.hitPer = (byte)Conform(Boundary.Accuracy, distribution.Next(move.hitPer));
 
-            gameData.SetModified(GameDataSet.DataField.Moves);
+            gameData.SetModified(gameData.moveTable.GetType());
         }
 
-        private void RandomizePower(IDistribution distribution)
+        private void RandomizePower(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (Move move in gameData.moves)
-                if (IsWithin(AbsoluteBoundary.Power, move.power))
-                    move.power = (byte)Conform(AbsoluteBoundary.Power, distribution.Next(move.power));
+            foreach (var move in gameData.moveTable.Waza)
+                if (IsWithin(Boundary.Power, move.power))
+                    move.power = (byte)Conform(Boundary.Power, distribution.Next(move.power));
 
-            gameData.SetModified(GameDataSet.DataField.Moves);
+            gameData.SetModified(gameData.moveTable.GetType());
         }
 
-        private void RandomizeTMMoves(IDistribution distribution)
+        private void RandomizeTMMoves(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (TM tm in gameData.tms)
-                tm.moveID = distribution.Next(tm.moveID);
+            foreach (var tm in gameData.itemTable.WazaMachine)
+                tm.wazaNo = distribution.Next(tm.wazaNo);
 
-            gameData.SetModified(GameDataSet.DataField.TMs);
+            gameData.SetModified(gameData.itemTable.GetType());
         }
 
-        private void RandomizeDamageCategory(IDistribution distribution)
+        private void RandomizeDamageCategory(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (Move move in gameData.moves)
-                if (move.damageCategoryID != 0)
-                    move.damageCategoryID = (byte)distribution.Next(move.damageCategoryID);
+            foreach (var move in gameData.moveTable.Waza)
+                if (move.damageType != 0)
+                    move.damageType = (byte)distribution.Next(move.damageType);
 
-            gameData.SetModified(GameDataSet.DataField.Moves);
+            gameData.SetModified(gameData.moveTable.GetType());
         }
 
-        private void RandomizeMoveTyping(IDistribution distribution)
+        private void RandomizeMoveTyping(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (Move move in gameData.moves)
-                move.typingID = (byte)distribution.Next(move.typingID);
+            foreach (var move in gameData.moveTable.Waza)
+                move.type = (byte)distribution.Next(move.type);
 
-            gameData.SetModified(GameDataSet.DataField.Moves);
+            gameData.SetModified(gameData.moveTable.GetType());
         }
 
-        private void RandomizeLevelUpMoves(bool randomizeMoves, IDistribution moveDistribution, bool randomizeLevels, IDistribution levelDistribution, double typeBiasP, bool randomizeMoveCount, IDistribution moveCountDistribution, bool sortByPower, IDistribution evolutionMoveCountDistribution)
+        private void RandomizeLevelUpMoves(GameDataSet gameData, bool randomizeMoves, IDistribution moveDistribution, bool randomizeLevels, IDistribution levelDistribution, double typeBiasP, bool randomizeMoveCount, IDistribution moveCountDistribution, bool sortByPower, IDistribution evolutionMoveCountDistribution)
         {
-            foreach (Pokemon pokemon in gameData.personalEntries)
+            foreach (var pokemon in gameData.pokemonDataTable.Data)
             {
-                List<LevelUpMove> levelUpMoves = pokemon.levelUpMoves;
+                var levelUpMoves = pokemon.levelUpMoves.moves;
 
-                if (!IsWithin(AbsoluteBoundary.LevelUpMoveCount, levelUpMoves.Count))
+                if (!IsWithin(Boundary.LevelUpMoveCount, levelUpMoves.Count))
                     continue;
 
                 if (randomizeMoveCount)
                 {
                     int moveCount = levelUpMoves.Count;
-                        moveCount = Conform(AbsoluteBoundary.LevelUpMoveCount, moveCountDistribution.Next(levelUpMoves.Count));
+                        moveCount = Conform(Boundary.LevelUpMoveCount, moveCountDistribution.Next(levelUpMoves.Count));
                     while (levelUpMoves.Count < moveCount)
                     {
                         if (levelUpMoves.Count == 0)
                         {
-                            LevelUpMove l = new()
+                            levelUpMoves.Add(new PokemonDataTable.PokemonData.SheetWazaOboe.LearnedMove()
                             {
-                                level = (ushort)Conform(AbsoluteBoundary.Level, levelDistribution.Next(1)),
-                                moveID = (ushort)moveDistribution.Next(1)
-                            };
-                            levelUpMoves.Add(l);
+                                level = (ushort)Conform(Boundary.Level, levelDistribution.Next(1)),
+                                move = (ushort)moveDistribution.Next(1),
+                            });
                             continue;
                         }
-                        levelUpMoves.Add(Copy(GetRandom(levelUpMoves)));
+                        levelUpMoves.Add(rng.RandomElement(levelUpMoves).Clone());
                     }
                     while (levelUpMoves.Count > moveCount)
                         levelUpMoves.RemoveAt(rng.Next(levelUpMoves.Count));
                 }
 
                 if (randomizeMoves)
-                    foreach (LevelUpMove move in levelUpMoves)
+                    foreach (var move in levelUpMoves)
                     {
-                        move.moveID = (ushort)moveDistribution.Next(move.moveID);
-                        if (P(typeBiasP))
-                            while (!pokemon.GetTyping().Contains(gameData.moves[move.moveID].typingID))
-                                move.moveID = (ushort)moveDistribution.Next(move.moveID);
+                        move.move = (ushort)moveDistribution.Next(move.move);
+                        if (rng.Percent(typeBiasP))
+                            while (!pokemon.personal.Types.Contains(gameData.moveTable.Waza[move.move].type))
+                                move.move = (ushort)moveDistribution.Next(move.move);
                     }
 
                 if (randomizeLevels)
                 {
-                    foreach (LevelUpMove move in levelUpMoves)
-                        if (IsWithin(AbsoluteBoundary.Level, move.level))
-                            move.level = (ushort)Conform(AbsoluteBoundary.Level, levelDistribution.Next(move.level));
+                    foreach (var move in levelUpMoves)
+                        if (IsWithin(Boundary.Level, move.level))
+                            move.level = (ushort)Conform(Boundary.Level, levelDistribution.Next(move.level));
 
                     if (pokemon.pastPokemon.Count > 0)
                     {
                         int evolutionMoveCount = evolutionMoveCountDistribution.Next(0);
-                        LevelUpMove[] evolutionMoves = new LevelUpMove[evolutionMoveCount];
+                        var evolutionMoves = new PokemonDataTable.PokemonData.SheetWazaOboe.LearnedMove[evolutionMoveCount];
                         for (int i = 0; i < evolutionMoveCount; i++)
-                            evolutionMoves[i] = GetRandom(levelUpMoves);
-                        foreach (LevelUpMove move in evolutionMoves)
+                            evolutionMoves[i] = rng.RandomElement(levelUpMoves);
+                        foreach (var move in evolutionMoves)
                             move.level = 0;
                     }
                 }
 
-                LevelUpMove firstMove = GetRandom(levelUpMoves);
+                var firstMove = rng.RandomElement(levelUpMoves);
                 firstMove.level = 1;
-                List<LevelUpMove> attacks = levelUpMoves.Where(l => IsWithin(AbsoluteBoundary.Power, gameData.moves[l.moveID].power)).ToList();
+                var attacks = levelUpMoves.Where(l => IsWithin(Boundary.Power, gameData.moveTable.Waza[l.move].power)).ToList();
                 if (attacks.Count > 0)
                 {
-                    LevelUpMove target = GetRandom(attacks);
-                    (target.moveID, firstMove.moveID) = (firstMove.moveID, target.moveID);
+                    var target = rng.RandomElement(attacks);
+                    (target.move, firstMove.move) = (firstMove.move, target.move);
                 }
                 else
-                    while (!IsWithin(AbsoluteBoundary.Power, gameData.moves[firstMove.moveID].power))
-                        firstMove.moveID = (ushort)GetRandom(gameData.moves).moveID;
+                    while (!IsWithin(Boundary.Power, gameData.moveTable.Waza[firstMove.move].power))
+                        firstMove.move = (ushort)rng.RandomElement(gameData.moveTable.Waza).wazaNo;
 
                 levelUpMoves.Sort((m1, m2) => m1.level - m2.level);
 
                 if (sortByPower)
                 {
-                    List<LevelUpMove> attackMoves = new();
-                    List<ushort> attackMoveLevels = new();
+                    var attackMoves = new List<PokemonDataTable.PokemonData.SheetWazaOboe.LearnedMove>();
+                    var attackMoveLevels = new List<ushort>();
                     for (int i = 0; i < levelUpMoves.Count; i++)
                     {
-                        if (levelUpMoves[i].level == 0 || !IsWithin(AbsoluteBoundary.Power, gameData.moves[levelUpMoves[i].moveID].power))
+                        if (levelUpMoves[i].level == 0 || !IsWithin(Boundary.Power, gameData.moveTable.Waza[levelUpMoves[i].move].power))
                             continue;
                         attackMoves.Add(levelUpMoves[i]);
                         attackMoveLevels.Add(levelUpMoves[i].level);
                     }
-                    attackMoves.Sort((m1, m2) => gameData.moves[m1.moveID].power - gameData.moves[m2.moveID].power);
+                    attackMoves.Sort((m1, m2) => gameData.moveTable.Waza[m1.move].power - gameData.moveTable.Waza[m2.move].power);
                     for (int i = 0; i < attackMoves.Count; i++)
                     {
                         attackMoves[i].level = attackMoveLevels[i];
@@ -1025,33 +998,20 @@ namespace ImpostersOrdeal
                 }
             }
 
-            gameData.SetModified(GameDataSet.DataField.PersonalEntries);
+            gameData.SetModified(gameData.pokemonDataTable.GetType());
         }
 
-        /// <summary>
-        ///  Returns a separate identical instance of a LevelUpMove object.
-        /// </summary>
-        private static LevelUpMove Copy(LevelUpMove o)
+        private void RandomizeEggMoves(GameDataSet gameData, IDistribution moveDistribution, double typeBiasP, bool randomMoveCount, IDistribution moveCountDistribution)
         {
-            LevelUpMove c = new()
+            foreach (var pokemon in gameData.pokemonDataTable.Data)
             {
-                level = o.level,
-                moveID = o.moveID
-            };
-            return c;
-        }
-
-        private void RandomizeEggMoves(IDistribution moveDistribution, double typeBiasP, bool randomMoveCount, IDistribution moveCountDistribution)
-        {
-            foreach (Pokemon pokemon in gameData.personalEntries)
-            {
-                List<ushort> eggMoves = pokemon.eggMoves;
+                var eggMoves = pokemon.eggMoves.wazaNo;
 
                 if (randomMoveCount)
                 {
                     int moveCount = eggMoves.Count;
-                    if (IsWithin(AbsoluteBoundary.EggMoveCount, moveCount))
-                        moveCount = Conform(AbsoluteBoundary.EggMoveCount, moveCountDistribution.Next(eggMoves.Count));
+                    if (IsWithin(Boundary.EggMoveCount, moveCount))
+                        moveCount = Conform(Boundary.EggMoveCount, moveCountDistribution.Next(eggMoves.Count));
                     while (eggMoves.Count < moveCount)
                     {
                         if (eggMoves.Count == 0)
@@ -1059,7 +1019,7 @@ namespace ImpostersOrdeal
                             eggMoves.Add((ushort)moveDistribution.Next(1));
                             continue;
                         }
-                        eggMoves.Add(GetRandom(eggMoves));
+                        eggMoves.Add(rng.RandomElement(eggMoves));
                     }
                     while (eggMoves.Count > moveCount)
                         eggMoves.RemoveAt(rng.Next(eggMoves.Count));
@@ -1068,211 +1028,211 @@ namespace ImpostersOrdeal
                 for (int i = 0; i < eggMoves.Count; i++)
                 {
                     int moveID = moveDistribution.Next(eggMoves[i]);
-                    if (P(typeBiasP))
-                        while (!pokemon.GetTyping().Contains(gameData.moves[moveID].typingID))
+                    if (rng.Percent(typeBiasP))
+                        while (!pokemon.personal.Types.Contains(gameData.moveTable.Waza[moveID].type))
                             moveID = moveDistribution.Next(eggMoves[i]);
                     eggMoves[i] = (ushort)moveID;
                 }
             }
 
-            gameData.SetModified(GameDataSet.DataField.PersonalEntries);
+            gameData.SetModified(gameData.pokemonDataTable.GetType());
         }
 
-        private void RandomizeExpYields(IDistribution distribution)
+        private void RandomizeExpYields(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (Pokemon pokemon in gameData.personalEntries)
-                if (IsWithin(AbsoluteBoundary.ExpYield, pokemon.giveExp))
-                    pokemon.giveExp = (ushort)Conform(AbsoluteBoundary.ExpYield, distribution.Next(pokemon.giveExp));
+            foreach (var pokemon in gameData.pokemonDataTable.Data)
+                if (IsWithin(Boundary.ExpYield, pokemon.personal.give_exp))
+                    pokemon.personal.give_exp = (ushort)Conform(Boundary.ExpYield, distribution.Next(pokemon.personal.give_exp));
 
-            gameData.SetModified(GameDataSet.DataField.PersonalEntries);
+            gameData.SetModified(gameData.pokemonDataTable.GetType());
         }
 
-        private void RandomizeEvYields(IDistribution distribution)
+        private void RandomizeEvYields(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (Pokemon pokemon in gameData.personalEntries)
+            foreach (var pokemon in gameData.pokemonDataTable.Data)
             {
-                int[] evYield = new int[6];
-                int evYieldTotal = pokemon.GetEvYield().Sum();
-                if (IsWithin(AbsoluteBoundary.EvYieldTotal, evYieldTotal))
-                    evYieldTotal = Conform(AbsoluteBoundary.EvYieldTotal,  distribution.Next(evYieldTotal));
+                byte[] evYield = new byte[6];
+                int evYieldTotal = pokemon.personal.EVYieldTotal;
+                if (IsWithin(Boundary.EvYieldTotal, evYieldTotal))
+                    evYieldTotal = Conform(Boundary.EvYieldTotal,  distribution.Next(evYieldTotal));
 
                 while (evYieldTotal > 0)
                 {
                     int index = rng.Next(evYield.Length);
-                    int room = (int)GetBoundaries(AbsoluteBoundary.EvYield)[2] - evYield[index];
+                    int room = (int)GetBoundaries(Boundary.EvYield)[2] - evYield[index];
                     int add = rng.Next(Math.Min(room, 1), Math.Min(room, evYieldTotal));
-                    evYield[index] += add;
+                    evYield[index] += (byte)add;
                     evYieldTotal -= add;
                 }
 
-                pokemon.SetEvYield(evYield);
+                pokemon.personal.EVYields = evYield;
             }
 
-            gameData.SetModified(GameDataSet.DataField.PersonalEntries);
+            gameData.SetModified(gameData.pokemonDataTable.GetType());
         }
 
-        private void RandomizeInitialFriendship(IDistribution distribution)
+        private void RandomizeInitialFriendship(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (Pokemon pokemon in gameData.personalEntries)
-                if (IsWithin(AbsoluteBoundary.InitialFriendship, pokemon.initialFriendship))
-                    pokemon.initialFriendship = (byte)Conform(AbsoluteBoundary.InitialFriendship, distribution.Next(pokemon.initialFriendship));
+            foreach (var pokemon in gameData.pokemonDataTable.Data)
+                if (IsWithin(Boundary.InitialFriendship, pokemon.personal.initial_friendship))
+                    pokemon.personal.initial_friendship = (byte)Conform(Boundary.InitialFriendship, distribution.Next(pokemon.personal.initial_friendship));
 
-            gameData.SetModified(GameDataSet.DataField.PersonalEntries);
+            gameData.SetModified(gameData.pokemonDataTable.GetType());
         }
 
-        private void RandomizeCatchRates(IDistribution distribution)
+        private void RandomizeCatchRates(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (Pokemon pokemon in gameData.personalEntries)
-                if (IsWithin(AbsoluteBoundary.CatchRate, pokemon.getRate))
-                    pokemon.getRate = (byte)Conform(AbsoluteBoundary.CatchRate, distribution.Next(pokemon.getRate));
+            foreach (var pokemon in gameData.pokemonDataTable.Data)
+                if (IsWithin(Boundary.CatchRate, pokemon.personal.get_rate))
+                    pokemon.personal.get_rate = (byte)Conform(Boundary.CatchRate, distribution.Next(pokemon.personal.get_rate));
 
-            gameData.SetModified(GameDataSet.DataField.PersonalEntries);
+            gameData.SetModified(gameData.pokemonDataTable.GetType());
         }
 
-        private void RandomizePersonalAbilites(IDistribution distribution)
+        private void RandomizePersonalAbilites(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (Pokemon pokemon in gameData.personalEntries)
+            foreach (var pokemon in gameData.pokemonDataTable.Data)
             {
-                pokemon.abilityID1 = (ushort)distribution.Next(pokemon.abilityID1);
-                pokemon.abilityID2 = (ushort)distribution.Next(pokemon.abilityID2);
-                pokemon.abilityID3 = (ushort)distribution.Next(pokemon.abilityID3);
+                pokemon.personal.tokusei1 = (ushort)distribution.Next(pokemon.personal.tokusei1);
+                pokemon.personal.tokusei2 = (ushort)distribution.Next(pokemon.personal.tokusei2);
+                pokemon.personal.tokusei3 = (ushort)distribution.Next(pokemon.personal.tokusei3);
             }
 
-            gameData.SetModified(GameDataSet.DataField.PersonalEntries);
+            gameData.SetModified(gameData.pokemonDataTable.GetType());
         }
 
-        private void RandomizeGrowthRates(IDistribution distribution)
+        private void RandomizeGrowthRates(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (DexEntry dexEntry in gameData.dexEntries)
+            foreach (var pokemon in gameData.pokemonDataTable.Data)
             {
-                if (dexEntry.GetPastEntries().Count > 0)
+                if (pokemon.pastPokemon.Count > 0)
                     continue;
 
-                int grow = distribution.Next(GetRandom(dexEntry.forms).grow);
+                var forms = gameData.pokemonDataTable.GetAllFormsForPokemon(pokemon.personal.monsno);
+                int grow = distribution.Next(rng.RandomElement(forms).personal.grow);
 
-                foreach (Pokemon pokemon in dexEntry.forms)
-                    pokemon.grow = (byte)grow;
-
-                foreach (DexEntry nextDexEntry in dexEntry.GetNextEntries())
-                    PropagateGrowthRate(nextDexEntry, grow);
+                PropagateGrowthRate(gameData, pokemon, grow);
             }
 
-            gameData.SetModified(GameDataSet.DataField.PersonalEntries);
+            gameData.SetModified(gameData.pokemonDataTable.GetType());
         }
 
         /// <summary>
-        ///  Copies growth rate to the rest of family.
+        /// Copies growth rate to the rest of family.
         /// </summary>
-        private void PropagateGrowthRate(DexEntry dexEntry, int grow)
+        private void PropagateGrowthRate(GameDataSet gameData, PokemonDataTable.PokemonData pokemon, int grow)
         {
-            foreach (Pokemon pokemon in dexEntry.forms)
-                pokemon.grow = (byte)grow;
+            var forms = gameData.pokemonDataTable.GetAllFormsForPokemon(pokemon.personal.monsno);
 
-            foreach (DexEntry nextDexEntry in dexEntry.GetNextEntries())
-                PropagateGrowthRate(nextDexEntry, grow);
+            foreach (var form in forms)
+                form.personal.grow = (byte)grow;
+
+            foreach (var nextPokemon in pokemon.nextPokemon)
+                PropagateGrowthRate(gameData, nextPokemon, grow);
         }
 
-        private void RandomizeWildHeldItems(IDistribution distribution)
+        private void RandomizeWildHeldItems(GameDataSet gameData, IDistribution distribution)
         {
-            foreach (Pokemon pokemon in gameData.personalEntries)
+            foreach (var pokemon in gameData.pokemonDataTable.Data)
             {
-                pokemon.item1 = (ushort)distribution.Next(pokemon.item1);
-                pokemon.item2 = (ushort)distribution.Next(pokemon.item2);
-                pokemon.item3 = (ushort)distribution.Next(pokemon.item3);
+                pokemon.personal.item1 = (ushort)distribution.Next(pokemon.personal.item1);
+                pokemon.personal.item2 = (ushort)distribution.Next(pokemon.personal.item2);
+                pokemon.personal.item3 = (ushort)distribution.Next(pokemon.personal.item3);
             }
 
-            gameData.SetModified(GameDataSet.DataField.PersonalEntries);
+            gameData.SetModified(gameData.pokemonDataTable.GetType());
         }
 
-        private void RandomizeTMCompatibility(double compatibilityP, double typeBiasP, bool evolveLogic)
+        private void RandomizeTMCompatibility(GameDataSet gameData, double compatibilityP, double typeBiasP, bool evolveLogic)
         {
-            foreach (Pokemon pokemon in gameData.personalEntries)
+            foreach (var pokemon in gameData.pokemonDataTable.Data)
             {
                 if (pokemon.pastPokemon.Count > 0 && evolveLogic)
                     continue;
 
-                bool[] tmCompatibility = pokemon.GetTMCompatibility();
+                bool[] tmCompatibility = pokemon.personal.TMFlags;
                 for (int i = 0; i < tmCompatibility.Length; i++)
                 {
-                    if (i >= gameData.tms.Count)
+                    if (i >= gameData.itemTable.WazaMachine.Count)
                     {
                         tmCompatibility[i] = false;
                         continue;
                     }
 
-                    TM tm = gameData.tms[i];
-                    if (!gameData.items[tm.itemID].IsActive())
+                    var tm = gameData.itemTable.WazaMachine[i];
+                    if (!gameData.itemTable.Item[tm.itemNo].Enabled)
                     {
                         tmCompatibility[i] = false;
                         continue;
                     }
 
-                    if (P(typeBiasP))
+                    if (rng.Percent(typeBiasP))
                     {
-                        tmCompatibility[i] = pokemon.GetTyping().Contains(gameData.moves[tm.moveID].typingID);
+                        tmCompatibility[i] = pokemon.personal.Types.Contains(gameData.moveTable.Waza[tm.wazaNo].type);
                         continue;
                     }
 
-                    tmCompatibility[i] = P(compatibilityP);
+                    tmCompatibility[i] = rng.Percent(compatibilityP);
                 }
-                pokemon.SetTMCompatibility(tmCompatibility);
+                pokemon.personal.TMFlags = tmCompatibility;
 
                 if (evolveLogic)
-                    foreach (Pokemon next in pokemon.nextPokemon)
-                        PropagateTMCompatibility(next);
+                    foreach (var next in pokemon.nextPokemon)
+                        PropagateTMCompatibility(next, tmCompatibility);
             }
 
-            gameData.SetModified(GameDataSet.DataField.PersonalEntries);
+            gameData.SetModified(gameData.pokemonDataTable.GetType());
         }
 
         /// <summary>
-        ///  Copies TM compatibility to the rest of family.
+        /// Copies TM compatibility to the rest of family.
         /// </summary>
-        private void PropagateTMCompatibility(Pokemon pokemon)
+        private void PropagateTMCompatibility(PokemonDataTable.PokemonData pokemon, bool[] tmCompatibility)
         {
-            pokemon.SetTMCompatibility(GetRandom(pokemon.pastPokemon).GetTMCompatibility());
-            foreach (Pokemon next in pokemon.nextPokemon)
-                PropagateTMCompatibility(next);
+            pokemon.personal.TMFlags = tmCompatibility;
+
+            foreach (var next in pokemon.nextPokemon)
+                PropagateTMCompatibility(next, tmCompatibility);
         }
 
-        private void RandomizePokemonTyping(IDistribution distribution, bool evolveLogic, double doubleTypingP, IDistribution typingCorrelationDistribution)
+        private void RandomizePokemonTyping(GameDataSet gameData, IDistribution distribution, bool evolveLogic, double doubleTypingP, IDistribution typingCorrelationDistribution)
         {
-            foreach (Pokemon pokemon in gameData.personalEntries)
+            foreach (var pokemon in gameData.pokemonDataTable.Data)
             {
                 if (pokemon.pastPokemon.Count > 0 && evolveLogic)
                     continue;
 
-                List<int> oldTyping = pokemon.GetTyping();
-                List<int> newTyping = new()
+                var oldTyping = pokemon.personal.Types;
+                List<byte> newTyping = new()
                 {
-                    distribution.Next(oldTyping.First())
+                    (byte)distribution.Next(oldTyping.First())
                 };
-                if (P(doubleTypingP))
-                    newTyping.Add(distribution.Next(oldTyping.Last()));
-                pokemon.SetTyping(newTyping);
+                if (rng.Percent(doubleTypingP))
+                    newTyping.Add((byte)distribution.Next(oldTyping.Last()));
+                pokemon.personal.Types = newTyping.ToArray();
 
                 if (evolveLogic)
-                    foreach (Pokemon next in pokemon.nextPokemon)
-                        RandomizeEvolutionTyping(next, distribution, doubleTypingP, typingCorrelationDistribution);
+                    foreach (var next in pokemon.nextPokemon)
+                        RandomizeEvolutionTyping(next, pokemon.personal.Types, distribution, doubleTypingP, typingCorrelationDistribution);
             }
 
-            gameData.SetModified(GameDataSet.DataField.PersonalEntries);
+            gameData.SetModified(gameData.pokemonDataTable.GetType());
         }
 
         /// <summary>
-        ///  Randomizes typings of pokemon based on their previous stages' typing.
+        /// Randomizes typings of pokemon based on their previous stages' typing.
         /// </summary>
-        private void RandomizeEvolutionTyping(Pokemon pokemon, IDistribution distribution, double doubleTypingP, IDistribution typingCorrelationDistribution)
+        private void RandomizeEvolutionTyping(PokemonDataTable.PokemonData pokemon, byte[] pastTyping, IDistribution distribution, double doubleTypingP, IDistribution typingCorrelationDistribution)
         {
-            List<int> oldTyping = pokemon.GetTyping();
-            List<int> newTyping = new();
+            var oldTyping = pokemon.personal.Types;
+            List<byte> newTyping = new();
             Analyzer.TypingCorrelation tc = (Analyzer.TypingCorrelation)Enum.ToObject(typeof(Analyzer.TypingCorrelation), typingCorrelationDistribution.Next(0));
-            List<int> pastTyping = GetRandom(pokemon.pastPokemon).GetTyping();
             switch (tc)
             {
                 case Analyzer.TypingCorrelation.Identical:
                     newTyping.AddRange(pastTyping);
                     break;
+
                 case Analyzer.TypingCorrelation.Addition:
                     newTyping.AddRange(pastTyping);
                     if (newTyping.Count < 2)
@@ -1280,101 +1240,90 @@ namespace ImpostersOrdeal
                         int t = newTyping[0];
                         while (t == newTyping[0])
                             t = distribution.Next(oldTyping.Last());
-                        newTyping.Add(t);
+                        newTyping.Add((byte)t);
                     }
                     else
                         newTyping.RemoveAt(rng.Next(newTyping.Count));
                     break;
+
                 case Analyzer.TypingCorrelation.Swap:
                     newTyping.AddRange(pastTyping);
-                    int newType = GetRandom(newTyping);
+                    var newType = rng.RandomElement(newTyping);
                     while (newTyping.Contains(newType))
-                        newType = distribution.Next(GetRandom(oldTyping));
+                        newType = (byte)distribution.Next(rng.RandomElement(oldTyping));
                     newTyping[rng.Next(newTyping.Count)] = newType;
                     break;
+
                 case Analyzer.TypingCorrelation.NoCorrelation:
-                    newTyping.Add(distribution.Next(oldTyping.First()));
-                    if (P(doubleTypingP))
-                        newTyping.Add(distribution.Next(oldTyping.Last()));
+                    newTyping.Add((byte)distribution.Next(oldTyping.First()));
+                    if (rng.Percent(doubleTypingP))
+                        newTyping.Add((byte)distribution.Next(oldTyping.Last()));
                     break;
             }
 
-            pokemon.SetTyping(newTyping);
+            pokemon.personal.Types = newTyping.ToArray();
 
-            foreach (Pokemon next in pokemon.nextPokemon)
-                RandomizeEvolutionTyping(next, distribution, doubleTypingP, typingCorrelationDistribution);
+            foreach (var next in pokemon.nextPokemon)
+                RandomizeEvolutionTyping(next, pokemon.personal.Types, distribution, doubleTypingP, typingCorrelationDistribution);
         }
 
-        /// <summary>
-        ///  Returns a random element in a list.
-        /// </summary>
-        private T GetRandom<T>(IList<T> l)
+        private void RandomizeStats(GameDataSet gameData, IDistribution distribution, bool shuffle, bool randomizeIndividually, bool bstLogic)
         {
-            return l[rng.Next(l.Count)];
-        }
-
-        /// <summary>
-        ///  Randomly returns true a certain percentage of the time.
-        /// </summary>
-        private bool P(double percentage)
-        {
-            return rng.NextDouble() * 100 < percentage;
-        }
-
-        private void RandomizeStats(IDistribution distribution, bool shuffle, bool randomizeIndividually, bool bstLogic)
-        {
-            foreach (Pokemon pokemon in gameData.personalEntries)
+            foreach (var pokemon in gameData.pokemonDataTable.Data)
             {
                 if (shuffle)
                 {
-                    List<byte> list = pokemon.GetStats().ToList();
-                    Shuffle(list);
-                    pokemon.SetStats(list.ToArray());
+                    var list = pokemon.personal.BaseStats;
+                    rng.Shuffle(list);
+                    pokemon.personal.BaseStats = list.ToArray();
                 }
+
                 if (randomizeIndividually)
                 {
-                    List<byte> list = pokemon.GetStats().ToList();
-                    for (int i = 0; i < list.Count; i++)
-                        if (IsWithin(AbsoluteBoundary.BaseStat, list[i]))
-                            list[i] = (byte)Conform(AbsoluteBoundary.BaseStat, distribution.Next(list[i]));
-                    pokemon.SetStats(list.ToArray());
+                    var list = pokemon.personal.BaseStats;
+                    for (int i=0; i<list.Length; i++)
+                        if (IsWithin(Boundary.BaseStat, list[i]))
+                            list[i] = (byte)Conform(Boundary.BaseStat, distribution.Next(list[i]));
+
+                    pokemon.personal.BaseStats = list.ToArray();
                 }
             }
 
             if (!bstLogic)
                 return;
 
-            foreach (Pokemon pokemon in gameData.personalEntries)
+            foreach (var pokemon in gameData.pokemonDataTable.Data)
             {
                 EnsureBSTLogic(pokemon);
             }
 
-            gameData.SetModified(GameDataSet.DataField.PersonalEntries);
+            gameData.SetModified(gameData.pokemonDataTable.GetType());
         }
 
         /// <summary>
-        ///  Adjusts BSTs so that evolutions and surperior forms have a higher BST.
+        /// Adjusts BSTs so that evolutions and surperior forms have a higher BST.
         /// </summary>
-        private void EnsureBSTLogic(Pokemon pokemon)
+        private void EnsureBSTLogic(PokemonDataTable.PokemonData pokemon)
         {
-            List<Pokemon> next = new();
-            List<Pokemon> past = new();
+            // TODO: Remove other forms?
+            List<PokemonDataTable.PokemonData> next = new();
+            List<PokemonDataTable.PokemonData> past = new();
             next.AddRange(pokemon.nextPokemon);
             next.AddRange(pokemon.superiorForms);
             past.AddRange(pokemon.pastPokemon);
             past.AddRange(pokemon.inferiorForms);
 
-            foreach (Pokemon nextPokemon in next)
+            foreach (var nextPokemon in next)
             {
-                if (pokemon.GetBST() > nextPokemon.GetBST())
+                if (pokemon.personal.BST > nextPokemon.personal.BST)
                 {
                     FixBST(pokemon, nextPokemon);
                     EnsureBSTLogic(nextPokemon);
                 }
             }
-            foreach (Pokemon pastPokemon in past)
+            foreach (var pastPokemon in past)
             {
-                if (pokemon.GetBST() < pastPokemon.GetBST())
+                if (pokemon.personal.BST < pastPokemon.personal.BST)
                 {
                     FixBST(pastPokemon, pokemon);
                     EnsureBSTLogic(pastPokemon);
@@ -1383,18 +1332,18 @@ namespace ImpostersOrdeal
         }
 
         /// <summary>
-        ///  Swaps stats until past's BST is lower or equal to next's.
+        /// Swaps stats until past's BST is lower or equal to next's.
         /// </summary>
-        private void FixBST (Pokemon past, Pokemon next)
+        private void FixBST (PokemonDataTable.PokemonData past, PokemonDataTable.PokemonData next)
         {
-            List<byte> pastStats = past.GetStats().ToList();
-            List<byte> nextStats = next.GetStats().ToList();
+            var pastStats = past.personal.BaseStats;
+            var nextStats = next.personal.BaseStats;
 
             while (pastStats.Sum(b => (int)b) > nextStats.Sum(b => (int)b))
             {
                 int index = -1;
                 int maxDelta = 0;
-                for (int i = 0; i < pastStats.Count; i++)
+                for (int i = 0; i < pastStats.Length; i++)
                 {
                     int delta = pastStats[i] - nextStats[i];
                     if (delta > maxDelta)
@@ -1406,31 +1355,18 @@ namespace ImpostersOrdeal
                 (nextStats[index], pastStats[index]) = (pastStats[index], nextStats[index]);
             }
 
-            past.SetStats(pastStats.ToArray());
-            next.SetStats(nextStats.ToArray());
+            past.personal.BaseStats = pastStats;
+            next.personal.BaseStats = nextStats;
         }
 
-        /// <summary>
-        ///  Shuffles a list uniformely.
-        /// </summary>
-        private void Shuffle<T>(IList<T> list)
+        private void RandomizeEvolutionLevels(GameDataSet gameData, IDistribution distribution)
         {
-            int n = list.Count;
-            while (n > 1)
+            foreach (var pokemon in gameData.pokemonDataTable.Data)
             {
-                n--;
-                int k = rng.Next(n + 1);
-                (list[n], list[k]) = (list[k], list[n]);
-            }
-        }
+                foreach (var evolution in pokemon.evolutionPaths.paths)
+                    if (evolution.toMonsno != pokemon.personal.monsno && IsWithin(Boundary.Level, evolution.level))
+                        evolution.level = (ushort)Conform(Boundary.Level, distribution.Next(evolution.level));
 
-        private void RandomizeEvolutionLevels(IDistribution distribution)
-        {
-            foreach (Pokemon pokemon in gameData.personalEntries)
-            {
-                foreach (EvolutionPath evolution in pokemon.evolutionPaths)
-                    if (evolution.destDexID != pokemon.dexID && IsWithin(AbsoluteBoundary.Level, evolution.level))
-                        evolution.level = (ushort)Conform(AbsoluteBoundary.Level, distribution.Next(evolution.level));
                 pokemon.pastEvoLvs = (0, 0);
                 pokemon.nextEvoLvs = (ushort.MaxValue, ushort.MaxValue);
                 pokemon.pastPokemon = new();
@@ -1439,25 +1375,29 @@ namespace ImpostersOrdeal
                 pokemon.superiorForms = new();
             }
 
-            DataParser.SetFamilies();
-            gameData.SetModified(GameDataSet.DataField.PersonalEntries);
+            // TODO: Set Families
+            //DataParser.SetFamilies();
+
+            gameData.SetModified(gameData.pokemonDataTable.GetType());
         }
 
-        private void RandomizeEvolutionDestinations(IDistribution distribution, bool bstLogic)
+        private void RandomizeEvolutionDestinations(GameDataSet gameData, IDistribution distribution, bool bstLogic)
         {
-            foreach (Pokemon pokemon in gameData.personalEntries)
+            foreach (var pokemon in gameData.pokemonDataTable.Data)
             {
-                foreach (EvolutionPath evolution in pokemon.evolutionPaths)
+                foreach (var evolution in pokemon.evolutionPaths.paths)
                 {
-                    if (pokemon.dexID == evolution.destDexID)
+                    if (pokemon.personal.monsno == evolution.toMonsno)
                         continue;
-                    Pokemon dest;
+                    PokemonDataTable.PokemonData dest;
                     do
                     {
-                        dest = gameData.personalEntries[distribution.Next(gameData.GetPokemon(evolution.destDexID, evolution.destFormID).personalID)];
-                    } while (!dest.IsValid() || bstLogic && dest.GetBST() <= pokemon.GetBST());
-                    evolution.destDexID = dest.dexID;
-                    evolution.destFormID = (ushort)dest.formID;
+                        dest = gameData.pokemonDataTable.Data[distribution.Next(gameData.pokemonDataTable.GetDataForPokemon(evolution.toMonsno, evolution.toFormno).personal.id)];
+                    }
+                    while (!dest.personal.Valid || bstLogic && dest.personal.BST <= pokemon.personal.BST);
+
+                    evolution.toMonsno = dest.personal.monsno;
+                    evolution.toFormno = dest.formID;
                 }
                 pokemon.pastEvoLvs = (0, 0);
                 pokemon.nextEvoLvs = (ushort.MaxValue, ushort.MaxValue);
@@ -1467,8 +1407,10 @@ namespace ImpostersOrdeal
                 pokemon.superiorForms = new();
             }
 
-            DataParser.SetFamilies();
-            gameData.SetModified(GameDataSet.DataField.PersonalEntries);
-        }*/
+            // TODO: Set Families
+            //DataParser.SetFamilies();
+
+            gameData.SetModified(gameData.pokemonDataTable.GetType());
+        }
     }
 }

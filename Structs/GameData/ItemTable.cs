@@ -50,10 +50,9 @@ namespace ImpostersOrdeal
 
             public bool[] Flags { get => flags0.GetBitArray(); set => flags0 = value.ConvertBitArrayToUint(); }
 
-            public bool IsEnabled()
-            {
-                return !Flags[31];
-            }
+            public bool Enabled { get => !Flags[31]; set => Flags[31] = !value; }
+
+            public bool Purchasable => Enabled && price > 0;
         }
 
         public class SheetWazaMachine
@@ -73,7 +72,7 @@ namespace ImpostersOrdeal
 
         public bool IsTMValid(SheetWazaMachine tm)
         {
-            return Item[tm.itemNo].IsEnabled() &&
+            return Item[tm.itemNo].Enabled &&
                 Item[tm.itemNo].field_func == 2 &&
                 Item[tm.itemNo].group_id > 0;
         }
