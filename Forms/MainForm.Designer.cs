@@ -30,2357 +30,2596 @@ namespace ImpostersOrdeal
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            groupBox1 = new NumericDistributionControl();
-            checkBox2 = new System.Windows.Forms.CheckBox();
-            button1 = new System.Windows.Forms.Button();
-            textBox1 = new System.Windows.Forms.TextBox();
-            button2 = new ItemDistributionControl();
-            groupBox2 = new System.Windows.Forms.GroupBox();
-            button31 = new System.Windows.Forms.Button();
-            button5 = new System.Windows.Forms.Button();
-            button3 = new System.Windows.Forms.Button();
-            tabControl1 = new System.Windows.Forms.TabControl();
-            tabPage1 = new System.Windows.Forms.TabPage();
-            groupBox12 = new System.Windows.Forms.GroupBox();
-            numericDistributionControl2 = new NumericDistributionControl();
-            checkBox4 = new System.Windows.Forms.CheckBox();
-            button7 = new System.Windows.Forms.Button();
-            textBox3 = new System.Windows.Forms.TextBox();
-            numericDistributionControl4 = new NumericDistributionControl();
-            checkBox11 = new System.Windows.Forms.CheckBox();
-            button9 = new System.Windows.Forms.Button();
-            textBox5 = new System.Windows.Forms.TextBox();
-            numericDistributionControl3 = new NumericDistributionControl();
-            checkBox9 = new System.Windows.Forms.CheckBox();
-            button8 = new System.Windows.Forms.Button();
-            textBox4 = new System.Windows.Forms.TextBox();
-            numericDistributionControl5 = new NumericDistributionControl();
-            checkBox14 = new System.Windows.Forms.CheckBox();
-            button10 = new System.Windows.Forms.Button();
-            textBox6 = new System.Windows.Forms.TextBox();
-            groupBox11 = new System.Windows.Forms.GroupBox();
-            itemDistributionControl7 = new ItemDistributionControl();
-            label5 = new System.Windows.Forms.Label();
-            numericUpDown5 = new System.Windows.Forms.NumericUpDown();
-            numericDistributionControl9 = new NumericDistributionControl();
-            checkBox23 = new System.Windows.Forms.CheckBox();
-            button14 = new System.Windows.Forms.Button();
-            textBox10 = new System.Windows.Forms.TextBox();
-            checkBox24 = new System.Windows.Forms.CheckBox();
-            groupBox10 = new System.Windows.Forms.GroupBox();
-            numericDistributionControl7 = new NumericDistributionControl();
-            checkBox20 = new System.Windows.Forms.CheckBox();
-            button12 = new System.Windows.Forms.Button();
-            textBox8 = new System.Windows.Forms.TextBox();
-            itemDistributionControl6 = new ItemDistributionControl();
-            checkBox18 = new System.Windows.Forms.CheckBox();
-            label4 = new System.Windows.Forms.Label();
-            numericUpDown4 = new System.Windows.Forms.NumericUpDown();
-            numericDistributionControl6 = new NumericDistributionControl();
-            checkBox19 = new System.Windows.Forms.CheckBox();
-            button11 = new System.Windows.Forms.Button();
-            textBox7 = new System.Windows.Forms.TextBox();
-            checkBox17 = new System.Windows.Forms.CheckBox();
-            groupBox9 = new System.Windows.Forms.GroupBox();
-            label2 = new System.Windows.Forms.Label();
-            numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            checkBox16 = new System.Windows.Forms.CheckBox();
-            label3 = new System.Windows.Forms.Label();
-            numericUpDown3 = new System.Windows.Forms.NumericUpDown();
-            checkBox15 = new System.Windows.Forms.CheckBox();
-            groupBox8 = new System.Windows.Forms.GroupBox();
-            itemDistributionControl4 = new ItemDistributionControl();
-            checkBox13 = new System.Windows.Forms.CheckBox();
-            groupBox7 = new System.Windows.Forms.GroupBox();
-            itemDistributionControl3 = new ItemDistributionControl();
-            checkBox12 = new System.Windows.Forms.CheckBox();
-            groupBox6 = new System.Windows.Forms.GroupBox();
-            itemDistributionControl2 = new ItemDistributionControl();
-            checkBox10 = new System.Windows.Forms.CheckBox();
-            groupBox5 = new System.Windows.Forms.GroupBox();
-            checkBox61 = new System.Windows.Forms.CheckBox();
-            itemDistributionControl1 = new ItemDistributionControl();
-            label1 = new System.Windows.Forms.Label();
-            numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            checkBox8 = new System.Windows.Forms.CheckBox();
-            groupBox4 = new System.Windows.Forms.GroupBox();
-            numericDistributionControl1 = new NumericDistributionControl();
-            checkBox7 = new System.Windows.Forms.CheckBox();
-            button6 = new System.Windows.Forms.Button();
-            textBox2 = new System.Windows.Forms.TextBox();
-            checkBox6 = new System.Windows.Forms.CheckBox();
-            checkBox5 = new System.Windows.Forms.CheckBox();
-            groupBox3 = new System.Windows.Forms.GroupBox();
-            checkBox3 = new System.Windows.Forms.CheckBox();
-            checkBox1 = new System.Windows.Forms.CheckBox();
-            tabPage2 = new System.Windows.Forms.TabPage();
-            groupBox26 = new System.Windows.Forms.GroupBox();
-            checkBox52 = new System.Windows.Forms.CheckBox();
-            itemDistributionControl19 = new ItemDistributionControl();
-            checkBox51 = new System.Windows.Forms.CheckBox();
-            groupBox25 = new System.Windows.Forms.GroupBox();
-            itemDistributionControl18 = new ItemDistributionControl();
-            checkBox50 = new System.Windows.Forms.CheckBox();
-            groupBox23 = new System.Windows.Forms.GroupBox();
-            itemDistributionControl16 = new ItemDistributionControl();
-            checkBox47 = new System.Windows.Forms.CheckBox();
-            numericDistributionControl18 = new NumericDistributionControl();
-            checkBox46 = new System.Windows.Forms.CheckBox();
-            button22 = new System.Windows.Forms.Button();
-            textBox19 = new System.Windows.Forms.TextBox();
-            numericDistributionControl11 = new NumericDistributionControl();
-            checkBox27 = new System.Windows.Forms.CheckBox();
-            button16 = new System.Windows.Forms.Button();
-            textBox12 = new System.Windows.Forms.TextBox();
-            numericDistributionControl10 = new NumericDistributionControl();
-            checkBox26 = new System.Windows.Forms.CheckBox();
-            button15 = new System.Windows.Forms.Button();
-            textBox11 = new System.Windows.Forms.TextBox();
-            numericDistributionControl8 = new NumericDistributionControl();
-            checkBox25 = new System.Windows.Forms.CheckBox();
-            button13 = new System.Windows.Forms.Button();
-            textBox9 = new System.Windows.Forms.TextBox();
-            groupBox14 = new System.Windows.Forms.GroupBox();
-            itemDistributionControl9 = new ItemDistributionControl();
-            checkBox22 = new System.Windows.Forms.CheckBox();
-            groupBox13 = new System.Windows.Forms.GroupBox();
-            itemDistributionControl8 = new ItemDistributionControl();
-            checkBox21 = new System.Windows.Forms.CheckBox();
-            tabPage3 = new System.Windows.Forms.TabPage();
-            groupBox18 = new System.Windows.Forms.GroupBox();
-            groupBox24 = new System.Windows.Forms.GroupBox();
-            checkBox49 = new System.Windows.Forms.CheckBox();
-            itemDistributionControl17 = new ItemDistributionControl();
-            checkBox48 = new System.Windows.Forms.CheckBox();
-            numericDistributionControl17 = new NumericDistributionControl();
-            checkBox45 = new System.Windows.Forms.CheckBox();
-            button21 = new System.Windows.Forms.Button();
-            textBox18 = new System.Windows.Forms.TextBox();
-            numericDistributionControl16 = new NumericDistributionControl();
-            checkBox44 = new System.Windows.Forms.CheckBox();
-            button20 = new System.Windows.Forms.Button();
-            textBox17 = new System.Windows.Forms.TextBox();
-            groupBox22 = new System.Windows.Forms.GroupBox();
-            checkBox43 = new System.Windows.Forms.CheckBox();
-            itemDistributionControl15 = new ItemDistributionControl();
-            checkBox42 = new System.Windows.Forms.CheckBox();
-            groupBox21 = new System.Windows.Forms.GroupBox();
-            label7 = new System.Windows.Forms.Label();
-            numericUpDown7 = new System.Windows.Forms.NumericUpDown();
-            comboBox1 = new System.Windows.Forms.ComboBox();
-            itemDistributionControl14 = new ItemDistributionControl();
-            groupBox20 = new System.Windows.Forms.GroupBox();
-            itemDistributionControl13 = new ItemDistributionControl();
-            checkBox41 = new System.Windows.Forms.CheckBox();
-            numericDistributionControl15 = new NumericDistributionControl();
-            checkBox40 = new System.Windows.Forms.CheckBox();
-            button19 = new System.Windows.Forms.Button();
-            textBox16 = new System.Windows.Forms.TextBox();
-            groupBox19 = new System.Windows.Forms.GroupBox();
-            label6 = new System.Windows.Forms.Label();
-            numericUpDown6 = new System.Windows.Forms.NumericUpDown();
-            checkBox39 = new System.Windows.Forms.CheckBox();
-            groupBox17 = new System.Windows.Forms.GroupBox();
-            checkBox38 = new System.Windows.Forms.CheckBox();
-            checkBox34 = new System.Windows.Forms.CheckBox();
-            checkBox35 = new System.Windows.Forms.CheckBox();
-            itemDistributionControl12 = new ItemDistributionControl();
-            checkBox37 = new System.Windows.Forms.CheckBox();
-            numericDistributionControl14 = new NumericDistributionControl();
-            checkBox36 = new System.Windows.Forms.CheckBox();
-            button18 = new System.Windows.Forms.Button();
-            textBox15 = new System.Windows.Forms.TextBox();
-            groupBox16 = new System.Windows.Forms.GroupBox();
-            numericDistributionControl13 = new NumericDistributionControl();
-            checkBox33 = new System.Windows.Forms.CheckBox();
-            button4 = new System.Windows.Forms.Button();
-            textBox14 = new System.Windows.Forms.TextBox();
-            itemDistributionControl11 = new ItemDistributionControl();
-            checkBox32 = new System.Windows.Forms.CheckBox();
-            groupBox15 = new System.Windows.Forms.GroupBox();
-            checkBox31 = new System.Windows.Forms.CheckBox();
-            checkBox30 = new System.Windows.Forms.CheckBox();
-            numericDistributionControl12 = new NumericDistributionControl();
-            checkBox28 = new System.Windows.Forms.CheckBox();
-            button17 = new System.Windows.Forms.Button();
-            textBox13 = new System.Windows.Forms.TextBox();
-            itemDistributionControl10 = new ItemDistributionControl();
-            checkBox29 = new System.Windows.Forms.CheckBox();
-            tabPage4 = new System.Windows.Forms.TabPage();
-            groupBox33 = new System.Windows.Forms.GroupBox();
-            itemDistributionControl5 = new ItemDistributionControl();
-            checkBox63 = new System.Windows.Forms.CheckBox();
-            groupBox31 = new System.Windows.Forms.GroupBox();
-            absoluteBoundaryDataGridView = new System.Windows.Forms.DataGridView();
-            groupBox30 = new System.Windows.Forms.GroupBox();
-            label9 = new System.Windows.Forms.Label();
-            numericUpDown8 = new System.Windows.Forms.NumericUpDown();
-            checkBox60 = new System.Windows.Forms.CheckBox();
-            checkBox59 = new System.Windows.Forms.CheckBox();
-            checkBox58 = new System.Windows.Forms.CheckBox();
-            label8 = new System.Windows.Forms.Label();
-            checkBox57 = new System.Windows.Forms.CheckBox();
-            groupBox29 = new System.Windows.Forms.GroupBox();
-            checkBox62 = new System.Windows.Forms.CheckBox();
-            checkBox56 = new System.Windows.Forms.CheckBox();
-            checkBox55 = new System.Windows.Forms.CheckBox();
-            groupBox27 = new System.Windows.Forms.GroupBox();
-            itemDistributionControl21 = new ItemDistributionControl();
-            checkBox54 = new System.Windows.Forms.CheckBox();
-            itemDistributionControl20 = new ItemDistributionControl();
-            checkBox53 = new System.Windows.Forms.CheckBox();
+            grpDistPokemonEvolutionLevel = new NumericDistributionControl();
+            checkDistPokemonEvolutionLevel = new System.Windows.Forms.CheckBox();
+            btnDistPokemonEvolutionLevel = new System.Windows.Forms.Button();
+            txtDistPokemonEvolutionLevel = new System.Windows.Forms.TextBox();
+            btnDistPokemonEvolutionDest = new ItemDistributionControl();
+            grpMain = new System.Windows.Forms.GroupBox();
+            btnExport = new System.Windows.Forms.Button();
+            btnRandomize = new System.Windows.Forms.Button();
+            btnAddMod = new System.Windows.Forms.Button();
+            tabsRandomizer = new System.Windows.Forms.TabControl();
+            tabPokemon = new System.Windows.Forms.TabPage();
+            grpPokemonMisc = new System.Windows.Forms.GroupBox();
+            grpDistPokemonMiscCatchRate = new NumericDistributionControl();
+            checkDistPokemonMiscCatchRate = new System.Windows.Forms.CheckBox();
+            btnDistPokemonMiscCatchRate = new System.Windows.Forms.Button();
+            txtDistPokemonMiscCatchRate = new System.Windows.Forms.TextBox();
+            grpDistPokemonMiscInitFriendship = new NumericDistributionControl();
+            checkDistPokemonMiscInitFriendship = new System.Windows.Forms.CheckBox();
+            btnDistPokemonMiscInitFriendship = new System.Windows.Forms.Button();
+            txtDistPokemonMiscInitFriendship = new System.Windows.Forms.TextBox();
+            grpDistPokemonMiscEVs = new NumericDistributionControl();
+            checkDistPokemonMiscEVs = new System.Windows.Forms.CheckBox();
+            btnDistPokemonMiscEVs = new System.Windows.Forms.Button();
+            txtDistPokemonMiscEVs = new System.Windows.Forms.TextBox();
+            grpDistPokemonMiscExp = new NumericDistributionControl();
+            checkDistPokemonMiscExp = new System.Windows.Forms.CheckBox();
+            btnDistPokemonMiscExp = new System.Windows.Forms.Button();
+            txtDistPokemonMiscExp = new System.Windows.Forms.TextBox();
+            grpPokemonEggMoves = new System.Windows.Forms.GroupBox();
+            btnDistPokemonEggMoves = new ItemDistributionControl();
+            lbPokemonEggMovesTypeBias = new System.Windows.Forms.Label();
+            numPokemonEggMovesTypeBias = new System.Windows.Forms.NumericUpDown();
+            grpDistPokemonEggMovesCount = new NumericDistributionControl();
+            checkDistPokemonEggMovesCount = new System.Windows.Forms.CheckBox();
+            btnDistPokemonEggMovesCount = new System.Windows.Forms.Button();
+            txtDistPokemonEggMovesCount = new System.Windows.Forms.TextBox();
+            checkPokemonEggMovesRandom = new System.Windows.Forms.CheckBox();
+            grpPokemonLevelMoves = new System.Windows.Forms.GroupBox();
+            grpDistPokemonLevelMovesLearnLevels = new NumericDistributionControl();
+            checkDistPokemonLevelMovesLearnLevels = new System.Windows.Forms.CheckBox();
+            btnDistPokemonLevelMovesLearnLevels = new System.Windows.Forms.Button();
+            txtDistPokemonLevelMovesLearnLevels = new System.Windows.Forms.TextBox();
+            btnDistPokemonLevelMovesMoves = new ItemDistributionControl();
+            checkPokemonLevelMovesSortPower = new System.Windows.Forms.CheckBox();
+            lbPokemonLevelMovesTypeBias = new System.Windows.Forms.Label();
+            numPokemonLevelMovesTypeBias = new System.Windows.Forms.NumericUpDown();
+            grpDistPokemonLevelMovesCount = new NumericDistributionControl();
+            checkDistPokemonLevelMovesCount = new System.Windows.Forms.CheckBox();
+            btnDistPokemonLevelMovesCount = new System.Windows.Forms.Button();
+            txtDistPokemonLevelMovesCount = new System.Windows.Forms.TextBox();
+            checkPokemonLevelMovesRandom = new System.Windows.Forms.CheckBox();
+            grpPokemonTMCompat = new System.Windows.Forms.GroupBox();
+            lbPokemonTMCompatPercent = new System.Windows.Forms.Label();
+            numPokemonTMCompatPercent = new System.Windows.Forms.NumericUpDown();
+            checkPokemonTMCompatEvoLogic = new System.Windows.Forms.CheckBox();
+            lbPokemonTMCompatTypeBias = new System.Windows.Forms.Label();
+            numPokemonTMCompatTypeBias = new System.Windows.Forms.NumericUpDown();
+            checkPokemonTMCompatRandom = new System.Windows.Forms.CheckBox();
+            grpPokemonAbilities = new System.Windows.Forms.GroupBox();
+            btnDistPokemonAbilities = new ItemDistributionControl();
+            checkPokemonAbilities = new System.Windows.Forms.CheckBox();
+            grpPokemonGrowth = new System.Windows.Forms.GroupBox();
+            btnDistPokemonGrowth = new ItemDistributionControl();
+            checkPokemonGrowthRandom = new System.Windows.Forms.CheckBox();
+            grpPokemonWildHeldItems = new System.Windows.Forms.GroupBox();
+            btnDistPokemonWildHeldItems = new ItemDistributionControl();
+            checkPokemonWildHeldItemsRandom = new System.Windows.Forms.CheckBox();
+            grpPokemonTyping = new System.Windows.Forms.GroupBox();
+            checkPokemonTypingEvoLogic = new System.Windows.Forms.CheckBox();
+            btnDistPokemonTyping = new ItemDistributionControl();
+            lbPokemonTypingDouble = new System.Windows.Forms.Label();
+            numPokemonTypingDouble = new System.Windows.Forms.NumericUpDown();
+            checkPokemonTypingRandom = new System.Windows.Forms.CheckBox();
+            grpPokemonBaseStats = new System.Windows.Forms.GroupBox();
+            grpDistPokemonBaseStats = new NumericDistributionControl();
+            checkDistPokemonBaseStats = new System.Windows.Forms.CheckBox();
+            btnDistPokemonBaseStats = new System.Windows.Forms.Button();
+            txtDistPokemonBaseStats = new System.Windows.Forms.TextBox();
+            checkPokemonBaseStatsBSTLogic = new System.Windows.Forms.CheckBox();
+            checkPokemonBaseStatsShuffle = new System.Windows.Forms.CheckBox();
+            grpPokemonEvolution = new System.Windows.Forms.GroupBox();
+            checkPokemonEvolutionBSTLogic = new System.Windows.Forms.CheckBox();
+            checkPokemonEvolutionRandomDest = new System.Windows.Forms.CheckBox();
+            tabMovesAndItems = new System.Windows.Forms.TabPage();
+            grpMovesAndItemsShopItems = new System.Windows.Forms.GroupBox();
+            checkMovesAndItemsShopItemsKeepMart = new System.Windows.Forms.CheckBox();
+            btnDistMovesAndItemsShopItems = new ItemDistributionControl();
+            checkMovesAndItemsShopItemsRandom = new System.Windows.Forms.CheckBox();
+            grpMovesAndItemsTMMoves = new System.Windows.Forms.GroupBox();
+            btnDistMovesAndItemsTMMoves = new ItemDistributionControl();
+            checkMovesAndItemsTMMovesRandom = new System.Windows.Forms.CheckBox();
+            grpMovesAndItemsPickup = new System.Windows.Forms.GroupBox();
+            btnDistMovesAndItemsPickup = new ItemDistributionControl();
+            checkMovesAndItemsPickupRandom = new System.Windows.Forms.CheckBox();
+            grpDistMovesAndItemsItemPrices = new NumericDistributionControl();
+            checkDistMovesAndItemsItemPrices = new System.Windows.Forms.CheckBox();
+            btnDistMovesAndItemsItemPrices = new System.Windows.Forms.Button();
+            txtDistMovesAndItemsItemPrices = new System.Windows.Forms.TextBox();
+            grpDistMovesAndItemsPP = new NumericDistributionControl();
+            checkDistMovesAndItemsPP = new System.Windows.Forms.CheckBox();
+            btnDistMovesAndItemsPP = new System.Windows.Forms.Button();
+            txtDistMovesAndItemsPP = new System.Windows.Forms.TextBox();
+            grpDistMovesAndItemsAccuracy = new NumericDistributionControl();
+            checkDistMovesAndItemsAccuracy = new System.Windows.Forms.CheckBox();
+            btnDistMovesAndItemsAccuracy = new System.Windows.Forms.Button();
+            txtDistMovesAndItemsAccuracy = new System.Windows.Forms.TextBox();
+            grpDistMovesAndItemsPower = new NumericDistributionControl();
+            checkDistMovesAndItemsPower = new System.Windows.Forms.CheckBox();
+            btnDistMovesAndItemsPower = new System.Windows.Forms.Button();
+            txtDistMovesAndItemsPower = new System.Windows.Forms.TextBox();
+            grpMovesAndItemsMoveCategory = new System.Windows.Forms.GroupBox();
+            btnDistMovesAndItemsMoveCategory = new ItemDistributionControl();
+            checkMovesAndItemsMoveCategoryRandom = new System.Windows.Forms.CheckBox();
+            grpMovesAndItemsMoveTyping = new System.Windows.Forms.GroupBox();
+            btnDistMovesAndItemsMoveTyping = new ItemDistributionControl();
+            checkMovesAndItemsMoveTypingRandom = new System.Windows.Forms.CheckBox();
+            tabEncounters = new System.Windows.Forms.TabPage();
+            grpEncountersTrainer = new System.Windows.Forms.GroupBox();
+            grpEncountersTrainerAbilities = new System.Windows.Forms.GroupBox();
+            checkEncountersTrainerAbilitiesIncludeUnobtainable = new System.Windows.Forms.CheckBox();
+            btnDistEncountersTrainerAbilities = new ItemDistributionControl();
+            checkEncountersTrainerAbilitiesRandom = new System.Windows.Forms.CheckBox();
+            grpDistEncountersTrainerEVs = new NumericDistributionControl();
+            checkDistEncountersTrainerEVs = new System.Windows.Forms.CheckBox();
+            btnDistEncountersTrainerEVs = new System.Windows.Forms.Button();
+            txtDistEncountersTrainerEVs = new System.Windows.Forms.TextBox();
+            grpDistEncountersTrainerIVs = new NumericDistributionControl();
+            checkDistEncountersTrainerIVs = new System.Windows.Forms.CheckBox();
+            btnDistEncountersTrainerIVs = new System.Windows.Forms.Button();
+            txtDistEncountersTrainerIVs = new System.Windows.Forms.TextBox();
+            grpEncountersTrainerHeldItems = new System.Windows.Forms.GroupBox();
+            checkEncountersTrainerHeldItemsHighLevel = new System.Windows.Forms.CheckBox();
+            btnDistEncountersTrainerHeldItems = new ItemDistributionControl();
+            checkEncountersTrainerHeldItemsRandom = new System.Windows.Forms.CheckBox();
+            grpEncountersTrainerMoves = new System.Windows.Forms.GroupBox();
+            lbEncountersTrainerMovesTypeBias = new System.Windows.Forms.Label();
+            numEncountersTrainerMovesTypeBias = new System.Windows.Forms.NumericUpDown();
+            comboEncountersTrainerMovesRandom = new System.Windows.Forms.ComboBox();
+            btnDistEncountersTrainerMoves = new ItemDistributionControl();
+            grpEncountersTrainerNatures = new System.Windows.Forms.GroupBox();
+            btnDistEncountersTrainerNatures = new ItemDistributionControl();
+            checkEncountersTrainerNaturesRandom = new System.Windows.Forms.CheckBox();
+            grpDistEncountersTrainerLevels = new NumericDistributionControl();
+            checkDistEncountersTrainerLevels = new System.Windows.Forms.CheckBox();
+            btnDistEncountersTrainerLevels = new System.Windows.Forms.Button();
+            txtDistEncountersTrainerLevels = new System.Windows.Forms.TextBox();
+            grpEncountersTrainerShiny = new System.Windows.Forms.GroupBox();
+            lbEncountersTrainerShiny = new System.Windows.Forms.Label();
+            numEncountersTrainerShiny = new System.Windows.Forms.NumericUpDown();
+            checkEncountersTrainerShinyRandom = new System.Windows.Forms.CheckBox();
+            grpEncountersTrainerSpecies = new System.Windows.Forms.GroupBox();
+            checkEncountersTrainerSpeciesTypeThemes = new System.Windows.Forms.CheckBox();
+            checkEncountersTrainerSpeciesHighLevelLegends = new System.Windows.Forms.CheckBox();
+            checkEncountersTrainerSpeciesEvoLogic = new System.Windows.Forms.CheckBox();
+            btnDistEncountersTrainerSpecies = new ItemDistributionControl();
+            checkEncountersTrainerSpeciesRandom = new System.Windows.Forms.CheckBox();
+            grpDistEncountersTrainerPokemonCount = new NumericDistributionControl();
+            checkDistEncountersTrainerPokemonCount = new System.Windows.Forms.CheckBox();
+            btnDistEncountersTrainerPokemonCount = new System.Windows.Forms.Button();
+            txtDistEncountersTrainerPokemonCount = new System.Windows.Forms.TextBox();
+            grpEncountersTrainerItems = new System.Windows.Forms.GroupBox();
+            grpDistEncountersTrainerItemsCount = new NumericDistributionControl();
+            checkDistEncountersTrainerItemsCount = new System.Windows.Forms.CheckBox();
+            btnDistEncountersTrainerItemsCount = new System.Windows.Forms.Button();
+            txtDistEncountersTrainerItemsCount = new System.Windows.Forms.TextBox();
+            btnDistEncountersTrainerItems = new ItemDistributionControl();
+            checkEncountersTrainerItemsRandom = new System.Windows.Forms.CheckBox();
+            grpEncountersWild = new System.Windows.Forms.GroupBox();
+            checkEncountersWildHighLevelLegends = new System.Windows.Forms.CheckBox();
+            checkEncountersWildEvoLogic = new System.Windows.Forms.CheckBox();
+            grpDistEncountersWildLevels = new NumericDistributionControl();
+            checkDistEncountersWildLevels = new System.Windows.Forms.CheckBox();
+            btnDistEncountersWildLevels = new System.Windows.Forms.Button();
+            txtDistEncountersWildLevels = new System.Windows.Forms.TextBox();
+            btnDistEncountersWild = new ItemDistributionControl();
+            checkEncountersWildRandom = new System.Windows.Forms.CheckBox();
+            tabMisc = new System.Windows.Forms.TabPage();
+            grpMiscTypeMatchups = new System.Windows.Forms.GroupBox();
+            btnDistMiscTypeMatchups = new ItemDistributionControl();
+            checkMiscTypeMatchupsRandom = new System.Windows.Forms.CheckBox();
+            grpMiscAbsoluteBoundaries = new System.Windows.Forms.GroupBox();
+            gridMiscAbsoluteBoundaries = new System.Windows.Forms.DataGridView();
+            grpMiscLevelMult = new System.Windows.Forms.GroupBox();
+            lbMiscLevelMultMult = new System.Windows.Forms.Label();
+            numMiscLevelMultMult = new System.Windows.Forms.NumericUpDown();
+            checkMiscLevelMultTrainer = new System.Windows.Forms.CheckBox();
+            checkMiscLevelMultWild = new System.Windows.Forms.CheckBox();
+            checkMiscLevelMultLevelMoves = new System.Windows.Forms.CheckBox();
+            lbMiscLevelMultDesc = new System.Windows.Forms.Label();
+            checkMiscLevelMultEvoLevels = new System.Windows.Forms.CheckBox();
+            grpMiscTextAndMusic = new System.Windows.Forms.GroupBox();
+            checkMiscShuffleText = new System.Windows.Forms.CheckBox();
+            checkMiscShuffleTextKeepStrLength = new System.Windows.Forms.CheckBox();
+            checkMiscShuffleBGM = new System.Windows.Forms.CheckBox();
+            grpMiscScripts = new System.Windows.Forms.GroupBox();
+            btnDistMiscScriptsItems = new ItemDistributionControl();
+            checkMiscScriptsItemsRandom = new System.Windows.Forms.CheckBox();
+            btnDistMiscScriptsPokemon = new ItemDistributionControl();
+            checkMiscScriptsPokemonRandom = new System.Windows.Forms.CheckBox();
             groupBox28 = new System.Windows.Forms.GroupBox();
-            pokemonEditorButton = new System.Windows.Forms.Button();
-            button24 = new System.Windows.Forms.Button();
-            button25 = new System.Windows.Forms.Button();
-            button26 = new System.Windows.Forms.Button();
-            button27 = new System.Windows.Forms.Button();
-            button28 = new System.Windows.Forms.Button();
-            wildEncButton = new System.Windows.Forms.Button();
-            button30 = new System.Windows.Forms.Button();
-            groupBox32 = new System.Windows.Forms.GroupBox();
-            flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            button32 = new System.Windows.Forms.Button();
-            button23 = new System.Windows.Forms.Button();
-            button34 = new System.Windows.Forms.Button();
-            button35 = new System.Windows.Forms.Button();
-            groupBox34 = new System.Windows.Forms.GroupBox();
-            button33 = new System.Windows.Forms.Button();
-            button29 = new System.Windows.Forms.Button();
-            groupBox1.SuspendLayout();
-            groupBox2.SuspendLayout();
-            tabControl1.SuspendLayout();
-            tabPage1.SuspendLayout();
-            groupBox12.SuspendLayout();
-            numericDistributionControl2.SuspendLayout();
-            numericDistributionControl4.SuspendLayout();
-            numericDistributionControl3.SuspendLayout();
-            numericDistributionControl5.SuspendLayout();
-            groupBox11.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown5).BeginInit();
-            numericDistributionControl9.SuspendLayout();
-            groupBox10.SuspendLayout();
-            numericDistributionControl7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown4).BeginInit();
-            numericDistributionControl6.SuspendLayout();
-            groupBox9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown3).BeginInit();
-            groupBox8.SuspendLayout();
-            groupBox7.SuspendLayout();
-            groupBox6.SuspendLayout();
-            groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
-            groupBox4.SuspendLayout();
-            numericDistributionControl1.SuspendLayout();
-            groupBox3.SuspendLayout();
-            tabPage2.SuspendLayout();
-            groupBox26.SuspendLayout();
-            groupBox25.SuspendLayout();
-            groupBox23.SuspendLayout();
-            numericDistributionControl18.SuspendLayout();
-            numericDistributionControl11.SuspendLayout();
-            numericDistributionControl10.SuspendLayout();
-            numericDistributionControl8.SuspendLayout();
-            groupBox14.SuspendLayout();
-            groupBox13.SuspendLayout();
-            tabPage3.SuspendLayout();
-            groupBox18.SuspendLayout();
-            groupBox24.SuspendLayout();
-            numericDistributionControl17.SuspendLayout();
-            numericDistributionControl16.SuspendLayout();
-            groupBox22.SuspendLayout();
-            groupBox21.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown7).BeginInit();
-            groupBox20.SuspendLayout();
-            numericDistributionControl15.SuspendLayout();
-            groupBox19.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown6).BeginInit();
-            groupBox17.SuspendLayout();
-            numericDistributionControl14.SuspendLayout();
-            groupBox16.SuspendLayout();
-            numericDistributionControl13.SuspendLayout();
-            groupBox15.SuspendLayout();
-            numericDistributionControl12.SuspendLayout();
-            tabPage4.SuspendLayout();
-            groupBox33.SuspendLayout();
-            groupBox31.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)absoluteBoundaryDataGridView).BeginInit();
-            groupBox30.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown8).BeginInit();
-            groupBox29.SuspendLayout();
-            groupBox27.SuspendLayout();
-            groupBox32.SuspendLayout();
-            flowLayoutPanel1.SuspendLayout();
-            groupBox34.SuspendLayout();
+            btnPokemonEditor = new System.Windows.Forms.Button();
+            btnMoveEditor = new System.Windows.Forms.Button();
+            btnTMEditor = new System.Windows.Forms.Button();
+            btnItemEditor = new System.Windows.Forms.Button();
+            btnPickupEditor = new System.Windows.Forms.Button();
+            btnShopEditor = new System.Windows.Forms.Button();
+            btnWildEditor = new System.Windows.Forms.Button();
+            btnTrainerEditor = new System.Windows.Forms.Button();
+            grpEditors = new System.Windows.Forms.GroupBox();
+            scrollEditors = new System.Windows.Forms.FlowLayoutPanel();
+            btnMatchupEditor = new System.Windows.Forms.Button();
+            btnMetadataEditor = new System.Windows.Forms.Button();
+            btnTowerTrainerEditor = new System.Windows.Forms.Button();
+            btnTowerPokemonEditor = new System.Windows.Forms.Button();
+            grpOtherTools = new System.Windows.Forms.GroupBox();
+            btnJSONConverter = new System.Windows.Forms.Button();
+            btnPokemonInserter = new System.Windows.Forms.Button();
+            grpDistPokemonEvolutionLevel.SuspendLayout();
+            grpMain.SuspendLayout();
+            tabsRandomizer.SuspendLayout();
+            tabPokemon.SuspendLayout();
+            grpPokemonMisc.SuspendLayout();
+            grpDistPokemonMiscCatchRate.SuspendLayout();
+            grpDistPokemonMiscInitFriendship.SuspendLayout();
+            grpDistPokemonMiscEVs.SuspendLayout();
+            grpDistPokemonMiscExp.SuspendLayout();
+            grpPokemonEggMoves.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numPokemonEggMovesTypeBias).BeginInit();
+            grpDistPokemonEggMovesCount.SuspendLayout();
+            grpPokemonLevelMoves.SuspendLayout();
+            grpDistPokemonLevelMovesLearnLevels.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numPokemonLevelMovesTypeBias).BeginInit();
+            grpDistPokemonLevelMovesCount.SuspendLayout();
+            grpPokemonTMCompat.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numPokemonTMCompatPercent).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numPokemonTMCompatTypeBias).BeginInit();
+            grpPokemonAbilities.SuspendLayout();
+            grpPokemonGrowth.SuspendLayout();
+            grpPokemonWildHeldItems.SuspendLayout();
+            grpPokemonTyping.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numPokemonTypingDouble).BeginInit();
+            grpPokemonBaseStats.SuspendLayout();
+            grpDistPokemonBaseStats.SuspendLayout();
+            grpPokemonEvolution.SuspendLayout();
+            tabMovesAndItems.SuspendLayout();
+            grpMovesAndItemsShopItems.SuspendLayout();
+            grpMovesAndItemsTMMoves.SuspendLayout();
+            grpMovesAndItemsPickup.SuspendLayout();
+            grpDistMovesAndItemsItemPrices.SuspendLayout();
+            grpDistMovesAndItemsPP.SuspendLayout();
+            grpDistMovesAndItemsAccuracy.SuspendLayout();
+            grpDistMovesAndItemsPower.SuspendLayout();
+            grpMovesAndItemsMoveCategory.SuspendLayout();
+            grpMovesAndItemsMoveTyping.SuspendLayout();
+            tabEncounters.SuspendLayout();
+            grpEncountersTrainer.SuspendLayout();
+            grpEncountersTrainerAbilities.SuspendLayout();
+            grpDistEncountersTrainerEVs.SuspendLayout();
+            grpDistEncountersTrainerIVs.SuspendLayout();
+            grpEncountersTrainerHeldItems.SuspendLayout();
+            grpEncountersTrainerMoves.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numEncountersTrainerMovesTypeBias).BeginInit();
+            grpEncountersTrainerNatures.SuspendLayout();
+            grpDistEncountersTrainerLevels.SuspendLayout();
+            grpEncountersTrainerShiny.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numEncountersTrainerShiny).BeginInit();
+            grpEncountersTrainerSpecies.SuspendLayout();
+            grpDistEncountersTrainerPokemonCount.SuspendLayout();
+            grpEncountersTrainerItems.SuspendLayout();
+            grpDistEncountersTrainerItemsCount.SuspendLayout();
+            grpEncountersWild.SuspendLayout();
+            grpDistEncountersWildLevels.SuspendLayout();
+            tabMisc.SuspendLayout();
+            grpMiscTypeMatchups.SuspendLayout();
+            grpMiscAbsoluteBoundaries.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)gridMiscAbsoluteBoundaries).BeginInit();
+            grpMiscLevelMult.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numMiscLevelMultMult).BeginInit();
+            grpMiscTextAndMusic.SuspendLayout();
+            grpMiscScripts.SuspendLayout();
+            grpEditors.SuspendLayout();
+            scrollEditors.SuspendLayout();
+            grpOtherTools.SuspendLayout();
             SuspendLayout();
             // 
-            // groupBox1
-            // 
-            groupBox1.Controls.Add(checkBox2);
-            groupBox1.Controls.Add(button1);
-            groupBox1.Controls.Add(textBox1);
-            groupBox1.Location = new System.Drawing.Point(6, 116);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new System.Drawing.Size(173, 91);
-            groupBox1.TabIndex = 0;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Evolution Levels";
-            // 
-            // checkBox2
-            // 
-            checkBox2.AutoSize = true;
-            checkBox2.Location = new System.Drawing.Point(6, 27);
-            checkBox2.Name = "checkBox2";
-            checkBox2.Size = new System.Drawing.Size(106, 24);
-            checkBox2.TabIndex = 3;
-            checkBox2.Text = "Randomize";
-            checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            button1.Location = new System.Drawing.Point(137, 55);
-            button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(29, 29);
-            button1.TabIndex = 1;
-            button1.Text = ">";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += OpenNumericDistributionForm;
-            // 
-            // textBox1
-            // 
-            textBox1.Location = new System.Drawing.Point(6, 56);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new System.Drawing.Size(125, 27);
-            textBox1.TabIndex = 0;
-            textBox1.Leave += NumericDistributionTextBoxChanged;
-            // 
-            // button2
-            // 
-            button2.Location = new System.Drawing.Point(6, 83);
-            button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(173, 29);
-            button2.TabIndex = 2;
-            button2.Text = "Destination Pokémon";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += OpenItemDistributionForm;
-            // 
-            // groupBox2
-            // 
-            groupBox2.AutoSize = true;
-            groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            groupBox2.Controls.Add(button31);
-            groupBox2.Controls.Add(button5);
-            groupBox2.Controls.Add(button3);
-            groupBox2.Location = new System.Drawing.Point(12, 12);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new System.Drawing.Size(206, 151);
-            groupBox2.TabIndex = 3;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Main";
-            // 
-            // button31
-            // 
-            button31.Location = new System.Drawing.Point(6, 96);
-            button31.Name = "button31";
-            button31.Size = new System.Drawing.Size(194, 29);
-            button31.TabIndex = 11;
-            button31.Text = "Export and Exit";
-            button31.UseVisualStyleBackColor = true;
-            button31.Click += Export;
-            // 
-            // button5
-            // 
-            button5.Location = new System.Drawing.Point(6, 61);
-            button5.Name = "button5";
-            button5.Size = new System.Drawing.Size(194, 29);
-            button5.TabIndex = 2;
-            button5.Text = "Randomize";
-            button5.UseVisualStyleBackColor = true;
-            button5.Click += Randomize;
-            // 
-            // button3
-            // 
-            button3.Location = new System.Drawing.Point(6, 27);
-            button3.Name = "button3";
-            button3.Size = new System.Drawing.Size(194, 29);
-            button3.TabIndex = 0;
-            button3.Text = "Add Mod";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += AddMod;
-            // 
-            // tabControl1
-            // 
-            tabControl1.Controls.Add(tabPage1);
-            tabControl1.Controls.Add(tabPage2);
-            tabControl1.Controls.Add(tabPage3);
-            tabControl1.Controls.Add(tabPage4);
-            tabControl1.Location = new System.Drawing.Point(224, 12);
-            tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new System.Drawing.Size(1026, 649);
-            tabControl1.TabIndex = 4;
-            // 
-            // tabPage1
-            // 
-            tabPage1.Controls.Add(groupBox12);
-            tabPage1.Controls.Add(groupBox11);
-            tabPage1.Controls.Add(groupBox10);
-            tabPage1.Controls.Add(groupBox9);
-            tabPage1.Controls.Add(groupBox8);
-            tabPage1.Controls.Add(groupBox7);
-            tabPage1.Controls.Add(groupBox6);
-            tabPage1.Controls.Add(groupBox5);
-            tabPage1.Controls.Add(groupBox4);
-            tabPage1.Controls.Add(groupBox3);
-            tabPage1.Location = new System.Drawing.Point(4, 29);
-            tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            tabPage1.Size = new System.Drawing.Size(1018, 616);
-            tabPage1.TabIndex = 0;
-            tabPage1.Text = "Pokémon";
-            tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // groupBox12
-            // 
-            groupBox12.Controls.Add(numericDistributionControl2);
-            groupBox12.Controls.Add(numericDistributionControl4);
-            groupBox12.Controls.Add(numericDistributionControl3);
-            groupBox12.Controls.Add(numericDistributionControl5);
-            groupBox12.Location = new System.Drawing.Point(144, 327);
-            groupBox12.Name = "groupBox12";
-            groupBox12.Size = new System.Drawing.Size(376, 269);
-            groupBox12.TabIndex = 13;
-            groupBox12.TabStop = false;
-            groupBox12.Text = "Misc";
-            // 
-            // numericDistributionControl2
-            // 
-            numericDistributionControl2.Controls.Add(checkBox4);
-            numericDistributionControl2.Controls.Add(button7);
-            numericDistributionControl2.Controls.Add(textBox3);
-            numericDistributionControl2.Location = new System.Drawing.Point(6, 27);
-            numericDistributionControl2.Name = "numericDistributionControl2";
-            numericDistributionControl2.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl2.TabIndex = 4;
-            numericDistributionControl2.TabStop = false;
-            numericDistributionControl2.Text = "Catch Rate";
-            // 
-            // checkBox4
-            // 
-            checkBox4.AutoSize = true;
-            checkBox4.Location = new System.Drawing.Point(6, 27);
-            checkBox4.Name = "checkBox4";
-            checkBox4.Size = new System.Drawing.Size(106, 24);
-            checkBox4.TabIndex = 3;
-            checkBox4.Text = "Randomize";
-            checkBox4.UseVisualStyleBackColor = true;
-            // 
-            // button7
-            // 
-            button7.Location = new System.Drawing.Point(137, 55);
-            button7.Name = "button7";
-            button7.Size = new System.Drawing.Size(29, 29);
-            button7.TabIndex = 1;
-            button7.Text = ">";
-            button7.UseVisualStyleBackColor = true;
-            button7.Click += OpenNumericDistributionForm;
-            // 
-            // textBox3
-            // 
-            textBox3.Location = new System.Drawing.Point(6, 56);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new System.Drawing.Size(125, 27);
-            textBox3.TabIndex = 0;
-            // 
-            // numericDistributionControl4
-            // 
-            numericDistributionControl4.Controls.Add(checkBox11);
-            numericDistributionControl4.Controls.Add(button9);
-            numericDistributionControl4.Controls.Add(textBox5);
-            numericDistributionControl4.Location = new System.Drawing.Point(6, 123);
-            numericDistributionControl4.Name = "numericDistributionControl4";
-            numericDistributionControl4.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl4.TabIndex = 7;
-            numericDistributionControl4.TabStop = false;
-            numericDistributionControl4.Text = "Initial Friendship";
-            // 
-            // checkBox11
-            // 
-            checkBox11.AutoSize = true;
-            checkBox11.Location = new System.Drawing.Point(6, 27);
-            checkBox11.Name = "checkBox11";
-            checkBox11.Size = new System.Drawing.Size(106, 24);
-            checkBox11.TabIndex = 3;
-            checkBox11.Text = "Randomize";
-            checkBox11.UseVisualStyleBackColor = true;
-            // 
-            // button9
-            // 
-            button9.Location = new System.Drawing.Point(137, 55);
-            button9.Name = "button9";
-            button9.Size = new System.Drawing.Size(29, 29);
-            button9.TabIndex = 1;
-            button9.Text = ">";
-            button9.UseVisualStyleBackColor = true;
-            button9.Click += OpenNumericDistributionForm;
-            // 
-            // textBox5
-            // 
-            textBox5.Location = new System.Drawing.Point(6, 56);
-            textBox5.Name = "textBox5";
-            textBox5.Size = new System.Drawing.Size(125, 27);
-            textBox5.TabIndex = 0;
-            // 
-            // numericDistributionControl3
-            // 
-            numericDistributionControl3.Controls.Add(checkBox9);
-            numericDistributionControl3.Controls.Add(button8);
-            numericDistributionControl3.Controls.Add(textBox4);
-            numericDistributionControl3.Location = new System.Drawing.Point(197, 27);
-            numericDistributionControl3.Name = "numericDistributionControl3";
-            numericDistributionControl3.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl3.TabIndex = 5;
-            numericDistributionControl3.TabStop = false;
-            numericDistributionControl3.Text = "EV Yield";
-            // 
-            // checkBox9
-            // 
-            checkBox9.AutoSize = true;
-            checkBox9.Location = new System.Drawing.Point(6, 27);
-            checkBox9.Name = "checkBox9";
-            checkBox9.Size = new System.Drawing.Size(106, 24);
-            checkBox9.TabIndex = 3;
-            checkBox9.Text = "Randomize";
-            checkBox9.UseVisualStyleBackColor = true;
-            // 
-            // button8
-            // 
-            button8.Location = new System.Drawing.Point(137, 55);
-            button8.Name = "button8";
-            button8.Size = new System.Drawing.Size(29, 29);
-            button8.TabIndex = 1;
-            button8.Text = ">";
-            button8.UseVisualStyleBackColor = true;
-            button8.Click += OpenNumericDistributionForm;
-            // 
-            // textBox4
-            // 
-            textBox4.Location = new System.Drawing.Point(6, 56);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new System.Drawing.Size(125, 27);
-            textBox4.TabIndex = 0;
-            // 
-            // numericDistributionControl5
-            // 
-            numericDistributionControl5.Controls.Add(checkBox14);
-            numericDistributionControl5.Controls.Add(button10);
-            numericDistributionControl5.Controls.Add(textBox6);
-            numericDistributionControl5.Location = new System.Drawing.Point(197, 123);
-            numericDistributionControl5.Name = "numericDistributionControl5";
-            numericDistributionControl5.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl5.TabIndex = 6;
-            numericDistributionControl5.TabStop = false;
-            numericDistributionControl5.Text = "Exp Yield";
-            // 
-            // checkBox14
-            // 
-            checkBox14.AutoSize = true;
-            checkBox14.Location = new System.Drawing.Point(6, 27);
-            checkBox14.Name = "checkBox14";
-            checkBox14.Size = new System.Drawing.Size(106, 24);
-            checkBox14.TabIndex = 3;
-            checkBox14.Text = "Randomize";
-            checkBox14.UseVisualStyleBackColor = true;
-            // 
-            // button10
-            // 
-            button10.Location = new System.Drawing.Point(137, 55);
-            button10.Name = "button10";
-            button10.Size = new System.Drawing.Size(29, 29);
-            button10.TabIndex = 1;
-            button10.Text = ">";
-            button10.UseVisualStyleBackColor = true;
-            button10.Click += OpenNumericDistributionForm;
-            // 
-            // textBox6
-            // 
-            textBox6.Location = new System.Drawing.Point(6, 56);
-            textBox6.Name = "textBox6";
-            textBox6.Size = new System.Drawing.Size(125, 27);
-            textBox6.TabIndex = 0;
-            // 
-            // groupBox11
-            // 
-            groupBox11.Controls.Add(itemDistributionControl7);
-            groupBox11.Controls.Add(label5);
-            groupBox11.Controls.Add(numericUpDown5);
-            groupBox11.Controls.Add(numericDistributionControl9);
-            groupBox11.Controls.Add(checkBox24);
-            groupBox11.Location = new System.Drawing.Point(525, 327);
-            groupBox11.Name = "groupBox11";
-            groupBox11.Size = new System.Drawing.Size(185, 269);
-            groupBox11.TabIndex = 12;
-            groupBox11.TabStop = false;
-            groupBox11.Text = "Egg Moves";
-            // 
-            // itemDistributionControl7
-            // 
-            itemDistributionControl7.Location = new System.Drawing.Point(6, 53);
-            itemDistributionControl7.Name = "itemDistributionControl7";
-            itemDistributionControl7.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl7.TabIndex = 11;
-            itemDistributionControl7.Text = "Egg Moves";
-            itemDistributionControl7.UseVisualStyleBackColor = true;
-            itemDistributionControl7.Click += OpenItemDistributionForm;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new System.Drawing.Point(6, 85);
-            label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(87, 20);
-            label5.TabIndex = 9;
-            label5.Text = "Type Bias %";
-            // 
-            // numericUpDown5
-            // 
-            numericUpDown5.DecimalPlaces = 3;
-            numericUpDown5.Location = new System.Drawing.Point(6, 108);
-            numericUpDown5.Name = "numericUpDown5";
-            numericUpDown5.Size = new System.Drawing.Size(173, 27);
-            numericUpDown5.TabIndex = 8;
-            // 
-            // numericDistributionControl9
-            // 
-            numericDistributionControl9.Controls.Add(checkBox23);
-            numericDistributionControl9.Controls.Add(button14);
-            numericDistributionControl9.Controls.Add(textBox10);
-            numericDistributionControl9.Location = new System.Drawing.Point(6, 171);
-            numericDistributionControl9.Name = "numericDistributionControl9";
-            numericDistributionControl9.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl9.TabIndex = 7;
-            numericDistributionControl9.TabStop = false;
-            numericDistributionControl9.Text = "Move Count";
-            // 
-            // checkBox23
-            // 
-            checkBox23.AutoSize = true;
-            checkBox23.Location = new System.Drawing.Point(6, 27);
-            checkBox23.Name = "checkBox23";
-            checkBox23.Size = new System.Drawing.Size(106, 24);
-            checkBox23.TabIndex = 3;
-            checkBox23.Text = "Randomize";
-            checkBox23.UseVisualStyleBackColor = true;
-            // 
-            // button14
-            // 
-            button14.Location = new System.Drawing.Point(137, 55);
-            button14.Name = "button14";
-            button14.Size = new System.Drawing.Size(29, 29);
-            button14.TabIndex = 1;
-            button14.Text = ">";
-            button14.UseVisualStyleBackColor = true;
-            button14.Click += OpenNumericDistributionForm;
-            // 
-            // textBox10
-            // 
-            textBox10.Location = new System.Drawing.Point(6, 56);
-            textBox10.Name = "textBox10";
-            textBox10.Size = new System.Drawing.Size(125, 27);
-            textBox10.TabIndex = 0;
-            // 
-            // checkBox24
-            // 
-            checkBox24.AutoSize = true;
-            checkBox24.Location = new System.Drawing.Point(6, 27);
-            checkBox24.Name = "checkBox24";
-            checkBox24.Size = new System.Drawing.Size(106, 24);
-            checkBox24.TabIndex = 2;
-            checkBox24.Text = "Randomize";
-            checkBox24.UseVisualStyleBackColor = true;
-            // 
-            // groupBox10
-            // 
-            groupBox10.Controls.Add(numericDistributionControl7);
-            groupBox10.Controls.Add(itemDistributionControl6);
-            groupBox10.Controls.Add(checkBox18);
-            groupBox10.Controls.Add(label4);
-            groupBox10.Controls.Add(numericUpDown4);
-            groupBox10.Controls.Add(numericDistributionControl6);
-            groupBox10.Controls.Add(checkBox17);
-            groupBox10.Location = new System.Drawing.Point(716, 227);
-            groupBox10.Name = "groupBox10";
-            groupBox10.Size = new System.Drawing.Size(185, 371);
-            groupBox10.TabIndex = 11;
-            groupBox10.TabStop = false;
-            groupBox10.Text = "Level Up Moves";
-            // 
-            // numericDistributionControl7
-            // 
-            numericDistributionControl7.Controls.Add(checkBox20);
-            numericDistributionControl7.Controls.Add(button12);
-            numericDistributionControl7.Controls.Add(textBox8);
-            numericDistributionControl7.Location = new System.Drawing.Point(6, 173);
-            numericDistributionControl7.Name = "numericDistributionControl7";
-            numericDistributionControl7.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl7.TabIndex = 12;
-            numericDistributionControl7.TabStop = false;
-            numericDistributionControl7.Text = "Learn Levels";
-            // 
-            // checkBox20
-            // 
-            checkBox20.AutoSize = true;
-            checkBox20.Location = new System.Drawing.Point(6, 27);
-            checkBox20.Name = "checkBox20";
-            checkBox20.Size = new System.Drawing.Size(106, 24);
-            checkBox20.TabIndex = 3;
-            checkBox20.Text = "Randomize";
-            checkBox20.UseVisualStyleBackColor = true;
-            // 
-            // button12
-            // 
-            button12.Location = new System.Drawing.Point(137, 55);
-            button12.Name = "button12";
-            button12.Size = new System.Drawing.Size(29, 29);
-            button12.TabIndex = 1;
-            button12.Text = ">";
-            button12.UseVisualStyleBackColor = true;
-            button12.Click += OpenNumericDistributionForm;
-            // 
-            // textBox8
-            // 
-            textBox8.Location = new System.Drawing.Point(6, 56);
-            textBox8.Name = "textBox8";
-            textBox8.Size = new System.Drawing.Size(125, 27);
-            textBox8.TabIndex = 0;
-            // 
-            // itemDistributionControl6
-            // 
-            itemDistributionControl6.Location = new System.Drawing.Point(6, 85);
-            itemDistributionControl6.Name = "itemDistributionControl6";
-            itemDistributionControl6.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl6.TabIndex = 11;
-            itemDistributionControl6.Text = "Level Up Moves";
-            itemDistributionControl6.UseVisualStyleBackColor = true;
-            itemDistributionControl6.Click += OpenItemDistributionForm;
-            // 
-            // checkBox18
-            // 
-            checkBox18.AutoSize = true;
-            checkBox18.Location = new System.Drawing.Point(6, 56);
-            checkBox18.Name = "checkBox18";
-            checkBox18.Size = new System.Drawing.Size(122, 24);
-            checkBox18.TabIndex = 10;
-            checkBox18.Text = "Sort By Power";
-            checkBox18.UseVisualStyleBackColor = true;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new System.Drawing.Point(6, 117);
-            label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(87, 20);
-            label4.TabIndex = 9;
-            label4.Text = "Type Bias %";
-            // 
-            // numericUpDown4
-            // 
-            numericUpDown4.DecimalPlaces = 3;
-            numericUpDown4.Location = new System.Drawing.Point(6, 141);
-            numericUpDown4.Name = "numericUpDown4";
-            numericUpDown4.Size = new System.Drawing.Size(173, 27);
-            numericUpDown4.TabIndex = 8;
-            // 
-            // numericDistributionControl6
-            // 
-            numericDistributionControl6.Controls.Add(checkBox19);
-            numericDistributionControl6.Controls.Add(button11);
-            numericDistributionControl6.Controls.Add(textBox7);
-            numericDistributionControl6.Location = new System.Drawing.Point(6, 269);
-            numericDistributionControl6.Name = "numericDistributionControl6";
-            numericDistributionControl6.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl6.TabIndex = 7;
-            numericDistributionControl6.TabStop = false;
-            numericDistributionControl6.Text = "Move Count";
-            // 
-            // checkBox19
-            // 
-            checkBox19.AutoSize = true;
-            checkBox19.Location = new System.Drawing.Point(6, 27);
-            checkBox19.Name = "checkBox19";
-            checkBox19.Size = new System.Drawing.Size(106, 24);
-            checkBox19.TabIndex = 3;
-            checkBox19.Text = "Randomize";
-            checkBox19.UseVisualStyleBackColor = true;
-            // 
-            // button11
-            // 
-            button11.Location = new System.Drawing.Point(137, 55);
-            button11.Name = "button11";
-            button11.Size = new System.Drawing.Size(29, 29);
-            button11.TabIndex = 1;
-            button11.Text = ">";
-            button11.UseVisualStyleBackColor = true;
-            button11.Click += OpenNumericDistributionForm;
-            // 
-            // textBox7
-            // 
-            textBox7.Location = new System.Drawing.Point(6, 56);
-            textBox7.Name = "textBox7";
-            textBox7.Size = new System.Drawing.Size(125, 27);
-            textBox7.TabIndex = 0;
-            // 
-            // checkBox17
-            // 
-            checkBox17.AutoSize = true;
-            checkBox17.Location = new System.Drawing.Point(6, 27);
-            checkBox17.Name = "checkBox17";
-            checkBox17.Size = new System.Drawing.Size(106, 24);
-            checkBox17.TabIndex = 2;
-            checkBox17.Text = "Randomize";
-            checkBox17.UseVisualStyleBackColor = true;
-            // 
-            // groupBox9
-            // 
-            groupBox9.Controls.Add(label2);
-            groupBox9.Controls.Add(numericUpDown2);
-            groupBox9.Controls.Add(checkBox16);
-            groupBox9.Controls.Add(label3);
-            groupBox9.Controls.Add(numericUpDown3);
-            groupBox9.Controls.Add(checkBox15);
-            groupBox9.Location = new System.Drawing.Point(716, 6);
-            groupBox9.Name = "groupBox9";
-            groupBox9.Size = new System.Drawing.Size(185, 215);
-            groupBox9.TabIndex = 10;
-            groupBox9.TabStop = false;
-            groupBox9.Text = "TM Compatibility";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(6, 83);
-            label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(140, 20);
-            label2.TabIndex = 8;
-            label2.Text = "TM Compatibility %";
-            // 
-            // numericUpDown2
-            // 
-            numericUpDown2.DecimalPlaces = 3;
-            numericUpDown2.Location = new System.Drawing.Point(6, 107);
-            numericUpDown2.Name = "numericUpDown2";
-            numericUpDown2.Size = new System.Drawing.Size(173, 27);
-            numericUpDown2.TabIndex = 7;
-            // 
-            // checkBox16
-            // 
-            checkBox16.AutoSize = true;
-            checkBox16.Location = new System.Drawing.Point(6, 56);
-            checkBox16.Name = "checkBox16";
-            checkBox16.Size = new System.Drawing.Size(133, 24);
-            checkBox16.TabIndex = 6;
-            checkBox16.Text = "Evolution Logic";
-            checkBox16.UseVisualStyleBackColor = true;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(6, 136);
-            label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(87, 20);
-            label3.TabIndex = 4;
-            label3.Text = "Type Bias %";
-            // 
-            // numericUpDown3
-            // 
-            numericUpDown3.DecimalPlaces = 3;
-            numericUpDown3.Location = new System.Drawing.Point(6, 159);
-            numericUpDown3.Name = "numericUpDown3";
-            numericUpDown3.Size = new System.Drawing.Size(173, 27);
-            numericUpDown3.TabIndex = 3;
-            // 
-            // checkBox15
-            // 
-            checkBox15.AutoSize = true;
-            checkBox15.Location = new System.Drawing.Point(6, 27);
-            checkBox15.Name = "checkBox15";
-            checkBox15.Size = new System.Drawing.Size(106, 24);
-            checkBox15.TabIndex = 1;
-            checkBox15.Text = "Randomize";
-            checkBox15.UseVisualStyleBackColor = true;
-            // 
-            // groupBox8
-            // 
-            groupBox8.Controls.Add(itemDistributionControl4);
-            groupBox8.Controls.Add(checkBox13);
-            groupBox8.Location = new System.Drawing.Point(525, 227);
-            groupBox8.Name = "groupBox8";
-            groupBox8.Size = new System.Drawing.Size(185, 93);
-            groupBox8.TabIndex = 9;
-            groupBox8.TabStop = false;
-            groupBox8.Text = "Abilities";
-            // 
-            // itemDistributionControl4
-            // 
-            itemDistributionControl4.Location = new System.Drawing.Point(6, 53);
-            itemDistributionControl4.Name = "itemDistributionControl4";
-            itemDistributionControl4.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl4.TabIndex = 4;
-            itemDistributionControl4.Text = "Abilities";
-            itemDistributionControl4.UseVisualStyleBackColor = true;
-            itemDistributionControl4.Click += OpenItemDistributionForm;
-            // 
-            // checkBox13
-            // 
-            checkBox13.AutoSize = true;
-            checkBox13.Location = new System.Drawing.Point(6, 27);
-            checkBox13.Name = "checkBox13";
-            checkBox13.Size = new System.Drawing.Size(106, 24);
-            checkBox13.TabIndex = 1;
-            checkBox13.Text = "Randomize";
-            checkBox13.UseVisualStyleBackColor = true;
-            // 
-            // groupBox7
-            // 
-            groupBox7.Controls.Add(itemDistributionControl3);
-            groupBox7.Controls.Add(checkBox12);
-            groupBox7.Location = new System.Drawing.Point(334, 227);
-            groupBox7.Name = "groupBox7";
-            groupBox7.Size = new System.Drawing.Size(185, 93);
-            groupBox7.TabIndex = 8;
-            groupBox7.TabStop = false;
-            groupBox7.Text = "Growth Rate";
-            // 
-            // itemDistributionControl3
-            // 
-            itemDistributionControl3.Location = new System.Drawing.Point(6, 53);
-            itemDistributionControl3.Name = "itemDistributionControl3";
-            itemDistributionControl3.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl3.TabIndex = 4;
-            itemDistributionControl3.Text = "Growth Rate";
-            itemDistributionControl3.UseVisualStyleBackColor = true;
-            itemDistributionControl3.Click += OpenItemDistributionForm;
-            // 
-            // checkBox12
-            // 
-            checkBox12.AutoSize = true;
-            checkBox12.Location = new System.Drawing.Point(6, 27);
-            checkBox12.Name = "checkBox12";
-            checkBox12.Size = new System.Drawing.Size(106, 24);
-            checkBox12.TabIndex = 1;
-            checkBox12.Text = "Randomize";
-            checkBox12.UseVisualStyleBackColor = true;
-            // 
-            // groupBox6
-            // 
-            groupBox6.Controls.Add(itemDistributionControl2);
-            groupBox6.Controls.Add(checkBox10);
-            groupBox6.Location = new System.Drawing.Point(144, 227);
-            groupBox6.Name = "groupBox6";
-            groupBox6.Size = new System.Drawing.Size(185, 93);
-            groupBox6.TabIndex = 6;
-            groupBox6.TabStop = false;
-            groupBox6.Text = "Wild Held Items";
-            // 
-            // itemDistributionControl2
-            // 
-            itemDistributionControl2.Location = new System.Drawing.Point(6, 53);
-            itemDistributionControl2.Name = "itemDistributionControl2";
-            itemDistributionControl2.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl2.TabIndex = 4;
-            itemDistributionControl2.Text = "Wild Held Items";
-            itemDistributionControl2.UseVisualStyleBackColor = true;
-            itemDistributionControl2.Click += OpenItemDistributionForm;
-            // 
-            // checkBox10
-            // 
-            checkBox10.AutoSize = true;
-            checkBox10.Location = new System.Drawing.Point(6, 27);
-            checkBox10.Name = "checkBox10";
-            checkBox10.Size = new System.Drawing.Size(106, 24);
-            checkBox10.TabIndex = 1;
-            checkBox10.Text = "Randomize";
-            checkBox10.UseVisualStyleBackColor = true;
-            // 
-            // groupBox5
-            // 
-            groupBox5.Controls.Add(checkBox61);
-            groupBox5.Controls.Add(itemDistributionControl1);
-            groupBox5.Controls.Add(label1);
-            groupBox5.Controls.Add(numericUpDown1);
-            groupBox5.Controls.Add(checkBox8);
-            groupBox5.Location = new System.Drawing.Point(525, 6);
-            groupBox5.Name = "groupBox5";
-            groupBox5.Size = new System.Drawing.Size(185, 215);
-            groupBox5.TabIndex = 2;
-            groupBox5.TabStop = false;
-            groupBox5.Text = "Typing";
-            // 
-            // checkBox61
-            // 
-            checkBox61.AutoSize = true;
-            checkBox61.Location = new System.Drawing.Point(6, 56);
-            checkBox61.Name = "checkBox61";
-            checkBox61.Size = new System.Drawing.Size(133, 24);
-            checkBox61.TabIndex = 4;
-            checkBox61.Text = "Evolution Logic";
-            checkBox61.UseVisualStyleBackColor = true;
-            // 
-            // itemDistributionControl1
-            // 
-            itemDistributionControl1.Location = new System.Drawing.Point(6, 83);
-            itemDistributionControl1.Name = "itemDistributionControl1";
-            itemDistributionControl1.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl1.TabIndex = 3;
-            itemDistributionControl1.Text = "Typing";
-            itemDistributionControl1.UseVisualStyleBackColor = true;
-            itemDistributionControl1.Click += OpenItemDistributionForm;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(6, 115);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(122, 20);
-            label1.TabIndex = 2;
-            label1.Text = "Double Typing %";
-            // 
-            // numericUpDown1
-            // 
-            numericUpDown1.DecimalPlaces = 3;
-            numericUpDown1.Location = new System.Drawing.Point(6, 139);
-            numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.Size = new System.Drawing.Size(173, 27);
-            numericUpDown1.TabIndex = 1;
-            // 
-            // checkBox8
-            // 
-            checkBox8.AutoSize = true;
-            checkBox8.Location = new System.Drawing.Point(6, 27);
-            checkBox8.Name = "checkBox8";
-            checkBox8.Size = new System.Drawing.Size(106, 24);
-            checkBox8.TabIndex = 0;
-            checkBox8.Text = "Randomize";
-            checkBox8.UseVisualStyleBackColor = true;
-            // 
-            // groupBox4
-            // 
-            groupBox4.Controls.Add(numericDistributionControl1);
-            groupBox4.Controls.Add(checkBox6);
-            groupBox4.Controls.Add(checkBox5);
-            groupBox4.Location = new System.Drawing.Point(334, 6);
-            groupBox4.Name = "groupBox4";
-            groupBox4.Size = new System.Drawing.Size(185, 215);
-            groupBox4.TabIndex = 1;
-            groupBox4.TabStop = false;
-            groupBox4.Text = "Base Stats";
-            // 
-            // numericDistributionControl1
-            // 
-            numericDistributionControl1.Controls.Add(checkBox7);
-            numericDistributionControl1.Controls.Add(button6);
-            numericDistributionControl1.Controls.Add(textBox2);
-            numericDistributionControl1.Location = new System.Drawing.Point(6, 116);
-            numericDistributionControl1.Name = "numericDistributionControl1";
-            numericDistributionControl1.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl1.TabIndex = 3;
-            numericDistributionControl1.TabStop = false;
-            numericDistributionControl1.Text = "Base Stats";
-            // 
-            // checkBox7
-            // 
-            checkBox7.AutoSize = true;
-            checkBox7.Location = new System.Drawing.Point(6, 27);
-            checkBox7.Name = "checkBox7";
-            checkBox7.Size = new System.Drawing.Size(106, 24);
-            checkBox7.TabIndex = 3;
-            checkBox7.Text = "Randomize";
-            checkBox7.UseVisualStyleBackColor = true;
-            // 
-            // button6
-            // 
-            button6.Location = new System.Drawing.Point(137, 55);
-            button6.Name = "button6";
-            button6.Size = new System.Drawing.Size(29, 29);
-            button6.TabIndex = 1;
-            button6.Text = ">";
-            button6.UseVisualStyleBackColor = true;
-            button6.Click += OpenNumericDistributionForm;
-            // 
-            // textBox2
-            // 
-            textBox2.Location = new System.Drawing.Point(6, 56);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new System.Drawing.Size(125, 27);
-            textBox2.TabIndex = 0;
-            // 
-            // checkBox6
-            // 
-            checkBox6.AutoSize = true;
-            checkBox6.Location = new System.Drawing.Point(6, 56);
-            checkBox6.Name = "checkBox6";
-            checkBox6.Size = new System.Drawing.Size(96, 24);
-            checkBox6.TabIndex = 2;
-            checkBox6.Text = "BST Logic";
-            checkBox6.UseVisualStyleBackColor = true;
-            // 
-            // checkBox5
-            // 
-            checkBox5.AutoSize = true;
-            checkBox5.Location = new System.Drawing.Point(6, 27);
-            checkBox5.Name = "checkBox5";
-            checkBox5.Size = new System.Drawing.Size(77, 24);
-            checkBox5.TabIndex = 1;
-            checkBox5.Text = "Shuffle";
-            checkBox5.UseVisualStyleBackColor = true;
-            // 
-            // groupBox3
-            // 
-            groupBox3.Controls.Add(checkBox3);
-            groupBox3.Controls.Add(checkBox1);
-            groupBox3.Controls.Add(groupBox1);
-            groupBox3.Controls.Add(button2);
-            groupBox3.Location = new System.Drawing.Point(144, 6);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new System.Drawing.Size(185, 215);
-            groupBox3.TabIndex = 0;
-            groupBox3.TabStop = false;
-            groupBox3.Text = "Evolution";
-            // 
-            // checkBox3
-            // 
-            checkBox3.AutoSize = true;
-            checkBox3.Location = new System.Drawing.Point(6, 56);
-            checkBox3.Name = "checkBox3";
-            checkBox3.Size = new System.Drawing.Size(96, 24);
-            checkBox3.TabIndex = 3;
-            checkBox3.Text = "BST Logic";
-            checkBox3.UseVisualStyleBackColor = true;
-            // 
-            // checkBox1
-            // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new System.Drawing.Point(6, 27);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new System.Drawing.Size(173, 24);
-            checkBox1.TabIndex = 0;
-            checkBox1.Text = "Random Destinations";
-            checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            tabPage2.Controls.Add(groupBox26);
-            tabPage2.Controls.Add(groupBox25);
-            tabPage2.Controls.Add(groupBox23);
-            tabPage2.Controls.Add(numericDistributionControl18);
-            tabPage2.Controls.Add(numericDistributionControl11);
-            tabPage2.Controls.Add(numericDistributionControl10);
-            tabPage2.Controls.Add(numericDistributionControl8);
-            tabPage2.Controls.Add(groupBox14);
-            tabPage2.Controls.Add(groupBox13);
-            tabPage2.Location = new System.Drawing.Point(4, 29);
-            tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            tabPage2.Size = new System.Drawing.Size(1018, 616);
-            tabPage2.TabIndex = 1;
-            tabPage2.Text = "Moves and Items";
-            tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // groupBox26
-            // 
-            groupBox26.Controls.Add(checkBox52);
-            groupBox26.Controls.Add(itemDistributionControl19);
-            groupBox26.Controls.Add(checkBox51);
-            groupBox26.Location = new System.Drawing.Point(727, 250);
-            groupBox26.Name = "groupBox26";
-            groupBox26.Size = new System.Drawing.Size(185, 125);
-            groupBox26.TabIndex = 14;
-            groupBox26.TabStop = false;
-            groupBox26.Text = "Shop Items";
-            // 
-            // checkBox52
-            // 
-            checkBox52.AutoSize = true;
-            checkBox52.Location = new System.Drawing.Point(6, 56);
-            checkBox52.Name = "checkBox52";
-            checkBox52.Size = new System.Drawing.Size(176, 24);
-            checkBox52.TabIndex = 5;
-            checkBox52.Text = "Preserve Regular Mart";
-            checkBox52.UseVisualStyleBackColor = true;
-            // 
-            // itemDistributionControl19
-            // 
-            itemDistributionControl19.Location = new System.Drawing.Point(6, 85);
-            itemDistributionControl19.Name = "itemDistributionControl19";
-            itemDistributionControl19.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl19.TabIndex = 4;
-            itemDistributionControl19.Text = "Shop Items";
-            itemDistributionControl19.UseVisualStyleBackColor = true;
-            itemDistributionControl19.Click += OpenItemDistributionForm;
-            // 
-            // checkBox51
-            // 
-            checkBox51.AutoSize = true;
-            checkBox51.Location = new System.Drawing.Point(6, 27);
-            checkBox51.Name = "checkBox51";
-            checkBox51.Size = new System.Drawing.Size(106, 24);
-            checkBox51.TabIndex = 1;
-            checkBox51.Text = "Randomize";
-            checkBox51.UseVisualStyleBackColor = true;
-            // 
-            // groupBox25
-            // 
-            groupBox25.Controls.Add(itemDistributionControl18);
-            groupBox25.Controls.Add(checkBox50);
-            groupBox25.Location = new System.Drawing.Point(108, 346);
-            groupBox25.Name = "groupBox25";
-            groupBox25.Size = new System.Drawing.Size(185, 91);
-            groupBox25.TabIndex = 9;
-            groupBox25.TabStop = false;
-            groupBox25.Text = "TM Moves";
-            // 
-            // itemDistributionControl18
-            // 
-            itemDistributionControl18.Location = new System.Drawing.Point(6, 53);
-            itemDistributionControl18.Name = "itemDistributionControl18";
-            itemDistributionControl18.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl18.TabIndex = 4;
-            itemDistributionControl18.Text = "TM Moves";
-            itemDistributionControl18.UseVisualStyleBackColor = true;
-            itemDistributionControl18.Click += OpenItemDistributionForm;
-            // 
-            // checkBox50
-            // 
-            checkBox50.AutoSize = true;
-            checkBox50.Location = new System.Drawing.Point(6, 27);
-            checkBox50.Name = "checkBox50";
-            checkBox50.Size = new System.Drawing.Size(106, 24);
-            checkBox50.TabIndex = 1;
-            checkBox50.Text = "Randomize";
-            checkBox50.UseVisualStyleBackColor = true;
-            // 
-            // groupBox23
-            // 
-            groupBox23.Controls.Add(itemDistributionControl16);
-            groupBox23.Controls.Add(checkBox47);
-            groupBox23.Location = new System.Drawing.Point(727, 154);
-            groupBox23.Name = "groupBox23";
-            groupBox23.Size = new System.Drawing.Size(185, 91);
-            groupBox23.TabIndex = 13;
-            groupBox23.TabStop = false;
-            groupBox23.Text = "Pickup Items";
-            // 
-            // itemDistributionControl16
-            // 
-            itemDistributionControl16.Location = new System.Drawing.Point(6, 53);
-            itemDistributionControl16.Name = "itemDistributionControl16";
-            itemDistributionControl16.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl16.TabIndex = 4;
-            itemDistributionControl16.Text = "Pickup Items";
-            itemDistributionControl16.UseVisualStyleBackColor = true;
-            itemDistributionControl16.Click += OpenItemDistributionForm;
-            // 
-            // checkBox47
-            // 
-            checkBox47.AutoSize = true;
-            checkBox47.Location = new System.Drawing.Point(6, 27);
-            checkBox47.Name = "checkBox47";
-            checkBox47.Size = new System.Drawing.Size(106, 24);
-            checkBox47.TabIndex = 1;
-            checkBox47.Text = "Randomize";
-            checkBox47.UseVisualStyleBackColor = true;
-            // 
-            // numericDistributionControl18
-            // 
-            numericDistributionControl18.Controls.Add(checkBox46);
-            numericDistributionControl18.Controls.Add(button22);
-            numericDistributionControl18.Controls.Add(textBox19);
-            numericDistributionControl18.Location = new System.Drawing.Point(549, 154);
-            numericDistributionControl18.Name = "numericDistributionControl18";
-            numericDistributionControl18.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl18.TabIndex = 12;
-            numericDistributionControl18.TabStop = false;
-            numericDistributionControl18.Text = "Item Prices";
-            // 
-            // checkBox46
-            // 
-            checkBox46.AutoSize = true;
-            checkBox46.Location = new System.Drawing.Point(6, 27);
-            checkBox46.Name = "checkBox46";
-            checkBox46.Size = new System.Drawing.Size(106, 24);
-            checkBox46.TabIndex = 3;
-            checkBox46.Text = "Randomize";
-            checkBox46.UseVisualStyleBackColor = true;
-            // 
-            // button22
-            // 
-            button22.Location = new System.Drawing.Point(137, 55);
-            button22.Name = "button22";
-            button22.Size = new System.Drawing.Size(29, 29);
-            button22.TabIndex = 1;
-            button22.Text = ">";
-            button22.UseVisualStyleBackColor = true;
-            button22.Click += OpenNumericDistributionForm;
-            // 
-            // textBox19
-            // 
-            textBox19.Location = new System.Drawing.Point(6, 56);
-            textBox19.Name = "textBox19";
-            textBox19.Size = new System.Drawing.Size(125, 27);
-            textBox19.TabIndex = 0;
-            // 
-            // numericDistributionControl11
-            // 
-            numericDistributionControl11.Controls.Add(checkBox27);
-            numericDistributionControl11.Controls.Add(button16);
-            numericDistributionControl11.Controls.Add(textBox12);
-            numericDistributionControl11.Location = new System.Drawing.Point(299, 346);
-            numericDistributionControl11.Name = "numericDistributionControl11";
-            numericDistributionControl11.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl11.TabIndex = 11;
-            numericDistributionControl11.TabStop = false;
-            numericDistributionControl11.Text = "PP";
-            // 
-            // checkBox27
-            // 
-            checkBox27.AutoSize = true;
-            checkBox27.Location = new System.Drawing.Point(6, 27);
-            checkBox27.Name = "checkBox27";
-            checkBox27.Size = new System.Drawing.Size(106, 24);
-            checkBox27.TabIndex = 3;
-            checkBox27.Text = "Randomize";
-            checkBox27.UseVisualStyleBackColor = true;
-            // 
-            // button16
-            // 
-            button16.Location = new System.Drawing.Point(137, 55);
-            button16.Name = "button16";
-            button16.Size = new System.Drawing.Size(29, 29);
-            button16.TabIndex = 1;
-            button16.Text = ">";
-            button16.UseVisualStyleBackColor = true;
-            button16.Click += OpenNumericDistributionForm;
-            // 
-            // textBox12
-            // 
-            textBox12.Location = new System.Drawing.Point(6, 56);
-            textBox12.Name = "textBox12";
-            textBox12.Size = new System.Drawing.Size(125, 27);
-            textBox12.TabIndex = 0;
-            // 
-            // numericDistributionControl10
-            // 
-            numericDistributionControl10.Controls.Add(checkBox26);
-            numericDistributionControl10.Controls.Add(button15);
-            numericDistributionControl10.Controls.Add(textBox11);
-            numericDistributionControl10.Location = new System.Drawing.Point(299, 250);
-            numericDistributionControl10.Name = "numericDistributionControl10";
-            numericDistributionControl10.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl10.TabIndex = 10;
-            numericDistributionControl10.TabStop = false;
-            numericDistributionControl10.Text = "Accuracy";
-            // 
-            // checkBox26
-            // 
-            checkBox26.AutoSize = true;
-            checkBox26.Location = new System.Drawing.Point(6, 27);
-            checkBox26.Name = "checkBox26";
-            checkBox26.Size = new System.Drawing.Size(106, 24);
-            checkBox26.TabIndex = 3;
-            checkBox26.Text = "Randomize";
-            checkBox26.UseVisualStyleBackColor = true;
-            // 
-            // button15
-            // 
-            button15.Location = new System.Drawing.Point(137, 55);
-            button15.Name = "button15";
-            button15.Size = new System.Drawing.Size(29, 29);
-            button15.TabIndex = 1;
-            button15.Text = ">";
-            button15.UseVisualStyleBackColor = true;
-            button15.Click += OpenNumericDistributionForm;
-            // 
-            // textBox11
-            // 
-            textBox11.Location = new System.Drawing.Point(6, 56);
-            textBox11.Name = "textBox11";
-            textBox11.Size = new System.Drawing.Size(125, 27);
-            textBox11.TabIndex = 0;
-            // 
-            // numericDistributionControl8
-            // 
-            numericDistributionControl8.Controls.Add(checkBox25);
-            numericDistributionControl8.Controls.Add(button13);
-            numericDistributionControl8.Controls.Add(textBox9);
-            numericDistributionControl8.Location = new System.Drawing.Point(299, 154);
-            numericDistributionControl8.Name = "numericDistributionControl8";
-            numericDistributionControl8.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl8.TabIndex = 9;
-            numericDistributionControl8.TabStop = false;
-            numericDistributionControl8.Text = "Power";
-            // 
-            // checkBox25
-            // 
-            checkBox25.AutoSize = true;
-            checkBox25.Location = new System.Drawing.Point(6, 27);
-            checkBox25.Name = "checkBox25";
-            checkBox25.Size = new System.Drawing.Size(106, 24);
-            checkBox25.TabIndex = 3;
-            checkBox25.Text = "Randomize";
-            checkBox25.UseVisualStyleBackColor = true;
-            // 
-            // button13
-            // 
-            button13.Location = new System.Drawing.Point(137, 55);
-            button13.Name = "button13";
-            button13.Size = new System.Drawing.Size(29, 29);
-            button13.TabIndex = 1;
-            button13.Text = ">";
-            button13.UseVisualStyleBackColor = true;
-            button13.Click += OpenNumericDistributionForm;
-            // 
-            // textBox9
-            // 
-            textBox9.Location = new System.Drawing.Point(6, 56);
-            textBox9.Name = "textBox9";
-            textBox9.Size = new System.Drawing.Size(125, 27);
-            textBox9.TabIndex = 0;
-            // 
-            // groupBox14
-            // 
-            groupBox14.Controls.Add(itemDistributionControl9);
-            groupBox14.Controls.Add(checkBox22);
-            groupBox14.Location = new System.Drawing.Point(108, 250);
-            groupBox14.Name = "groupBox14";
-            groupBox14.Size = new System.Drawing.Size(185, 91);
-            groupBox14.TabIndex = 8;
-            groupBox14.TabStop = false;
-            groupBox14.Text = "Damage Category";
-            // 
-            // itemDistributionControl9
-            // 
-            itemDistributionControl9.Location = new System.Drawing.Point(6, 53);
-            itemDistributionControl9.Name = "itemDistributionControl9";
-            itemDistributionControl9.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl9.TabIndex = 4;
-            itemDistributionControl9.Text = "Damage Category";
-            itemDistributionControl9.UseVisualStyleBackColor = true;
-            itemDistributionControl9.Click += OpenItemDistributionForm;
-            // 
-            // checkBox22
-            // 
-            checkBox22.AutoSize = true;
-            checkBox22.Location = new System.Drawing.Point(6, 27);
-            checkBox22.Name = "checkBox22";
-            checkBox22.Size = new System.Drawing.Size(106, 24);
-            checkBox22.TabIndex = 1;
-            checkBox22.Text = "Randomize";
-            checkBox22.UseVisualStyleBackColor = true;
-            // 
-            // groupBox13
-            // 
-            groupBox13.Controls.Add(itemDistributionControl8);
-            groupBox13.Controls.Add(checkBox21);
-            groupBox13.Location = new System.Drawing.Point(108, 154);
-            groupBox13.Name = "groupBox13";
-            groupBox13.Size = new System.Drawing.Size(185, 91);
-            groupBox13.TabIndex = 7;
-            groupBox13.TabStop = false;
-            groupBox13.Text = "Move Typing";
-            // 
-            // itemDistributionControl8
-            // 
-            itemDistributionControl8.Location = new System.Drawing.Point(6, 53);
-            itemDistributionControl8.Name = "itemDistributionControl8";
-            itemDistributionControl8.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl8.TabIndex = 4;
-            itemDistributionControl8.Text = "Typing";
-            itemDistributionControl8.UseVisualStyleBackColor = true;
-            itemDistributionControl8.Click += OpenItemDistributionForm;
-            // 
-            // checkBox21
-            // 
-            checkBox21.AutoSize = true;
-            checkBox21.Location = new System.Drawing.Point(6, 27);
-            checkBox21.Name = "checkBox21";
-            checkBox21.Size = new System.Drawing.Size(106, 24);
-            checkBox21.TabIndex = 1;
-            checkBox21.Text = "Randomize";
-            checkBox21.UseVisualStyleBackColor = true;
-            // 
-            // tabPage3
-            // 
-            tabPage3.Controls.Add(groupBox18);
-            tabPage3.Controls.Add(groupBox16);
-            tabPage3.Controls.Add(groupBox15);
-            tabPage3.Location = new System.Drawing.Point(4, 29);
-            tabPage3.Name = "tabPage3";
-            tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            tabPage3.Size = new System.Drawing.Size(1018, 616);
-            tabPage3.TabIndex = 2;
-            tabPage3.Text = "Encounters";
-            tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // groupBox18
-            // 
-            groupBox18.Controls.Add(groupBox24);
-            groupBox18.Controls.Add(numericDistributionControl17);
-            groupBox18.Controls.Add(numericDistributionControl16);
-            groupBox18.Controls.Add(groupBox22);
-            groupBox18.Controls.Add(groupBox21);
-            groupBox18.Controls.Add(groupBox20);
-            groupBox18.Controls.Add(numericDistributionControl15);
-            groupBox18.Controls.Add(groupBox19);
-            groupBox18.Controls.Add(groupBox17);
-            groupBox18.Controls.Add(numericDistributionControl14);
-            groupBox18.Location = new System.Drawing.Point(325, 46);
-            groupBox18.Name = "groupBox18";
-            groupBox18.Size = new System.Drawing.Size(570, 516);
-            groupBox18.TabIndex = 13;
-            groupBox18.TabStop = false;
-            groupBox18.Text = "Trainer Pokémon";
-            // 
-            // groupBox24
-            // 
-            groupBox24.Controls.Add(checkBox49);
-            groupBox24.Controls.Add(itemDistributionControl17);
-            groupBox24.Controls.Add(checkBox48);
-            groupBox24.Location = new System.Drawing.Point(197, 353);
-            groupBox24.Name = "groupBox24";
-            groupBox24.Size = new System.Drawing.Size(185, 125);
-            groupBox24.TabIndex = 24;
-            groupBox24.TabStop = false;
-            groupBox24.Text = "Abilities";
-            // 
-            // checkBox49
-            // 
-            checkBox49.AutoSize = true;
-            checkBox49.Location = new System.Drawing.Point(6, 56);
-            checkBox49.Name = "checkBox49";
-            checkBox49.Size = new System.Drawing.Size(173, 24);
-            checkBox49.TabIndex = 5;
-            checkBox49.Text = "Include Unobtainable";
-            checkBox49.UseVisualStyleBackColor = true;
-            // 
-            // itemDistributionControl17
-            // 
-            itemDistributionControl17.Location = new System.Drawing.Point(6, 85);
-            itemDistributionControl17.Name = "itemDistributionControl17";
-            itemDistributionControl17.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl17.TabIndex = 4;
-            itemDistributionControl17.Text = "Abilities";
-            itemDistributionControl17.UseVisualStyleBackColor = true;
-            itemDistributionControl17.Click += OpenItemDistributionForm;
-            // 
-            // checkBox48
-            // 
-            checkBox48.AutoSize = true;
-            checkBox48.Location = new System.Drawing.Point(6, 27);
-            checkBox48.Name = "checkBox48";
-            checkBox48.Size = new System.Drawing.Size(106, 24);
-            checkBox48.TabIndex = 1;
-            checkBox48.Text = "Randomize";
-            checkBox48.UseVisualStyleBackColor = true;
-            // 
-            // numericDistributionControl17
-            // 
-            numericDistributionControl17.Controls.Add(checkBox45);
-            numericDistributionControl17.Controls.Add(button21);
-            numericDistributionControl17.Controls.Add(textBox18);
-            numericDistributionControl17.Location = new System.Drawing.Point(389, 317);
-            numericDistributionControl17.Name = "numericDistributionControl17";
-            numericDistributionControl17.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl17.TabIndex = 23;
-            numericDistributionControl17.TabStop = false;
-            numericDistributionControl17.Text = "EVs";
-            // 
-            // checkBox45
-            // 
-            checkBox45.AutoSize = true;
-            checkBox45.Location = new System.Drawing.Point(6, 27);
-            checkBox45.Name = "checkBox45";
-            checkBox45.Size = new System.Drawing.Size(106, 24);
-            checkBox45.TabIndex = 3;
-            checkBox45.Text = "Randomize";
-            checkBox45.UseVisualStyleBackColor = true;
-            // 
-            // button21
-            // 
-            button21.Location = new System.Drawing.Point(137, 55);
-            button21.Name = "button21";
-            button21.Size = new System.Drawing.Size(29, 29);
-            button21.TabIndex = 1;
-            button21.Text = ">";
-            button21.UseVisualStyleBackColor = true;
-            button21.Click += OpenNumericDistributionForm;
-            // 
-            // textBox18
-            // 
-            textBox18.Location = new System.Drawing.Point(6, 56);
-            textBox18.Name = "textBox18";
-            textBox18.Size = new System.Drawing.Size(125, 27);
-            textBox18.TabIndex = 0;
-            // 
-            // numericDistributionControl16
-            // 
-            numericDistributionControl16.Controls.Add(checkBox44);
-            numericDistributionControl16.Controls.Add(button20);
-            numericDistributionControl16.Controls.Add(textBox17);
-            numericDistributionControl16.Location = new System.Drawing.Point(387, 221);
-            numericDistributionControl16.Name = "numericDistributionControl16";
-            numericDistributionControl16.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl16.TabIndex = 22;
-            numericDistributionControl16.TabStop = false;
-            numericDistributionControl16.Text = "IVs";
-            // 
-            // checkBox44
-            // 
-            checkBox44.AutoSize = true;
-            checkBox44.Location = new System.Drawing.Point(6, 27);
-            checkBox44.Name = "checkBox44";
-            checkBox44.Size = new System.Drawing.Size(106, 24);
-            checkBox44.TabIndex = 3;
-            checkBox44.Text = "Randomize";
-            checkBox44.UseVisualStyleBackColor = true;
-            // 
-            // button20
-            // 
-            button20.Location = new System.Drawing.Point(137, 55);
-            button20.Name = "button20";
-            button20.Size = new System.Drawing.Size(29, 29);
-            button20.TabIndex = 1;
-            button20.Text = ">";
-            button20.UseVisualStyleBackColor = true;
-            button20.Click += OpenNumericDistributionForm;
-            // 
-            // textBox17
-            // 
-            textBox17.Location = new System.Drawing.Point(6, 56);
-            textBox17.Name = "textBox17";
-            textBox17.Size = new System.Drawing.Size(125, 27);
-            textBox17.TabIndex = 0;
-            // 
-            // groupBox22
-            // 
-            groupBox22.Controls.Add(checkBox43);
-            groupBox22.Controls.Add(itemDistributionControl15);
-            groupBox22.Controls.Add(checkBox42);
-            groupBox22.Location = new System.Drawing.Point(6, 221);
-            groupBox22.Name = "groupBox22";
-            groupBox22.Size = new System.Drawing.Size(185, 125);
-            groupBox22.TabIndex = 21;
-            groupBox22.TabStop = false;
-            groupBox22.Text = "Held Items";
-            // 
-            // checkBox43
-            // 
-            checkBox43.AutoSize = true;
-            checkBox43.Location = new System.Drawing.Point(6, 56);
-            checkBox43.Name = "checkBox43";
-            checkBox43.Size = new System.Drawing.Size(177, 24);
-            checkBox43.TabIndex = 5;
-            checkBox43.Text = "High Level Held Items";
-            checkBox43.UseVisualStyleBackColor = true;
-            // 
-            // itemDistributionControl15
-            // 
-            itemDistributionControl15.Location = new System.Drawing.Point(6, 85);
-            itemDistributionControl15.Name = "itemDistributionControl15";
-            itemDistributionControl15.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl15.TabIndex = 4;
-            itemDistributionControl15.Text = "Held Items";
-            itemDistributionControl15.UseVisualStyleBackColor = true;
-            itemDistributionControl15.Click += OpenItemDistributionForm;
-            // 
-            // checkBox42
-            // 
-            checkBox42.AutoSize = true;
-            checkBox42.Location = new System.Drawing.Point(6, 27);
-            checkBox42.Name = "checkBox42";
-            checkBox42.Size = new System.Drawing.Size(106, 24);
-            checkBox42.TabIndex = 1;
-            checkBox42.Text = "Randomize";
-            checkBox42.UseVisualStyleBackColor = true;
-            // 
-            // groupBox21
-            // 
-            groupBox21.Controls.Add(label7);
-            groupBox21.Controls.Add(numericUpDown7);
-            groupBox21.Controls.Add(comboBox1);
-            groupBox21.Controls.Add(itemDistributionControl14);
-            groupBox21.Location = new System.Drawing.Point(197, 27);
-            groupBox21.Name = "groupBox21";
-            groupBox21.Size = new System.Drawing.Size(185, 189);
-            groupBox21.TabIndex = 20;
-            groupBox21.TabStop = false;
-            groupBox21.Text = "Moves";
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Location = new System.Drawing.Point(6, 92);
-            label7.Name = "label7";
-            label7.Size = new System.Drawing.Size(87, 20);
-            label7.TabIndex = 11;
-            label7.Text = "Type Bias %";
-            // 
-            // numericUpDown7
-            // 
-            numericUpDown7.DecimalPlaces = 3;
-            numericUpDown7.Location = new System.Drawing.Point(6, 115);
-            numericUpDown7.Name = "numericUpDown7";
-            numericUpDown7.Size = new System.Drawing.Size(173, 27);
-            numericUpDown7.TabIndex = 10;
-            // 
-            // comboBox1
-            // 
-            comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Unchanged", "Last Level Up Moves", "Random" });
-            comboBox1.Location = new System.Drawing.Point(6, 24);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new System.Drawing.Size(173, 28);
-            comboBox1.TabIndex = 5;
-            // 
-            // itemDistributionControl14
-            // 
-            itemDistributionControl14.Location = new System.Drawing.Point(6, 149);
-            itemDistributionControl14.Name = "itemDistributionControl14";
-            itemDistributionControl14.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl14.TabIndex = 4;
-            itemDistributionControl14.Text = "Moves";
-            itemDistributionControl14.UseVisualStyleBackColor = true;
-            itemDistributionControl14.Click += OpenItemDistributionForm;
-            // 
-            // groupBox20
-            // 
-            groupBox20.Controls.Add(itemDistributionControl13);
-            groupBox20.Controls.Add(checkBox41);
-            groupBox20.Location = new System.Drawing.Point(6, 353);
-            groupBox20.Name = "groupBox20";
-            groupBox20.Size = new System.Drawing.Size(185, 93);
-            groupBox20.TabIndex = 19;
-            groupBox20.TabStop = false;
-            groupBox20.Text = "Natures";
-            // 
-            // itemDistributionControl13
-            // 
-            itemDistributionControl13.Location = new System.Drawing.Point(6, 53);
-            itemDistributionControl13.Name = "itemDistributionControl13";
-            itemDistributionControl13.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl13.TabIndex = 4;
-            itemDistributionControl13.Text = "Natures";
-            itemDistributionControl13.UseVisualStyleBackColor = true;
-            itemDistributionControl13.Click += OpenItemDistributionForm;
-            // 
-            // checkBox41
-            // 
-            checkBox41.AutoSize = true;
-            checkBox41.Location = new System.Drawing.Point(6, 27);
-            checkBox41.Name = "checkBox41";
-            checkBox41.Size = new System.Drawing.Size(106, 24);
-            checkBox41.TabIndex = 1;
-            checkBox41.Text = "Randomize";
-            checkBox41.UseVisualStyleBackColor = true;
-            // 
-            // numericDistributionControl15
-            // 
-            numericDistributionControl15.Controls.Add(checkBox40);
-            numericDistributionControl15.Controls.Add(button19);
-            numericDistributionControl15.Controls.Add(textBox16);
-            numericDistributionControl15.Location = new System.Drawing.Point(389, 125);
-            numericDistributionControl15.Name = "numericDistributionControl15";
-            numericDistributionControl15.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl15.TabIndex = 18;
-            numericDistributionControl15.TabStop = false;
-            numericDistributionControl15.Text = "Levels";
-            // 
-            // checkBox40
-            // 
-            checkBox40.AutoSize = true;
-            checkBox40.Location = new System.Drawing.Point(6, 27);
-            checkBox40.Name = "checkBox40";
-            checkBox40.Size = new System.Drawing.Size(106, 24);
-            checkBox40.TabIndex = 3;
-            checkBox40.Text = "Randomize";
-            checkBox40.UseVisualStyleBackColor = true;
-            // 
-            // button19
-            // 
-            button19.Location = new System.Drawing.Point(137, 55);
-            button19.Name = "button19";
-            button19.Size = new System.Drawing.Size(29, 29);
-            button19.TabIndex = 1;
-            button19.Text = ">";
-            button19.UseVisualStyleBackColor = true;
-            button19.Click += OpenNumericDistributionForm;
-            // 
-            // textBox16
-            // 
-            textBox16.Location = new System.Drawing.Point(6, 56);
-            textBox16.Name = "textBox16";
-            textBox16.Size = new System.Drawing.Size(125, 27);
-            textBox16.TabIndex = 0;
-            // 
-            // groupBox19
-            // 
-            groupBox19.Controls.Add(label6);
-            groupBox19.Controls.Add(numericUpDown6);
-            groupBox19.Controls.Add(checkBox39);
-            groupBox19.Location = new System.Drawing.Point(197, 221);
-            groupBox19.Name = "groupBox19";
-            groupBox19.Size = new System.Drawing.Size(185, 125);
-            groupBox19.TabIndex = 17;
-            groupBox19.TabStop = false;
-            groupBox19.Text = "Shininess";
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Location = new System.Drawing.Point(6, 65);
-            label6.Name = "label6";
-            label6.Size = new System.Drawing.Size(60, 20);
-            label6.TabIndex = 17;
-            label6.Text = "Shiny %";
-            // 
-            // numericUpDown6
-            // 
-            numericUpDown6.DecimalPlaces = 3;
-            numericUpDown6.Location = new System.Drawing.Point(6, 85);
-            numericUpDown6.Name = "numericUpDown6";
-            numericUpDown6.Size = new System.Drawing.Size(173, 27);
-            numericUpDown6.TabIndex = 16;
-            // 
-            // checkBox39
-            // 
-            checkBox39.AutoSize = true;
-            checkBox39.Location = new System.Drawing.Point(6, 27);
-            checkBox39.Name = "checkBox39";
-            checkBox39.Size = new System.Drawing.Size(137, 24);
-            checkBox39.TabIndex = 15;
-            checkBox39.Text = "Random Shinies";
-            checkBox39.UseVisualStyleBackColor = true;
-            // 
-            // groupBox17
-            // 
-            groupBox17.Controls.Add(checkBox38);
-            groupBox17.Controls.Add(checkBox34);
-            groupBox17.Controls.Add(checkBox35);
-            groupBox17.Controls.Add(itemDistributionControl12);
-            groupBox17.Controls.Add(checkBox37);
-            groupBox17.Location = new System.Drawing.Point(6, 27);
-            groupBox17.Name = "groupBox17";
-            groupBox17.Size = new System.Drawing.Size(185, 189);
-            groupBox17.TabIndex = 12;
-            groupBox17.TabStop = false;
-            groupBox17.Text = "Pokemon Species";
-            // 
-            // checkBox38
-            // 
-            checkBox38.AutoSize = true;
-            checkBox38.Location = new System.Drawing.Point(6, 85);
-            checkBox38.Name = "checkBox38";
-            checkBox38.Size = new System.Drawing.Size(117, 24);
-            checkBox38.TabIndex = 19;
-            checkBox38.Text = "Type Themes";
-            checkBox38.UseVisualStyleBackColor = true;
-            // 
-            // checkBox34
-            // 
-            checkBox34.AutoSize = true;
-            checkBox34.Location = new System.Drawing.Point(6, 56);
-            checkBox34.Name = "checkBox34";
-            checkBox34.Size = new System.Drawing.Size(160, 24);
-            checkBox34.TabIndex = 18;
-            checkBox34.Text = "High Level Legends";
-            checkBox34.UseVisualStyleBackColor = true;
-            // 
-            // checkBox35
-            // 
-            checkBox35.AutoSize = true;
-            checkBox35.Location = new System.Drawing.Point(6, 116);
-            checkBox35.Name = "checkBox35";
-            checkBox35.Size = new System.Drawing.Size(133, 24);
-            checkBox35.TabIndex = 17;
-            checkBox35.Text = "Evolution Logic";
-            checkBox35.UseVisualStyleBackColor = true;
-            // 
-            // itemDistributionControl12
-            // 
-            itemDistributionControl12.Location = new System.Drawing.Point(6, 149);
-            itemDistributionControl12.Name = "itemDistributionControl12";
-            itemDistributionControl12.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl12.TabIndex = 15;
-            itemDistributionControl12.Text = "Pokémon";
-            itemDistributionControl12.UseVisualStyleBackColor = true;
-            itemDistributionControl12.Click += OpenItemDistributionForm;
-            // 
-            // checkBox37
-            // 
-            checkBox37.AutoSize = true;
-            checkBox37.Location = new System.Drawing.Point(6, 27);
-            checkBox37.Name = "checkBox37";
-            checkBox37.Size = new System.Drawing.Size(152, 24);
-            checkBox37.TabIndex = 14;
-            checkBox37.Text = "Random Pokémon";
-            checkBox37.UseVisualStyleBackColor = true;
-            // 
-            // numericDistributionControl14
-            // 
-            numericDistributionControl14.Controls.Add(checkBox36);
-            numericDistributionControl14.Controls.Add(button18);
-            numericDistributionControl14.Controls.Add(textBox15);
-            numericDistributionControl14.Location = new System.Drawing.Point(389, 27);
-            numericDistributionControl14.Name = "numericDistributionControl14";
-            numericDistributionControl14.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl14.TabIndex = 16;
-            numericDistributionControl14.TabStop = false;
-            numericDistributionControl14.Text = "Pokémon Count";
-            // 
-            // checkBox36
-            // 
-            checkBox36.AutoSize = true;
-            checkBox36.Location = new System.Drawing.Point(6, 27);
-            checkBox36.Name = "checkBox36";
-            checkBox36.Size = new System.Drawing.Size(106, 24);
-            checkBox36.TabIndex = 3;
-            checkBox36.Text = "Randomize";
-            checkBox36.UseVisualStyleBackColor = true;
-            // 
-            // button18
-            // 
-            button18.Location = new System.Drawing.Point(137, 55);
-            button18.Name = "button18";
-            button18.Size = new System.Drawing.Size(29, 29);
-            button18.TabIndex = 1;
-            button18.Text = ">";
-            button18.UseVisualStyleBackColor = true;
-            button18.Click += OpenNumericDistributionForm;
-            // 
-            // textBox15
-            // 
-            textBox15.Location = new System.Drawing.Point(6, 56);
-            textBox15.Name = "textBox15";
-            textBox15.Size = new System.Drawing.Size(125, 27);
-            textBox15.TabIndex = 0;
-            // 
-            // groupBox16
-            // 
-            groupBox16.Controls.Add(numericDistributionControl13);
-            groupBox16.Controls.Add(itemDistributionControl11);
-            groupBox16.Controls.Add(checkBox32);
-            groupBox16.Location = new System.Drawing.Point(134, 308);
-            groupBox16.Name = "groupBox16";
-            groupBox16.Size = new System.Drawing.Size(185, 255);
-            groupBox16.TabIndex = 11;
-            groupBox16.TabStop = false;
-            groupBox16.Text = "Trainer Items";
-            // 
-            // numericDistributionControl13
-            // 
-            numericDistributionControl13.Controls.Add(checkBox33);
-            numericDistributionControl13.Controls.Add(button4);
-            numericDistributionControl13.Controls.Add(textBox14);
-            numericDistributionControl13.Location = new System.Drawing.Point(6, 153);
-            numericDistributionControl13.Name = "numericDistributionControl13";
-            numericDistributionControl13.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl13.TabIndex = 13;
-            numericDistributionControl13.TabStop = false;
-            numericDistributionControl13.Text = "Item Count";
-            // 
-            // checkBox33
-            // 
-            checkBox33.AutoSize = true;
-            checkBox33.Location = new System.Drawing.Point(6, 27);
-            checkBox33.Name = "checkBox33";
-            checkBox33.Size = new System.Drawing.Size(106, 24);
-            checkBox33.TabIndex = 3;
-            checkBox33.Text = "Randomize";
-            checkBox33.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            button4.Location = new System.Drawing.Point(137, 55);
-            button4.Name = "button4";
-            button4.Size = new System.Drawing.Size(29, 29);
-            button4.TabIndex = 1;
-            button4.Text = ">";
-            button4.UseVisualStyleBackColor = true;
-            button4.Click += OpenNumericDistributionForm;
-            // 
-            // textBox14
-            // 
-            textBox14.Location = new System.Drawing.Point(6, 56);
-            textBox14.Name = "textBox14";
-            textBox14.Size = new System.Drawing.Size(125, 27);
-            textBox14.TabIndex = 0;
-            // 
-            // itemDistributionControl11
-            // 
-            itemDistributionControl11.Location = new System.Drawing.Point(6, 117);
-            itemDistributionControl11.Name = "itemDistributionControl11";
-            itemDistributionControl11.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl11.TabIndex = 12;
-            itemDistributionControl11.Text = "Trainer Items";
-            itemDistributionControl11.UseVisualStyleBackColor = true;
-            itemDistributionControl11.Click += OpenItemDistributionForm;
-            // 
-            // checkBox32
-            // 
-            checkBox32.AutoSize = true;
-            checkBox32.Location = new System.Drawing.Point(6, 27);
-            checkBox32.Name = "checkBox32";
-            checkBox32.Size = new System.Drawing.Size(127, 24);
-            checkBox32.TabIndex = 0;
-            checkBox32.Text = "Random Items";
-            checkBox32.UseVisualStyleBackColor = true;
-            // 
-            // groupBox15
-            // 
-            groupBox15.Controls.Add(checkBox31);
-            groupBox15.Controls.Add(checkBox30);
-            groupBox15.Controls.Add(numericDistributionControl12);
-            groupBox15.Controls.Add(itemDistributionControl10);
-            groupBox15.Controls.Add(checkBox29);
-            groupBox15.Location = new System.Drawing.Point(134, 46);
-            groupBox15.Name = "groupBox15";
-            groupBox15.Size = new System.Drawing.Size(185, 255);
-            groupBox15.TabIndex = 10;
-            groupBox15.TabStop = false;
-            groupBox15.Text = "Wild Encounters";
-            // 
-            // checkBox31
-            // 
-            checkBox31.AutoSize = true;
-            checkBox31.Location = new System.Drawing.Point(6, 56);
-            checkBox31.Name = "checkBox31";
-            checkBox31.Size = new System.Drawing.Size(160, 24);
-            checkBox31.TabIndex = 13;
-            checkBox31.Text = "High Level Legends";
-            checkBox31.UseVisualStyleBackColor = true;
-            // 
-            // checkBox30
-            // 
-            checkBox30.AutoSize = true;
-            checkBox30.Location = new System.Drawing.Point(6, 85);
-            checkBox30.Name = "checkBox30";
-            checkBox30.Size = new System.Drawing.Size(133, 24);
-            checkBox30.TabIndex = 12;
-            checkBox30.Text = "Evolution Logic";
-            checkBox30.UseVisualStyleBackColor = true;
-            // 
-            // numericDistributionControl12
-            // 
-            numericDistributionControl12.Controls.Add(checkBox28);
-            numericDistributionControl12.Controls.Add(button17);
-            numericDistributionControl12.Controls.Add(textBox13);
-            numericDistributionControl12.Location = new System.Drawing.Point(6, 153);
-            numericDistributionControl12.Name = "numericDistributionControl12";
-            numericDistributionControl12.Size = new System.Drawing.Size(173, 91);
-            numericDistributionControl12.TabIndex = 11;
-            numericDistributionControl12.TabStop = false;
-            numericDistributionControl12.Text = "Levels";
-            // 
-            // checkBox28
-            // 
-            checkBox28.AutoSize = true;
-            checkBox28.Location = new System.Drawing.Point(6, 27);
-            checkBox28.Name = "checkBox28";
-            checkBox28.Size = new System.Drawing.Size(106, 24);
-            checkBox28.TabIndex = 3;
-            checkBox28.Text = "Randomize";
-            checkBox28.UseVisualStyleBackColor = true;
-            // 
-            // button17
-            // 
-            button17.Location = new System.Drawing.Point(137, 55);
-            button17.Name = "button17";
-            button17.Size = new System.Drawing.Size(29, 29);
-            button17.TabIndex = 1;
-            button17.Text = ">";
-            button17.UseVisualStyleBackColor = true;
-            button17.Click += OpenNumericDistributionForm;
-            // 
-            // textBox13
-            // 
-            textBox13.Location = new System.Drawing.Point(6, 56);
-            textBox13.Name = "textBox13";
-            textBox13.Size = new System.Drawing.Size(125, 27);
-            textBox13.TabIndex = 0;
-            // 
-            // itemDistributionControl10
-            // 
-            itemDistributionControl10.Location = new System.Drawing.Point(6, 117);
-            itemDistributionControl10.Name = "itemDistributionControl10";
-            itemDistributionControl10.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl10.TabIndex = 4;
-            itemDistributionControl10.Text = "Wild Encounters";
-            itemDistributionControl10.UseVisualStyleBackColor = true;
-            itemDistributionControl10.Click += OpenItemDistributionForm;
-            // 
-            // checkBox29
-            // 
-            checkBox29.AutoSize = true;
-            checkBox29.Location = new System.Drawing.Point(6, 27);
-            checkBox29.Name = "checkBox29";
-            checkBox29.Size = new System.Drawing.Size(152, 24);
-            checkBox29.TabIndex = 1;
-            checkBox29.Text = "Random Pokémon";
-            checkBox29.UseVisualStyleBackColor = true;
-            // 
-            // tabPage4
-            // 
-            tabPage4.Controls.Add(groupBox33);
-            tabPage4.Controls.Add(groupBox31);
-            tabPage4.Controls.Add(groupBox30);
-            tabPage4.Controls.Add(groupBox29);
-            tabPage4.Controls.Add(groupBox27);
-            tabPage4.Location = new System.Drawing.Point(4, 29);
-            tabPage4.Name = "tabPage4";
-            tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            tabPage4.Size = new System.Drawing.Size(1018, 616);
-            tabPage4.TabIndex = 3;
-            tabPage4.Text = "Misc.";
-            tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // groupBox33
-            // 
-            groupBox33.Controls.Add(itemDistributionControl5);
-            groupBox33.Controls.Add(checkBox63);
-            groupBox33.Location = new System.Drawing.Point(133, 43);
-            groupBox33.Name = "groupBox33";
-            groupBox33.Size = new System.Drawing.Size(185, 120);
-            groupBox33.TabIndex = 5;
-            groupBox33.TabStop = false;
-            groupBox33.Text = "Type Matchups";
-            // 
-            // itemDistributionControl5
-            // 
-            itemDistributionControl5.Location = new System.Drawing.Point(6, 56);
-            itemDistributionControl5.Name = "itemDistributionControl5";
-            itemDistributionControl5.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl5.TabIndex = 6;
-            itemDistributionControl5.Text = "Type Matchups";
-            itemDistributionControl5.UseVisualStyleBackColor = true;
-            itemDistributionControl5.Click += OpenItemDistributionForm;
-            // 
-            // checkBox63
-            // 
-            checkBox63.AutoSize = true;
-            checkBox63.Location = new System.Drawing.Point(6, 27);
-            checkBox63.Name = "checkBox63";
-            checkBox63.Size = new System.Drawing.Size(155, 24);
-            checkBox63.TabIndex = 5;
-            checkBox63.Text = "Random Matchups";
-            checkBox63.UseVisualStyleBackColor = true;
-            // 
-            // groupBox31
-            // 
-            groupBox31.Controls.Add(absoluteBoundaryDataGridView);
-            groupBox31.Location = new System.Drawing.Point(515, 43);
-            groupBox31.Name = "groupBox31";
-            groupBox31.Size = new System.Drawing.Size(376, 532);
-            groupBox31.TabIndex = 4;
-            groupBox31.TabStop = false;
-            groupBox31.Text = "Absolute Boundaries";
-            // 
-            // absoluteBoundaryDataGridView
-            // 
-            absoluteBoundaryDataGridView.AllowUserToAddRows = false;
-            absoluteBoundaryDataGridView.AllowUserToDeleteRows = false;
-            absoluteBoundaryDataGridView.AllowUserToResizeRows = false;
-            absoluteBoundaryDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            absoluteBoundaryDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            absoluteBoundaryDataGridView.Location = new System.Drawing.Point(6, 27);
-            absoluteBoundaryDataGridView.Name = "absoluteBoundaryDataGridView";
-            absoluteBoundaryDataGridView.RowHeadersVisible = false;
-            absoluteBoundaryDataGridView.RowHeadersWidth = 51;
-            absoluteBoundaryDataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            absoluteBoundaryDataGridView.RowTemplate.Height = 29;
-            absoluteBoundaryDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            absoluteBoundaryDataGridView.Size = new System.Drawing.Size(363, 499);
-            absoluteBoundaryDataGridView.TabIndex = 3;
-            absoluteBoundaryDataGridView.DataError += DataError;
-            // 
-            // groupBox30
-            // 
-            groupBox30.Controls.Add(label9);
-            groupBox30.Controls.Add(numericUpDown8);
-            groupBox30.Controls.Add(checkBox60);
-            groupBox30.Controls.Add(checkBox59);
-            groupBox30.Controls.Add(checkBox58);
-            groupBox30.Controls.Add(label8);
-            groupBox30.Controls.Add(checkBox57);
-            groupBox30.Location = new System.Drawing.Point(325, 169);
-            groupBox30.Name = "groupBox30";
-            groupBox30.Size = new System.Drawing.Size(185, 405);
-            groupBox30.TabIndex = 2;
-            groupBox30.TabStop = false;
-            groupBox30.Text = "Level Multiplier";
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Location = new System.Drawing.Point(6, 183);
-            label9.Name = "label9";
-            label9.Size = new System.Drawing.Size(119, 20);
-            label9.TabIndex = 13;
-            label9.Text = "Level Coefficient";
-            // 
-            // numericUpDown8
-            // 
-            numericUpDown8.DecimalPlaces = 3;
-            numericUpDown8.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
-            numericUpDown8.Location = new System.Drawing.Point(6, 205);
-            numericUpDown8.Name = "numericUpDown8";
-            numericUpDown8.Size = new System.Drawing.Size(173, 27);
-            numericUpDown8.TabIndex = 12;
-            numericUpDown8.Value = new decimal(new int[] { 1, 0, 0, 0 });
-            // 
-            // checkBox60
-            // 
-            checkBox60.AutoSize = true;
-            checkBox60.Location = new System.Drawing.Point(6, 156);
-            checkBox60.Name = "checkBox60";
-            checkBox60.Size = new System.Drawing.Size(141, 24);
-            checkBox60.TabIndex = 4;
-            checkBox60.Text = "Trainer Pokémon";
-            checkBox60.UseVisualStyleBackColor = true;
-            // 
-            // checkBox59
-            // 
-            checkBox59.AutoSize = true;
-            checkBox59.Location = new System.Drawing.Point(6, 125);
-            checkBox59.Name = "checkBox59";
-            checkBox59.Size = new System.Drawing.Size(138, 24);
-            checkBox59.TabIndex = 3;
-            checkBox59.Text = "Wild Encounters";
-            checkBox59.UseVisualStyleBackColor = true;
-            // 
-            // checkBox58
-            // 
-            checkBox58.AutoSize = true;
-            checkBox58.Location = new System.Drawing.Point(6, 96);
-            checkBox58.Name = "checkBox58";
-            checkBox58.Size = new System.Drawing.Size(135, 24);
-            checkBox58.TabIndex = 2;
-            checkBox58.Text = "Level Up Moves";
-            checkBox58.UseVisualStyleBackColor = true;
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Location = new System.Drawing.Point(6, 23);
-            label8.Name = "label8";
-            label8.Size = new System.Drawing.Size(159, 40);
-            label8.TabIndex = 1;
-            label8.Text = "Takes place before any\r\nrandomizations.";
-            // 
-            // checkBox57
-            // 
-            checkBox57.AutoSize = true;
-            checkBox57.Location = new System.Drawing.Point(6, 67);
-            checkBox57.Name = "checkBox57";
-            checkBox57.Size = new System.Drawing.Size(137, 24);
-            checkBox57.TabIndex = 0;
-            checkBox57.Text = "Evolution Levels";
-            checkBox57.UseVisualStyleBackColor = true;
-            // 
-            // groupBox29
-            // 
-            groupBox29.Controls.Add(checkBox62);
-            groupBox29.Controls.Add(checkBox56);
-            groupBox29.Controls.Add(checkBox55);
-            groupBox29.Location = new System.Drawing.Point(325, 43);
-            groupBox29.Name = "groupBox29";
-            groupBox29.Size = new System.Drawing.Size(185, 120);
-            groupBox29.TabIndex = 1;
-            groupBox29.TabStop = false;
-            groupBox29.Text = "Text and Music";
-            // 
-            // checkBox62
-            // 
-            checkBox62.AutoSize = true;
-            checkBox62.Location = new System.Drawing.Point(6, 85);
-            checkBox62.Name = "checkBox62";
-            checkBox62.Size = new System.Drawing.Size(113, 24);
-            checkBox62.TabIndex = 2;
-            checkBox62.Text = "Shuffle BGM";
-            checkBox62.UseVisualStyleBackColor = true;
-            // 
-            // checkBox56
-            // 
-            checkBox56.AutoSize = true;
-            checkBox56.Location = new System.Drawing.Point(6, 56);
-            checkBox56.Name = "checkBox56";
-            checkBox56.Size = new System.Drawing.Size(178, 24);
-            checkBox56.TabIndex = 1;
-            checkBox56.Text = "Preserve String Length";
-            checkBox56.UseVisualStyleBackColor = true;
-            // 
-            // checkBox55
-            // 
-            checkBox55.AutoSize = true;
-            checkBox55.Location = new System.Drawing.Point(6, 27);
-            checkBox55.Name = "checkBox55";
-            checkBox55.Size = new System.Drawing.Size(108, 24);
-            checkBox55.TabIndex = 0;
-            checkBox55.Text = "Shuffle Text";
-            checkBox55.UseVisualStyleBackColor = true;
-            // 
-            // groupBox27
-            // 
-            groupBox27.Controls.Add(itemDistributionControl21);
-            groupBox27.Controls.Add(checkBox54);
-            groupBox27.Controls.Add(itemDistributionControl20);
-            groupBox27.Controls.Add(checkBox53);
-            groupBox27.Location = new System.Drawing.Point(133, 169);
-            groupBox27.Name = "groupBox27";
-            groupBox27.Size = new System.Drawing.Size(185, 405);
-            groupBox27.TabIndex = 0;
-            groupBox27.TabStop = false;
-            groupBox27.Text = "Scripts";
-            // 
-            // itemDistributionControl21
-            // 
-            itemDistributionControl21.Location = new System.Drawing.Point(6, 121);
-            itemDistributionControl21.Name = "itemDistributionControl21";
-            itemDistributionControl21.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl21.TabIndex = 6;
-            itemDistributionControl21.Text = "Scripted Items";
-            itemDistributionControl21.UseVisualStyleBackColor = true;
-            itemDistributionControl21.Click += OpenItemDistributionForm;
-            // 
-            // checkBox54
-            // 
-            checkBox54.AutoSize = true;
-            checkBox54.Location = new System.Drawing.Point(6, 91);
-            checkBox54.Name = "checkBox54";
-            checkBox54.Size = new System.Drawing.Size(127, 24);
-            checkBox54.TabIndex = 5;
-            checkBox54.Text = "Random Items";
-            checkBox54.UseVisualStyleBackColor = true;
-            // 
-            // itemDistributionControl20
-            // 
-            itemDistributionControl20.Location = new System.Drawing.Point(6, 56);
-            itemDistributionControl20.Name = "itemDistributionControl20";
-            itemDistributionControl20.Size = new System.Drawing.Size(173, 29);
-            itemDistributionControl20.TabIndex = 4;
-            itemDistributionControl20.Text = "Scripted Pokémon";
-            itemDistributionControl20.UseVisualStyleBackColor = true;
-            itemDistributionControl20.Click += OpenItemDistributionForm;
-            // 
-            // checkBox53
-            // 
-            checkBox53.AutoSize = true;
-            checkBox53.Location = new System.Drawing.Point(6, 27);
-            checkBox53.Name = "checkBox53";
-            checkBox53.Size = new System.Drawing.Size(152, 24);
-            checkBox53.TabIndex = 1;
-            checkBox53.Text = "Random Pokémon";
-            checkBox53.UseVisualStyleBackColor = true;
+            // grpDistPokemonEvolutionLevel
+            // 
+            grpDistPokemonEvolutionLevel.Controls.Add(checkDistPokemonEvolutionLevel);
+            grpDistPokemonEvolutionLevel.Controls.Add(btnDistPokemonEvolutionLevel);
+            grpDistPokemonEvolutionLevel.Controls.Add(txtDistPokemonEvolutionLevel);
+            grpDistPokemonEvolutionLevel.Location = new System.Drawing.Point(5, 87);
+            grpDistPokemonEvolutionLevel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonEvolutionLevel.Name = "grpDistPokemonEvolutionLevel";
+            grpDistPokemonEvolutionLevel.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonEvolutionLevel.Size = new System.Drawing.Size(151, 68);
+            grpDistPokemonEvolutionLevel.TabIndex = 0;
+            grpDistPokemonEvolutionLevel.TabStop = false;
+            grpDistPokemonEvolutionLevel.Text = "Evolution Levels";
+            // 
+            // checkDistPokemonEvolutionLevel
+            // 
+            checkDistPokemonEvolutionLevel.AutoSize = true;
+            checkDistPokemonEvolutionLevel.Location = new System.Drawing.Point(5, 20);
+            checkDistPokemonEvolutionLevel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistPokemonEvolutionLevel.Name = "checkDistPokemonEvolutionLevel";
+            checkDistPokemonEvolutionLevel.Size = new System.Drawing.Size(85, 19);
+            checkDistPokemonEvolutionLevel.TabIndex = 3;
+            checkDistPokemonEvolutionLevel.Text = "Randomize";
+            checkDistPokemonEvolutionLevel.UseVisualStyleBackColor = true;
+            // 
+            // btnDistPokemonEvolutionLevel
+            // 
+            btnDistPokemonEvolutionLevel.Location = new System.Drawing.Point(120, 41);
+            btnDistPokemonEvolutionLevel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistPokemonEvolutionLevel.Name = "btnDistPokemonEvolutionLevel";
+            btnDistPokemonEvolutionLevel.Size = new System.Drawing.Size(25, 22);
+            btnDistPokemonEvolutionLevel.TabIndex = 1;
+            btnDistPokemonEvolutionLevel.Text = ">";
+            btnDistPokemonEvolutionLevel.UseVisualStyleBackColor = true;
+            btnDistPokemonEvolutionLevel.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistPokemonEvolutionLevel
+            // 
+            txtDistPokemonEvolutionLevel.Location = new System.Drawing.Point(5, 42);
+            txtDistPokemonEvolutionLevel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistPokemonEvolutionLevel.Name = "txtDistPokemonEvolutionLevel";
+            txtDistPokemonEvolutionLevel.Size = new System.Drawing.Size(110, 23);
+            txtDistPokemonEvolutionLevel.TabIndex = 0;
+            txtDistPokemonEvolutionLevel.Leave += NumericDistributionTextBoxChanged;
+            // 
+            // btnDistPokemonEvolutionDest
+            // 
+            btnDistPokemonEvolutionDest.Location = new System.Drawing.Point(5, 62);
+            btnDistPokemonEvolutionDest.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistPokemonEvolutionDest.Name = "btnDistPokemonEvolutionDest";
+            btnDistPokemonEvolutionDest.Size = new System.Drawing.Size(151, 22);
+            btnDistPokemonEvolutionDest.TabIndex = 2;
+            btnDistPokemonEvolutionDest.Text = "Destination Pokémon";
+            btnDistPokemonEvolutionDest.UseVisualStyleBackColor = true;
+            btnDistPokemonEvolutionDest.Click += OpenItemDistributionForm;
+            // 
+            // grpMain
+            // 
+            grpMain.AutoSize = true;
+            grpMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            grpMain.Controls.Add(btnExport);
+            grpMain.Controls.Add(btnRandomize);
+            grpMain.Controls.Add(btnAddMod);
+            grpMain.Location = new System.Drawing.Point(10, 9);
+            grpMain.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMain.Name = "grpMain";
+            grpMain.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMain.Size = new System.Drawing.Size(181, 114);
+            grpMain.TabIndex = 3;
+            grpMain.TabStop = false;
+            grpMain.Text = "Main";
+            // 
+            // btnExport
+            // 
+            btnExport.Location = new System.Drawing.Point(5, 72);
+            btnExport.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnExport.Name = "btnExport";
+            btnExport.Size = new System.Drawing.Size(170, 22);
+            btnExport.TabIndex = 11;
+            btnExport.Text = "Export and Exit";
+            btnExport.UseVisualStyleBackColor = true;
+            btnExport.Click += Export;
+            // 
+            // btnRandomize
+            // 
+            btnRandomize.Location = new System.Drawing.Point(5, 46);
+            btnRandomize.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnRandomize.Name = "btnRandomize";
+            btnRandomize.Size = new System.Drawing.Size(170, 22);
+            btnRandomize.TabIndex = 2;
+            btnRandomize.Text = "Randomize";
+            btnRandomize.UseVisualStyleBackColor = true;
+            btnRandomize.Click += Randomize;
+            // 
+            // btnAddMod
+            // 
+            btnAddMod.Location = new System.Drawing.Point(5, 20);
+            btnAddMod.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnAddMod.Name = "btnAddMod";
+            btnAddMod.Size = new System.Drawing.Size(170, 22);
+            btnAddMod.TabIndex = 0;
+            btnAddMod.Text = "Add Mod";
+            btnAddMod.UseVisualStyleBackColor = true;
+            btnAddMod.Click += AddMod;
+            // 
+            // tabsRandomizer
+            // 
+            tabsRandomizer.Controls.Add(tabPokemon);
+            tabsRandomizer.Controls.Add(tabMovesAndItems);
+            tabsRandomizer.Controls.Add(tabEncounters);
+            tabsRandomizer.Controls.Add(tabMisc);
+            tabsRandomizer.Location = new System.Drawing.Point(196, 9);
+            tabsRandomizer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            tabsRandomizer.Name = "tabsRandomizer";
+            tabsRandomizer.SelectedIndex = 0;
+            tabsRandomizer.Size = new System.Drawing.Size(898, 487);
+            tabsRandomizer.TabIndex = 4;
+            // 
+            // tabPokemon
+            // 
+            tabPokemon.Controls.Add(grpPokemonMisc);
+            tabPokemon.Controls.Add(grpPokemonEggMoves);
+            tabPokemon.Controls.Add(grpPokemonLevelMoves);
+            tabPokemon.Controls.Add(grpPokemonTMCompat);
+            tabPokemon.Controls.Add(grpPokemonAbilities);
+            tabPokemon.Controls.Add(grpPokemonGrowth);
+            tabPokemon.Controls.Add(grpPokemonWildHeldItems);
+            tabPokemon.Controls.Add(grpPokemonTyping);
+            tabPokemon.Controls.Add(grpPokemonBaseStats);
+            tabPokemon.Controls.Add(grpPokemonEvolution);
+            tabPokemon.Location = new System.Drawing.Point(4, 24);
+            tabPokemon.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            tabPokemon.Name = "tabPokemon";
+            tabPokemon.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            tabPokemon.Size = new System.Drawing.Size(890, 459);
+            tabPokemon.TabIndex = 0;
+            tabPokemon.Text = "Pokémon";
+            tabPokemon.UseVisualStyleBackColor = true;
+            // 
+            // grpPokemonMisc
+            // 
+            grpPokemonMisc.Controls.Add(grpDistPokemonMiscCatchRate);
+            grpPokemonMisc.Controls.Add(grpDistPokemonMiscInitFriendship);
+            grpPokemonMisc.Controls.Add(grpDistPokemonMiscEVs);
+            grpPokemonMisc.Controls.Add(grpDistPokemonMiscExp);
+            grpPokemonMisc.Location = new System.Drawing.Point(126, 245);
+            grpPokemonMisc.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonMisc.Name = "grpPokemonMisc";
+            grpPokemonMisc.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonMisc.Size = new System.Drawing.Size(329, 202);
+            grpPokemonMisc.TabIndex = 13;
+            grpPokemonMisc.TabStop = false;
+            grpPokemonMisc.Text = "Misc";
+            // 
+            // grpDistPokemonMiscCatchRate
+            // 
+            grpDistPokemonMiscCatchRate.Controls.Add(checkDistPokemonMiscCatchRate);
+            grpDistPokemonMiscCatchRate.Controls.Add(btnDistPokemonMiscCatchRate);
+            grpDistPokemonMiscCatchRate.Controls.Add(txtDistPokemonMiscCatchRate);
+            grpDistPokemonMiscCatchRate.Location = new System.Drawing.Point(5, 20);
+            grpDistPokemonMiscCatchRate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonMiscCatchRate.Name = "grpDistPokemonMiscCatchRate";
+            grpDistPokemonMiscCatchRate.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonMiscCatchRate.Size = new System.Drawing.Size(151, 68);
+            grpDistPokemonMiscCatchRate.TabIndex = 4;
+            grpDistPokemonMiscCatchRate.TabStop = false;
+            grpDistPokemonMiscCatchRate.Text = "Catch Rate";
+            // 
+            // checkDistPokemonMiscCatchRate
+            // 
+            checkDistPokemonMiscCatchRate.AutoSize = true;
+            checkDistPokemonMiscCatchRate.Location = new System.Drawing.Point(5, 20);
+            checkDistPokemonMiscCatchRate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistPokemonMiscCatchRate.Name = "checkDistPokemonMiscCatchRate";
+            checkDistPokemonMiscCatchRate.Size = new System.Drawing.Size(85, 19);
+            checkDistPokemonMiscCatchRate.TabIndex = 3;
+            checkDistPokemonMiscCatchRate.Text = "Randomize";
+            checkDistPokemonMiscCatchRate.UseVisualStyleBackColor = true;
+            // 
+            // btnDistPokemonMiscCatchRate
+            // 
+            btnDistPokemonMiscCatchRate.Location = new System.Drawing.Point(120, 41);
+            btnDistPokemonMiscCatchRate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistPokemonMiscCatchRate.Name = "btnDistPokemonMiscCatchRate";
+            btnDistPokemonMiscCatchRate.Size = new System.Drawing.Size(25, 22);
+            btnDistPokemonMiscCatchRate.TabIndex = 1;
+            btnDistPokemonMiscCatchRate.Text = ">";
+            btnDistPokemonMiscCatchRate.UseVisualStyleBackColor = true;
+            btnDistPokemonMiscCatchRate.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistPokemonMiscCatchRate
+            // 
+            txtDistPokemonMiscCatchRate.Location = new System.Drawing.Point(5, 42);
+            txtDistPokemonMiscCatchRate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistPokemonMiscCatchRate.Name = "txtDistPokemonMiscCatchRate";
+            txtDistPokemonMiscCatchRate.Size = new System.Drawing.Size(110, 23);
+            txtDistPokemonMiscCatchRate.TabIndex = 0;
+            // 
+            // grpDistPokemonMiscInitFriendship
+            // 
+            grpDistPokemonMiscInitFriendship.Controls.Add(checkDistPokemonMiscInitFriendship);
+            grpDistPokemonMiscInitFriendship.Controls.Add(btnDistPokemonMiscInitFriendship);
+            grpDistPokemonMiscInitFriendship.Controls.Add(txtDistPokemonMiscInitFriendship);
+            grpDistPokemonMiscInitFriendship.Location = new System.Drawing.Point(5, 92);
+            grpDistPokemonMiscInitFriendship.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonMiscInitFriendship.Name = "grpDistPokemonMiscInitFriendship";
+            grpDistPokemonMiscInitFriendship.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonMiscInitFriendship.Size = new System.Drawing.Size(151, 68);
+            grpDistPokemonMiscInitFriendship.TabIndex = 7;
+            grpDistPokemonMiscInitFriendship.TabStop = false;
+            grpDistPokemonMiscInitFriendship.Text = "Initial Friendship";
+            // 
+            // checkDistPokemonMiscInitFriendship
+            // 
+            checkDistPokemonMiscInitFriendship.AutoSize = true;
+            checkDistPokemonMiscInitFriendship.Location = new System.Drawing.Point(5, 20);
+            checkDistPokemonMiscInitFriendship.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistPokemonMiscInitFriendship.Name = "checkDistPokemonMiscInitFriendship";
+            checkDistPokemonMiscInitFriendship.Size = new System.Drawing.Size(85, 19);
+            checkDistPokemonMiscInitFriendship.TabIndex = 3;
+            checkDistPokemonMiscInitFriendship.Text = "Randomize";
+            checkDistPokemonMiscInitFriendship.UseVisualStyleBackColor = true;
+            // 
+            // btnDistPokemonMiscInitFriendship
+            // 
+            btnDistPokemonMiscInitFriendship.Location = new System.Drawing.Point(120, 41);
+            btnDistPokemonMiscInitFriendship.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistPokemonMiscInitFriendship.Name = "btnDistPokemonMiscInitFriendship";
+            btnDistPokemonMiscInitFriendship.Size = new System.Drawing.Size(25, 22);
+            btnDistPokemonMiscInitFriendship.TabIndex = 1;
+            btnDistPokemonMiscInitFriendship.Text = ">";
+            btnDistPokemonMiscInitFriendship.UseVisualStyleBackColor = true;
+            btnDistPokemonMiscInitFriendship.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistPokemonMiscInitFriendship
+            // 
+            txtDistPokemonMiscInitFriendship.Location = new System.Drawing.Point(5, 42);
+            txtDistPokemonMiscInitFriendship.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistPokemonMiscInitFriendship.Name = "txtDistPokemonMiscInitFriendship";
+            txtDistPokemonMiscInitFriendship.Size = new System.Drawing.Size(110, 23);
+            txtDistPokemonMiscInitFriendship.TabIndex = 0;
+            // 
+            // grpDistPokemonMiscEVs
+            // 
+            grpDistPokemonMiscEVs.Controls.Add(checkDistPokemonMiscEVs);
+            grpDistPokemonMiscEVs.Controls.Add(btnDistPokemonMiscEVs);
+            grpDistPokemonMiscEVs.Controls.Add(txtDistPokemonMiscEVs);
+            grpDistPokemonMiscEVs.Location = new System.Drawing.Point(172, 20);
+            grpDistPokemonMiscEVs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonMiscEVs.Name = "grpDistPokemonMiscEVs";
+            grpDistPokemonMiscEVs.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonMiscEVs.Size = new System.Drawing.Size(151, 68);
+            grpDistPokemonMiscEVs.TabIndex = 5;
+            grpDistPokemonMiscEVs.TabStop = false;
+            grpDistPokemonMiscEVs.Text = "EV Yield";
+            // 
+            // checkDistPokemonMiscEVs
+            // 
+            checkDistPokemonMiscEVs.AutoSize = true;
+            checkDistPokemonMiscEVs.Location = new System.Drawing.Point(5, 20);
+            checkDistPokemonMiscEVs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistPokemonMiscEVs.Name = "checkDistPokemonMiscEVs";
+            checkDistPokemonMiscEVs.Size = new System.Drawing.Size(85, 19);
+            checkDistPokemonMiscEVs.TabIndex = 3;
+            checkDistPokemonMiscEVs.Text = "Randomize";
+            checkDistPokemonMiscEVs.UseVisualStyleBackColor = true;
+            // 
+            // btnDistPokemonMiscEVs
+            // 
+            btnDistPokemonMiscEVs.Location = new System.Drawing.Point(120, 41);
+            btnDistPokemonMiscEVs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistPokemonMiscEVs.Name = "btnDistPokemonMiscEVs";
+            btnDistPokemonMiscEVs.Size = new System.Drawing.Size(25, 22);
+            btnDistPokemonMiscEVs.TabIndex = 1;
+            btnDistPokemonMiscEVs.Text = ">";
+            btnDistPokemonMiscEVs.UseVisualStyleBackColor = true;
+            btnDistPokemonMiscEVs.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistPokemonMiscEVs
+            // 
+            txtDistPokemonMiscEVs.Location = new System.Drawing.Point(5, 42);
+            txtDistPokemonMiscEVs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistPokemonMiscEVs.Name = "txtDistPokemonMiscEVs";
+            txtDistPokemonMiscEVs.Size = new System.Drawing.Size(110, 23);
+            txtDistPokemonMiscEVs.TabIndex = 0;
+            // 
+            // grpDistPokemonMiscExp
+            // 
+            grpDistPokemonMiscExp.Controls.Add(checkDistPokemonMiscExp);
+            grpDistPokemonMiscExp.Controls.Add(btnDistPokemonMiscExp);
+            grpDistPokemonMiscExp.Controls.Add(txtDistPokemonMiscExp);
+            grpDistPokemonMiscExp.Location = new System.Drawing.Point(172, 92);
+            grpDistPokemonMiscExp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonMiscExp.Name = "grpDistPokemonMiscExp";
+            grpDistPokemonMiscExp.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonMiscExp.Size = new System.Drawing.Size(151, 68);
+            grpDistPokemonMiscExp.TabIndex = 6;
+            grpDistPokemonMiscExp.TabStop = false;
+            grpDistPokemonMiscExp.Text = "Exp Yield";
+            // 
+            // checkDistPokemonMiscExp
+            // 
+            checkDistPokemonMiscExp.AutoSize = true;
+            checkDistPokemonMiscExp.Location = new System.Drawing.Point(5, 20);
+            checkDistPokemonMiscExp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistPokemonMiscExp.Name = "checkDistPokemonMiscExp";
+            checkDistPokemonMiscExp.Size = new System.Drawing.Size(85, 19);
+            checkDistPokemonMiscExp.TabIndex = 3;
+            checkDistPokemonMiscExp.Text = "Randomize";
+            checkDistPokemonMiscExp.UseVisualStyleBackColor = true;
+            // 
+            // btnDistPokemonMiscExp
+            // 
+            btnDistPokemonMiscExp.Location = new System.Drawing.Point(120, 41);
+            btnDistPokemonMiscExp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistPokemonMiscExp.Name = "btnDistPokemonMiscExp";
+            btnDistPokemonMiscExp.Size = new System.Drawing.Size(25, 22);
+            btnDistPokemonMiscExp.TabIndex = 1;
+            btnDistPokemonMiscExp.Text = ">";
+            btnDistPokemonMiscExp.UseVisualStyleBackColor = true;
+            btnDistPokemonMiscExp.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistPokemonMiscExp
+            // 
+            txtDistPokemonMiscExp.Location = new System.Drawing.Point(5, 42);
+            txtDistPokemonMiscExp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistPokemonMiscExp.Name = "txtDistPokemonMiscExp";
+            txtDistPokemonMiscExp.Size = new System.Drawing.Size(110, 23);
+            txtDistPokemonMiscExp.TabIndex = 0;
+            // 
+            // grpPokemonEggMoves
+            // 
+            grpPokemonEggMoves.Controls.Add(btnDistPokemonEggMoves);
+            grpPokemonEggMoves.Controls.Add(lbPokemonEggMovesTypeBias);
+            grpPokemonEggMoves.Controls.Add(numPokemonEggMovesTypeBias);
+            grpPokemonEggMoves.Controls.Add(grpDistPokemonEggMovesCount);
+            grpPokemonEggMoves.Controls.Add(checkPokemonEggMovesRandom);
+            grpPokemonEggMoves.Location = new System.Drawing.Point(459, 245);
+            grpPokemonEggMoves.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonEggMoves.Name = "grpPokemonEggMoves";
+            grpPokemonEggMoves.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonEggMoves.Size = new System.Drawing.Size(162, 202);
+            grpPokemonEggMoves.TabIndex = 12;
+            grpPokemonEggMoves.TabStop = false;
+            grpPokemonEggMoves.Text = "Egg Moves";
+            // 
+            // btnDistPokemonEggMoves
+            // 
+            btnDistPokemonEggMoves.Location = new System.Drawing.Point(5, 40);
+            btnDistPokemonEggMoves.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistPokemonEggMoves.Name = "btnDistPokemonEggMoves";
+            btnDistPokemonEggMoves.Size = new System.Drawing.Size(151, 22);
+            btnDistPokemonEggMoves.TabIndex = 11;
+            btnDistPokemonEggMoves.Text = "Egg Moves";
+            btnDistPokemonEggMoves.UseVisualStyleBackColor = true;
+            btnDistPokemonEggMoves.Click += OpenItemDistributionForm;
+            // 
+            // lbPokemonEggMovesTypeBias
+            // 
+            lbPokemonEggMovesTypeBias.AutoSize = true;
+            lbPokemonEggMovesTypeBias.Location = new System.Drawing.Point(5, 64);
+            lbPokemonEggMovesTypeBias.Name = "lbPokemonEggMovesTypeBias";
+            lbPokemonEggMovesTypeBias.Size = new System.Drawing.Size(68, 15);
+            lbPokemonEggMovesTypeBias.TabIndex = 9;
+            lbPokemonEggMovesTypeBias.Text = "Type Bias %";
+            // 
+            // numPokemonEggMovesTypeBias
+            // 
+            numPokemonEggMovesTypeBias.DecimalPlaces = 3;
+            numPokemonEggMovesTypeBias.Location = new System.Drawing.Point(5, 81);
+            numPokemonEggMovesTypeBias.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            numPokemonEggMovesTypeBias.Name = "numPokemonEggMovesTypeBias";
+            numPokemonEggMovesTypeBias.Size = new System.Drawing.Size(151, 23);
+            numPokemonEggMovesTypeBias.TabIndex = 8;
+            // 
+            // grpDistPokemonEggMovesCount
+            // 
+            grpDistPokemonEggMovesCount.Controls.Add(checkDistPokemonEggMovesCount);
+            grpDistPokemonEggMovesCount.Controls.Add(btnDistPokemonEggMovesCount);
+            grpDistPokemonEggMovesCount.Controls.Add(txtDistPokemonEggMovesCount);
+            grpDistPokemonEggMovesCount.Location = new System.Drawing.Point(5, 128);
+            grpDistPokemonEggMovesCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonEggMovesCount.Name = "grpDistPokemonEggMovesCount";
+            grpDistPokemonEggMovesCount.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonEggMovesCount.Size = new System.Drawing.Size(151, 68);
+            grpDistPokemonEggMovesCount.TabIndex = 7;
+            grpDistPokemonEggMovesCount.TabStop = false;
+            grpDistPokemonEggMovesCount.Text = "Move Count";
+            // 
+            // checkDistPokemonEggMovesCount
+            // 
+            checkDistPokemonEggMovesCount.AutoSize = true;
+            checkDistPokemonEggMovesCount.Location = new System.Drawing.Point(5, 20);
+            checkDistPokemonEggMovesCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistPokemonEggMovesCount.Name = "checkDistPokemonEggMovesCount";
+            checkDistPokemonEggMovesCount.Size = new System.Drawing.Size(85, 19);
+            checkDistPokemonEggMovesCount.TabIndex = 3;
+            checkDistPokemonEggMovesCount.Text = "Randomize";
+            checkDistPokemonEggMovesCount.UseVisualStyleBackColor = true;
+            // 
+            // btnDistPokemonEggMovesCount
+            // 
+            btnDistPokemonEggMovesCount.Location = new System.Drawing.Point(120, 41);
+            btnDistPokemonEggMovesCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistPokemonEggMovesCount.Name = "btnDistPokemonEggMovesCount";
+            btnDistPokemonEggMovesCount.Size = new System.Drawing.Size(25, 22);
+            btnDistPokemonEggMovesCount.TabIndex = 1;
+            btnDistPokemonEggMovesCount.Text = ">";
+            btnDistPokemonEggMovesCount.UseVisualStyleBackColor = true;
+            btnDistPokemonEggMovesCount.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistPokemonEggMovesCount
+            // 
+            txtDistPokemonEggMovesCount.Location = new System.Drawing.Point(5, 42);
+            txtDistPokemonEggMovesCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistPokemonEggMovesCount.Name = "txtDistPokemonEggMovesCount";
+            txtDistPokemonEggMovesCount.Size = new System.Drawing.Size(110, 23);
+            txtDistPokemonEggMovesCount.TabIndex = 0;
+            // 
+            // checkPokemonEggMovesRandom
+            // 
+            checkPokemonEggMovesRandom.AutoSize = true;
+            checkPokemonEggMovesRandom.Location = new System.Drawing.Point(5, 20);
+            checkPokemonEggMovesRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkPokemonEggMovesRandom.Name = "checkPokemonEggMovesRandom";
+            checkPokemonEggMovesRandom.Size = new System.Drawing.Size(85, 19);
+            checkPokemonEggMovesRandom.TabIndex = 2;
+            checkPokemonEggMovesRandom.Text = "Randomize";
+            checkPokemonEggMovesRandom.UseVisualStyleBackColor = true;
+            // 
+            // grpPokemonLevelMoves
+            // 
+            grpPokemonLevelMoves.Controls.Add(grpDistPokemonLevelMovesLearnLevels);
+            grpPokemonLevelMoves.Controls.Add(btnDistPokemonLevelMovesMoves);
+            grpPokemonLevelMoves.Controls.Add(checkPokemonLevelMovesSortPower);
+            grpPokemonLevelMoves.Controls.Add(lbPokemonLevelMovesTypeBias);
+            grpPokemonLevelMoves.Controls.Add(numPokemonLevelMovesTypeBias);
+            grpPokemonLevelMoves.Controls.Add(grpDistPokemonLevelMovesCount);
+            grpPokemonLevelMoves.Controls.Add(checkPokemonLevelMovesRandom);
+            grpPokemonLevelMoves.Location = new System.Drawing.Point(626, 170);
+            grpPokemonLevelMoves.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonLevelMoves.Name = "grpPokemonLevelMoves";
+            grpPokemonLevelMoves.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonLevelMoves.Size = new System.Drawing.Size(162, 278);
+            grpPokemonLevelMoves.TabIndex = 11;
+            grpPokemonLevelMoves.TabStop = false;
+            grpPokemonLevelMoves.Text = "Level Up Moves";
+            // 
+            // grpDistPokemonLevelMovesLearnLevels
+            // 
+            grpDistPokemonLevelMovesLearnLevels.Controls.Add(checkDistPokemonLevelMovesLearnLevels);
+            grpDistPokemonLevelMovesLearnLevels.Controls.Add(btnDistPokemonLevelMovesLearnLevels);
+            grpDistPokemonLevelMovesLearnLevels.Controls.Add(txtDistPokemonLevelMovesLearnLevels);
+            grpDistPokemonLevelMovesLearnLevels.Location = new System.Drawing.Point(5, 130);
+            grpDistPokemonLevelMovesLearnLevels.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonLevelMovesLearnLevels.Name = "grpDistPokemonLevelMovesLearnLevels";
+            grpDistPokemonLevelMovesLearnLevels.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonLevelMovesLearnLevels.Size = new System.Drawing.Size(151, 68);
+            grpDistPokemonLevelMovesLearnLevels.TabIndex = 12;
+            grpDistPokemonLevelMovesLearnLevels.TabStop = false;
+            grpDistPokemonLevelMovesLearnLevels.Text = "Learn Levels";
+            // 
+            // checkDistPokemonLevelMovesLearnLevels
+            // 
+            checkDistPokemonLevelMovesLearnLevels.AutoSize = true;
+            checkDistPokemonLevelMovesLearnLevels.Location = new System.Drawing.Point(5, 20);
+            checkDistPokemonLevelMovesLearnLevels.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistPokemonLevelMovesLearnLevels.Name = "checkDistPokemonLevelMovesLearnLevels";
+            checkDistPokemonLevelMovesLearnLevels.Size = new System.Drawing.Size(85, 19);
+            checkDistPokemonLevelMovesLearnLevels.TabIndex = 3;
+            checkDistPokemonLevelMovesLearnLevels.Text = "Randomize";
+            checkDistPokemonLevelMovesLearnLevels.UseVisualStyleBackColor = true;
+            // 
+            // btnDistPokemonLevelMovesLearnLevels
+            // 
+            btnDistPokemonLevelMovesLearnLevels.Location = new System.Drawing.Point(120, 41);
+            btnDistPokemonLevelMovesLearnLevels.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistPokemonLevelMovesLearnLevels.Name = "btnDistPokemonLevelMovesLearnLevels";
+            btnDistPokemonLevelMovesLearnLevels.Size = new System.Drawing.Size(25, 22);
+            btnDistPokemonLevelMovesLearnLevels.TabIndex = 1;
+            btnDistPokemonLevelMovesLearnLevels.Text = ">";
+            btnDistPokemonLevelMovesLearnLevels.UseVisualStyleBackColor = true;
+            btnDistPokemonLevelMovesLearnLevels.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistPokemonLevelMovesLearnLevels
+            // 
+            txtDistPokemonLevelMovesLearnLevels.Location = new System.Drawing.Point(5, 42);
+            txtDistPokemonLevelMovesLearnLevels.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistPokemonLevelMovesLearnLevels.Name = "txtDistPokemonLevelMovesLearnLevels";
+            txtDistPokemonLevelMovesLearnLevels.Size = new System.Drawing.Size(110, 23);
+            txtDistPokemonLevelMovesLearnLevels.TabIndex = 0;
+            // 
+            // btnDistPokemonLevelMovesMoves
+            // 
+            btnDistPokemonLevelMovesMoves.Location = new System.Drawing.Point(5, 64);
+            btnDistPokemonLevelMovesMoves.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistPokemonLevelMovesMoves.Name = "btnDistPokemonLevelMovesMoves";
+            btnDistPokemonLevelMovesMoves.Size = new System.Drawing.Size(151, 22);
+            btnDistPokemonLevelMovesMoves.TabIndex = 11;
+            btnDistPokemonLevelMovesMoves.Text = "Level Up Moves";
+            btnDistPokemonLevelMovesMoves.UseVisualStyleBackColor = true;
+            btnDistPokemonLevelMovesMoves.Click += OpenItemDistributionForm;
+            // 
+            // checkPokemonLevelMovesSortPower
+            // 
+            checkPokemonLevelMovesSortPower.AutoSize = true;
+            checkPokemonLevelMovesSortPower.Location = new System.Drawing.Point(5, 42);
+            checkPokemonLevelMovesSortPower.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkPokemonLevelMovesSortPower.Name = "checkPokemonLevelMovesSortPower";
+            checkPokemonLevelMovesSortPower.Size = new System.Drawing.Size(99, 19);
+            checkPokemonLevelMovesSortPower.TabIndex = 10;
+            checkPokemonLevelMovesSortPower.Text = "Sort By Power";
+            checkPokemonLevelMovesSortPower.UseVisualStyleBackColor = true;
+            // 
+            // lbPokemonLevelMovesTypeBias
+            // 
+            lbPokemonLevelMovesTypeBias.AutoSize = true;
+            lbPokemonLevelMovesTypeBias.Location = new System.Drawing.Point(5, 88);
+            lbPokemonLevelMovesTypeBias.Name = "lbPokemonLevelMovesTypeBias";
+            lbPokemonLevelMovesTypeBias.Size = new System.Drawing.Size(68, 15);
+            lbPokemonLevelMovesTypeBias.TabIndex = 9;
+            lbPokemonLevelMovesTypeBias.Text = "Type Bias %";
+            // 
+            // numPokemonLevelMovesTypeBias
+            // 
+            numPokemonLevelMovesTypeBias.DecimalPlaces = 3;
+            numPokemonLevelMovesTypeBias.Location = new System.Drawing.Point(5, 106);
+            numPokemonLevelMovesTypeBias.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            numPokemonLevelMovesTypeBias.Name = "numPokemonLevelMovesTypeBias";
+            numPokemonLevelMovesTypeBias.Size = new System.Drawing.Size(151, 23);
+            numPokemonLevelMovesTypeBias.TabIndex = 8;
+            // 
+            // grpDistPokemonLevelMovesCount
+            // 
+            grpDistPokemonLevelMovesCount.Controls.Add(checkDistPokemonLevelMovesCount);
+            grpDistPokemonLevelMovesCount.Controls.Add(btnDistPokemonLevelMovesCount);
+            grpDistPokemonLevelMovesCount.Controls.Add(txtDistPokemonLevelMovesCount);
+            grpDistPokemonLevelMovesCount.Location = new System.Drawing.Point(5, 202);
+            grpDistPokemonLevelMovesCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonLevelMovesCount.Name = "grpDistPokemonLevelMovesCount";
+            grpDistPokemonLevelMovesCount.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonLevelMovesCount.Size = new System.Drawing.Size(151, 68);
+            grpDistPokemonLevelMovesCount.TabIndex = 7;
+            grpDistPokemonLevelMovesCount.TabStop = false;
+            grpDistPokemonLevelMovesCount.Text = "Move Count";
+            // 
+            // checkDistPokemonLevelMovesCount
+            // 
+            checkDistPokemonLevelMovesCount.AutoSize = true;
+            checkDistPokemonLevelMovesCount.Location = new System.Drawing.Point(5, 20);
+            checkDistPokemonLevelMovesCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistPokemonLevelMovesCount.Name = "checkDistPokemonLevelMovesCount";
+            checkDistPokemonLevelMovesCount.Size = new System.Drawing.Size(85, 19);
+            checkDistPokemonLevelMovesCount.TabIndex = 3;
+            checkDistPokemonLevelMovesCount.Text = "Randomize";
+            checkDistPokemonLevelMovesCount.UseVisualStyleBackColor = true;
+            // 
+            // btnDistPokemonLevelMovesCount
+            // 
+            btnDistPokemonLevelMovesCount.Location = new System.Drawing.Point(120, 41);
+            btnDistPokemonLevelMovesCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistPokemonLevelMovesCount.Name = "btnDistPokemonLevelMovesCount";
+            btnDistPokemonLevelMovesCount.Size = new System.Drawing.Size(25, 22);
+            btnDistPokemonLevelMovesCount.TabIndex = 1;
+            btnDistPokemonLevelMovesCount.Text = ">";
+            btnDistPokemonLevelMovesCount.UseVisualStyleBackColor = true;
+            btnDistPokemonLevelMovesCount.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistPokemonLevelMovesCount
+            // 
+            txtDistPokemonLevelMovesCount.Location = new System.Drawing.Point(5, 42);
+            txtDistPokemonLevelMovesCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistPokemonLevelMovesCount.Name = "txtDistPokemonLevelMovesCount";
+            txtDistPokemonLevelMovesCount.Size = new System.Drawing.Size(110, 23);
+            txtDistPokemonLevelMovesCount.TabIndex = 0;
+            // 
+            // checkPokemonLevelMovesRandom
+            // 
+            checkPokemonLevelMovesRandom.AutoSize = true;
+            checkPokemonLevelMovesRandom.Location = new System.Drawing.Point(5, 20);
+            checkPokemonLevelMovesRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkPokemonLevelMovesRandom.Name = "checkPokemonLevelMovesRandom";
+            checkPokemonLevelMovesRandom.Size = new System.Drawing.Size(85, 19);
+            checkPokemonLevelMovesRandom.TabIndex = 2;
+            checkPokemonLevelMovesRandom.Text = "Randomize";
+            checkPokemonLevelMovesRandom.UseVisualStyleBackColor = true;
+            // 
+            // grpPokemonTMCompat
+            // 
+            grpPokemonTMCompat.Controls.Add(lbPokemonTMCompatPercent);
+            grpPokemonTMCompat.Controls.Add(numPokemonTMCompatPercent);
+            grpPokemonTMCompat.Controls.Add(checkPokemonTMCompatEvoLogic);
+            grpPokemonTMCompat.Controls.Add(lbPokemonTMCompatTypeBias);
+            grpPokemonTMCompat.Controls.Add(numPokemonTMCompatTypeBias);
+            grpPokemonTMCompat.Controls.Add(checkPokemonTMCompatRandom);
+            grpPokemonTMCompat.Location = new System.Drawing.Point(626, 4);
+            grpPokemonTMCompat.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonTMCompat.Name = "grpPokemonTMCompat";
+            grpPokemonTMCompat.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonTMCompat.Size = new System.Drawing.Size(162, 161);
+            grpPokemonTMCompat.TabIndex = 10;
+            grpPokemonTMCompat.TabStop = false;
+            grpPokemonTMCompat.Text = "TM Compatibility";
+            // 
+            // lbPokemonTMCompatPercent
+            // 
+            lbPokemonTMCompatPercent.AutoSize = true;
+            lbPokemonTMCompatPercent.Location = new System.Drawing.Point(5, 62);
+            lbPokemonTMCompatPercent.Name = "lbPokemonTMCompatPercent";
+            lbPokemonTMCompatPercent.Size = new System.Drawing.Size(112, 15);
+            lbPokemonTMCompatPercent.TabIndex = 8;
+            lbPokemonTMCompatPercent.Text = "TM Compatibility %";
+            // 
+            // numPokemonTMCompatPercent
+            // 
+            numPokemonTMCompatPercent.DecimalPlaces = 3;
+            numPokemonTMCompatPercent.Location = new System.Drawing.Point(5, 80);
+            numPokemonTMCompatPercent.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            numPokemonTMCompatPercent.Name = "numPokemonTMCompatPercent";
+            numPokemonTMCompatPercent.Size = new System.Drawing.Size(151, 23);
+            numPokemonTMCompatPercent.TabIndex = 7;
+            // 
+            // checkPokemonTMCompatEvoLogic
+            // 
+            checkPokemonTMCompatEvoLogic.AutoSize = true;
+            checkPokemonTMCompatEvoLogic.Location = new System.Drawing.Point(5, 42);
+            checkPokemonTMCompatEvoLogic.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkPokemonTMCompatEvoLogic.Name = "checkPokemonTMCompatEvoLogic";
+            checkPokemonTMCompatEvoLogic.Size = new System.Drawing.Size(108, 19);
+            checkPokemonTMCompatEvoLogic.TabIndex = 6;
+            checkPokemonTMCompatEvoLogic.Text = "Evolution Logic";
+            checkPokemonTMCompatEvoLogic.UseVisualStyleBackColor = true;
+            // 
+            // lbPokemonTMCompatTypeBias
+            // 
+            lbPokemonTMCompatTypeBias.AutoSize = true;
+            lbPokemonTMCompatTypeBias.Location = new System.Drawing.Point(5, 102);
+            lbPokemonTMCompatTypeBias.Name = "lbPokemonTMCompatTypeBias";
+            lbPokemonTMCompatTypeBias.Size = new System.Drawing.Size(68, 15);
+            lbPokemonTMCompatTypeBias.TabIndex = 4;
+            lbPokemonTMCompatTypeBias.Text = "Type Bias %";
+            // 
+            // numPokemonTMCompatTypeBias
+            // 
+            numPokemonTMCompatTypeBias.DecimalPlaces = 3;
+            numPokemonTMCompatTypeBias.Location = new System.Drawing.Point(5, 119);
+            numPokemonTMCompatTypeBias.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            numPokemonTMCompatTypeBias.Name = "numPokemonTMCompatTypeBias";
+            numPokemonTMCompatTypeBias.Size = new System.Drawing.Size(151, 23);
+            numPokemonTMCompatTypeBias.TabIndex = 3;
+            // 
+            // checkPokemonTMCompatRandom
+            // 
+            checkPokemonTMCompatRandom.AutoSize = true;
+            checkPokemonTMCompatRandom.Location = new System.Drawing.Point(5, 20);
+            checkPokemonTMCompatRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkPokemonTMCompatRandom.Name = "checkPokemonTMCompatRandom";
+            checkPokemonTMCompatRandom.Size = new System.Drawing.Size(85, 19);
+            checkPokemonTMCompatRandom.TabIndex = 1;
+            checkPokemonTMCompatRandom.Text = "Randomize";
+            checkPokemonTMCompatRandom.UseVisualStyleBackColor = true;
+            // 
+            // grpPokemonAbilities
+            // 
+            grpPokemonAbilities.Controls.Add(btnDistPokemonAbilities);
+            grpPokemonAbilities.Controls.Add(checkPokemonAbilities);
+            grpPokemonAbilities.Location = new System.Drawing.Point(459, 170);
+            grpPokemonAbilities.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonAbilities.Name = "grpPokemonAbilities";
+            grpPokemonAbilities.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonAbilities.Size = new System.Drawing.Size(162, 70);
+            grpPokemonAbilities.TabIndex = 9;
+            grpPokemonAbilities.TabStop = false;
+            grpPokemonAbilities.Text = "Abilities";
+            // 
+            // btnDistPokemonAbilities
+            // 
+            btnDistPokemonAbilities.Location = new System.Drawing.Point(5, 40);
+            btnDistPokemonAbilities.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistPokemonAbilities.Name = "btnDistPokemonAbilities";
+            btnDistPokemonAbilities.Size = new System.Drawing.Size(151, 22);
+            btnDistPokemonAbilities.TabIndex = 4;
+            btnDistPokemonAbilities.Text = "Abilities";
+            btnDistPokemonAbilities.UseVisualStyleBackColor = true;
+            btnDistPokemonAbilities.Click += OpenItemDistributionForm;
+            // 
+            // checkPokemonAbilities
+            // 
+            checkPokemonAbilities.AutoSize = true;
+            checkPokemonAbilities.Location = new System.Drawing.Point(5, 20);
+            checkPokemonAbilities.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkPokemonAbilities.Name = "checkPokemonAbilities";
+            checkPokemonAbilities.Size = new System.Drawing.Size(85, 19);
+            checkPokemonAbilities.TabIndex = 1;
+            checkPokemonAbilities.Text = "Randomize";
+            checkPokemonAbilities.UseVisualStyleBackColor = true;
+            // 
+            // grpPokemonGrowth
+            // 
+            grpPokemonGrowth.Controls.Add(btnDistPokemonGrowth);
+            grpPokemonGrowth.Controls.Add(checkPokemonGrowthRandom);
+            grpPokemonGrowth.Location = new System.Drawing.Point(292, 170);
+            grpPokemonGrowth.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonGrowth.Name = "grpPokemonGrowth";
+            grpPokemonGrowth.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonGrowth.Size = new System.Drawing.Size(162, 70);
+            grpPokemonGrowth.TabIndex = 8;
+            grpPokemonGrowth.TabStop = false;
+            grpPokemonGrowth.Text = "Growth Rate";
+            // 
+            // btnDistPokemonGrowth
+            // 
+            btnDistPokemonGrowth.Location = new System.Drawing.Point(5, 40);
+            btnDistPokemonGrowth.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistPokemonGrowth.Name = "btnDistPokemonGrowth";
+            btnDistPokemonGrowth.Size = new System.Drawing.Size(151, 22);
+            btnDistPokemonGrowth.TabIndex = 4;
+            btnDistPokemonGrowth.Text = "Growth Rate";
+            btnDistPokemonGrowth.UseVisualStyleBackColor = true;
+            btnDistPokemonGrowth.Click += OpenItemDistributionForm;
+            // 
+            // checkPokemonGrowthRandom
+            // 
+            checkPokemonGrowthRandom.AutoSize = true;
+            checkPokemonGrowthRandom.Location = new System.Drawing.Point(5, 20);
+            checkPokemonGrowthRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkPokemonGrowthRandom.Name = "checkPokemonGrowthRandom";
+            checkPokemonGrowthRandom.Size = new System.Drawing.Size(85, 19);
+            checkPokemonGrowthRandom.TabIndex = 1;
+            checkPokemonGrowthRandom.Text = "Randomize";
+            checkPokemonGrowthRandom.UseVisualStyleBackColor = true;
+            // 
+            // grpPokemonWildHeldItems
+            // 
+            grpPokemonWildHeldItems.Controls.Add(btnDistPokemonWildHeldItems);
+            grpPokemonWildHeldItems.Controls.Add(checkPokemonWildHeldItemsRandom);
+            grpPokemonWildHeldItems.Location = new System.Drawing.Point(126, 170);
+            grpPokemonWildHeldItems.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonWildHeldItems.Name = "grpPokemonWildHeldItems";
+            grpPokemonWildHeldItems.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonWildHeldItems.Size = new System.Drawing.Size(162, 70);
+            grpPokemonWildHeldItems.TabIndex = 6;
+            grpPokemonWildHeldItems.TabStop = false;
+            grpPokemonWildHeldItems.Text = "Wild Held Items";
+            // 
+            // btnDistPokemonWildHeldItems
+            // 
+            btnDistPokemonWildHeldItems.Location = new System.Drawing.Point(5, 40);
+            btnDistPokemonWildHeldItems.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistPokemonWildHeldItems.Name = "btnDistPokemonWildHeldItems";
+            btnDistPokemonWildHeldItems.Size = new System.Drawing.Size(151, 22);
+            btnDistPokemonWildHeldItems.TabIndex = 4;
+            btnDistPokemonWildHeldItems.Text = "Wild Held Items";
+            btnDistPokemonWildHeldItems.UseVisualStyleBackColor = true;
+            btnDistPokemonWildHeldItems.Click += OpenItemDistributionForm;
+            // 
+            // checkPokemonWildHeldItemsRandom
+            // 
+            checkPokemonWildHeldItemsRandom.AutoSize = true;
+            checkPokemonWildHeldItemsRandom.Location = new System.Drawing.Point(5, 20);
+            checkPokemonWildHeldItemsRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkPokemonWildHeldItemsRandom.Name = "checkPokemonWildHeldItemsRandom";
+            checkPokemonWildHeldItemsRandom.Size = new System.Drawing.Size(85, 19);
+            checkPokemonWildHeldItemsRandom.TabIndex = 1;
+            checkPokemonWildHeldItemsRandom.Text = "Randomize";
+            checkPokemonWildHeldItemsRandom.UseVisualStyleBackColor = true;
+            // 
+            // grpPokemonTyping
+            // 
+            grpPokemonTyping.Controls.Add(checkPokemonTypingEvoLogic);
+            grpPokemonTyping.Controls.Add(btnDistPokemonTyping);
+            grpPokemonTyping.Controls.Add(lbPokemonTypingDouble);
+            grpPokemonTyping.Controls.Add(numPokemonTypingDouble);
+            grpPokemonTyping.Controls.Add(checkPokemonTypingRandom);
+            grpPokemonTyping.Location = new System.Drawing.Point(459, 4);
+            grpPokemonTyping.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonTyping.Name = "grpPokemonTyping";
+            grpPokemonTyping.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonTyping.Size = new System.Drawing.Size(162, 161);
+            grpPokemonTyping.TabIndex = 2;
+            grpPokemonTyping.TabStop = false;
+            grpPokemonTyping.Text = "Typing";
+            // 
+            // checkPokemonTypingEvoLogic
+            // 
+            checkPokemonTypingEvoLogic.AutoSize = true;
+            checkPokemonTypingEvoLogic.Location = new System.Drawing.Point(5, 42);
+            checkPokemonTypingEvoLogic.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkPokemonTypingEvoLogic.Name = "checkPokemonTypingEvoLogic";
+            checkPokemonTypingEvoLogic.Size = new System.Drawing.Size(108, 19);
+            checkPokemonTypingEvoLogic.TabIndex = 4;
+            checkPokemonTypingEvoLogic.Text = "Evolution Logic";
+            checkPokemonTypingEvoLogic.UseVisualStyleBackColor = true;
+            // 
+            // btnDistPokemonTyping
+            // 
+            btnDistPokemonTyping.Location = new System.Drawing.Point(5, 62);
+            btnDistPokemonTyping.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistPokemonTyping.Name = "btnDistPokemonTyping";
+            btnDistPokemonTyping.Size = new System.Drawing.Size(151, 22);
+            btnDistPokemonTyping.TabIndex = 3;
+            btnDistPokemonTyping.Text = "Typing";
+            btnDistPokemonTyping.UseVisualStyleBackColor = true;
+            btnDistPokemonTyping.Click += OpenItemDistributionForm;
+            // 
+            // lbPokemonTypingDouble
+            // 
+            lbPokemonTypingDouble.AutoSize = true;
+            lbPokemonTypingDouble.Location = new System.Drawing.Point(5, 86);
+            lbPokemonTypingDouble.Name = "lbPokemonTypingDouble";
+            lbPokemonTypingDouble.Size = new System.Drawing.Size(96, 15);
+            lbPokemonTypingDouble.TabIndex = 2;
+            lbPokemonTypingDouble.Text = "Double Typing %";
+            // 
+            // numPokemonTypingDouble
+            // 
+            numPokemonTypingDouble.DecimalPlaces = 3;
+            numPokemonTypingDouble.Location = new System.Drawing.Point(5, 104);
+            numPokemonTypingDouble.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            numPokemonTypingDouble.Name = "numPokemonTypingDouble";
+            numPokemonTypingDouble.Size = new System.Drawing.Size(151, 23);
+            numPokemonTypingDouble.TabIndex = 1;
+            // 
+            // checkPokemonTypingRandom
+            // 
+            checkPokemonTypingRandom.AutoSize = true;
+            checkPokemonTypingRandom.Location = new System.Drawing.Point(5, 20);
+            checkPokemonTypingRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkPokemonTypingRandom.Name = "checkPokemonTypingRandom";
+            checkPokemonTypingRandom.Size = new System.Drawing.Size(85, 19);
+            checkPokemonTypingRandom.TabIndex = 0;
+            checkPokemonTypingRandom.Text = "Randomize";
+            checkPokemonTypingRandom.UseVisualStyleBackColor = true;
+            // 
+            // grpPokemonBaseStats
+            // 
+            grpPokemonBaseStats.Controls.Add(grpDistPokemonBaseStats);
+            grpPokemonBaseStats.Controls.Add(checkPokemonBaseStatsBSTLogic);
+            grpPokemonBaseStats.Controls.Add(checkPokemonBaseStatsShuffle);
+            grpPokemonBaseStats.Location = new System.Drawing.Point(292, 4);
+            grpPokemonBaseStats.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonBaseStats.Name = "grpPokemonBaseStats";
+            grpPokemonBaseStats.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonBaseStats.Size = new System.Drawing.Size(162, 161);
+            grpPokemonBaseStats.TabIndex = 1;
+            grpPokemonBaseStats.TabStop = false;
+            grpPokemonBaseStats.Text = "Base Stats";
+            // 
+            // grpDistPokemonBaseStats
+            // 
+            grpDistPokemonBaseStats.Controls.Add(checkDistPokemonBaseStats);
+            grpDistPokemonBaseStats.Controls.Add(btnDistPokemonBaseStats);
+            grpDistPokemonBaseStats.Controls.Add(txtDistPokemonBaseStats);
+            grpDistPokemonBaseStats.Location = new System.Drawing.Point(5, 87);
+            grpDistPokemonBaseStats.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonBaseStats.Name = "grpDistPokemonBaseStats";
+            grpDistPokemonBaseStats.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistPokemonBaseStats.Size = new System.Drawing.Size(151, 68);
+            grpDistPokemonBaseStats.TabIndex = 3;
+            grpDistPokemonBaseStats.TabStop = false;
+            grpDistPokemonBaseStats.Text = "Base Stats";
+            // 
+            // checkDistPokemonBaseStats
+            // 
+            checkDistPokemonBaseStats.AutoSize = true;
+            checkDistPokemonBaseStats.Location = new System.Drawing.Point(5, 20);
+            checkDistPokemonBaseStats.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistPokemonBaseStats.Name = "checkDistPokemonBaseStats";
+            checkDistPokemonBaseStats.Size = new System.Drawing.Size(85, 19);
+            checkDistPokemonBaseStats.TabIndex = 3;
+            checkDistPokemonBaseStats.Text = "Randomize";
+            checkDistPokemonBaseStats.UseVisualStyleBackColor = true;
+            // 
+            // btnDistPokemonBaseStats
+            // 
+            btnDistPokemonBaseStats.Location = new System.Drawing.Point(120, 41);
+            btnDistPokemonBaseStats.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistPokemonBaseStats.Name = "btnDistPokemonBaseStats";
+            btnDistPokemonBaseStats.Size = new System.Drawing.Size(25, 22);
+            btnDistPokemonBaseStats.TabIndex = 1;
+            btnDistPokemonBaseStats.Text = ">";
+            btnDistPokemonBaseStats.UseVisualStyleBackColor = true;
+            btnDistPokemonBaseStats.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistPokemonBaseStats
+            // 
+            txtDistPokemonBaseStats.Location = new System.Drawing.Point(5, 42);
+            txtDistPokemonBaseStats.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistPokemonBaseStats.Name = "txtDistPokemonBaseStats";
+            txtDistPokemonBaseStats.Size = new System.Drawing.Size(110, 23);
+            txtDistPokemonBaseStats.TabIndex = 0;
+            // 
+            // checkPokemonBaseStatsBSTLogic
+            // 
+            checkPokemonBaseStatsBSTLogic.AutoSize = true;
+            checkPokemonBaseStatsBSTLogic.Location = new System.Drawing.Point(5, 42);
+            checkPokemonBaseStatsBSTLogic.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkPokemonBaseStatsBSTLogic.Name = "checkPokemonBaseStatsBSTLogic";
+            checkPokemonBaseStatsBSTLogic.Size = new System.Drawing.Size(77, 19);
+            checkPokemonBaseStatsBSTLogic.TabIndex = 2;
+            checkPokemonBaseStatsBSTLogic.Text = "BST Logic";
+            checkPokemonBaseStatsBSTLogic.UseVisualStyleBackColor = true;
+            // 
+            // checkPokemonBaseStatsShuffle
+            // 
+            checkPokemonBaseStatsShuffle.AutoSize = true;
+            checkPokemonBaseStatsShuffle.Location = new System.Drawing.Point(5, 20);
+            checkPokemonBaseStatsShuffle.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkPokemonBaseStatsShuffle.Name = "checkPokemonBaseStatsShuffle";
+            checkPokemonBaseStatsShuffle.Size = new System.Drawing.Size(63, 19);
+            checkPokemonBaseStatsShuffle.TabIndex = 1;
+            checkPokemonBaseStatsShuffle.Text = "Shuffle";
+            checkPokemonBaseStatsShuffle.UseVisualStyleBackColor = true;
+            // 
+            // grpPokemonEvolution
+            // 
+            grpPokemonEvolution.Controls.Add(checkPokemonEvolutionBSTLogic);
+            grpPokemonEvolution.Controls.Add(checkPokemonEvolutionRandomDest);
+            grpPokemonEvolution.Controls.Add(grpDistPokemonEvolutionLevel);
+            grpPokemonEvolution.Controls.Add(btnDistPokemonEvolutionDest);
+            grpPokemonEvolution.Location = new System.Drawing.Point(126, 4);
+            grpPokemonEvolution.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonEvolution.Name = "grpPokemonEvolution";
+            grpPokemonEvolution.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpPokemonEvolution.Size = new System.Drawing.Size(162, 161);
+            grpPokemonEvolution.TabIndex = 0;
+            grpPokemonEvolution.TabStop = false;
+            grpPokemonEvolution.Text = "Evolution";
+            // 
+            // checkPokemonEvolutionBSTLogic
+            // 
+            checkPokemonEvolutionBSTLogic.AutoSize = true;
+            checkPokemonEvolutionBSTLogic.Location = new System.Drawing.Point(5, 42);
+            checkPokemonEvolutionBSTLogic.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkPokemonEvolutionBSTLogic.Name = "checkPokemonEvolutionBSTLogic";
+            checkPokemonEvolutionBSTLogic.Size = new System.Drawing.Size(77, 19);
+            checkPokemonEvolutionBSTLogic.TabIndex = 3;
+            checkPokemonEvolutionBSTLogic.Text = "BST Logic";
+            checkPokemonEvolutionBSTLogic.UseVisualStyleBackColor = true;
+            // 
+            // checkPokemonEvolutionRandomDest
+            // 
+            checkPokemonEvolutionRandomDest.AutoSize = true;
+            checkPokemonEvolutionRandomDest.Location = new System.Drawing.Point(5, 20);
+            checkPokemonEvolutionRandomDest.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkPokemonEvolutionRandomDest.Name = "checkPokemonEvolutionRandomDest";
+            checkPokemonEvolutionRandomDest.Size = new System.Drawing.Size(139, 19);
+            checkPokemonEvolutionRandomDest.TabIndex = 0;
+            checkPokemonEvolutionRandomDest.Text = "Random Destinations";
+            checkPokemonEvolutionRandomDest.UseVisualStyleBackColor = true;
+            // 
+            // tabMovesAndItems
+            // 
+            tabMovesAndItems.Controls.Add(grpMovesAndItemsShopItems);
+            tabMovesAndItems.Controls.Add(grpMovesAndItemsTMMoves);
+            tabMovesAndItems.Controls.Add(grpMovesAndItemsPickup);
+            tabMovesAndItems.Controls.Add(grpDistMovesAndItemsItemPrices);
+            tabMovesAndItems.Controls.Add(grpDistMovesAndItemsPP);
+            tabMovesAndItems.Controls.Add(grpDistMovesAndItemsAccuracy);
+            tabMovesAndItems.Controls.Add(grpDistMovesAndItemsPower);
+            tabMovesAndItems.Controls.Add(grpMovesAndItemsMoveCategory);
+            tabMovesAndItems.Controls.Add(grpMovesAndItemsMoveTyping);
+            tabMovesAndItems.Location = new System.Drawing.Point(4, 24);
+            tabMovesAndItems.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            tabMovesAndItems.Name = "tabMovesAndItems";
+            tabMovesAndItems.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            tabMovesAndItems.Size = new System.Drawing.Size(890, 459);
+            tabMovesAndItems.TabIndex = 1;
+            tabMovesAndItems.Text = "Moves and Items";
+            tabMovesAndItems.UseVisualStyleBackColor = true;
+            // 
+            // grpMovesAndItemsShopItems
+            // 
+            grpMovesAndItemsShopItems.Controls.Add(checkMovesAndItemsShopItemsKeepMart);
+            grpMovesAndItemsShopItems.Controls.Add(btnDistMovesAndItemsShopItems);
+            grpMovesAndItemsShopItems.Controls.Add(checkMovesAndItemsShopItemsRandom);
+            grpMovesAndItemsShopItems.Location = new System.Drawing.Point(636, 188);
+            grpMovesAndItemsShopItems.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMovesAndItemsShopItems.Name = "grpMovesAndItemsShopItems";
+            grpMovesAndItemsShopItems.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMovesAndItemsShopItems.Size = new System.Drawing.Size(162, 94);
+            grpMovesAndItemsShopItems.TabIndex = 14;
+            grpMovesAndItemsShopItems.TabStop = false;
+            grpMovesAndItemsShopItems.Text = "Shop Items";
+            // 
+            // checkMovesAndItemsShopItemsKeepMart
+            // 
+            checkMovesAndItemsShopItemsKeepMart.AutoSize = true;
+            checkMovesAndItemsShopItemsKeepMart.Location = new System.Drawing.Point(5, 42);
+            checkMovesAndItemsShopItemsKeepMart.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkMovesAndItemsShopItemsKeepMart.Name = "checkMovesAndItemsShopItemsKeepMart";
+            checkMovesAndItemsShopItemsKeepMart.Size = new System.Drawing.Size(141, 19);
+            checkMovesAndItemsShopItemsKeepMart.TabIndex = 5;
+            checkMovesAndItemsShopItemsKeepMart.Text = "Preserve Regular Mart";
+            checkMovesAndItemsShopItemsKeepMart.UseVisualStyleBackColor = true;
+            // 
+            // btnDistMovesAndItemsShopItems
+            // 
+            btnDistMovesAndItemsShopItems.Location = new System.Drawing.Point(5, 64);
+            btnDistMovesAndItemsShopItems.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistMovesAndItemsShopItems.Name = "btnDistMovesAndItemsShopItems";
+            btnDistMovesAndItemsShopItems.Size = new System.Drawing.Size(151, 22);
+            btnDistMovesAndItemsShopItems.TabIndex = 4;
+            btnDistMovesAndItemsShopItems.Text = "Shop Items";
+            btnDistMovesAndItemsShopItems.UseVisualStyleBackColor = true;
+            btnDistMovesAndItemsShopItems.Click += OpenItemDistributionForm;
+            // 
+            // checkMovesAndItemsShopItemsRandom
+            // 
+            checkMovesAndItemsShopItemsRandom.AutoSize = true;
+            checkMovesAndItemsShopItemsRandom.Location = new System.Drawing.Point(5, 20);
+            checkMovesAndItemsShopItemsRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkMovesAndItemsShopItemsRandom.Name = "checkMovesAndItemsShopItemsRandom";
+            checkMovesAndItemsShopItemsRandom.Size = new System.Drawing.Size(85, 19);
+            checkMovesAndItemsShopItemsRandom.TabIndex = 1;
+            checkMovesAndItemsShopItemsRandom.Text = "Randomize";
+            checkMovesAndItemsShopItemsRandom.UseVisualStyleBackColor = true;
+            // 
+            // grpMovesAndItemsTMMoves
+            // 
+            grpMovesAndItemsTMMoves.Controls.Add(btnDistMovesAndItemsTMMoves);
+            grpMovesAndItemsTMMoves.Controls.Add(checkMovesAndItemsTMMovesRandom);
+            grpMovesAndItemsTMMoves.Location = new System.Drawing.Point(94, 260);
+            grpMovesAndItemsTMMoves.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMovesAndItemsTMMoves.Name = "grpMovesAndItemsTMMoves";
+            grpMovesAndItemsTMMoves.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMovesAndItemsTMMoves.Size = new System.Drawing.Size(162, 68);
+            grpMovesAndItemsTMMoves.TabIndex = 9;
+            grpMovesAndItemsTMMoves.TabStop = false;
+            grpMovesAndItemsTMMoves.Text = "TM Moves";
+            // 
+            // btnDistMovesAndItemsTMMoves
+            // 
+            btnDistMovesAndItemsTMMoves.Location = new System.Drawing.Point(5, 40);
+            btnDistMovesAndItemsTMMoves.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistMovesAndItemsTMMoves.Name = "btnDistMovesAndItemsTMMoves";
+            btnDistMovesAndItemsTMMoves.Size = new System.Drawing.Size(151, 22);
+            btnDistMovesAndItemsTMMoves.TabIndex = 4;
+            btnDistMovesAndItemsTMMoves.Text = "TM Moves";
+            btnDistMovesAndItemsTMMoves.UseVisualStyleBackColor = true;
+            btnDistMovesAndItemsTMMoves.Click += OpenItemDistributionForm;
+            // 
+            // checkMovesAndItemsTMMovesRandom
+            // 
+            checkMovesAndItemsTMMovesRandom.AutoSize = true;
+            checkMovesAndItemsTMMovesRandom.Location = new System.Drawing.Point(5, 20);
+            checkMovesAndItemsTMMovesRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkMovesAndItemsTMMovesRandom.Name = "checkMovesAndItemsTMMovesRandom";
+            checkMovesAndItemsTMMovesRandom.Size = new System.Drawing.Size(85, 19);
+            checkMovesAndItemsTMMovesRandom.TabIndex = 1;
+            checkMovesAndItemsTMMovesRandom.Text = "Randomize";
+            checkMovesAndItemsTMMovesRandom.UseVisualStyleBackColor = true;
+            // 
+            // grpMovesAndItemsPickup
+            // 
+            grpMovesAndItemsPickup.Controls.Add(btnDistMovesAndItemsPickup);
+            grpMovesAndItemsPickup.Controls.Add(checkMovesAndItemsPickupRandom);
+            grpMovesAndItemsPickup.Location = new System.Drawing.Point(636, 116);
+            grpMovesAndItemsPickup.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMovesAndItemsPickup.Name = "grpMovesAndItemsPickup";
+            grpMovesAndItemsPickup.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMovesAndItemsPickup.Size = new System.Drawing.Size(162, 68);
+            grpMovesAndItemsPickup.TabIndex = 13;
+            grpMovesAndItemsPickup.TabStop = false;
+            grpMovesAndItemsPickup.Text = "Pickup Items";
+            // 
+            // btnDistMovesAndItemsPickup
+            // 
+            btnDistMovesAndItemsPickup.Location = new System.Drawing.Point(5, 40);
+            btnDistMovesAndItemsPickup.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistMovesAndItemsPickup.Name = "btnDistMovesAndItemsPickup";
+            btnDistMovesAndItemsPickup.Size = new System.Drawing.Size(151, 22);
+            btnDistMovesAndItemsPickup.TabIndex = 4;
+            btnDistMovesAndItemsPickup.Text = "Pickup Items";
+            btnDistMovesAndItemsPickup.UseVisualStyleBackColor = true;
+            btnDistMovesAndItemsPickup.Click += OpenItemDistributionForm;
+            // 
+            // checkMovesAndItemsPickupRandom
+            // 
+            checkMovesAndItemsPickupRandom.AutoSize = true;
+            checkMovesAndItemsPickupRandom.Location = new System.Drawing.Point(5, 20);
+            checkMovesAndItemsPickupRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkMovesAndItemsPickupRandom.Name = "checkMovesAndItemsPickupRandom";
+            checkMovesAndItemsPickupRandom.Size = new System.Drawing.Size(85, 19);
+            checkMovesAndItemsPickupRandom.TabIndex = 1;
+            checkMovesAndItemsPickupRandom.Text = "Randomize";
+            checkMovesAndItemsPickupRandom.UseVisualStyleBackColor = true;
+            // 
+            // grpDistMovesAndItemsItemPrices
+            // 
+            grpDistMovesAndItemsItemPrices.Controls.Add(checkDistMovesAndItemsItemPrices);
+            grpDistMovesAndItemsItemPrices.Controls.Add(btnDistMovesAndItemsItemPrices);
+            grpDistMovesAndItemsItemPrices.Controls.Add(txtDistMovesAndItemsItemPrices);
+            grpDistMovesAndItemsItemPrices.Location = new System.Drawing.Point(480, 116);
+            grpDistMovesAndItemsItemPrices.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistMovesAndItemsItemPrices.Name = "grpDistMovesAndItemsItemPrices";
+            grpDistMovesAndItemsItemPrices.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistMovesAndItemsItemPrices.Size = new System.Drawing.Size(151, 68);
+            grpDistMovesAndItemsItemPrices.TabIndex = 12;
+            grpDistMovesAndItemsItemPrices.TabStop = false;
+            grpDistMovesAndItemsItemPrices.Text = "Item Prices";
+            // 
+            // checkDistMovesAndItemsItemPrices
+            // 
+            checkDistMovesAndItemsItemPrices.AutoSize = true;
+            checkDistMovesAndItemsItemPrices.Location = new System.Drawing.Point(5, 20);
+            checkDistMovesAndItemsItemPrices.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistMovesAndItemsItemPrices.Name = "checkDistMovesAndItemsItemPrices";
+            checkDistMovesAndItemsItemPrices.Size = new System.Drawing.Size(85, 19);
+            checkDistMovesAndItemsItemPrices.TabIndex = 3;
+            checkDistMovesAndItemsItemPrices.Text = "Randomize";
+            checkDistMovesAndItemsItemPrices.UseVisualStyleBackColor = true;
+            // 
+            // btnDistMovesAndItemsItemPrices
+            // 
+            btnDistMovesAndItemsItemPrices.Location = new System.Drawing.Point(120, 41);
+            btnDistMovesAndItemsItemPrices.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistMovesAndItemsItemPrices.Name = "btnDistMovesAndItemsItemPrices";
+            btnDistMovesAndItemsItemPrices.Size = new System.Drawing.Size(25, 22);
+            btnDistMovesAndItemsItemPrices.TabIndex = 1;
+            btnDistMovesAndItemsItemPrices.Text = ">";
+            btnDistMovesAndItemsItemPrices.UseVisualStyleBackColor = true;
+            btnDistMovesAndItemsItemPrices.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistMovesAndItemsItemPrices
+            // 
+            txtDistMovesAndItemsItemPrices.Location = new System.Drawing.Point(5, 42);
+            txtDistMovesAndItemsItemPrices.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistMovesAndItemsItemPrices.Name = "txtDistMovesAndItemsItemPrices";
+            txtDistMovesAndItemsItemPrices.Size = new System.Drawing.Size(110, 23);
+            txtDistMovesAndItemsItemPrices.TabIndex = 0;
+            // 
+            // grpDistMovesAndItemsPP
+            // 
+            grpDistMovesAndItemsPP.Controls.Add(checkDistMovesAndItemsPP);
+            grpDistMovesAndItemsPP.Controls.Add(btnDistMovesAndItemsPP);
+            grpDistMovesAndItemsPP.Controls.Add(txtDistMovesAndItemsPP);
+            grpDistMovesAndItemsPP.Location = new System.Drawing.Point(262, 260);
+            grpDistMovesAndItemsPP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistMovesAndItemsPP.Name = "grpDistMovesAndItemsPP";
+            grpDistMovesAndItemsPP.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistMovesAndItemsPP.Size = new System.Drawing.Size(151, 68);
+            grpDistMovesAndItemsPP.TabIndex = 11;
+            grpDistMovesAndItemsPP.TabStop = false;
+            grpDistMovesAndItemsPP.Text = "PP";
+            // 
+            // checkDistMovesAndItemsPP
+            // 
+            checkDistMovesAndItemsPP.AutoSize = true;
+            checkDistMovesAndItemsPP.Location = new System.Drawing.Point(5, 20);
+            checkDistMovesAndItemsPP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistMovesAndItemsPP.Name = "checkDistMovesAndItemsPP";
+            checkDistMovesAndItemsPP.Size = new System.Drawing.Size(85, 19);
+            checkDistMovesAndItemsPP.TabIndex = 3;
+            checkDistMovesAndItemsPP.Text = "Randomize";
+            checkDistMovesAndItemsPP.UseVisualStyleBackColor = true;
+            // 
+            // btnDistMovesAndItemsPP
+            // 
+            btnDistMovesAndItemsPP.Location = new System.Drawing.Point(120, 41);
+            btnDistMovesAndItemsPP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistMovesAndItemsPP.Name = "btnDistMovesAndItemsPP";
+            btnDistMovesAndItemsPP.Size = new System.Drawing.Size(25, 22);
+            btnDistMovesAndItemsPP.TabIndex = 1;
+            btnDistMovesAndItemsPP.Text = ">";
+            btnDistMovesAndItemsPP.UseVisualStyleBackColor = true;
+            btnDistMovesAndItemsPP.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistMovesAndItemsPP
+            // 
+            txtDistMovesAndItemsPP.Location = new System.Drawing.Point(5, 42);
+            txtDistMovesAndItemsPP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistMovesAndItemsPP.Name = "txtDistMovesAndItemsPP";
+            txtDistMovesAndItemsPP.Size = new System.Drawing.Size(110, 23);
+            txtDistMovesAndItemsPP.TabIndex = 0;
+            // 
+            // grpDistMovesAndItemsAccuracy
+            // 
+            grpDistMovesAndItemsAccuracy.Controls.Add(checkDistMovesAndItemsAccuracy);
+            grpDistMovesAndItemsAccuracy.Controls.Add(btnDistMovesAndItemsAccuracy);
+            grpDistMovesAndItemsAccuracy.Controls.Add(txtDistMovesAndItemsAccuracy);
+            grpDistMovesAndItemsAccuracy.Location = new System.Drawing.Point(262, 188);
+            grpDistMovesAndItemsAccuracy.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistMovesAndItemsAccuracy.Name = "grpDistMovesAndItemsAccuracy";
+            grpDistMovesAndItemsAccuracy.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistMovesAndItemsAccuracy.Size = new System.Drawing.Size(151, 68);
+            grpDistMovesAndItemsAccuracy.TabIndex = 10;
+            grpDistMovesAndItemsAccuracy.TabStop = false;
+            grpDistMovesAndItemsAccuracy.Text = "Accuracy";
+            // 
+            // checkDistMovesAndItemsAccuracy
+            // 
+            checkDistMovesAndItemsAccuracy.AutoSize = true;
+            checkDistMovesAndItemsAccuracy.Location = new System.Drawing.Point(5, 20);
+            checkDistMovesAndItemsAccuracy.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistMovesAndItemsAccuracy.Name = "checkDistMovesAndItemsAccuracy";
+            checkDistMovesAndItemsAccuracy.Size = new System.Drawing.Size(85, 19);
+            checkDistMovesAndItemsAccuracy.TabIndex = 3;
+            checkDistMovesAndItemsAccuracy.Text = "Randomize";
+            checkDistMovesAndItemsAccuracy.UseVisualStyleBackColor = true;
+            // 
+            // btnDistMovesAndItemsAccuracy
+            // 
+            btnDistMovesAndItemsAccuracy.Location = new System.Drawing.Point(120, 41);
+            btnDistMovesAndItemsAccuracy.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistMovesAndItemsAccuracy.Name = "btnDistMovesAndItemsAccuracy";
+            btnDistMovesAndItemsAccuracy.Size = new System.Drawing.Size(25, 22);
+            btnDistMovesAndItemsAccuracy.TabIndex = 1;
+            btnDistMovesAndItemsAccuracy.Text = ">";
+            btnDistMovesAndItemsAccuracy.UseVisualStyleBackColor = true;
+            btnDistMovesAndItemsAccuracy.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistMovesAndItemsAccuracy
+            // 
+            txtDistMovesAndItemsAccuracy.Location = new System.Drawing.Point(5, 42);
+            txtDistMovesAndItemsAccuracy.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistMovesAndItemsAccuracy.Name = "txtDistMovesAndItemsAccuracy";
+            txtDistMovesAndItemsAccuracy.Size = new System.Drawing.Size(110, 23);
+            txtDistMovesAndItemsAccuracy.TabIndex = 0;
+            // 
+            // grpDistMovesAndItemsPower
+            // 
+            grpDistMovesAndItemsPower.Controls.Add(checkDistMovesAndItemsPower);
+            grpDistMovesAndItemsPower.Controls.Add(btnDistMovesAndItemsPower);
+            grpDistMovesAndItemsPower.Controls.Add(txtDistMovesAndItemsPower);
+            grpDistMovesAndItemsPower.Location = new System.Drawing.Point(262, 116);
+            grpDistMovesAndItemsPower.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistMovesAndItemsPower.Name = "grpDistMovesAndItemsPower";
+            grpDistMovesAndItemsPower.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistMovesAndItemsPower.Size = new System.Drawing.Size(151, 68);
+            grpDistMovesAndItemsPower.TabIndex = 9;
+            grpDistMovesAndItemsPower.TabStop = false;
+            grpDistMovesAndItemsPower.Text = "Power";
+            // 
+            // checkDistMovesAndItemsPower
+            // 
+            checkDistMovesAndItemsPower.AutoSize = true;
+            checkDistMovesAndItemsPower.Location = new System.Drawing.Point(5, 20);
+            checkDistMovesAndItemsPower.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistMovesAndItemsPower.Name = "checkDistMovesAndItemsPower";
+            checkDistMovesAndItemsPower.Size = new System.Drawing.Size(85, 19);
+            checkDistMovesAndItemsPower.TabIndex = 3;
+            checkDistMovesAndItemsPower.Text = "Randomize";
+            checkDistMovesAndItemsPower.UseVisualStyleBackColor = true;
+            // 
+            // btnDistMovesAndItemsPower
+            // 
+            btnDistMovesAndItemsPower.Location = new System.Drawing.Point(120, 41);
+            btnDistMovesAndItemsPower.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistMovesAndItemsPower.Name = "btnDistMovesAndItemsPower";
+            btnDistMovesAndItemsPower.Size = new System.Drawing.Size(25, 22);
+            btnDistMovesAndItemsPower.TabIndex = 1;
+            btnDistMovesAndItemsPower.Text = ">";
+            btnDistMovesAndItemsPower.UseVisualStyleBackColor = true;
+            btnDistMovesAndItemsPower.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistMovesAndItemsPower
+            // 
+            txtDistMovesAndItemsPower.Location = new System.Drawing.Point(5, 42);
+            txtDistMovesAndItemsPower.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistMovesAndItemsPower.Name = "txtDistMovesAndItemsPower";
+            txtDistMovesAndItemsPower.Size = new System.Drawing.Size(110, 23);
+            txtDistMovesAndItemsPower.TabIndex = 0;
+            // 
+            // grpMovesAndItemsMoveCategory
+            // 
+            grpMovesAndItemsMoveCategory.Controls.Add(btnDistMovesAndItemsMoveCategory);
+            grpMovesAndItemsMoveCategory.Controls.Add(checkMovesAndItemsMoveCategoryRandom);
+            grpMovesAndItemsMoveCategory.Location = new System.Drawing.Point(94, 188);
+            grpMovesAndItemsMoveCategory.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMovesAndItemsMoveCategory.Name = "grpMovesAndItemsMoveCategory";
+            grpMovesAndItemsMoveCategory.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMovesAndItemsMoveCategory.Size = new System.Drawing.Size(162, 68);
+            grpMovesAndItemsMoveCategory.TabIndex = 8;
+            grpMovesAndItemsMoveCategory.TabStop = false;
+            grpMovesAndItemsMoveCategory.Text = "Damage Category";
+            // 
+            // btnDistMovesAndItemsMoveCategory
+            // 
+            btnDistMovesAndItemsMoveCategory.Location = new System.Drawing.Point(5, 40);
+            btnDistMovesAndItemsMoveCategory.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistMovesAndItemsMoveCategory.Name = "btnDistMovesAndItemsMoveCategory";
+            btnDistMovesAndItemsMoveCategory.Size = new System.Drawing.Size(151, 22);
+            btnDistMovesAndItemsMoveCategory.TabIndex = 4;
+            btnDistMovesAndItemsMoveCategory.Text = "Damage Category";
+            btnDistMovesAndItemsMoveCategory.UseVisualStyleBackColor = true;
+            btnDistMovesAndItemsMoveCategory.Click += OpenItemDistributionForm;
+            // 
+            // checkMovesAndItemsMoveCategoryRandom
+            // 
+            checkMovesAndItemsMoveCategoryRandom.AutoSize = true;
+            checkMovesAndItemsMoveCategoryRandom.Location = new System.Drawing.Point(5, 20);
+            checkMovesAndItemsMoveCategoryRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkMovesAndItemsMoveCategoryRandom.Name = "checkMovesAndItemsMoveCategoryRandom";
+            checkMovesAndItemsMoveCategoryRandom.Size = new System.Drawing.Size(85, 19);
+            checkMovesAndItemsMoveCategoryRandom.TabIndex = 1;
+            checkMovesAndItemsMoveCategoryRandom.Text = "Randomize";
+            checkMovesAndItemsMoveCategoryRandom.UseVisualStyleBackColor = true;
+            // 
+            // grpMovesAndItemsMoveTyping
+            // 
+            grpMovesAndItemsMoveTyping.Controls.Add(btnDistMovesAndItemsMoveTyping);
+            grpMovesAndItemsMoveTyping.Controls.Add(checkMovesAndItemsMoveTypingRandom);
+            grpMovesAndItemsMoveTyping.Location = new System.Drawing.Point(94, 116);
+            grpMovesAndItemsMoveTyping.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMovesAndItemsMoveTyping.Name = "grpMovesAndItemsMoveTyping";
+            grpMovesAndItemsMoveTyping.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMovesAndItemsMoveTyping.Size = new System.Drawing.Size(162, 68);
+            grpMovesAndItemsMoveTyping.TabIndex = 7;
+            grpMovesAndItemsMoveTyping.TabStop = false;
+            grpMovesAndItemsMoveTyping.Text = "Move Typing";
+            // 
+            // btnDistMovesAndItemsMoveTyping
+            // 
+            btnDistMovesAndItemsMoveTyping.Location = new System.Drawing.Point(5, 40);
+            btnDistMovesAndItemsMoveTyping.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistMovesAndItemsMoveTyping.Name = "btnDistMovesAndItemsMoveTyping";
+            btnDistMovesAndItemsMoveTyping.Size = new System.Drawing.Size(151, 22);
+            btnDistMovesAndItemsMoveTyping.TabIndex = 4;
+            btnDistMovesAndItemsMoveTyping.Text = "Typing";
+            btnDistMovesAndItemsMoveTyping.UseVisualStyleBackColor = true;
+            btnDistMovesAndItemsMoveTyping.Click += OpenItemDistributionForm;
+            // 
+            // checkMovesAndItemsMoveTypingRandom
+            // 
+            checkMovesAndItemsMoveTypingRandom.AutoSize = true;
+            checkMovesAndItemsMoveTypingRandom.Location = new System.Drawing.Point(5, 20);
+            checkMovesAndItemsMoveTypingRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkMovesAndItemsMoveTypingRandom.Name = "checkMovesAndItemsMoveTypingRandom";
+            checkMovesAndItemsMoveTypingRandom.Size = new System.Drawing.Size(85, 19);
+            checkMovesAndItemsMoveTypingRandom.TabIndex = 1;
+            checkMovesAndItemsMoveTypingRandom.Text = "Randomize";
+            checkMovesAndItemsMoveTypingRandom.UseVisualStyleBackColor = true;
+            // 
+            // tabEncounters
+            // 
+            tabEncounters.Controls.Add(grpEncountersTrainer);
+            tabEncounters.Controls.Add(grpEncountersTrainerItems);
+            tabEncounters.Controls.Add(grpEncountersWild);
+            tabEncounters.Location = new System.Drawing.Point(4, 24);
+            tabEncounters.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            tabEncounters.Name = "tabEncounters";
+            tabEncounters.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            tabEncounters.Size = new System.Drawing.Size(890, 459);
+            tabEncounters.TabIndex = 2;
+            tabEncounters.Text = "Encounters";
+            tabEncounters.UseVisualStyleBackColor = true;
+            // 
+            // grpEncountersTrainer
+            // 
+            grpEncountersTrainer.Controls.Add(grpEncountersTrainerAbilities);
+            grpEncountersTrainer.Controls.Add(grpDistEncountersTrainerEVs);
+            grpEncountersTrainer.Controls.Add(grpDistEncountersTrainerIVs);
+            grpEncountersTrainer.Controls.Add(grpEncountersTrainerHeldItems);
+            grpEncountersTrainer.Controls.Add(grpEncountersTrainerMoves);
+            grpEncountersTrainer.Controls.Add(grpEncountersTrainerNatures);
+            grpEncountersTrainer.Controls.Add(grpDistEncountersTrainerLevels);
+            grpEncountersTrainer.Controls.Add(grpEncountersTrainerShiny);
+            grpEncountersTrainer.Controls.Add(grpEncountersTrainerSpecies);
+            grpEncountersTrainer.Controls.Add(grpDistEncountersTrainerPokemonCount);
+            grpEncountersTrainer.Location = new System.Drawing.Point(284, 34);
+            grpEncountersTrainer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersTrainer.Name = "grpEncountersTrainer";
+            grpEncountersTrainer.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersTrainer.Size = new System.Drawing.Size(499, 387);
+            grpEncountersTrainer.TabIndex = 13;
+            grpEncountersTrainer.TabStop = false;
+            grpEncountersTrainer.Text = "Trainer Pokémon";
+            // 
+            // grpEncountersTrainerAbilities
+            // 
+            grpEncountersTrainerAbilities.Controls.Add(checkEncountersTrainerAbilitiesIncludeUnobtainable);
+            grpEncountersTrainerAbilities.Controls.Add(btnDistEncountersTrainerAbilities);
+            grpEncountersTrainerAbilities.Controls.Add(checkEncountersTrainerAbilitiesRandom);
+            grpEncountersTrainerAbilities.Location = new System.Drawing.Point(172, 265);
+            grpEncountersTrainerAbilities.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersTrainerAbilities.Name = "grpEncountersTrainerAbilities";
+            grpEncountersTrainerAbilities.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersTrainerAbilities.Size = new System.Drawing.Size(162, 94);
+            grpEncountersTrainerAbilities.TabIndex = 24;
+            grpEncountersTrainerAbilities.TabStop = false;
+            grpEncountersTrainerAbilities.Text = "Abilities";
+            // 
+            // checkEncountersTrainerAbilitiesIncludeUnobtainable
+            // 
+            checkEncountersTrainerAbilitiesIncludeUnobtainable.AutoSize = true;
+            checkEncountersTrainerAbilitiesIncludeUnobtainable.Location = new System.Drawing.Point(5, 42);
+            checkEncountersTrainerAbilitiesIncludeUnobtainable.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkEncountersTrainerAbilitiesIncludeUnobtainable.Name = "checkEncountersTrainerAbilitiesIncludeUnobtainable";
+            checkEncountersTrainerAbilitiesIncludeUnobtainable.Size = new System.Drawing.Size(139, 19);
+            checkEncountersTrainerAbilitiesIncludeUnobtainable.TabIndex = 5;
+            checkEncountersTrainerAbilitiesIncludeUnobtainable.Text = "Include Unobtainable";
+            checkEncountersTrainerAbilitiesIncludeUnobtainable.UseVisualStyleBackColor = true;
+            // 
+            // btnDistEncountersTrainerAbilities
+            // 
+            btnDistEncountersTrainerAbilities.Location = new System.Drawing.Point(5, 64);
+            btnDistEncountersTrainerAbilities.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistEncountersTrainerAbilities.Name = "btnDistEncountersTrainerAbilities";
+            btnDistEncountersTrainerAbilities.Size = new System.Drawing.Size(151, 22);
+            btnDistEncountersTrainerAbilities.TabIndex = 4;
+            btnDistEncountersTrainerAbilities.Text = "Abilities";
+            btnDistEncountersTrainerAbilities.UseVisualStyleBackColor = true;
+            btnDistEncountersTrainerAbilities.Click += OpenItemDistributionForm;
+            // 
+            // checkEncountersTrainerAbilitiesRandom
+            // 
+            checkEncountersTrainerAbilitiesRandom.AutoSize = true;
+            checkEncountersTrainerAbilitiesRandom.Location = new System.Drawing.Point(5, 20);
+            checkEncountersTrainerAbilitiesRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkEncountersTrainerAbilitiesRandom.Name = "checkEncountersTrainerAbilitiesRandom";
+            checkEncountersTrainerAbilitiesRandom.Size = new System.Drawing.Size(85, 19);
+            checkEncountersTrainerAbilitiesRandom.TabIndex = 1;
+            checkEncountersTrainerAbilitiesRandom.Text = "Randomize";
+            checkEncountersTrainerAbilitiesRandom.UseVisualStyleBackColor = true;
+            // 
+            // grpDistEncountersTrainerEVs
+            // 
+            grpDistEncountersTrainerEVs.Controls.Add(checkDistEncountersTrainerEVs);
+            grpDistEncountersTrainerEVs.Controls.Add(btnDistEncountersTrainerEVs);
+            grpDistEncountersTrainerEVs.Controls.Add(txtDistEncountersTrainerEVs);
+            grpDistEncountersTrainerEVs.Location = new System.Drawing.Point(340, 238);
+            grpDistEncountersTrainerEVs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistEncountersTrainerEVs.Name = "grpDistEncountersTrainerEVs";
+            grpDistEncountersTrainerEVs.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistEncountersTrainerEVs.Size = new System.Drawing.Size(151, 68);
+            grpDistEncountersTrainerEVs.TabIndex = 23;
+            grpDistEncountersTrainerEVs.TabStop = false;
+            grpDistEncountersTrainerEVs.Text = "EVs";
+            // 
+            // checkDistEncountersTrainerEVs
+            // 
+            checkDistEncountersTrainerEVs.AutoSize = true;
+            checkDistEncountersTrainerEVs.Location = new System.Drawing.Point(5, 20);
+            checkDistEncountersTrainerEVs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistEncountersTrainerEVs.Name = "checkDistEncountersTrainerEVs";
+            checkDistEncountersTrainerEVs.Size = new System.Drawing.Size(85, 19);
+            checkDistEncountersTrainerEVs.TabIndex = 3;
+            checkDistEncountersTrainerEVs.Text = "Randomize";
+            checkDistEncountersTrainerEVs.UseVisualStyleBackColor = true;
+            // 
+            // btnDistEncountersTrainerEVs
+            // 
+            btnDistEncountersTrainerEVs.Location = new System.Drawing.Point(120, 41);
+            btnDistEncountersTrainerEVs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistEncountersTrainerEVs.Name = "btnDistEncountersTrainerEVs";
+            btnDistEncountersTrainerEVs.Size = new System.Drawing.Size(25, 22);
+            btnDistEncountersTrainerEVs.TabIndex = 1;
+            btnDistEncountersTrainerEVs.Text = ">";
+            btnDistEncountersTrainerEVs.UseVisualStyleBackColor = true;
+            btnDistEncountersTrainerEVs.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistEncountersTrainerEVs
+            // 
+            txtDistEncountersTrainerEVs.Location = new System.Drawing.Point(5, 42);
+            txtDistEncountersTrainerEVs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistEncountersTrainerEVs.Name = "txtDistEncountersTrainerEVs";
+            txtDistEncountersTrainerEVs.Size = new System.Drawing.Size(110, 23);
+            txtDistEncountersTrainerEVs.TabIndex = 0;
+            // 
+            // grpDistEncountersTrainerIVs
+            // 
+            grpDistEncountersTrainerIVs.Controls.Add(checkDistEncountersTrainerIVs);
+            grpDistEncountersTrainerIVs.Controls.Add(btnDistEncountersTrainerIVs);
+            grpDistEncountersTrainerIVs.Controls.Add(txtDistEncountersTrainerIVs);
+            grpDistEncountersTrainerIVs.Location = new System.Drawing.Point(339, 166);
+            grpDistEncountersTrainerIVs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistEncountersTrainerIVs.Name = "grpDistEncountersTrainerIVs";
+            grpDistEncountersTrainerIVs.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistEncountersTrainerIVs.Size = new System.Drawing.Size(151, 68);
+            grpDistEncountersTrainerIVs.TabIndex = 22;
+            grpDistEncountersTrainerIVs.TabStop = false;
+            grpDistEncountersTrainerIVs.Text = "IVs";
+            // 
+            // checkDistEncountersTrainerIVs
+            // 
+            checkDistEncountersTrainerIVs.AutoSize = true;
+            checkDistEncountersTrainerIVs.Location = new System.Drawing.Point(5, 20);
+            checkDistEncountersTrainerIVs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistEncountersTrainerIVs.Name = "checkDistEncountersTrainerIVs";
+            checkDistEncountersTrainerIVs.Size = new System.Drawing.Size(85, 19);
+            checkDistEncountersTrainerIVs.TabIndex = 3;
+            checkDistEncountersTrainerIVs.Text = "Randomize";
+            checkDistEncountersTrainerIVs.UseVisualStyleBackColor = true;
+            // 
+            // btnDistEncountersTrainerIVs
+            // 
+            btnDistEncountersTrainerIVs.Location = new System.Drawing.Point(120, 41);
+            btnDistEncountersTrainerIVs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistEncountersTrainerIVs.Name = "btnDistEncountersTrainerIVs";
+            btnDistEncountersTrainerIVs.Size = new System.Drawing.Size(25, 22);
+            btnDistEncountersTrainerIVs.TabIndex = 1;
+            btnDistEncountersTrainerIVs.Text = ">";
+            btnDistEncountersTrainerIVs.UseVisualStyleBackColor = true;
+            btnDistEncountersTrainerIVs.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistEncountersTrainerIVs
+            // 
+            txtDistEncountersTrainerIVs.Location = new System.Drawing.Point(5, 42);
+            txtDistEncountersTrainerIVs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistEncountersTrainerIVs.Name = "txtDistEncountersTrainerIVs";
+            txtDistEncountersTrainerIVs.Size = new System.Drawing.Size(110, 23);
+            txtDistEncountersTrainerIVs.TabIndex = 0;
+            // 
+            // grpEncountersTrainerHeldItems
+            // 
+            grpEncountersTrainerHeldItems.Controls.Add(checkEncountersTrainerHeldItemsHighLevel);
+            grpEncountersTrainerHeldItems.Controls.Add(btnDistEncountersTrainerHeldItems);
+            grpEncountersTrainerHeldItems.Controls.Add(checkEncountersTrainerHeldItemsRandom);
+            grpEncountersTrainerHeldItems.Location = new System.Drawing.Point(5, 166);
+            grpEncountersTrainerHeldItems.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersTrainerHeldItems.Name = "grpEncountersTrainerHeldItems";
+            grpEncountersTrainerHeldItems.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersTrainerHeldItems.Size = new System.Drawing.Size(162, 94);
+            grpEncountersTrainerHeldItems.TabIndex = 21;
+            grpEncountersTrainerHeldItems.TabStop = false;
+            grpEncountersTrainerHeldItems.Text = "Held Items";
+            // 
+            // checkEncountersTrainerHeldItemsHighLevel
+            // 
+            checkEncountersTrainerHeldItemsHighLevel.AutoSize = true;
+            checkEncountersTrainerHeldItemsHighLevel.Location = new System.Drawing.Point(5, 42);
+            checkEncountersTrainerHeldItemsHighLevel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkEncountersTrainerHeldItemsHighLevel.Name = "checkEncountersTrainerHeldItemsHighLevel";
+            checkEncountersTrainerHeldItemsHighLevel.Size = new System.Drawing.Size(142, 19);
+            checkEncountersTrainerHeldItemsHighLevel.TabIndex = 5;
+            checkEncountersTrainerHeldItemsHighLevel.Text = "High Level Held Items";
+            checkEncountersTrainerHeldItemsHighLevel.UseVisualStyleBackColor = true;
+            // 
+            // btnDistEncountersTrainerHeldItems
+            // 
+            btnDistEncountersTrainerHeldItems.Location = new System.Drawing.Point(5, 64);
+            btnDistEncountersTrainerHeldItems.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistEncountersTrainerHeldItems.Name = "btnDistEncountersTrainerHeldItems";
+            btnDistEncountersTrainerHeldItems.Size = new System.Drawing.Size(151, 22);
+            btnDistEncountersTrainerHeldItems.TabIndex = 4;
+            btnDistEncountersTrainerHeldItems.Text = "Held Items";
+            btnDistEncountersTrainerHeldItems.UseVisualStyleBackColor = true;
+            btnDistEncountersTrainerHeldItems.Click += OpenItemDistributionForm;
+            // 
+            // checkEncountersTrainerHeldItemsRandom
+            // 
+            checkEncountersTrainerHeldItemsRandom.AutoSize = true;
+            checkEncountersTrainerHeldItemsRandom.Location = new System.Drawing.Point(5, 20);
+            checkEncountersTrainerHeldItemsRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkEncountersTrainerHeldItemsRandom.Name = "checkEncountersTrainerHeldItemsRandom";
+            checkEncountersTrainerHeldItemsRandom.Size = new System.Drawing.Size(85, 19);
+            checkEncountersTrainerHeldItemsRandom.TabIndex = 1;
+            checkEncountersTrainerHeldItemsRandom.Text = "Randomize";
+            checkEncountersTrainerHeldItemsRandom.UseVisualStyleBackColor = true;
+            // 
+            // grpEncountersTrainerMoves
+            // 
+            grpEncountersTrainerMoves.Controls.Add(lbEncountersTrainerMovesTypeBias);
+            grpEncountersTrainerMoves.Controls.Add(numEncountersTrainerMovesTypeBias);
+            grpEncountersTrainerMoves.Controls.Add(comboEncountersTrainerMovesRandom);
+            grpEncountersTrainerMoves.Controls.Add(btnDistEncountersTrainerMoves);
+            grpEncountersTrainerMoves.Location = new System.Drawing.Point(172, 20);
+            grpEncountersTrainerMoves.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersTrainerMoves.Name = "grpEncountersTrainerMoves";
+            grpEncountersTrainerMoves.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersTrainerMoves.Size = new System.Drawing.Size(162, 142);
+            grpEncountersTrainerMoves.TabIndex = 20;
+            grpEncountersTrainerMoves.TabStop = false;
+            grpEncountersTrainerMoves.Text = "Moves";
+            // 
+            // lbEncountersTrainerMovesTypeBias
+            // 
+            lbEncountersTrainerMovesTypeBias.AutoSize = true;
+            lbEncountersTrainerMovesTypeBias.Location = new System.Drawing.Point(5, 69);
+            lbEncountersTrainerMovesTypeBias.Name = "lbEncountersTrainerMovesTypeBias";
+            lbEncountersTrainerMovesTypeBias.Size = new System.Drawing.Size(68, 15);
+            lbEncountersTrainerMovesTypeBias.TabIndex = 11;
+            lbEncountersTrainerMovesTypeBias.Text = "Type Bias %";
+            // 
+            // numEncountersTrainerMovesTypeBias
+            // 
+            numEncountersTrainerMovesTypeBias.DecimalPlaces = 3;
+            numEncountersTrainerMovesTypeBias.Location = new System.Drawing.Point(5, 86);
+            numEncountersTrainerMovesTypeBias.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            numEncountersTrainerMovesTypeBias.Name = "numEncountersTrainerMovesTypeBias";
+            numEncountersTrainerMovesTypeBias.Size = new System.Drawing.Size(151, 23);
+            numEncountersTrainerMovesTypeBias.TabIndex = 10;
+            // 
+            // comboEncountersTrainerMovesRandom
+            // 
+            comboEncountersTrainerMovesRandom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            comboEncountersTrainerMovesRandom.FormattingEnabled = true;
+            comboEncountersTrainerMovesRandom.Items.AddRange(new object[] { "Unchanged", "Last Level Up Moves", "Random" });
+            comboEncountersTrainerMovesRandom.Location = new System.Drawing.Point(5, 18);
+            comboEncountersTrainerMovesRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            comboEncountersTrainerMovesRandom.Name = "comboEncountersTrainerMovesRandom";
+            comboEncountersTrainerMovesRandom.Size = new System.Drawing.Size(152, 23);
+            comboEncountersTrainerMovesRandom.TabIndex = 5;
+            // 
+            // btnDistEncountersTrainerMoves
+            // 
+            btnDistEncountersTrainerMoves.Location = new System.Drawing.Point(5, 112);
+            btnDistEncountersTrainerMoves.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistEncountersTrainerMoves.Name = "btnDistEncountersTrainerMoves";
+            btnDistEncountersTrainerMoves.Size = new System.Drawing.Size(151, 22);
+            btnDistEncountersTrainerMoves.TabIndex = 4;
+            btnDistEncountersTrainerMoves.Text = "Moves";
+            btnDistEncountersTrainerMoves.UseVisualStyleBackColor = true;
+            btnDistEncountersTrainerMoves.Click += OpenItemDistributionForm;
+            // 
+            // grpEncountersTrainerNatures
+            // 
+            grpEncountersTrainerNatures.Controls.Add(btnDistEncountersTrainerNatures);
+            grpEncountersTrainerNatures.Controls.Add(checkEncountersTrainerNaturesRandom);
+            grpEncountersTrainerNatures.Location = new System.Drawing.Point(5, 265);
+            grpEncountersTrainerNatures.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersTrainerNatures.Name = "grpEncountersTrainerNatures";
+            grpEncountersTrainerNatures.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersTrainerNatures.Size = new System.Drawing.Size(162, 70);
+            grpEncountersTrainerNatures.TabIndex = 19;
+            grpEncountersTrainerNatures.TabStop = false;
+            grpEncountersTrainerNatures.Text = "Natures";
+            // 
+            // btnDistEncountersTrainerNatures
+            // 
+            btnDistEncountersTrainerNatures.Location = new System.Drawing.Point(5, 40);
+            btnDistEncountersTrainerNatures.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistEncountersTrainerNatures.Name = "btnDistEncountersTrainerNatures";
+            btnDistEncountersTrainerNatures.Size = new System.Drawing.Size(151, 22);
+            btnDistEncountersTrainerNatures.TabIndex = 4;
+            btnDistEncountersTrainerNatures.Text = "Natures";
+            btnDistEncountersTrainerNatures.UseVisualStyleBackColor = true;
+            btnDistEncountersTrainerNatures.Click += OpenItemDistributionForm;
+            // 
+            // checkEncountersTrainerNaturesRandom
+            // 
+            checkEncountersTrainerNaturesRandom.AutoSize = true;
+            checkEncountersTrainerNaturesRandom.Location = new System.Drawing.Point(5, 20);
+            checkEncountersTrainerNaturesRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkEncountersTrainerNaturesRandom.Name = "checkEncountersTrainerNaturesRandom";
+            checkEncountersTrainerNaturesRandom.Size = new System.Drawing.Size(85, 19);
+            checkEncountersTrainerNaturesRandom.TabIndex = 1;
+            checkEncountersTrainerNaturesRandom.Text = "Randomize";
+            checkEncountersTrainerNaturesRandom.UseVisualStyleBackColor = true;
+            // 
+            // grpDistEncountersTrainerLevels
+            // 
+            grpDistEncountersTrainerLevels.Controls.Add(checkDistEncountersTrainerLevels);
+            grpDistEncountersTrainerLevels.Controls.Add(btnDistEncountersTrainerLevels);
+            grpDistEncountersTrainerLevels.Controls.Add(txtDistEncountersTrainerLevels);
+            grpDistEncountersTrainerLevels.Location = new System.Drawing.Point(340, 94);
+            grpDistEncountersTrainerLevels.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistEncountersTrainerLevels.Name = "grpDistEncountersTrainerLevels";
+            grpDistEncountersTrainerLevels.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistEncountersTrainerLevels.Size = new System.Drawing.Size(151, 68);
+            grpDistEncountersTrainerLevels.TabIndex = 18;
+            grpDistEncountersTrainerLevels.TabStop = false;
+            grpDistEncountersTrainerLevels.Text = "Levels";
+            // 
+            // checkDistEncountersTrainerLevels
+            // 
+            checkDistEncountersTrainerLevels.AutoSize = true;
+            checkDistEncountersTrainerLevels.Location = new System.Drawing.Point(5, 20);
+            checkDistEncountersTrainerLevels.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistEncountersTrainerLevels.Name = "checkDistEncountersTrainerLevels";
+            checkDistEncountersTrainerLevels.Size = new System.Drawing.Size(85, 19);
+            checkDistEncountersTrainerLevels.TabIndex = 3;
+            checkDistEncountersTrainerLevels.Text = "Randomize";
+            checkDistEncountersTrainerLevels.UseVisualStyleBackColor = true;
+            // 
+            // btnDistEncountersTrainerLevels
+            // 
+            btnDistEncountersTrainerLevels.Location = new System.Drawing.Point(120, 41);
+            btnDistEncountersTrainerLevels.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistEncountersTrainerLevels.Name = "btnDistEncountersTrainerLevels";
+            btnDistEncountersTrainerLevels.Size = new System.Drawing.Size(25, 22);
+            btnDistEncountersTrainerLevels.TabIndex = 1;
+            btnDistEncountersTrainerLevels.Text = ">";
+            btnDistEncountersTrainerLevels.UseVisualStyleBackColor = true;
+            btnDistEncountersTrainerLevels.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistEncountersTrainerLevels
+            // 
+            txtDistEncountersTrainerLevels.Location = new System.Drawing.Point(5, 42);
+            txtDistEncountersTrainerLevels.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistEncountersTrainerLevels.Name = "txtDistEncountersTrainerLevels";
+            txtDistEncountersTrainerLevels.Size = new System.Drawing.Size(110, 23);
+            txtDistEncountersTrainerLevels.TabIndex = 0;
+            // 
+            // grpEncountersTrainerShiny
+            // 
+            grpEncountersTrainerShiny.Controls.Add(lbEncountersTrainerShiny);
+            grpEncountersTrainerShiny.Controls.Add(numEncountersTrainerShiny);
+            grpEncountersTrainerShiny.Controls.Add(checkEncountersTrainerShinyRandom);
+            grpEncountersTrainerShiny.Location = new System.Drawing.Point(172, 166);
+            grpEncountersTrainerShiny.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersTrainerShiny.Name = "grpEncountersTrainerShiny";
+            grpEncountersTrainerShiny.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersTrainerShiny.Size = new System.Drawing.Size(162, 94);
+            grpEncountersTrainerShiny.TabIndex = 17;
+            grpEncountersTrainerShiny.TabStop = false;
+            grpEncountersTrainerShiny.Text = "Shininess";
+            // 
+            // lbEncountersTrainerShiny
+            // 
+            lbEncountersTrainerShiny.AutoSize = true;
+            lbEncountersTrainerShiny.Location = new System.Drawing.Point(5, 49);
+            lbEncountersTrainerShiny.Name = "lbEncountersTrainerShiny";
+            lbEncountersTrainerShiny.Size = new System.Drawing.Size(49, 15);
+            lbEncountersTrainerShiny.TabIndex = 17;
+            lbEncountersTrainerShiny.Text = "Shiny %";
+            // 
+            // numEncountersTrainerShiny
+            // 
+            numEncountersTrainerShiny.DecimalPlaces = 3;
+            numEncountersTrainerShiny.Location = new System.Drawing.Point(5, 64);
+            numEncountersTrainerShiny.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            numEncountersTrainerShiny.Name = "numEncountersTrainerShiny";
+            numEncountersTrainerShiny.Size = new System.Drawing.Size(151, 23);
+            numEncountersTrainerShiny.TabIndex = 16;
+            // 
+            // checkEncountersTrainerShinyRandom
+            // 
+            checkEncountersTrainerShinyRandom.AutoSize = true;
+            checkEncountersTrainerShinyRandom.Location = new System.Drawing.Point(5, 20);
+            checkEncountersTrainerShinyRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkEncountersTrainerShinyRandom.Name = "checkEncountersTrainerShinyRandom";
+            checkEncountersTrainerShinyRandom.Size = new System.Drawing.Size(111, 19);
+            checkEncountersTrainerShinyRandom.TabIndex = 15;
+            checkEncountersTrainerShinyRandom.Text = "Random Shinies";
+            checkEncountersTrainerShinyRandom.UseVisualStyleBackColor = true;
+            // 
+            // grpEncountersTrainerSpecies
+            // 
+            grpEncountersTrainerSpecies.Controls.Add(checkEncountersTrainerSpeciesTypeThemes);
+            grpEncountersTrainerSpecies.Controls.Add(checkEncountersTrainerSpeciesHighLevelLegends);
+            grpEncountersTrainerSpecies.Controls.Add(checkEncountersTrainerSpeciesEvoLogic);
+            grpEncountersTrainerSpecies.Controls.Add(btnDistEncountersTrainerSpecies);
+            grpEncountersTrainerSpecies.Controls.Add(checkEncountersTrainerSpeciesRandom);
+            grpEncountersTrainerSpecies.Location = new System.Drawing.Point(5, 20);
+            grpEncountersTrainerSpecies.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersTrainerSpecies.Name = "grpEncountersTrainerSpecies";
+            grpEncountersTrainerSpecies.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersTrainerSpecies.Size = new System.Drawing.Size(162, 142);
+            grpEncountersTrainerSpecies.TabIndex = 12;
+            grpEncountersTrainerSpecies.TabStop = false;
+            grpEncountersTrainerSpecies.Text = "Pokemon Species";
+            // 
+            // checkEncountersTrainerSpeciesTypeThemes
+            // 
+            checkEncountersTrainerSpeciesTypeThemes.AutoSize = true;
+            checkEncountersTrainerSpeciesTypeThemes.Location = new System.Drawing.Point(5, 64);
+            checkEncountersTrainerSpeciesTypeThemes.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkEncountersTrainerSpeciesTypeThemes.Name = "checkEncountersTrainerSpeciesTypeThemes";
+            checkEncountersTrainerSpeciesTypeThemes.Size = new System.Drawing.Size(94, 19);
+            checkEncountersTrainerSpeciesTypeThemes.TabIndex = 19;
+            checkEncountersTrainerSpeciesTypeThemes.Text = "Type Themes";
+            checkEncountersTrainerSpeciesTypeThemes.UseVisualStyleBackColor = true;
+            // 
+            // checkEncountersTrainerSpeciesHighLevelLegends
+            // 
+            checkEncountersTrainerSpeciesHighLevelLegends.AutoSize = true;
+            checkEncountersTrainerSpeciesHighLevelLegends.Location = new System.Drawing.Point(5, 42);
+            checkEncountersTrainerSpeciesHighLevelLegends.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkEncountersTrainerSpeciesHighLevelLegends.Name = "checkEncountersTrainerSpeciesHighLevelLegends";
+            checkEncountersTrainerSpeciesHighLevelLegends.Size = new System.Drawing.Size(129, 19);
+            checkEncountersTrainerSpeciesHighLevelLegends.TabIndex = 18;
+            checkEncountersTrainerSpeciesHighLevelLegends.Text = "High Level Legends";
+            checkEncountersTrainerSpeciesHighLevelLegends.UseVisualStyleBackColor = true;
+            // 
+            // checkEncountersTrainerSpeciesEvoLogic
+            // 
+            checkEncountersTrainerSpeciesEvoLogic.AutoSize = true;
+            checkEncountersTrainerSpeciesEvoLogic.Location = new System.Drawing.Point(5, 87);
+            checkEncountersTrainerSpeciesEvoLogic.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkEncountersTrainerSpeciesEvoLogic.Name = "checkEncountersTrainerSpeciesEvoLogic";
+            checkEncountersTrainerSpeciesEvoLogic.Size = new System.Drawing.Size(108, 19);
+            checkEncountersTrainerSpeciesEvoLogic.TabIndex = 17;
+            checkEncountersTrainerSpeciesEvoLogic.Text = "Evolution Logic";
+            checkEncountersTrainerSpeciesEvoLogic.UseVisualStyleBackColor = true;
+            // 
+            // btnDistEncountersTrainerSpecies
+            // 
+            btnDistEncountersTrainerSpecies.Location = new System.Drawing.Point(5, 112);
+            btnDistEncountersTrainerSpecies.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistEncountersTrainerSpecies.Name = "btnDistEncountersTrainerSpecies";
+            btnDistEncountersTrainerSpecies.Size = new System.Drawing.Size(151, 22);
+            btnDistEncountersTrainerSpecies.TabIndex = 15;
+            btnDistEncountersTrainerSpecies.Text = "Pokémon";
+            btnDistEncountersTrainerSpecies.UseVisualStyleBackColor = true;
+            btnDistEncountersTrainerSpecies.Click += OpenItemDistributionForm;
+            // 
+            // checkEncountersTrainerSpeciesRandom
+            // 
+            checkEncountersTrainerSpeciesRandom.AutoSize = true;
+            checkEncountersTrainerSpeciesRandom.Location = new System.Drawing.Point(5, 20);
+            checkEncountersTrainerSpeciesRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkEncountersTrainerSpeciesRandom.Name = "checkEncountersTrainerSpeciesRandom";
+            checkEncountersTrainerSpeciesRandom.Size = new System.Drawing.Size(125, 19);
+            checkEncountersTrainerSpeciesRandom.TabIndex = 14;
+            checkEncountersTrainerSpeciesRandom.Text = "Random Pokémon";
+            checkEncountersTrainerSpeciesRandom.UseVisualStyleBackColor = true;
+            // 
+            // grpDistEncountersTrainerPokemonCount
+            // 
+            grpDistEncountersTrainerPokemonCount.Controls.Add(checkDistEncountersTrainerPokemonCount);
+            grpDistEncountersTrainerPokemonCount.Controls.Add(btnDistEncountersTrainerPokemonCount);
+            grpDistEncountersTrainerPokemonCount.Controls.Add(txtDistEncountersTrainerPokemonCount);
+            grpDistEncountersTrainerPokemonCount.Location = new System.Drawing.Point(340, 20);
+            grpDistEncountersTrainerPokemonCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistEncountersTrainerPokemonCount.Name = "grpDistEncountersTrainerPokemonCount";
+            grpDistEncountersTrainerPokemonCount.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistEncountersTrainerPokemonCount.Size = new System.Drawing.Size(151, 68);
+            grpDistEncountersTrainerPokemonCount.TabIndex = 16;
+            grpDistEncountersTrainerPokemonCount.TabStop = false;
+            grpDistEncountersTrainerPokemonCount.Text = "Pokémon Count";
+            // 
+            // checkDistEncountersTrainerPokemonCount
+            // 
+            checkDistEncountersTrainerPokemonCount.AutoSize = true;
+            checkDistEncountersTrainerPokemonCount.Location = new System.Drawing.Point(5, 20);
+            checkDistEncountersTrainerPokemonCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistEncountersTrainerPokemonCount.Name = "checkDistEncountersTrainerPokemonCount";
+            checkDistEncountersTrainerPokemonCount.Size = new System.Drawing.Size(85, 19);
+            checkDistEncountersTrainerPokemonCount.TabIndex = 3;
+            checkDistEncountersTrainerPokemonCount.Text = "Randomize";
+            checkDistEncountersTrainerPokemonCount.UseVisualStyleBackColor = true;
+            // 
+            // btnDistEncountersTrainerPokemonCount
+            // 
+            btnDistEncountersTrainerPokemonCount.Location = new System.Drawing.Point(120, 41);
+            btnDistEncountersTrainerPokemonCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistEncountersTrainerPokemonCount.Name = "btnDistEncountersTrainerPokemonCount";
+            btnDistEncountersTrainerPokemonCount.Size = new System.Drawing.Size(25, 22);
+            btnDistEncountersTrainerPokemonCount.TabIndex = 1;
+            btnDistEncountersTrainerPokemonCount.Text = ">";
+            btnDistEncountersTrainerPokemonCount.UseVisualStyleBackColor = true;
+            btnDistEncountersTrainerPokemonCount.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistEncountersTrainerPokemonCount
+            // 
+            txtDistEncountersTrainerPokemonCount.Location = new System.Drawing.Point(5, 42);
+            txtDistEncountersTrainerPokemonCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistEncountersTrainerPokemonCount.Name = "txtDistEncountersTrainerPokemonCount";
+            txtDistEncountersTrainerPokemonCount.Size = new System.Drawing.Size(110, 23);
+            txtDistEncountersTrainerPokemonCount.TabIndex = 0;
+            // 
+            // grpEncountersTrainerItems
+            // 
+            grpEncountersTrainerItems.Controls.Add(grpDistEncountersTrainerItemsCount);
+            grpEncountersTrainerItems.Controls.Add(btnDistEncountersTrainerItems);
+            grpEncountersTrainerItems.Controls.Add(checkEncountersTrainerItemsRandom);
+            grpEncountersTrainerItems.Location = new System.Drawing.Point(117, 231);
+            grpEncountersTrainerItems.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersTrainerItems.Name = "grpEncountersTrainerItems";
+            grpEncountersTrainerItems.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersTrainerItems.Size = new System.Drawing.Size(162, 191);
+            grpEncountersTrainerItems.TabIndex = 11;
+            grpEncountersTrainerItems.TabStop = false;
+            grpEncountersTrainerItems.Text = "Trainer Items";
+            // 
+            // grpDistEncountersTrainerItemsCount
+            // 
+            grpDistEncountersTrainerItemsCount.Controls.Add(checkDistEncountersTrainerItemsCount);
+            grpDistEncountersTrainerItemsCount.Controls.Add(btnDistEncountersTrainerItemsCount);
+            grpDistEncountersTrainerItemsCount.Controls.Add(txtDistEncountersTrainerItemsCount);
+            grpDistEncountersTrainerItemsCount.Location = new System.Drawing.Point(5, 115);
+            grpDistEncountersTrainerItemsCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistEncountersTrainerItemsCount.Name = "grpDistEncountersTrainerItemsCount";
+            grpDistEncountersTrainerItemsCount.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistEncountersTrainerItemsCount.Size = new System.Drawing.Size(151, 68);
+            grpDistEncountersTrainerItemsCount.TabIndex = 13;
+            grpDistEncountersTrainerItemsCount.TabStop = false;
+            grpDistEncountersTrainerItemsCount.Text = "Item Count";
+            // 
+            // checkDistEncountersTrainerItemsCount
+            // 
+            checkDistEncountersTrainerItemsCount.AutoSize = true;
+            checkDistEncountersTrainerItemsCount.Location = new System.Drawing.Point(5, 20);
+            checkDistEncountersTrainerItemsCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistEncountersTrainerItemsCount.Name = "checkDistEncountersTrainerItemsCount";
+            checkDistEncountersTrainerItemsCount.Size = new System.Drawing.Size(85, 19);
+            checkDistEncountersTrainerItemsCount.TabIndex = 3;
+            checkDistEncountersTrainerItemsCount.Text = "Randomize";
+            checkDistEncountersTrainerItemsCount.UseVisualStyleBackColor = true;
+            // 
+            // btnDistEncountersTrainerItemsCount
+            // 
+            btnDistEncountersTrainerItemsCount.Location = new System.Drawing.Point(120, 41);
+            btnDistEncountersTrainerItemsCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistEncountersTrainerItemsCount.Name = "btnDistEncountersTrainerItemsCount";
+            btnDistEncountersTrainerItemsCount.Size = new System.Drawing.Size(25, 22);
+            btnDistEncountersTrainerItemsCount.TabIndex = 1;
+            btnDistEncountersTrainerItemsCount.Text = ">";
+            btnDistEncountersTrainerItemsCount.UseVisualStyleBackColor = true;
+            btnDistEncountersTrainerItemsCount.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistEncountersTrainerItemsCount
+            // 
+            txtDistEncountersTrainerItemsCount.Location = new System.Drawing.Point(5, 42);
+            txtDistEncountersTrainerItemsCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistEncountersTrainerItemsCount.Name = "txtDistEncountersTrainerItemsCount";
+            txtDistEncountersTrainerItemsCount.Size = new System.Drawing.Size(110, 23);
+            txtDistEncountersTrainerItemsCount.TabIndex = 0;
+            // 
+            // btnDistEncountersTrainerItems
+            // 
+            btnDistEncountersTrainerItems.Location = new System.Drawing.Point(5, 88);
+            btnDistEncountersTrainerItems.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistEncountersTrainerItems.Name = "btnDistEncountersTrainerItems";
+            btnDistEncountersTrainerItems.Size = new System.Drawing.Size(151, 22);
+            btnDistEncountersTrainerItems.TabIndex = 12;
+            btnDistEncountersTrainerItems.Text = "Trainer Items";
+            btnDistEncountersTrainerItems.UseVisualStyleBackColor = true;
+            btnDistEncountersTrainerItems.Click += OpenItemDistributionForm;
+            // 
+            // checkEncountersTrainerItemsRandom
+            // 
+            checkEncountersTrainerItemsRandom.AutoSize = true;
+            checkEncountersTrainerItemsRandom.Location = new System.Drawing.Point(5, 20);
+            checkEncountersTrainerItemsRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkEncountersTrainerItemsRandom.Name = "checkEncountersTrainerItemsRandom";
+            checkEncountersTrainerItemsRandom.Size = new System.Drawing.Size(103, 19);
+            checkEncountersTrainerItemsRandom.TabIndex = 0;
+            checkEncountersTrainerItemsRandom.Text = "Random Items";
+            checkEncountersTrainerItemsRandom.UseVisualStyleBackColor = true;
+            // 
+            // grpEncountersWild
+            // 
+            grpEncountersWild.Controls.Add(checkEncountersWildHighLevelLegends);
+            grpEncountersWild.Controls.Add(checkEncountersWildEvoLogic);
+            grpEncountersWild.Controls.Add(grpDistEncountersWildLevels);
+            grpEncountersWild.Controls.Add(btnDistEncountersWild);
+            grpEncountersWild.Controls.Add(checkEncountersWildRandom);
+            grpEncountersWild.Location = new System.Drawing.Point(117, 34);
+            grpEncountersWild.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersWild.Name = "grpEncountersWild";
+            grpEncountersWild.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEncountersWild.Size = new System.Drawing.Size(162, 191);
+            grpEncountersWild.TabIndex = 10;
+            grpEncountersWild.TabStop = false;
+            grpEncountersWild.Text = "Wild Encounters";
+            // 
+            // checkEncountersWildHighLevelLegends
+            // 
+            checkEncountersWildHighLevelLegends.AutoSize = true;
+            checkEncountersWildHighLevelLegends.Location = new System.Drawing.Point(5, 42);
+            checkEncountersWildHighLevelLegends.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkEncountersWildHighLevelLegends.Name = "checkEncountersWildHighLevelLegends";
+            checkEncountersWildHighLevelLegends.Size = new System.Drawing.Size(129, 19);
+            checkEncountersWildHighLevelLegends.TabIndex = 13;
+            checkEncountersWildHighLevelLegends.Text = "High Level Legends";
+            checkEncountersWildHighLevelLegends.UseVisualStyleBackColor = true;
+            // 
+            // checkEncountersWildEvoLogic
+            // 
+            checkEncountersWildEvoLogic.AutoSize = true;
+            checkEncountersWildEvoLogic.Location = new System.Drawing.Point(5, 64);
+            checkEncountersWildEvoLogic.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkEncountersWildEvoLogic.Name = "checkEncountersWildEvoLogic";
+            checkEncountersWildEvoLogic.Size = new System.Drawing.Size(108, 19);
+            checkEncountersWildEvoLogic.TabIndex = 12;
+            checkEncountersWildEvoLogic.Text = "Evolution Logic";
+            checkEncountersWildEvoLogic.UseVisualStyleBackColor = true;
+            // 
+            // grpDistEncountersWildLevels
+            // 
+            grpDistEncountersWildLevels.Controls.Add(checkDistEncountersWildLevels);
+            grpDistEncountersWildLevels.Controls.Add(btnDistEncountersWildLevels);
+            grpDistEncountersWildLevels.Controls.Add(txtDistEncountersWildLevels);
+            grpDistEncountersWildLevels.Location = new System.Drawing.Point(5, 115);
+            grpDistEncountersWildLevels.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistEncountersWildLevels.Name = "grpDistEncountersWildLevels";
+            grpDistEncountersWildLevels.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpDistEncountersWildLevels.Size = new System.Drawing.Size(151, 68);
+            grpDistEncountersWildLevels.TabIndex = 11;
+            grpDistEncountersWildLevels.TabStop = false;
+            grpDistEncountersWildLevels.Text = "Levels";
+            // 
+            // checkDistEncountersWildLevels
+            // 
+            checkDistEncountersWildLevels.AutoSize = true;
+            checkDistEncountersWildLevels.Location = new System.Drawing.Point(5, 20);
+            checkDistEncountersWildLevels.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkDistEncountersWildLevels.Name = "checkDistEncountersWildLevels";
+            checkDistEncountersWildLevels.Size = new System.Drawing.Size(85, 19);
+            checkDistEncountersWildLevels.TabIndex = 3;
+            checkDistEncountersWildLevels.Text = "Randomize";
+            checkDistEncountersWildLevels.UseVisualStyleBackColor = true;
+            // 
+            // btnDistEncountersWildLevels
+            // 
+            btnDistEncountersWildLevels.Location = new System.Drawing.Point(120, 41);
+            btnDistEncountersWildLevels.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistEncountersWildLevels.Name = "btnDistEncountersWildLevels";
+            btnDistEncountersWildLevels.Size = new System.Drawing.Size(25, 22);
+            btnDistEncountersWildLevels.TabIndex = 1;
+            btnDistEncountersWildLevels.Text = ">";
+            btnDistEncountersWildLevels.UseVisualStyleBackColor = true;
+            btnDistEncountersWildLevels.Click += OpenNumericDistributionForm;
+            // 
+            // txtDistEncountersWildLevels
+            // 
+            txtDistEncountersWildLevels.Location = new System.Drawing.Point(5, 42);
+            txtDistEncountersWildLevels.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            txtDistEncountersWildLevels.Name = "txtDistEncountersWildLevels";
+            txtDistEncountersWildLevels.Size = new System.Drawing.Size(110, 23);
+            txtDistEncountersWildLevels.TabIndex = 0;
+            // 
+            // btnDistEncountersWild
+            // 
+            btnDistEncountersWild.Location = new System.Drawing.Point(5, 88);
+            btnDistEncountersWild.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistEncountersWild.Name = "btnDistEncountersWild";
+            btnDistEncountersWild.Size = new System.Drawing.Size(151, 22);
+            btnDistEncountersWild.TabIndex = 4;
+            btnDistEncountersWild.Text = "Wild Encounters";
+            btnDistEncountersWild.UseVisualStyleBackColor = true;
+            btnDistEncountersWild.Click += OpenItemDistributionForm;
+            // 
+            // checkEncountersWildRandom
+            // 
+            checkEncountersWildRandom.AutoSize = true;
+            checkEncountersWildRandom.Location = new System.Drawing.Point(5, 20);
+            checkEncountersWildRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkEncountersWildRandom.Name = "checkEncountersWildRandom";
+            checkEncountersWildRandom.Size = new System.Drawing.Size(125, 19);
+            checkEncountersWildRandom.TabIndex = 1;
+            checkEncountersWildRandom.Text = "Random Pokémon";
+            checkEncountersWildRandom.UseVisualStyleBackColor = true;
+            // 
+            // tabMisc
+            // 
+            tabMisc.Controls.Add(grpMiscTypeMatchups);
+            tabMisc.Controls.Add(grpMiscAbsoluteBoundaries);
+            tabMisc.Controls.Add(grpMiscLevelMult);
+            tabMisc.Controls.Add(grpMiscTextAndMusic);
+            tabMisc.Controls.Add(grpMiscScripts);
+            tabMisc.Location = new System.Drawing.Point(4, 24);
+            tabMisc.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            tabMisc.Name = "tabMisc";
+            tabMisc.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            tabMisc.Size = new System.Drawing.Size(890, 459);
+            tabMisc.TabIndex = 3;
+            tabMisc.Text = "Misc.";
+            tabMisc.UseVisualStyleBackColor = true;
+            // 
+            // grpMiscTypeMatchups
+            // 
+            grpMiscTypeMatchups.Controls.Add(btnDistMiscTypeMatchups);
+            grpMiscTypeMatchups.Controls.Add(checkMiscTypeMatchupsRandom);
+            grpMiscTypeMatchups.Location = new System.Drawing.Point(116, 32);
+            grpMiscTypeMatchups.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMiscTypeMatchups.Name = "grpMiscTypeMatchups";
+            grpMiscTypeMatchups.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMiscTypeMatchups.Size = new System.Drawing.Size(162, 90);
+            grpMiscTypeMatchups.TabIndex = 5;
+            grpMiscTypeMatchups.TabStop = false;
+            grpMiscTypeMatchups.Text = "Type Matchups";
+            // 
+            // btnDistMiscTypeMatchups
+            // 
+            btnDistMiscTypeMatchups.Location = new System.Drawing.Point(5, 42);
+            btnDistMiscTypeMatchups.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistMiscTypeMatchups.Name = "btnDistMiscTypeMatchups";
+            btnDistMiscTypeMatchups.Size = new System.Drawing.Size(151, 22);
+            btnDistMiscTypeMatchups.TabIndex = 6;
+            btnDistMiscTypeMatchups.Text = "Type Matchups";
+            btnDistMiscTypeMatchups.UseVisualStyleBackColor = true;
+            btnDistMiscTypeMatchups.Click += OpenItemDistributionForm;
+            // 
+            // checkMiscTypeMatchupsRandom
+            // 
+            checkMiscTypeMatchupsRandom.AutoSize = true;
+            checkMiscTypeMatchupsRandom.Location = new System.Drawing.Point(5, 20);
+            checkMiscTypeMatchupsRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkMiscTypeMatchupsRandom.Name = "checkMiscTypeMatchupsRandom";
+            checkMiscTypeMatchupsRandom.Size = new System.Drawing.Size(127, 19);
+            checkMiscTypeMatchupsRandom.TabIndex = 5;
+            checkMiscTypeMatchupsRandom.Text = "Random Matchups";
+            checkMiscTypeMatchupsRandom.UseVisualStyleBackColor = true;
+            // 
+            // grpMiscAbsoluteBoundaries
+            // 
+            grpMiscAbsoluteBoundaries.Controls.Add(gridMiscAbsoluteBoundaries);
+            grpMiscAbsoluteBoundaries.Location = new System.Drawing.Point(451, 32);
+            grpMiscAbsoluteBoundaries.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMiscAbsoluteBoundaries.Name = "grpMiscAbsoluteBoundaries";
+            grpMiscAbsoluteBoundaries.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMiscAbsoluteBoundaries.Size = new System.Drawing.Size(329, 399);
+            grpMiscAbsoluteBoundaries.TabIndex = 4;
+            grpMiscAbsoluteBoundaries.TabStop = false;
+            grpMiscAbsoluteBoundaries.Text = "Absolute Boundaries";
+            // 
+            // gridMiscAbsoluteBoundaries
+            // 
+            gridMiscAbsoluteBoundaries.AllowUserToAddRows = false;
+            gridMiscAbsoluteBoundaries.AllowUserToDeleteRows = false;
+            gridMiscAbsoluteBoundaries.AllowUserToResizeRows = false;
+            gridMiscAbsoluteBoundaries.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            gridMiscAbsoluteBoundaries.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            gridMiscAbsoluteBoundaries.Location = new System.Drawing.Point(5, 20);
+            gridMiscAbsoluteBoundaries.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            gridMiscAbsoluteBoundaries.Name = "gridMiscAbsoluteBoundaries";
+            gridMiscAbsoluteBoundaries.RowHeadersVisible = false;
+            gridMiscAbsoluteBoundaries.RowHeadersWidth = 51;
+            gridMiscAbsoluteBoundaries.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            gridMiscAbsoluteBoundaries.RowTemplate.Height = 29;
+            gridMiscAbsoluteBoundaries.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            gridMiscAbsoluteBoundaries.Size = new System.Drawing.Size(318, 374);
+            gridMiscAbsoluteBoundaries.TabIndex = 3;
+            gridMiscAbsoluteBoundaries.DataError += DataError;
+            // 
+            // grpMiscLevelMult
+            // 
+            grpMiscLevelMult.Controls.Add(lbMiscLevelMultMult);
+            grpMiscLevelMult.Controls.Add(numMiscLevelMultMult);
+            grpMiscLevelMult.Controls.Add(checkMiscLevelMultTrainer);
+            grpMiscLevelMult.Controls.Add(checkMiscLevelMultWild);
+            grpMiscLevelMult.Controls.Add(checkMiscLevelMultLevelMoves);
+            grpMiscLevelMult.Controls.Add(lbMiscLevelMultDesc);
+            grpMiscLevelMult.Controls.Add(checkMiscLevelMultEvoLevels);
+            grpMiscLevelMult.Location = new System.Drawing.Point(284, 127);
+            grpMiscLevelMult.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMiscLevelMult.Name = "grpMiscLevelMult";
+            grpMiscLevelMult.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMiscLevelMult.Size = new System.Drawing.Size(162, 304);
+            grpMiscLevelMult.TabIndex = 2;
+            grpMiscLevelMult.TabStop = false;
+            grpMiscLevelMult.Text = "Level Multiplier";
+            // 
+            // lbMiscLevelMultMult
+            // 
+            lbMiscLevelMultMult.AutoSize = true;
+            lbMiscLevelMultMult.Location = new System.Drawing.Point(5, 137);
+            lbMiscLevelMultMult.Name = "lbMiscLevelMultMult";
+            lbMiscLevelMultMult.Size = new System.Drawing.Size(95, 15);
+            lbMiscLevelMultMult.TabIndex = 13;
+            lbMiscLevelMultMult.Text = "Level Coefficient";
+            // 
+            // numMiscLevelMultMult
+            // 
+            numMiscLevelMultMult.DecimalPlaces = 3;
+            numMiscLevelMultMult.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
+            numMiscLevelMultMult.Location = new System.Drawing.Point(5, 154);
+            numMiscLevelMultMult.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            numMiscLevelMultMult.Name = "numMiscLevelMultMult";
+            numMiscLevelMultMult.Size = new System.Drawing.Size(151, 23);
+            numMiscLevelMultMult.TabIndex = 12;
+            numMiscLevelMultMult.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // checkMiscLevelMultTrainer
+            // 
+            checkMiscLevelMultTrainer.AutoSize = true;
+            checkMiscLevelMultTrainer.Location = new System.Drawing.Point(5, 117);
+            checkMiscLevelMultTrainer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkMiscLevelMultTrainer.Name = "checkMiscLevelMultTrainer";
+            checkMiscLevelMultTrainer.Size = new System.Drawing.Size(115, 19);
+            checkMiscLevelMultTrainer.TabIndex = 4;
+            checkMiscLevelMultTrainer.Text = "Trainer Pokémon";
+            checkMiscLevelMultTrainer.UseVisualStyleBackColor = true;
+            // 
+            // checkMiscLevelMultWild
+            // 
+            checkMiscLevelMultWild.AutoSize = true;
+            checkMiscLevelMultWild.Location = new System.Drawing.Point(5, 94);
+            checkMiscLevelMultWild.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkMiscLevelMultWild.Name = "checkMiscLevelMultWild";
+            checkMiscLevelMultWild.Size = new System.Drawing.Size(112, 19);
+            checkMiscLevelMultWild.TabIndex = 3;
+            checkMiscLevelMultWild.Text = "Wild Encounters";
+            checkMiscLevelMultWild.UseVisualStyleBackColor = true;
+            // 
+            // checkMiscLevelMultLevelMoves
+            // 
+            checkMiscLevelMultLevelMoves.AutoSize = true;
+            checkMiscLevelMultLevelMoves.Location = new System.Drawing.Point(5, 72);
+            checkMiscLevelMultLevelMoves.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkMiscLevelMultLevelMoves.Name = "checkMiscLevelMultLevelMoves";
+            checkMiscLevelMultLevelMoves.Size = new System.Drawing.Size(109, 19);
+            checkMiscLevelMultLevelMoves.TabIndex = 2;
+            checkMiscLevelMultLevelMoves.Text = "Level Up Moves";
+            checkMiscLevelMultLevelMoves.UseVisualStyleBackColor = true;
+            // 
+            // lbMiscLevelMultDesc
+            // 
+            lbMiscLevelMultDesc.AutoSize = true;
+            lbMiscLevelMultDesc.Location = new System.Drawing.Point(5, 17);
+            lbMiscLevelMultDesc.Name = "lbMiscLevelMultDesc";
+            lbMiscLevelMultDesc.Size = new System.Drawing.Size(125, 30);
+            lbMiscLevelMultDesc.TabIndex = 1;
+            lbMiscLevelMultDesc.Text = "Takes place before any\r\nrandomizations.";
+            // 
+            // checkMiscLevelMultEvoLevels
+            // 
+            checkMiscLevelMultEvoLevels.AutoSize = true;
+            checkMiscLevelMultEvoLevels.Location = new System.Drawing.Point(5, 50);
+            checkMiscLevelMultEvoLevels.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkMiscLevelMultEvoLevels.Name = "checkMiscLevelMultEvoLevels";
+            checkMiscLevelMultEvoLevels.Size = new System.Drawing.Size(111, 19);
+            checkMiscLevelMultEvoLevels.TabIndex = 0;
+            checkMiscLevelMultEvoLevels.Text = "Evolution Levels";
+            checkMiscLevelMultEvoLevels.UseVisualStyleBackColor = true;
+            // 
+            // grpMiscTextAndMusic
+            // 
+            grpMiscTextAndMusic.Controls.Add(checkMiscShuffleText);
+            grpMiscTextAndMusic.Controls.Add(checkMiscShuffleTextKeepStrLength);
+            grpMiscTextAndMusic.Controls.Add(checkMiscShuffleBGM);
+            grpMiscTextAndMusic.Location = new System.Drawing.Point(284, 32);
+            grpMiscTextAndMusic.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMiscTextAndMusic.Name = "grpMiscTextAndMusic";
+            grpMiscTextAndMusic.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMiscTextAndMusic.Size = new System.Drawing.Size(162, 90);
+            grpMiscTextAndMusic.TabIndex = 1;
+            grpMiscTextAndMusic.TabStop = false;
+            grpMiscTextAndMusic.Text = "Text and Music";
+            // 
+            // checkMiscShuffleText
+            // 
+            checkMiscShuffleText.AutoSize = true;
+            checkMiscShuffleText.Location = new System.Drawing.Point(5, 64);
+            checkMiscShuffleText.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkMiscShuffleText.Name = "checkMiscShuffleText";
+            checkMiscShuffleText.Size = new System.Drawing.Size(92, 19);
+            checkMiscShuffleText.TabIndex = 2;
+            checkMiscShuffleText.Text = "Shuffle BGM";
+            checkMiscShuffleText.UseVisualStyleBackColor = true;
+            // 
+            // checkMiscShuffleTextKeepStrLength
+            // 
+            checkMiscShuffleTextKeepStrLength.AutoSize = true;
+            checkMiscShuffleTextKeepStrLength.Location = new System.Drawing.Point(5, 42);
+            checkMiscShuffleTextKeepStrLength.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkMiscShuffleTextKeepStrLength.Name = "checkMiscShuffleTextKeepStrLength";
+            checkMiscShuffleTextKeepStrLength.Size = new System.Drawing.Size(144, 19);
+            checkMiscShuffleTextKeepStrLength.TabIndex = 1;
+            checkMiscShuffleTextKeepStrLength.Text = "Preserve String Length";
+            checkMiscShuffleTextKeepStrLength.UseVisualStyleBackColor = true;
+            // 
+            // checkMiscShuffleBGM
+            // 
+            checkMiscShuffleBGM.AutoSize = true;
+            checkMiscShuffleBGM.Location = new System.Drawing.Point(5, 20);
+            checkMiscShuffleBGM.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkMiscShuffleBGM.Name = "checkMiscShuffleBGM";
+            checkMiscShuffleBGM.Size = new System.Drawing.Size(87, 19);
+            checkMiscShuffleBGM.TabIndex = 0;
+            checkMiscShuffleBGM.Text = "Shuffle Text";
+            checkMiscShuffleBGM.UseVisualStyleBackColor = true;
+            // 
+            // grpMiscScripts
+            // 
+            grpMiscScripts.Controls.Add(btnDistMiscScriptsItems);
+            grpMiscScripts.Controls.Add(checkMiscScriptsItemsRandom);
+            grpMiscScripts.Controls.Add(btnDistMiscScriptsPokemon);
+            grpMiscScripts.Controls.Add(checkMiscScriptsPokemonRandom);
+            grpMiscScripts.Location = new System.Drawing.Point(116, 127);
+            grpMiscScripts.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMiscScripts.Name = "grpMiscScripts";
+            grpMiscScripts.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpMiscScripts.Size = new System.Drawing.Size(162, 304);
+            grpMiscScripts.TabIndex = 0;
+            grpMiscScripts.TabStop = false;
+            grpMiscScripts.Text = "Scripts";
+            // 
+            // btnDistMiscScriptsItems
+            // 
+            btnDistMiscScriptsItems.Location = new System.Drawing.Point(5, 91);
+            btnDistMiscScriptsItems.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistMiscScriptsItems.Name = "btnDistMiscScriptsItems";
+            btnDistMiscScriptsItems.Size = new System.Drawing.Size(151, 22);
+            btnDistMiscScriptsItems.TabIndex = 6;
+            btnDistMiscScriptsItems.Text = "Scripted Items";
+            btnDistMiscScriptsItems.UseVisualStyleBackColor = true;
+            btnDistMiscScriptsItems.Click += OpenItemDistributionForm;
+            // 
+            // checkMiscScriptsItemsRandom
+            // 
+            checkMiscScriptsItemsRandom.AutoSize = true;
+            checkMiscScriptsItemsRandom.Location = new System.Drawing.Point(5, 68);
+            checkMiscScriptsItemsRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkMiscScriptsItemsRandom.Name = "checkMiscScriptsItemsRandom";
+            checkMiscScriptsItemsRandom.Size = new System.Drawing.Size(103, 19);
+            checkMiscScriptsItemsRandom.TabIndex = 5;
+            checkMiscScriptsItemsRandom.Text = "Random Items";
+            checkMiscScriptsItemsRandom.UseVisualStyleBackColor = true;
+            // 
+            // btnDistMiscScriptsPokemon
+            // 
+            btnDistMiscScriptsPokemon.Location = new System.Drawing.Point(5, 42);
+            btnDistMiscScriptsPokemon.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnDistMiscScriptsPokemon.Name = "btnDistMiscScriptsPokemon";
+            btnDistMiscScriptsPokemon.Size = new System.Drawing.Size(151, 22);
+            btnDistMiscScriptsPokemon.TabIndex = 4;
+            btnDistMiscScriptsPokemon.Text = "Scripted Pokémon";
+            btnDistMiscScriptsPokemon.UseVisualStyleBackColor = true;
+            btnDistMiscScriptsPokemon.Click += OpenItemDistributionForm;
+            // 
+            // checkMiscScriptsPokemonRandom
+            // 
+            checkMiscScriptsPokemonRandom.AutoSize = true;
+            checkMiscScriptsPokemonRandom.Location = new System.Drawing.Point(5, 20);
+            checkMiscScriptsPokemonRandom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            checkMiscScriptsPokemonRandom.Name = "checkMiscScriptsPokemonRandom";
+            checkMiscScriptsPokemonRandom.Size = new System.Drawing.Size(125, 19);
+            checkMiscScriptsPokemonRandom.TabIndex = 1;
+            checkMiscScriptsPokemonRandom.Text = "Random Pokémon";
+            checkMiscScriptsPokemonRandom.UseVisualStyleBackColor = true;
             // 
             // groupBox28
             // 
@@ -2390,538 +2629,558 @@ namespace ImpostersOrdeal
             groupBox28.TabIndex = 0;
             groupBox28.TabStop = false;
             // 
-            // pokemonEditorButton
+            // btnPokemonEditor
             // 
-            pokemonEditorButton.Location = new System.Drawing.Point(3, 3);
-            pokemonEditorButton.Name = "pokemonEditorButton";
-            pokemonEditorButton.Size = new System.Drawing.Size(173, 29);
-            pokemonEditorButton.TabIndex = 3;
-            pokemonEditorButton.Text = "Pokémon Editor";
-            pokemonEditorButton.UseVisualStyleBackColor = true;
-            pokemonEditorButton.Click += OpenPokemonEditor;
+            btnPokemonEditor.Location = new System.Drawing.Point(3, 2);
+            btnPokemonEditor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnPokemonEditor.Name = "btnPokemonEditor";
+            btnPokemonEditor.Size = new System.Drawing.Size(151, 22);
+            btnPokemonEditor.TabIndex = 3;
+            btnPokemonEditor.Text = "Pokémon Editor";
+            btnPokemonEditor.UseVisualStyleBackColor = true;
+            btnPokemonEditor.Click += OpenPokemonEditor;
             // 
-            // button24
+            // btnMoveEditor
             // 
-            button24.Location = new System.Drawing.Point(3, 38);
-            button24.Name = "button24";
-            button24.Size = new System.Drawing.Size(173, 29);
-            button24.TabIndex = 4;
-            button24.Text = "Move Editor";
-            button24.UseVisualStyleBackColor = true;
-            button24.Click += OpenMoveEditor;
+            btnMoveEditor.Location = new System.Drawing.Point(3, 28);
+            btnMoveEditor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnMoveEditor.Name = "btnMoveEditor";
+            btnMoveEditor.Size = new System.Drawing.Size(151, 22);
+            btnMoveEditor.TabIndex = 4;
+            btnMoveEditor.Text = "Move Editor";
+            btnMoveEditor.UseVisualStyleBackColor = true;
+            btnMoveEditor.Click += OpenMoveEditor;
             // 
-            // button25
+            // btnTMEditor
             // 
-            button25.Location = new System.Drawing.Point(3, 73);
-            button25.Name = "button25";
-            button25.Size = new System.Drawing.Size(173, 29);
-            button25.TabIndex = 5;
-            button25.Text = "TM Editor";
-            button25.UseVisualStyleBackColor = true;
-            button25.Click += OpenTMEditor;
+            btnTMEditor.Location = new System.Drawing.Point(3, 54);
+            btnTMEditor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnTMEditor.Name = "btnTMEditor";
+            btnTMEditor.Size = new System.Drawing.Size(151, 22);
+            btnTMEditor.TabIndex = 5;
+            btnTMEditor.Text = "TM Editor";
+            btnTMEditor.UseVisualStyleBackColor = true;
+            btnTMEditor.Click += OpenTMEditor;
             // 
-            // button26
+            // btnItemEditor
             // 
-            button26.Location = new System.Drawing.Point(3, 108);
-            button26.Name = "button26";
-            button26.Size = new System.Drawing.Size(173, 29);
-            button26.TabIndex = 6;
-            button26.Text = "Item Editor";
-            button26.UseVisualStyleBackColor = true;
-            button26.Click += OpenItemEditor;
+            btnItemEditor.Location = new System.Drawing.Point(3, 80);
+            btnItemEditor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnItemEditor.Name = "btnItemEditor";
+            btnItemEditor.Size = new System.Drawing.Size(151, 22);
+            btnItemEditor.TabIndex = 6;
+            btnItemEditor.Text = "Item Editor";
+            btnItemEditor.UseVisualStyleBackColor = true;
+            btnItemEditor.Click += OpenItemEditor;
             // 
-            // button27
+            // btnPickupEditor
             // 
-            button27.Location = new System.Drawing.Point(3, 143);
-            button27.Name = "button27";
-            button27.Size = new System.Drawing.Size(173, 29);
-            button27.TabIndex = 7;
-            button27.Text = "Pickup Table Editor";
-            button27.UseVisualStyleBackColor = true;
-            button27.Click += OpenPickupEditor;
+            btnPickupEditor.Location = new System.Drawing.Point(3, 106);
+            btnPickupEditor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnPickupEditor.Name = "btnPickupEditor";
+            btnPickupEditor.Size = new System.Drawing.Size(151, 22);
+            btnPickupEditor.TabIndex = 7;
+            btnPickupEditor.Text = "Pickup Table Editor";
+            btnPickupEditor.UseVisualStyleBackColor = true;
+            btnPickupEditor.Click += OpenPickupEditor;
             // 
-            // button28
+            // btnShopEditor
             // 
-            button28.Location = new System.Drawing.Point(3, 178);
-            button28.Name = "button28";
-            button28.Size = new System.Drawing.Size(173, 29);
-            button28.TabIndex = 8;
-            button28.Text = "Shop Editor";
-            button28.UseVisualStyleBackColor = true;
-            button28.Click += OpenShopEditor;
+            btnShopEditor.Location = new System.Drawing.Point(3, 132);
+            btnShopEditor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnShopEditor.Name = "btnShopEditor";
+            btnShopEditor.Size = new System.Drawing.Size(151, 22);
+            btnShopEditor.TabIndex = 8;
+            btnShopEditor.Text = "Shop Editor";
+            btnShopEditor.UseVisualStyleBackColor = true;
+            btnShopEditor.Click += OpenShopEditor;
             // 
-            // wildEncButton
+            // btnWildEditor
             // 
-            wildEncButton.Location = new System.Drawing.Point(3, 213);
-            wildEncButton.Name = "wildEncButton";
-            wildEncButton.Size = new System.Drawing.Size(173, 29);
-            wildEncButton.TabIndex = 9;
-            wildEncButton.Text = "Wild Encounter Editor";
-            wildEncButton.UseVisualStyleBackColor = true;
-            wildEncButton.Click += OpenWildEncounterEditors;
+            btnWildEditor.Location = new System.Drawing.Point(3, 158);
+            btnWildEditor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnWildEditor.Name = "btnWildEditor";
+            btnWildEditor.Size = new System.Drawing.Size(151, 22);
+            btnWildEditor.TabIndex = 9;
+            btnWildEditor.Text = "Wild Encounter Editor";
+            btnWildEditor.UseVisualStyleBackColor = true;
+            btnWildEditor.Click += OpenWildEncounterEditors;
             // 
-            // button30
+            // btnTrainerEditor
             // 
-            button30.Location = new System.Drawing.Point(3, 248);
-            button30.Name = "button30";
-            button30.Size = new System.Drawing.Size(173, 29);
-            button30.TabIndex = 10;
-            button30.Text = "Trainer Editor";
-            button30.UseVisualStyleBackColor = true;
-            button30.Click += OpenTrainerEditor;
+            btnTrainerEditor.Location = new System.Drawing.Point(3, 184);
+            btnTrainerEditor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnTrainerEditor.Name = "btnTrainerEditor";
+            btnTrainerEditor.Size = new System.Drawing.Size(151, 22);
+            btnTrainerEditor.TabIndex = 10;
+            btnTrainerEditor.Text = "Trainer Editor";
+            btnTrainerEditor.UseVisualStyleBackColor = true;
+            btnTrainerEditor.Click += OpenTrainerEditor;
             // 
-            // groupBox32
+            // grpEditors
             // 
-            groupBox32.Controls.Add(flowLayoutPanel1);
-            groupBox32.Location = new System.Drawing.Point(12, 169);
-            groupBox32.Name = "groupBox32";
-            groupBox32.Size = new System.Drawing.Size(206, 366);
-            groupBox32.TabIndex = 5;
-            groupBox32.TabStop = false;
-            groupBox32.Text = "Editors";
+            grpEditors.Controls.Add(scrollEditors);
+            grpEditors.Location = new System.Drawing.Point(10, 127);
+            grpEditors.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEditors.Name = "grpEditors";
+            grpEditors.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpEditors.Size = new System.Drawing.Size(180, 274);
+            grpEditors.TabIndex = 5;
+            grpEditors.TabStop = false;
+            grpEditors.Text = "Editors";
             // 
-            // flowLayoutPanel1
+            // scrollEditors
             // 
-            flowLayoutPanel1.AutoScroll = true;
-            flowLayoutPanel1.Controls.Add(pokemonEditorButton);
-            flowLayoutPanel1.Controls.Add(button24);
-            flowLayoutPanel1.Controls.Add(button25);
-            flowLayoutPanel1.Controls.Add(button26);
-            flowLayoutPanel1.Controls.Add(button27);
-            flowLayoutPanel1.Controls.Add(button28);
-            flowLayoutPanel1.Controls.Add(wildEncButton);
-            flowLayoutPanel1.Controls.Add(button30);
-            flowLayoutPanel1.Controls.Add(button32);
-            flowLayoutPanel1.Controls.Add(button23);
-            flowLayoutPanel1.Controls.Add(button34);
-            flowLayoutPanel1.Controls.Add(button35);
-            flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            flowLayoutPanel1.Location = new System.Drawing.Point(3, 23);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new System.Drawing.Size(200, 340);
-            flowLayoutPanel1.TabIndex = 14;
+            scrollEditors.AutoScroll = true;
+            scrollEditors.Controls.Add(btnPokemonEditor);
+            scrollEditors.Controls.Add(btnMoveEditor);
+            scrollEditors.Controls.Add(btnTMEditor);
+            scrollEditors.Controls.Add(btnItemEditor);
+            scrollEditors.Controls.Add(btnPickupEditor);
+            scrollEditors.Controls.Add(btnShopEditor);
+            scrollEditors.Controls.Add(btnWildEditor);
+            scrollEditors.Controls.Add(btnTrainerEditor);
+            scrollEditors.Controls.Add(btnMatchupEditor);
+            scrollEditors.Controls.Add(btnMetadataEditor);
+            scrollEditors.Controls.Add(btnTowerTrainerEditor);
+            scrollEditors.Controls.Add(btnTowerPokemonEditor);
+            scrollEditors.Dock = System.Windows.Forms.DockStyle.Fill;
+            scrollEditors.Location = new System.Drawing.Point(3, 18);
+            scrollEditors.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            scrollEditors.Name = "scrollEditors";
+            scrollEditors.Size = new System.Drawing.Size(174, 254);
+            scrollEditors.TabIndex = 14;
             // 
-            // button32
+            // btnMatchupEditor
             // 
-            button32.Location = new System.Drawing.Point(3, 283);
-            button32.Name = "button32";
-            button32.Size = new System.Drawing.Size(173, 29);
-            button32.TabIndex = 11;
-            button32.Text = "Type Matchup Editor";
-            button32.UseVisualStyleBackColor = true;
-            button32.Click += OpenTypeMatchupEditor;
+            btnMatchupEditor.Location = new System.Drawing.Point(3, 210);
+            btnMatchupEditor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnMatchupEditor.Name = "btnMatchupEditor";
+            btnMatchupEditor.Size = new System.Drawing.Size(151, 22);
+            btnMatchupEditor.TabIndex = 11;
+            btnMatchupEditor.Text = "Type Matchup Editor";
+            btnMatchupEditor.UseVisualStyleBackColor = true;
+            btnMatchupEditor.Click += OpenTypeMatchupEditor;
             // 
-            // button23
+            // btnMetadataEditor
             // 
-            button23.Location = new System.Drawing.Point(3, 318);
-            button23.Name = "button23";
-            button23.Size = new System.Drawing.Size(173, 29);
-            button23.TabIndex = 12;
-            button23.Text = "Global Metadata Editor";
-            button23.UseVisualStyleBackColor = true;
-            button23.Click += OpenGlobalMetadataEditor;
+            btnMetadataEditor.Location = new System.Drawing.Point(3, 236);
+            btnMetadataEditor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnMetadataEditor.Name = "btnMetadataEditor";
+            btnMetadataEditor.Size = new System.Drawing.Size(151, 22);
+            btnMetadataEditor.TabIndex = 12;
+            btnMetadataEditor.Text = "Global Metadata Editor";
+            btnMetadataEditor.UseVisualStyleBackColor = true;
+            btnMetadataEditor.Click += OpenGlobalMetadataEditor;
             // 
-            // button34
+            // btnTowerTrainerEditor
             // 
-            button34.Location = new System.Drawing.Point(3, 353);
-            button34.Name = "button34";
-            button34.Size = new System.Drawing.Size(173, 29);
-            button34.TabIndex = 11;
-            button34.Text = "BT Trainer Editor";
-            button34.UseVisualStyleBackColor = true;
-            button34.Click += Button34_Click;
+            btnTowerTrainerEditor.Location = new System.Drawing.Point(3, 262);
+            btnTowerTrainerEditor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnTowerTrainerEditor.Name = "btnTowerTrainerEditor";
+            btnTowerTrainerEditor.Size = new System.Drawing.Size(151, 22);
+            btnTowerTrainerEditor.TabIndex = 11;
+            btnTowerTrainerEditor.Text = "BT Trainer Editor";
+            btnTowerTrainerEditor.UseVisualStyleBackColor = true;
+            btnTowerTrainerEditor.Click += Button34_Click;
             // 
-            // button35
+            // btnTowerPokemonEditor
             // 
-            button35.Location = new System.Drawing.Point(3, 388);
-            button35.Name = "button35";
-            button35.Size = new System.Drawing.Size(173, 29);
-            button35.TabIndex = 13;
-            button35.Text = "BT Pokémon Editor";
-            button35.UseVisualStyleBackColor = true;
-            button35.Click += Button35_Click_1;
+            btnTowerPokemonEditor.Location = new System.Drawing.Point(3, 288);
+            btnTowerPokemonEditor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnTowerPokemonEditor.Name = "btnTowerPokemonEditor";
+            btnTowerPokemonEditor.Size = new System.Drawing.Size(151, 22);
+            btnTowerPokemonEditor.TabIndex = 13;
+            btnTowerPokemonEditor.Text = "BT Pokémon Editor";
+            btnTowerPokemonEditor.UseVisualStyleBackColor = true;
+            btnTowerPokemonEditor.Click += Button35_Click_1;
             // 
-            // groupBox34
+            // grpOtherTools
             // 
-            groupBox34.AutoSize = true;
-            groupBox34.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            groupBox34.Controls.Add(button33);
-            groupBox34.Controls.Add(button29);
-            groupBox34.Location = new System.Drawing.Point(12, 541);
-            groupBox34.Name = "groupBox34";
-            groupBox34.Size = new System.Drawing.Size(206, 120);
-            groupBox34.TabIndex = 6;
-            groupBox34.TabStop = false;
-            groupBox34.Text = "Other Tools";
+            grpOtherTools.AutoSize = true;
+            grpOtherTools.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            grpOtherTools.Controls.Add(btnJSONConverter);
+            grpOtherTools.Controls.Add(btnPokemonInserter);
+            grpOtherTools.Location = new System.Drawing.Point(10, 406);
+            grpOtherTools.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpOtherTools.Name = "grpOtherTools";
+            grpOtherTools.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            grpOtherTools.Size = new System.Drawing.Size(181, 91);
+            grpOtherTools.TabIndex = 6;
+            grpOtherTools.TabStop = false;
+            grpOtherTools.Text = "Other Tools";
             // 
-            // button33
+            // btnJSONConverter
             // 
-            button33.Location = new System.Drawing.Point(6, 65);
-            button33.Name = "button33";
-            button33.Size = new System.Drawing.Size(194, 29);
-            button33.TabIndex = 14;
-            button33.Text = "JSON Converter";
-            button33.UseVisualStyleBackColor = true;
-            button33.Click += OpenJsonConverter;
+            btnJSONConverter.Location = new System.Drawing.Point(5, 49);
+            btnJSONConverter.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnJSONConverter.Name = "btnJSONConverter";
+            btnJSONConverter.Size = new System.Drawing.Size(170, 22);
+            btnJSONConverter.TabIndex = 14;
+            btnJSONConverter.Text = "JSON Converter";
+            btnJSONConverter.UseVisualStyleBackColor = true;
+            btnJSONConverter.Click += OpenJsonConverter;
             // 
-            // button29
+            // btnPokemonInserter
             // 
-            button29.Location = new System.Drawing.Point(6, 27);
-            button29.Name = "button29";
-            button29.Size = new System.Drawing.Size(194, 29);
-            button29.TabIndex = 13;
-            button29.Text = "Pokémon Inserter";
-            button29.UseVisualStyleBackColor = true;
-            button29.Click += OpenPokemonInserter;
+            btnPokemonInserter.Location = new System.Drawing.Point(5, 20);
+            btnPokemonInserter.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnPokemonInserter.Name = "btnPokemonInserter";
+            btnPokemonInserter.Size = new System.Drawing.Size(170, 22);
+            btnPokemonInserter.TabIndex = 13;
+            btnPokemonInserter.Text = "Pokémon Inserter";
+            btnPokemonInserter.UseVisualStyleBackColor = true;
+            btnPokemonInserter.Click += OpenPokemonInserter;
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1262, 673);
-            Controls.Add(groupBox34);
-            Controls.Add(groupBox32);
-            Controls.Add(tabControl1);
-            Controls.Add(groupBox2);
+            ClientSize = new System.Drawing.Size(1104, 505);
+            Controls.Add(grpOtherTools);
+            Controls.Add(grpEditors);
+            Controls.Add(tabsRandomizer);
+            Controls.Add(grpMain);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             MaximizeBox = false;
             Name = "MainForm";
             Text = "Imposter's Ordeal";
             Load += MainForm_Load;
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
-            groupBox2.ResumeLayout(false);
-            tabControl1.ResumeLayout(false);
-            tabPage1.ResumeLayout(false);
-            groupBox12.ResumeLayout(false);
-            numericDistributionControl2.ResumeLayout(false);
-            numericDistributionControl2.PerformLayout();
-            numericDistributionControl4.ResumeLayout(false);
-            numericDistributionControl4.PerformLayout();
-            numericDistributionControl3.ResumeLayout(false);
-            numericDistributionControl3.PerformLayout();
-            numericDistributionControl5.ResumeLayout(false);
-            numericDistributionControl5.PerformLayout();
-            groupBox11.ResumeLayout(false);
-            groupBox11.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown5).EndInit();
-            numericDistributionControl9.ResumeLayout(false);
-            numericDistributionControl9.PerformLayout();
-            groupBox10.ResumeLayout(false);
-            groupBox10.PerformLayout();
-            numericDistributionControl7.ResumeLayout(false);
-            numericDistributionControl7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown4).EndInit();
-            numericDistributionControl6.ResumeLayout(false);
-            numericDistributionControl6.PerformLayout();
-            groupBox9.ResumeLayout(false);
-            groupBox9.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown3).EndInit();
-            groupBox8.ResumeLayout(false);
-            groupBox8.PerformLayout();
-            groupBox7.ResumeLayout(false);
-            groupBox7.PerformLayout();
-            groupBox6.ResumeLayout(false);
-            groupBox6.PerformLayout();
-            groupBox5.ResumeLayout(false);
-            groupBox5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
-            groupBox4.ResumeLayout(false);
-            groupBox4.PerformLayout();
-            numericDistributionControl1.ResumeLayout(false);
-            numericDistributionControl1.PerformLayout();
-            groupBox3.ResumeLayout(false);
-            groupBox3.PerformLayout();
-            tabPage2.ResumeLayout(false);
-            groupBox26.ResumeLayout(false);
-            groupBox26.PerformLayout();
-            groupBox25.ResumeLayout(false);
-            groupBox25.PerformLayout();
-            groupBox23.ResumeLayout(false);
-            groupBox23.PerformLayout();
-            numericDistributionControl18.ResumeLayout(false);
-            numericDistributionControl18.PerformLayout();
-            numericDistributionControl11.ResumeLayout(false);
-            numericDistributionControl11.PerformLayout();
-            numericDistributionControl10.ResumeLayout(false);
-            numericDistributionControl10.PerformLayout();
-            numericDistributionControl8.ResumeLayout(false);
-            numericDistributionControl8.PerformLayout();
-            groupBox14.ResumeLayout(false);
-            groupBox14.PerformLayout();
-            groupBox13.ResumeLayout(false);
-            groupBox13.PerformLayout();
-            tabPage3.ResumeLayout(false);
-            groupBox18.ResumeLayout(false);
-            groupBox24.ResumeLayout(false);
-            groupBox24.PerformLayout();
-            numericDistributionControl17.ResumeLayout(false);
-            numericDistributionControl17.PerformLayout();
-            numericDistributionControl16.ResumeLayout(false);
-            numericDistributionControl16.PerformLayout();
-            groupBox22.ResumeLayout(false);
-            groupBox22.PerformLayout();
-            groupBox21.ResumeLayout(false);
-            groupBox21.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown7).EndInit();
-            groupBox20.ResumeLayout(false);
-            groupBox20.PerformLayout();
-            numericDistributionControl15.ResumeLayout(false);
-            numericDistributionControl15.PerformLayout();
-            groupBox19.ResumeLayout(false);
-            groupBox19.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown6).EndInit();
-            groupBox17.ResumeLayout(false);
-            groupBox17.PerformLayout();
-            numericDistributionControl14.ResumeLayout(false);
-            numericDistributionControl14.PerformLayout();
-            groupBox16.ResumeLayout(false);
-            groupBox16.PerformLayout();
-            numericDistributionControl13.ResumeLayout(false);
-            numericDistributionControl13.PerformLayout();
-            groupBox15.ResumeLayout(false);
-            groupBox15.PerformLayout();
-            numericDistributionControl12.ResumeLayout(false);
-            numericDistributionControl12.PerformLayout();
-            tabPage4.ResumeLayout(false);
-            groupBox33.ResumeLayout(false);
-            groupBox33.PerformLayout();
-            groupBox31.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)absoluteBoundaryDataGridView).EndInit();
-            groupBox30.ResumeLayout(false);
-            groupBox30.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown8).EndInit();
-            groupBox29.ResumeLayout(false);
-            groupBox29.PerformLayout();
-            groupBox27.ResumeLayout(false);
-            groupBox27.PerformLayout();
-            groupBox32.ResumeLayout(false);
-            flowLayoutPanel1.ResumeLayout(false);
-            groupBox34.ResumeLayout(false);
+            grpDistPokemonEvolutionLevel.ResumeLayout(false);
+            grpDistPokemonEvolutionLevel.PerformLayout();
+            grpMain.ResumeLayout(false);
+            tabsRandomizer.ResumeLayout(false);
+            tabPokemon.ResumeLayout(false);
+            grpPokemonMisc.ResumeLayout(false);
+            grpDistPokemonMiscCatchRate.ResumeLayout(false);
+            grpDistPokemonMiscCatchRate.PerformLayout();
+            grpDistPokemonMiscInitFriendship.ResumeLayout(false);
+            grpDistPokemonMiscInitFriendship.PerformLayout();
+            grpDistPokemonMiscEVs.ResumeLayout(false);
+            grpDistPokemonMiscEVs.PerformLayout();
+            grpDistPokemonMiscExp.ResumeLayout(false);
+            grpDistPokemonMiscExp.PerformLayout();
+            grpPokemonEggMoves.ResumeLayout(false);
+            grpPokemonEggMoves.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numPokemonEggMovesTypeBias).EndInit();
+            grpDistPokemonEggMovesCount.ResumeLayout(false);
+            grpDistPokemonEggMovesCount.PerformLayout();
+            grpPokemonLevelMoves.ResumeLayout(false);
+            grpPokemonLevelMoves.PerformLayout();
+            grpDistPokemonLevelMovesLearnLevels.ResumeLayout(false);
+            grpDistPokemonLevelMovesLearnLevels.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numPokemonLevelMovesTypeBias).EndInit();
+            grpDistPokemonLevelMovesCount.ResumeLayout(false);
+            grpDistPokemonLevelMovesCount.PerformLayout();
+            grpPokemonTMCompat.ResumeLayout(false);
+            grpPokemonTMCompat.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numPokemonTMCompatPercent).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numPokemonTMCompatTypeBias).EndInit();
+            grpPokemonAbilities.ResumeLayout(false);
+            grpPokemonAbilities.PerformLayout();
+            grpPokemonGrowth.ResumeLayout(false);
+            grpPokemonGrowth.PerformLayout();
+            grpPokemonWildHeldItems.ResumeLayout(false);
+            grpPokemonWildHeldItems.PerformLayout();
+            grpPokemonTyping.ResumeLayout(false);
+            grpPokemonTyping.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numPokemonTypingDouble).EndInit();
+            grpPokemonBaseStats.ResumeLayout(false);
+            grpPokemonBaseStats.PerformLayout();
+            grpDistPokemonBaseStats.ResumeLayout(false);
+            grpDistPokemonBaseStats.PerformLayout();
+            grpPokemonEvolution.ResumeLayout(false);
+            grpPokemonEvolution.PerformLayout();
+            tabMovesAndItems.ResumeLayout(false);
+            grpMovesAndItemsShopItems.ResumeLayout(false);
+            grpMovesAndItemsShopItems.PerformLayout();
+            grpMovesAndItemsTMMoves.ResumeLayout(false);
+            grpMovesAndItemsTMMoves.PerformLayout();
+            grpMovesAndItemsPickup.ResumeLayout(false);
+            grpMovesAndItemsPickup.PerformLayout();
+            grpDistMovesAndItemsItemPrices.ResumeLayout(false);
+            grpDistMovesAndItemsItemPrices.PerformLayout();
+            grpDistMovesAndItemsPP.ResumeLayout(false);
+            grpDistMovesAndItemsPP.PerformLayout();
+            grpDistMovesAndItemsAccuracy.ResumeLayout(false);
+            grpDistMovesAndItemsAccuracy.PerformLayout();
+            grpDistMovesAndItemsPower.ResumeLayout(false);
+            grpDistMovesAndItemsPower.PerformLayout();
+            grpMovesAndItemsMoveCategory.ResumeLayout(false);
+            grpMovesAndItemsMoveCategory.PerformLayout();
+            grpMovesAndItemsMoveTyping.ResumeLayout(false);
+            grpMovesAndItemsMoveTyping.PerformLayout();
+            tabEncounters.ResumeLayout(false);
+            grpEncountersTrainer.ResumeLayout(false);
+            grpEncountersTrainerAbilities.ResumeLayout(false);
+            grpEncountersTrainerAbilities.PerformLayout();
+            grpDistEncountersTrainerEVs.ResumeLayout(false);
+            grpDistEncountersTrainerEVs.PerformLayout();
+            grpDistEncountersTrainerIVs.ResumeLayout(false);
+            grpDistEncountersTrainerIVs.PerformLayout();
+            grpEncountersTrainerHeldItems.ResumeLayout(false);
+            grpEncountersTrainerHeldItems.PerformLayout();
+            grpEncountersTrainerMoves.ResumeLayout(false);
+            grpEncountersTrainerMoves.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numEncountersTrainerMovesTypeBias).EndInit();
+            grpEncountersTrainerNatures.ResumeLayout(false);
+            grpEncountersTrainerNatures.PerformLayout();
+            grpDistEncountersTrainerLevels.ResumeLayout(false);
+            grpDistEncountersTrainerLevels.PerformLayout();
+            grpEncountersTrainerShiny.ResumeLayout(false);
+            grpEncountersTrainerShiny.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numEncountersTrainerShiny).EndInit();
+            grpEncountersTrainerSpecies.ResumeLayout(false);
+            grpEncountersTrainerSpecies.PerformLayout();
+            grpDistEncountersTrainerPokemonCount.ResumeLayout(false);
+            grpDistEncountersTrainerPokemonCount.PerformLayout();
+            grpEncountersTrainerItems.ResumeLayout(false);
+            grpEncountersTrainerItems.PerformLayout();
+            grpDistEncountersTrainerItemsCount.ResumeLayout(false);
+            grpDistEncountersTrainerItemsCount.PerformLayout();
+            grpEncountersWild.ResumeLayout(false);
+            grpEncountersWild.PerformLayout();
+            grpDistEncountersWildLevels.ResumeLayout(false);
+            grpDistEncountersWildLevels.PerformLayout();
+            tabMisc.ResumeLayout(false);
+            grpMiscTypeMatchups.ResumeLayout(false);
+            grpMiscTypeMatchups.PerformLayout();
+            grpMiscAbsoluteBoundaries.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)gridMiscAbsoluteBoundaries).EndInit();
+            grpMiscLevelMult.ResumeLayout(false);
+            grpMiscLevelMult.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numMiscLevelMultMult).EndInit();
+            grpMiscTextAndMusic.ResumeLayout(false);
+            grpMiscTextAndMusic.PerformLayout();
+            grpMiscScripts.ResumeLayout(false);
+            grpMiscScripts.PerformLayout();
+            grpEditors.ResumeLayout(false);
+            scrollEditors.ResumeLayout(false);
+            grpOtherTools.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        public NumericDistributionControl groupBox1;
-        public System.Windows.Forms.Button button1;
-        public System.Windows.Forms.TextBox textBox1;
-        public ItemDistributionControl button2;
-        public System.Windows.Forms.GroupBox groupBox2;
-        public System.Windows.Forms.Button button5;
-        public System.Windows.Forms.Button button3;
-        public System.Windows.Forms.TabControl tabControl1;
-        public System.Windows.Forms.TabPage tabPage1;
-        public System.Windows.Forms.TabPage tabPage2;
-        public System.Windows.Forms.CheckBox checkBox2;
-        public System.Windows.Forms.GroupBox groupBox3;
-        public System.Windows.Forms.CheckBox checkBox1;
-        public System.Windows.Forms.CheckBox checkBox3;
-        public System.Windows.Forms.GroupBox groupBox4;
-        public NumericDistributionControl numericDistributionControl1;
-        public System.Windows.Forms.CheckBox checkBox7;
-        public System.Windows.Forms.Button button6;
-        public System.Windows.Forms.TextBox textBox2;
-        public System.Windows.Forms.CheckBox checkBox6;
-        public System.Windows.Forms.CheckBox checkBox5;
-        public System.Windows.Forms.GroupBox groupBox5;
-        public System.Windows.Forms.Label label1;
-        public System.Windows.Forms.NumericUpDown numericUpDown1;
-        public System.Windows.Forms.CheckBox checkBox8;
-        public NumericDistributionControl numericDistributionControl2;
-        public System.Windows.Forms.CheckBox checkBox4;
-        public System.Windows.Forms.Button button7;
-        public System.Windows.Forms.TextBox textBox3;
-        public NumericDistributionControl numericDistributionControl3;
-        public System.Windows.Forms.CheckBox checkBox9;
-        public System.Windows.Forms.Button button8;
-        public System.Windows.Forms.TextBox textBox4;
-        public System.Windows.Forms.GroupBox groupBox6;
-        public ItemDistributionControl itemDistributionControl2;
-        public System.Windows.Forms.CheckBox checkBox10;
-        public NumericDistributionControl numericDistributionControl4;
-        public System.Windows.Forms.CheckBox checkBox11;
-        public System.Windows.Forms.Button button9;
-        public System.Windows.Forms.TextBox textBox5;
-        public System.Windows.Forms.GroupBox groupBox7;
-        public ItemDistributionControl itemDistributionControl3;
-        public System.Windows.Forms.CheckBox checkBox12;
-        public System.Windows.Forms.GroupBox groupBox8;
-        public ItemDistributionControl itemDistributionControl4;
-        public System.Windows.Forms.CheckBox checkBox13;
-        public NumericDistributionControl numericDistributionControl5;
-        public System.Windows.Forms.CheckBox checkBox14;
-        public System.Windows.Forms.Button button10;
-        public System.Windows.Forms.TextBox textBox6;
-        public System.Windows.Forms.GroupBox groupBox9;
-        public System.Windows.Forms.CheckBox checkBox16;
-        public System.Windows.Forms.Label label3;
-        public System.Windows.Forms.NumericUpDown numericUpDown3;
-        public System.Windows.Forms.CheckBox checkBox15;
-        public System.Windows.Forms.GroupBox groupBox10;
-        public NumericDistributionControl numericDistributionControl6;
-        public System.Windows.Forms.CheckBox checkBox19;
-        public System.Windows.Forms.Button button11;
-        public System.Windows.Forms.TextBox textBox7;
-        public System.Windows.Forms.CheckBox checkBox17;
-        public System.Windows.Forms.Label label4;
-        public System.Windows.Forms.NumericUpDown numericUpDown4;
-        public System.Windows.Forms.GroupBox groupBox11;
-        public ItemDistributionControl itemDistributionControl7;
-        public System.Windows.Forms.Label label5;
-        public System.Windows.Forms.NumericUpDown numericUpDown5;
-        public NumericDistributionControl numericDistributionControl9;
-        public System.Windows.Forms.CheckBox checkBox23;
-        public System.Windows.Forms.Button button14;
-        public System.Windows.Forms.TextBox textBox10;
-        public System.Windows.Forms.CheckBox checkBox24;
-        public NumericDistributionControl numericDistributionControl7;
-        public System.Windows.Forms.CheckBox checkBox20;
-        public System.Windows.Forms.Button button12;
-        public System.Windows.Forms.TextBox textBox8;
-        public ItemDistributionControl itemDistributionControl6;
-        public System.Windows.Forms.CheckBox checkBox18;
-        public System.Windows.Forms.GroupBox groupBox12;
-        public System.Windows.Forms.GroupBox groupBox13;
-        public ItemDistributionControl itemDistributionControl8;
-        public System.Windows.Forms.CheckBox checkBox21;
-        public System.Windows.Forms.GroupBox groupBox14;
-        public ItemDistributionControl itemDistributionControl9;
-        public System.Windows.Forms.CheckBox checkBox22;
-        public NumericDistributionControl numericDistributionControl8;
-        public System.Windows.Forms.CheckBox checkBox25;
-        public System.Windows.Forms.Button button13;
-        public System.Windows.Forms.TextBox textBox9;
-        public NumericDistributionControl numericDistributionControl10;
-        public System.Windows.Forms.CheckBox checkBox26;
-        public System.Windows.Forms.Button button15;
-        public System.Windows.Forms.TextBox textBox11;
-        public NumericDistributionControl numericDistributionControl11;
-        public System.Windows.Forms.CheckBox checkBox27;
-        public System.Windows.Forms.Button button16;
-        public System.Windows.Forms.TextBox textBox12;
-        public System.Windows.Forms.TabPage tabPage3;
-        public System.Windows.Forms.GroupBox groupBox15;
-        public System.Windows.Forms.CheckBox checkBox31;
-        public System.Windows.Forms.CheckBox checkBox30;
-        public NumericDistributionControl numericDistributionControl12;
-        public System.Windows.Forms.CheckBox checkBox28;
-        public System.Windows.Forms.Button button17;
-        public System.Windows.Forms.TextBox textBox13;
-        public ItemDistributionControl itemDistributionControl10;
-        public System.Windows.Forms.CheckBox checkBox29;
-        public System.Windows.Forms.GroupBox groupBox16;
-        public NumericDistributionControl numericDistributionControl13;
-        public System.Windows.Forms.CheckBox checkBox33;
-        public System.Windows.Forms.Button button4;
-        public System.Windows.Forms.TextBox textBox14;
-        public ItemDistributionControl itemDistributionControl11;
-        public System.Windows.Forms.CheckBox checkBox32;
-        public System.Windows.Forms.GroupBox groupBox17;
-        public System.Windows.Forms.CheckBox checkBox34;
-        public System.Windows.Forms.CheckBox checkBox35;
-        public NumericDistributionControl numericDistributionControl14;
-        public System.Windows.Forms.CheckBox checkBox36;
-        public System.Windows.Forms.Button button18;
-        public System.Windows.Forms.TextBox textBox15;
-        public ItemDistributionControl itemDistributionControl12;
-        public System.Windows.Forms.CheckBox checkBox37;
-        public System.Windows.Forms.GroupBox groupBox18;
-        public System.Windows.Forms.CheckBox checkBox38;
-        public System.Windows.Forms.GroupBox groupBox19;
-        public System.Windows.Forms.Label label6;
-        public System.Windows.Forms.NumericUpDown numericUpDown6;
-        public System.Windows.Forms.CheckBox checkBox39;
-        public NumericDistributionControl numericDistributionControl15;
-        public System.Windows.Forms.CheckBox checkBox40;
-        public System.Windows.Forms.Button button19;
-        public System.Windows.Forms.TextBox textBox16;
-        public System.Windows.Forms.GroupBox groupBox20;
-        public ItemDistributionControl itemDistributionControl13;
-        public System.Windows.Forms.CheckBox checkBox41;
-        public System.Windows.Forms.GroupBox groupBox21;
-        public System.Windows.Forms.Label label7;
-        public System.Windows.Forms.NumericUpDown numericUpDown7;
-        public System.Windows.Forms.ComboBox comboBox1;
-        public ItemDistributionControl itemDistributionControl14;
-        public System.Windows.Forms.GroupBox groupBox22;
-        public System.Windows.Forms.CheckBox checkBox43;
-        public ItemDistributionControl itemDistributionControl15;
-        public System.Windows.Forms.CheckBox checkBox42;
-        public NumericDistributionControl numericDistributionControl17;
-        public System.Windows.Forms.CheckBox checkBox45;
-        public System.Windows.Forms.Button button21;
-        public System.Windows.Forms.TextBox textBox18;
-        public NumericDistributionControl numericDistributionControl16;
-        public System.Windows.Forms.CheckBox checkBox44;
-        public System.Windows.Forms.Button button20;
-        public System.Windows.Forms.TextBox textBox17;
-        public NumericDistributionControl numericDistributionControl18;
-        public System.Windows.Forms.CheckBox checkBox46;
-        public System.Windows.Forms.Button button22;
-        public System.Windows.Forms.TextBox textBox19;
-        public System.Windows.Forms.GroupBox groupBox26;
-        public ItemDistributionControl itemDistributionControl19;
-        public System.Windows.Forms.CheckBox checkBox51;
-        public System.Windows.Forms.GroupBox groupBox25;
-        public ItemDistributionControl itemDistributionControl18;
-        public System.Windows.Forms.CheckBox checkBox50;
-        public System.Windows.Forms.GroupBox groupBox23;
-        public ItemDistributionControl itemDistributionControl16;
-        public System.Windows.Forms.CheckBox checkBox47;
-        public System.Windows.Forms.GroupBox groupBox24;
-        public System.Windows.Forms.CheckBox checkBox49;
-        public ItemDistributionControl itemDistributionControl17;
-        public System.Windows.Forms.CheckBox checkBox48;
-        public System.Windows.Forms.CheckBox checkBox52;
-        public System.Windows.Forms.TabPage tabPage4;
-        public System.Windows.Forms.GroupBox groupBox27;
-        public ItemDistributionControl itemDistributionControl21;
-        public System.Windows.Forms.CheckBox checkBox54;
-        public ItemDistributionControl itemDistributionControl20;
-        public System.Windows.Forms.CheckBox checkBox53;
+        public NumericDistributionControl grpDistPokemonEvolutionLevel;
+        public System.Windows.Forms.Button btnDistPokemonEvolutionLevel;
+        public System.Windows.Forms.TextBox txtDistPokemonEvolutionLevel;
+        public ItemDistributionControl btnDistPokemonEvolutionDest;
+        public System.Windows.Forms.GroupBox grpMain;
+        public System.Windows.Forms.Button btnRandomize;
+        public System.Windows.Forms.Button btnAddMod;
+        public System.Windows.Forms.TabControl tabsRandomizer;
+        public System.Windows.Forms.TabPage tabPokemon;
+        public System.Windows.Forms.TabPage tabMovesAndItems;
+        public System.Windows.Forms.CheckBox checkDistPokemonEvolutionLevel;
+        public System.Windows.Forms.GroupBox grpPokemonEvolution;
+        public System.Windows.Forms.CheckBox checkPokemonEvolutionRandomDest;
+        public System.Windows.Forms.CheckBox checkPokemonEvolutionBSTLogic;
+        public System.Windows.Forms.GroupBox grpPokemonBaseStats;
+        public NumericDistributionControl grpDistPokemonBaseStats;
+        public System.Windows.Forms.CheckBox checkDistPokemonBaseStats;
+        public System.Windows.Forms.Button btnDistPokemonBaseStats;
+        public System.Windows.Forms.TextBox txtDistPokemonBaseStats;
+        public System.Windows.Forms.CheckBox checkPokemonBaseStatsBSTLogic;
+        public System.Windows.Forms.CheckBox checkPokemonBaseStatsShuffle;
+        public System.Windows.Forms.GroupBox grpPokemonTyping;
+        public System.Windows.Forms.Label lbPokemonTypingDouble;
+        public System.Windows.Forms.NumericUpDown numPokemonTypingDouble;
+        public System.Windows.Forms.CheckBox checkPokemonTypingRandom;
+        public NumericDistributionControl grpDistPokemonMiscCatchRate;
+        public System.Windows.Forms.CheckBox checkDistPokemonMiscCatchRate;
+        public System.Windows.Forms.Button btnDistPokemonMiscCatchRate;
+        public System.Windows.Forms.TextBox txtDistPokemonMiscCatchRate;
+        public NumericDistributionControl grpDistPokemonMiscEVs;
+        public System.Windows.Forms.CheckBox checkDistPokemonMiscEVs;
+        public System.Windows.Forms.Button btnDistPokemonMiscEVs;
+        public System.Windows.Forms.TextBox txtDistPokemonMiscEVs;
+        public System.Windows.Forms.GroupBox grpPokemonWildHeldItems;
+        public ItemDistributionControl btnDistPokemonWildHeldItems;
+        public System.Windows.Forms.CheckBox checkPokemonWildHeldItemsRandom;
+        public NumericDistributionControl grpDistPokemonMiscInitFriendship;
+        public System.Windows.Forms.CheckBox checkDistPokemonMiscInitFriendship;
+        public System.Windows.Forms.Button btnDistPokemonMiscInitFriendship;
+        public System.Windows.Forms.TextBox txtDistPokemonMiscInitFriendship;
+        public System.Windows.Forms.GroupBox grpPokemonGrowth;
+        public ItemDistributionControl btnDistPokemonGrowth;
+        public System.Windows.Forms.CheckBox checkPokemonGrowthRandom;
+        public System.Windows.Forms.GroupBox grpPokemonAbilities;
+        public ItemDistributionControl btnDistPokemonAbilities;
+        public System.Windows.Forms.CheckBox checkPokemonAbilities;
+        public NumericDistributionControl grpDistPokemonMiscExp;
+        public System.Windows.Forms.CheckBox checkDistPokemonMiscExp;
+        public System.Windows.Forms.Button btnDistPokemonMiscExp;
+        public System.Windows.Forms.TextBox txtDistPokemonMiscExp;
+        public System.Windows.Forms.GroupBox grpPokemonTMCompat;
+        public System.Windows.Forms.CheckBox checkPokemonTMCompatEvoLogic;
+        public System.Windows.Forms.Label lbPokemonTMCompatTypeBias;
+        public System.Windows.Forms.NumericUpDown numPokemonTMCompatTypeBias;
+        public System.Windows.Forms.CheckBox checkPokemonTMCompatRandom;
+        public System.Windows.Forms.GroupBox grpPokemonLevelMoves;
+        public NumericDistributionControl grpDistPokemonLevelMovesCount;
+        public System.Windows.Forms.CheckBox checkDistPokemonLevelMovesCount;
+        public System.Windows.Forms.Button btnDistPokemonLevelMovesCount;
+        public System.Windows.Forms.TextBox txtDistPokemonLevelMovesCount;
+        public System.Windows.Forms.CheckBox checkPokemonLevelMovesRandom;
+        public System.Windows.Forms.Label lbPokemonLevelMovesTypeBias;
+        public System.Windows.Forms.NumericUpDown numPokemonLevelMovesTypeBias;
+        public System.Windows.Forms.GroupBox grpPokemonEggMoves;
+        public ItemDistributionControl btnDistPokemonEggMoves;
+        public System.Windows.Forms.Label lbPokemonEggMovesTypeBias;
+        public System.Windows.Forms.NumericUpDown numPokemonEggMovesTypeBias;
+        public NumericDistributionControl grpDistPokemonEggMovesCount;
+        public System.Windows.Forms.CheckBox checkDistPokemonEggMovesCount;
+        public System.Windows.Forms.Button btnDistPokemonEggMovesCount;
+        public System.Windows.Forms.TextBox txtDistPokemonEggMovesCount;
+        public System.Windows.Forms.CheckBox checkPokemonEggMovesRandom;
+        public NumericDistributionControl grpDistPokemonLevelMovesLearnLevels;
+        public System.Windows.Forms.CheckBox checkDistPokemonLevelMovesLearnLevels;
+        public System.Windows.Forms.Button btnDistPokemonLevelMovesLearnLevels;
+        public System.Windows.Forms.TextBox txtDistPokemonLevelMovesLearnLevels;
+        public ItemDistributionControl btnDistPokemonLevelMovesMoves;
+        public System.Windows.Forms.CheckBox checkPokemonLevelMovesSortPower;
+        public System.Windows.Forms.GroupBox grpPokemonMisc;
+        public System.Windows.Forms.GroupBox grpMovesAndItemsMoveTyping;
+        public ItemDistributionControl btnDistMovesAndItemsMoveTyping;
+        public System.Windows.Forms.CheckBox checkMovesAndItemsMoveTypingRandom;
+        public System.Windows.Forms.GroupBox grpMovesAndItemsMoveCategory;
+        public ItemDistributionControl btnDistMovesAndItemsMoveCategory;
+        public System.Windows.Forms.CheckBox checkMovesAndItemsMoveCategoryRandom;
+        public NumericDistributionControl grpDistMovesAndItemsPower;
+        public System.Windows.Forms.CheckBox checkDistMovesAndItemsPower;
+        public System.Windows.Forms.Button btnDistMovesAndItemsPower;
+        public System.Windows.Forms.TextBox txtDistMovesAndItemsPower;
+        public NumericDistributionControl grpDistMovesAndItemsAccuracy;
+        public System.Windows.Forms.CheckBox checkDistMovesAndItemsAccuracy;
+        public System.Windows.Forms.Button btnDistMovesAndItemsAccuracy;
+        public System.Windows.Forms.TextBox txtDistMovesAndItemsAccuracy;
+        public NumericDistributionControl grpDistMovesAndItemsPP;
+        public System.Windows.Forms.CheckBox checkDistMovesAndItemsPP;
+        public System.Windows.Forms.Button btnDistMovesAndItemsPP;
+        public System.Windows.Forms.TextBox txtDistMovesAndItemsPP;
+        public System.Windows.Forms.TabPage tabEncounters;
+        public System.Windows.Forms.GroupBox grpEncountersWild;
+        public System.Windows.Forms.CheckBox checkEncountersWildHighLevelLegends;
+        public System.Windows.Forms.CheckBox checkEncountersWildEvoLogic;
+        public NumericDistributionControl grpDistEncountersWildLevels;
+        public System.Windows.Forms.CheckBox checkDistEncountersWildLevels;
+        public System.Windows.Forms.Button btnDistEncountersWildLevels;
+        public System.Windows.Forms.TextBox txtDistEncountersWildLevels;
+        public ItemDistributionControl btnDistEncountersWild;
+        public System.Windows.Forms.CheckBox checkEncountersWildRandom;
+        public System.Windows.Forms.GroupBox grpEncountersTrainerItems;
+        public NumericDistributionControl grpDistEncountersTrainerItemsCount;
+        public System.Windows.Forms.CheckBox checkDistEncountersTrainerItemsCount;
+        public System.Windows.Forms.Button btnDistEncountersTrainerItemsCount;
+        public System.Windows.Forms.TextBox txtDistEncountersTrainerItemsCount;
+        public ItemDistributionControl btnDistEncountersTrainerItems;
+        public System.Windows.Forms.CheckBox checkEncountersTrainerItemsRandom;
+        public System.Windows.Forms.GroupBox grpEncountersTrainerSpecies;
+        public System.Windows.Forms.CheckBox checkEncountersTrainerSpeciesHighLevelLegends;
+        public System.Windows.Forms.CheckBox checkEncountersTrainerSpeciesEvoLogic;
+        public NumericDistributionControl grpDistEncountersTrainerPokemonCount;
+        public System.Windows.Forms.CheckBox checkDistEncountersTrainerPokemonCount;
+        public System.Windows.Forms.Button btnDistEncountersTrainerPokemonCount;
+        public System.Windows.Forms.TextBox txtDistEncountersTrainerPokemonCount;
+        public ItemDistributionControl btnDistEncountersTrainerSpecies;
+        public System.Windows.Forms.CheckBox checkEncountersTrainerSpeciesRandom;
+        public System.Windows.Forms.GroupBox grpEncountersTrainer;
+        public System.Windows.Forms.CheckBox checkEncountersTrainerSpeciesTypeThemes;
+        public System.Windows.Forms.GroupBox grpEncountersTrainerShiny;
+        public System.Windows.Forms.Label lbEncountersTrainerShiny;
+        public System.Windows.Forms.NumericUpDown numEncountersTrainerShiny;
+        public System.Windows.Forms.CheckBox checkEncountersTrainerShinyRandom;
+        public NumericDistributionControl grpDistEncountersTrainerLevels;
+        public System.Windows.Forms.CheckBox checkDistEncountersTrainerLevels;
+        public System.Windows.Forms.Button btnDistEncountersTrainerLevels;
+        public System.Windows.Forms.TextBox txtDistEncountersTrainerLevels;
+        public System.Windows.Forms.GroupBox grpEncountersTrainerNatures;
+        public ItemDistributionControl btnDistEncountersTrainerNatures;
+        public System.Windows.Forms.CheckBox checkEncountersTrainerNaturesRandom;
+        public System.Windows.Forms.GroupBox grpEncountersTrainerMoves;
+        public System.Windows.Forms.Label lbEncountersTrainerMovesTypeBias;
+        public System.Windows.Forms.NumericUpDown numEncountersTrainerMovesTypeBias;
+        public System.Windows.Forms.ComboBox comboEncountersTrainerMovesRandom;
+        public ItemDistributionControl btnDistEncountersTrainerMoves;
+        public System.Windows.Forms.GroupBox grpEncountersTrainerHeldItems;
+        public System.Windows.Forms.CheckBox checkEncountersTrainerHeldItemsHighLevel;
+        public ItemDistributionControl btnDistEncountersTrainerHeldItems;
+        public System.Windows.Forms.CheckBox checkEncountersTrainerHeldItemsRandom;
+        public NumericDistributionControl grpDistEncountersTrainerEVs;
+        public System.Windows.Forms.CheckBox checkDistEncountersTrainerEVs;
+        public System.Windows.Forms.Button btnDistEncountersTrainerEVs;
+        public System.Windows.Forms.TextBox txtDistEncountersTrainerEVs;
+        public NumericDistributionControl grpDistEncountersTrainerIVs;
+        public System.Windows.Forms.CheckBox checkDistEncountersTrainerIVs;
+        public System.Windows.Forms.Button btnDistEncountersTrainerIVs;
+        public System.Windows.Forms.TextBox txtDistEncountersTrainerIVs;
+        public NumericDistributionControl grpDistMovesAndItemsItemPrices;
+        public System.Windows.Forms.CheckBox checkDistMovesAndItemsItemPrices;
+        public System.Windows.Forms.Button btnDistMovesAndItemsItemPrices;
+        public System.Windows.Forms.TextBox txtDistMovesAndItemsItemPrices;
+        public System.Windows.Forms.GroupBox grpMovesAndItemsShopItems;
+        public ItemDistributionControl btnDistMovesAndItemsShopItems;
+        public System.Windows.Forms.CheckBox checkMovesAndItemsShopItemsRandom;
+        public System.Windows.Forms.GroupBox grpMovesAndItemsTMMoves;
+        public ItemDistributionControl btnDistMovesAndItemsTMMoves;
+        public System.Windows.Forms.CheckBox checkMovesAndItemsTMMovesRandom;
+        public System.Windows.Forms.GroupBox grpMovesAndItemsPickup;
+        public ItemDistributionControl btnDistMovesAndItemsPickup;
+        public System.Windows.Forms.CheckBox checkMovesAndItemsPickupRandom;
+        public System.Windows.Forms.GroupBox grpEncountersTrainerAbilities;
+        public System.Windows.Forms.CheckBox checkEncountersTrainerAbilitiesIncludeUnobtainable;
+        public ItemDistributionControl btnDistEncountersTrainerAbilities;
+        public System.Windows.Forms.CheckBox checkEncountersTrainerAbilitiesRandom;
+        public System.Windows.Forms.CheckBox checkMovesAndItemsShopItemsKeepMart;
+        public System.Windows.Forms.TabPage tabMisc;
+        public System.Windows.Forms.GroupBox grpMiscScripts;
+        public ItemDistributionControl btnDistMiscScriptsItems;
+        public System.Windows.Forms.CheckBox checkMiscScriptsItemsRandom;
+        public ItemDistributionControl btnDistMiscScriptsPokemon;
+        public System.Windows.Forms.CheckBox checkMiscScriptsPokemonRandom;
         public System.Windows.Forms.GroupBox groupBox28;
-        public System.Windows.Forms.GroupBox groupBox30;
-        public System.Windows.Forms.Label label8;
-        public System.Windows.Forms.CheckBox checkBox57;
-        public System.Windows.Forms.GroupBox groupBox29;
-        public System.Windows.Forms.CheckBox checkBox56;
-        public System.Windows.Forms.CheckBox checkBox55;
-        public System.Windows.Forms.Label label9;
-        public System.Windows.Forms.NumericUpDown numericUpDown8;
-        public System.Windows.Forms.CheckBox checkBox60;
-        public System.Windows.Forms.CheckBox checkBox59;
-        public System.Windows.Forms.CheckBox checkBox58;
-        public System.Windows.Forms.GroupBox groupBox31;
-        public System.Windows.Forms.DataGridView absoluteBoundaryDataGridView;
-        public System.Windows.Forms.CheckBox checkBox61;
-        public System.Windows.Forms.Label label2;
-        public System.Windows.Forms.NumericUpDown numericUpDown2;
-        public ItemDistributionControl itemDistributionControl1;
-        public System.Windows.Forms.Button button24;
-        public System.Windows.Forms.Button pokemonEditorButton;
-        public System.Windows.Forms.Button button31;
-        public System.Windows.Forms.Button button25;
-        public System.Windows.Forms.Button button26;
-        public System.Windows.Forms.Button button27;
-        public System.Windows.Forms.Button button28;
-        public System.Windows.Forms.Button wildEncButton;
-        public System.Windows.Forms.Button button30;
-        private System.Windows.Forms.GroupBox groupBox32;
-        public System.Windows.Forms.Button button32;
-        public System.Windows.Forms.CheckBox checkBox62;
-        private System.Windows.Forms.GroupBox groupBox33;
-        public ItemDistributionControl itemDistributionControl5;
-        public System.Windows.Forms.CheckBox checkBox63;
-        public System.Windows.Forms.Button button23;
-        private System.Windows.Forms.GroupBox groupBox34;
-        public System.Windows.Forms.Button button29;
-        public System.Windows.Forms.Button button33;
-        public System.Windows.Forms.Button button34;
-        public System.Windows.Forms.Button button35;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        public System.Windows.Forms.GroupBox grpMiscLevelMult;
+        public System.Windows.Forms.Label lbMiscLevelMultDesc;
+        public System.Windows.Forms.CheckBox checkMiscLevelMultEvoLevels;
+        public System.Windows.Forms.GroupBox grpMiscTextAndMusic;
+        public System.Windows.Forms.CheckBox checkMiscShuffleTextKeepStrLength;
+        public System.Windows.Forms.CheckBox checkMiscShuffleBGM;
+        public System.Windows.Forms.Label lbMiscLevelMultMult;
+        public System.Windows.Forms.NumericUpDown numMiscLevelMultMult;
+        public System.Windows.Forms.CheckBox checkMiscLevelMultTrainer;
+        public System.Windows.Forms.CheckBox checkMiscLevelMultWild;
+        public System.Windows.Forms.CheckBox checkMiscLevelMultLevelMoves;
+        public System.Windows.Forms.GroupBox grpMiscAbsoluteBoundaries;
+        public System.Windows.Forms.DataGridView gridMiscAbsoluteBoundaries;
+        public System.Windows.Forms.CheckBox checkPokemonTypingEvoLogic;
+        public System.Windows.Forms.Label lbPokemonTMCompatPercent;
+        public System.Windows.Forms.NumericUpDown numPokemonTMCompatPercent;
+        public ItemDistributionControl btnDistPokemonTyping;
+        public System.Windows.Forms.Button btnMoveEditor;
+        public System.Windows.Forms.Button btnPokemonEditor;
+        public System.Windows.Forms.Button btnExport;
+        public System.Windows.Forms.Button btnTMEditor;
+        public System.Windows.Forms.Button btnItemEditor;
+        public System.Windows.Forms.Button btnPickupEditor;
+        public System.Windows.Forms.Button btnShopEditor;
+        public System.Windows.Forms.Button btnWildEditor;
+        public System.Windows.Forms.Button btnTrainerEditor;
+        private System.Windows.Forms.GroupBox grpEditors;
+        public System.Windows.Forms.Button btnMatchupEditor;
+        public System.Windows.Forms.CheckBox checkMiscShuffleText;
+        private System.Windows.Forms.GroupBox grpMiscTypeMatchups;
+        public ItemDistributionControl btnDistMiscTypeMatchups;
+        public System.Windows.Forms.CheckBox checkMiscTypeMatchupsRandom;
+        public System.Windows.Forms.Button btnMetadataEditor;
+        private System.Windows.Forms.GroupBox grpOtherTools;
+        public System.Windows.Forms.Button btnPokemonInserter;
+        public System.Windows.Forms.Button btnJSONConverter;
+        public System.Windows.Forms.Button btnTowerTrainerEditor;
+        public System.Windows.Forms.Button btnTowerPokemonEditor;
+        private System.Windows.Forms.FlowLayoutPanel scrollEditors;
     }
 }

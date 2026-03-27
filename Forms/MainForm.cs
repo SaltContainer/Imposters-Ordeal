@@ -42,77 +42,410 @@ namespace ImpostersOrdeal
         private void SetupConfig(DistributionsSetupConfig dsc, RandomizerSetupConfig rsc)
         {
             if (rsc != null)
+            {
                 this.rsc = rsc;
+                SetupFormFromConfig();
+            }
 
-            button2.Initialize(dsc.Pokemon.EvolutionDestinationPokemonDists);
-            groupBox1.Initialize(dsc.Pokemon.EvolutionLevelDists);
-            numericDistributionControl1.Initialize(dsc.Pokemon.BaseStatsDists);
-            itemDistributionControl1.Initialize(dsc.Pokemon.PokemonTypingDists);
-            numericUpDown1.Value = (decimal)dsc.Pokemon.DoubleTypingP;
-            numericUpDown2.Value = (decimal)dsc.Pokemon.TMCompatibilityP;
-            numericUpDown3.Value = (decimal)dsc.Pokemon.TMCompatibilityTypeBiasP;
-            itemDistributionControl2.Initialize(dsc.Pokemon.WildHeldItemsDists);
-            itemDistributionControl3.Initialize(dsc.Pokemon.GrowthRateDists);
-            itemDistributionControl4.Initialize(dsc.Pokemon.AbilitiesDists);
-            numericDistributionControl2.Initialize(dsc.Pokemon.CatchRateDists);
-            numericDistributionControl3.Initialize(dsc.Pokemon.EVYieldDists);
-            numericDistributionControl4.Initialize(dsc.Pokemon.InitialFriendshipDists);
-            numericDistributionControl5.Initialize(dsc.Pokemon.ExpYieldDists);
-            itemDistributionControl7.Initialize(dsc.Pokemon.EggMovesDists);
-            numericUpDown5.Value = (decimal)dsc.Pokemon.EggMoveTypeBiasP;
-            numericDistributionControl9.Initialize(dsc.Pokemon.EggMovesCountDists);
-            itemDistributionControl6.Initialize(dsc.Pokemon.LevelUpMovesDists);
-            numericUpDown4.Value = (decimal)dsc.Pokemon.LevelUpMovesTypeBiasP;
-            numericDistributionControl7.Initialize(dsc.Pokemon.LevelUpMovesLevelDists);
-            numericDistributionControl6.Initialize(dsc.Pokemon.LevelUpMovesCountDists);
+            btnDistPokemonEvolutionDest.Initialize(dsc.Pokemon.EvolutionDestinationPokemonDists);
+            grpDistPokemonEvolutionLevel.Initialize(dsc.Pokemon.EvolutionLevelDists);
+            grpDistPokemonBaseStats.Initialize(dsc.Pokemon.BaseStatsDists);
+            btnDistPokemonTyping.Initialize(dsc.Pokemon.PokemonTypingDists);
+            numPokemonTypingDouble.Value = (decimal)dsc.Pokemon.DoubleTypingP;
+            numPokemonTMCompatPercent.Value = (decimal)dsc.Pokemon.TMCompatibilityP;
+            numPokemonTMCompatTypeBias.Value = (decimal)dsc.Pokemon.TMCompatibilityTypeBiasP;
+            btnDistPokemonWildHeldItems.Initialize(dsc.Pokemon.WildHeldItemsDists);
+            btnDistPokemonGrowth.Initialize(dsc.Pokemon.GrowthRateDists);
+            btnDistPokemonAbilities.Initialize(dsc.Pokemon.AbilitiesDists);
+            grpDistPokemonMiscCatchRate.Initialize(dsc.Pokemon.CatchRateDists);
+            grpDistPokemonMiscEVs.Initialize(dsc.Pokemon.EVYieldDists);
+            grpDistPokemonMiscInitFriendship.Initialize(dsc.Pokemon.InitialFriendshipDists);
+            grpDistPokemonMiscExp.Initialize(dsc.Pokemon.ExpYieldDists);
+            btnDistPokemonEggMoves.Initialize(dsc.Pokemon.EggMovesDists);
+            numPokemonEggMovesTypeBias.Value = (decimal)dsc.Pokemon.EggMoveTypeBiasP;
+            grpDistPokemonEggMovesCount.Initialize(dsc.Pokemon.EggMovesCountDists);
+            btnDistPokemonLevelMovesMoves.Initialize(dsc.Pokemon.LevelUpMovesDists);
+            numPokemonLevelMovesTypeBias.Value = (decimal)dsc.Pokemon.LevelUpMovesTypeBiasP;
+            grpDistPokemonLevelMovesLearnLevels.Initialize(dsc.Pokemon.LevelUpMovesLevelDists);
+            grpDistPokemonLevelMovesCount.Initialize(dsc.Pokemon.LevelUpMovesCountDists);
 
-            itemDistributionControl8.Initialize(dsc.MovesAndItems.MoveTypingDists);
-            itemDistributionControl9.Initialize(dsc.MovesAndItems.DamageCategoryDists);
-            itemDistributionControl18.Initialize(dsc.MovesAndItems.TMMovesDists);
-            numericDistributionControl8.Initialize(dsc.MovesAndItems.MovePowerDists);
-            numericDistributionControl10.Initialize(dsc.MovesAndItems.MoveAccuracyDists);
-            numericDistributionControl11.Initialize(dsc.MovesAndItems.MovePPDists);
-            numericDistributionControl18.Initialize(dsc.MovesAndItems.ItemPricesDists);
-            itemDistributionControl16.Initialize(dsc.MovesAndItems.PickupItemsDists);
-            itemDistributionControl19.Initialize(dsc.MovesAndItems.ShopItemsDists);
+            btnDistMovesAndItemsMoveTyping.Initialize(dsc.MovesAndItems.MoveTypingDists);
+            btnDistMovesAndItemsMoveCategory.Initialize(dsc.MovesAndItems.DamageCategoryDists);
+            btnDistMovesAndItemsTMMoves.Initialize(dsc.MovesAndItems.TMMovesDists);
+            grpDistMovesAndItemsPower.Initialize(dsc.MovesAndItems.MovePowerDists);
+            grpDistMovesAndItemsAccuracy.Initialize(dsc.MovesAndItems.MoveAccuracyDists);
+            grpDistMovesAndItemsPP.Initialize(dsc.MovesAndItems.MovePPDists);
+            grpDistMovesAndItemsItemPrices.Initialize(dsc.MovesAndItems.ItemPricesDists);
+            btnDistMovesAndItemsPickup.Initialize(dsc.MovesAndItems.PickupItemsDists);
+            btnDistMovesAndItemsShopItems.Initialize(dsc.MovesAndItems.ShopItemsDists);
 
-            itemDistributionControl10.Initialize(dsc.Encounters.WildEncountersWildPokemonDists);
-            numericDistributionControl12.Initialize(dsc.Encounters.WildEncountersWildPokemonLevelsDists);
-            itemDistributionControl11.Initialize(dsc.Encounters.TrainerItemsDists);
-            numericDistributionControl13.Initialize(dsc.Encounters.TrainerItemCountDists);
-            itemDistributionControl12.Initialize(dsc.Encounters.TrainerSpeciesDists);
-            itemDistributionControl15.Initialize(dsc.Encounters.TrainerHeldItemsDists);
-            itemDistributionControl13.Initialize(dsc.Encounters.TrainerNaturesDists);
-            numericUpDown7.Value = (decimal)dsc.Encounters.TrainerMoveTypeBiasP;
-            itemDistributionControl14.Initialize(dsc.Encounters.TrainerMovesDists);
-            numericUpDown6.Value = (decimal)dsc.Encounters.TrainerShinyP;
-            itemDistributionControl17.Initialize(dsc.Encounters.TrainerAbilitiesDists);
-            numericDistributionControl14.Initialize(dsc.Encounters.TrainerPokemonCountDists);
-            numericDistributionControl15.Initialize(dsc.Encounters.TrainerLevelsDists);
-            numericDistributionControl16.Initialize(dsc.Encounters.TrainerIVsDists);
-            numericDistributionControl17.Initialize(dsc.Encounters.TrainerEVsDists);
+            btnDistEncountersWild.Initialize(dsc.Encounters.WildEncountersWildPokemonDists);
+            grpDistEncountersWildLevels.Initialize(dsc.Encounters.WildEncountersWildPokemonLevelsDists);
+            btnDistEncountersTrainerItems.Initialize(dsc.Encounters.TrainerItemsDists);
+            grpDistEncountersTrainerItemsCount.Initialize(dsc.Encounters.TrainerItemCountDists);
+            btnDistEncountersTrainerSpecies.Initialize(dsc.Encounters.TrainerSpeciesDists);
+            btnDistEncountersTrainerHeldItems.Initialize(dsc.Encounters.TrainerHeldItemsDists);
+            btnDistEncountersTrainerNatures.Initialize(dsc.Encounters.TrainerNaturesDists);
+            numEncountersTrainerMovesTypeBias.Value = (decimal)dsc.Encounters.TrainerMoveTypeBiasP;
+            btnDistEncountersTrainerMoves.Initialize(dsc.Encounters.TrainerMovesDists);
+            numEncountersTrainerShiny.Value = (decimal)dsc.Encounters.TrainerShinyP;
+            btnDistEncountersTrainerAbilities.Initialize(dsc.Encounters.TrainerAbilitiesDists);
+            grpDistEncountersTrainerPokemonCount.Initialize(dsc.Encounters.TrainerPokemonCountDists);
+            grpDistEncountersTrainerLevels.Initialize(dsc.Encounters.TrainerLevelsDists);
+            grpDistEncountersTrainerIVs.Initialize(dsc.Encounters.TrainerIVsDists);
+            grpDistEncountersTrainerEVs.Initialize(dsc.Encounters.TrainerEVsDists);
 
-            itemDistributionControl5.Initialize(dsc.Misc.TypeMatchupsDists);
-            itemDistributionControl20.Initialize(dsc.Misc.RandomScriptedPokemonDists);
-            itemDistributionControl21.Initialize(dsc.Misc.RandomScriptedItemsDists);
+            btnDistMiscTypeMatchups.Initialize(dsc.Misc.TypeMatchupsDists);
+            btnDistMiscScriptsPokemon.Initialize(dsc.Misc.RandomScriptedPokemonDists);
+            btnDistMiscScriptsItems.Initialize(dsc.Misc.RandomScriptedItemsDists);
 
             this.rsc.Pokemon.PokemonTypingEvoLogicCorrelationDist = dsc.Pokemon.PokemonTypingEvoLogicCorrelationDist;
             this.rsc.Pokemon.EvoMovesCountDist = dsc.Pokemon.EvoMovesCountDist;
-
-            comboBox1.SelectedIndex = 0;
-
-            if (rsc != null)
-                SetupFormFromConfig();
         }
 
         private void SetupFormFromConfig()
         {
-            // TODO: Update form from config
+            // TODO: Do we set the distributions?
+            SetupFormFromConfigPokemon(rsc.Pokemon);
+            SetupFormFromConfigMovesAndItems(rsc.MovesAndItems);
+            SetupFormFromConfigEncounters(rsc.Encounters);
+            SetupFormFromConfigMisc(rsc.Misc);
+        }
+
+        private void SetupFormFromConfigPokemon(RandomizerSetupConfig.PokemonConfig config)
+        {
+            checkPokemonEvolutionRandomDest.Checked = config.EvolutionRandomDestinations;
+            checkPokemonEvolutionBSTLogic.Checked = config.EvolutionBSTLogic;
+            //btnDistPokemonEvolutionDest.SetCurrent(config.EvolutionDestinationPokemonDist);
+            checkDistPokemonEvolutionLevel.Checked = config.EvolutionLevel;
+            //grpDistPokemonEvolutionLevel.SetCurrent(config.EvolutionLevelDist);
+
+            checkPokemonBaseStatsShuffle.Checked = config.BaseStatsShuffle;
+            checkPokemonBaseStatsBSTLogic.Checked = config.BaseStatsBSTLogic;
+            checkDistPokemonBaseStats.Checked = config.BaseStats;
+            //grpDistPokemonBaseStats.SetCurrent(config.BaseStatsDist);
+
+            checkPokemonTypingRandom.Checked = config.PokemonTyping;
+            checkPokemonTypingEvoLogic.Checked = config.PokemonTypingEvoLogic;
+            //btnDistPokemonTyping.SetCurrent(config.PokemonTypingDist);
+            numPokemonTypingDouble.Value = (decimal)config.DoubleTypingP;
+
+            checkPokemonTMCompatRandom.Checked = config.TMCompatibility;
+            checkPokemonTMCompatEvoLogic.Checked = config.TMCompatibilityEvoLogic;
+            numPokemonTMCompatPercent.Value = (decimal)config.TMCompatibilityP;
+            numPokemonTMCompatTypeBias.Value = (decimal)config.TMCompatibilityTypeBiasP;
+
+            checkPokemonWildHeldItemsRandom.Checked = config.WildHeldItems;
+            //btnDistPokemonWildHeldItems.SetCurrent(config.WildHeldItemsDist);
+
+            checkPokemonGrowthRandom.Checked = config.GrowthRate;
+            //btnDistPokemonGrowth.SetCurrent(config.GrowthRateDist);
+
+            checkPokemonAbilities.Checked = config.Abilities;
+            //btnDistPokemonAbilities.SetCurrent(config.AbilitiesDist);
+
+            checkDistPokemonMiscCatchRate.Checked = config.CatchRate;
+            //grpDistPokemonMiscCatchRate.SetCurrent(config.CatchRateDist);
+
+            checkDistPokemonMiscEVs.Checked = config.EVYield;
+            //grpDistPokemonMiscEVs.SetCurrent(config.EVYieldDist);
+
+            checkDistPokemonMiscInitFriendship.Checked = config.InitialFriendship;
+            //grpDistPokemonMiscInitFriendship.SetCurrent(config.InitialFriendshipDist);
+
+            checkDistPokemonMiscExp.Checked = config.ExpYield;
+            //grpDistPokemonMiscExp.SetCurrent(config.ExpYieldDist);
+
+            checkPokemonEggMovesRandom.Checked = config.EggMoves;
+            //btnDistPokemonEggMoves.SetCurrent(config.EggMovesDist);
+            numPokemonEggMovesTypeBias.Value = (decimal)config.EggMoveTypeBiasP;
+            checkDistPokemonEggMovesCount.Checked = config.EggMovesCount;
+            //grpDistPokemonEggMovesCount.SetCurrent(config.EggMovesCountDist);
+
+            checkPokemonLevelMovesRandom.Checked = config.LevelUpMoves;
+            checkPokemonLevelMovesSortPower.Checked = config.LevelUpMovesSortByPower;
+            //btnDistPokemonLevelMovesMoves.SetCurrent(config.LevelUpMovesDist);
+            numPokemonLevelMovesTypeBias.Value = (decimal)config.LevelUpMovesTypeBiasP;
+            checkDistPokemonLevelMovesLearnLevels.Checked = config.LevelUpMovesLevel;
+            //grpDistPokemonLevelMovesLearnLevels.SetCurrent(config.LevelUpMovesLevelDist);
+            checkDistPokemonLevelMovesCount.Checked = config.LevelUpMovesCount;
+            //grpDistPokemonLevelMovesCount.SetCurrent(config.LevelUpMovesCountDist);
+        }
+
+        private void SetupFormFromConfigMovesAndItems(RandomizerSetupConfig.MovesAndItemsConfig config)
+        {
+            checkMovesAndItemsMoveTypingRandom.Checked = config.MoveTyping;
+            //btnDistMovesAndItemsMoveTyping.SetCurrent(config.MoveTypingDist);
+
+            checkMovesAndItemsMoveCategoryRandom.Checked = config.DamageCategory;
+            //btnDistMovesAndItemsMoveCategory.SetCurrent(config.DamageCategoryDist);
+
+            checkMovesAndItemsTMMovesRandom.Checked = config.TMMoves;
+            //btnDistMovesAndItemsTMMoves.SetCurrent(config.TMMovesDist);
+
+            checkDistMovesAndItemsPower.Checked = config.MovePower;
+            //grpDistMovesAndItemsPower.SetCurrent(config.MovePowerDist);
+
+            checkDistMovesAndItemsAccuracy.Checked = config.MoveAccuracy;
+            //grpDistMovesAndItemsAccuracy.SetCurrent(config.MoveAccuracyDist);
+
+            checkDistMovesAndItemsPP.Checked = config.MovePP;
+            //grpDistMovesAndItemsPP.SetCurrent(config.MovePPDist);
+
+            checkDistMovesAndItemsItemPrices.Checked = config.ItemPrices;
+            //grpDistMovesAndItemsItemPrices.SetCurrent(config.ItemPricesDist);
+
+            checkMovesAndItemsPickupRandom.Checked = config.PickupItems;
+            //btnDistMovesAndItemsPickup.SetCurrent(config.PickupItemsDist);
+
+            checkMovesAndItemsShopItemsRandom.Checked = config.ShopItems;
+            checkMovesAndItemsShopItemsKeepMart.Checked = config.ShopItemsPreserveRegularMart;
+            //btnDistMovesAndItemsShopItems.SetCurrent(config.ShopItemsDist);
+        }
+
+        private void SetupFormFromConfigEncounters(RandomizerSetupConfig.EncountersConfig config)
+        {
+            checkEncountersWildRandom.Checked = config.WildEncountersRandomPokemon;
+            checkEncountersWildHighLevelLegends.Checked = config.WildEncountersHighLevelLegends;
+            checkEncountersWildEvoLogic.Checked = config.WildEncountersEvolutionLogic;
+            //btnDistEncountersWild.SetCurrent(config.WildEncountersWildPokemonDist);
+            checkDistEncountersWildLevels.Checked = config.WildEncountersWildPokemonLevels;
+            //grpDistEncountersWildLevels.SetCurrent(config.WildEncountersWildPokemonLevelsDist);
+
+            checkEncountersTrainerItemsRandom.Checked = config.TrainerItems;
+            //btnDistEncountersTrainerItems.SetCurrent(config.TrainerItemsDist);
+            checkDistEncountersTrainerItemsCount.Checked = config.TrainerItemCount;
+            //grpDistEncountersTrainerItemsCount.SetCurrent(config.TrainerItemCountDist);
+
+            checkEncountersTrainerSpeciesRandom.Checked = config.TrainerRandomPokemon;
+            checkEncountersTrainerSpeciesHighLevelLegends.Checked = config.TrainerHighLevelLegends;
+            checkEncountersTrainerSpeciesTypeThemes.Checked = config.TrainerTypeThemes;
+            checkEncountersTrainerSpeciesEvoLogic.Checked = config.TrainerEvolutionLogic;
+            //btnDistEncountersTrainerSpecies.SetCurrent(config.TrainerSpeciesDist);
+
+            comboEncountersTrainerMovesRandom.SelectedIndex = config.TrainerMovesMode;
+            numEncountersTrainerMovesTypeBias.Value = (decimal)config.TrainerMoveTypeBiasP;
+            //btnDistEncountersTrainerMoves.SetCurrent(config.TrainerMovesDist);
+
+            checkDistEncountersTrainerPokemonCount.Checked = config.TrainerPokemonCount;
+            //grpDistEncountersTrainerPokemonCount.SetCurrent(config.TrainerPokemonCountDist);
+
+            checkDistEncountersTrainerLevels.Checked = config.TrainerLevels;
+            //grpDistEncountersTrainerLevels.SetCurrent(config.TrainerLevelsDist);
+
+            checkEncountersTrainerHeldItemsRandom.Checked = config.TrainerHeldItems;
+            checkEncountersTrainerHeldItemsHighLevel.Checked = config.TrainerHighLevelHeldItems;
+            //btnDistEncountersTrainerHeldItems.SetCurrent(config.TrainerHeldItemsDist);
+
+            checkEncountersTrainerShinyRandom.Checked = config.TrainerShiny;
+            numEncountersTrainerShiny.Value = (decimal)config.TrainerShinyP;
+
+            checkEncountersTrainerNaturesRandom.Checked = config.TrainerNatures;
+            //btnDistEncountersTrainerNatures.SetCurrent(config.TrainerNaturesDist);
+
+            checkEncountersTrainerAbilitiesRandom.Checked = config.TrainerAbilities;
+            checkEncountersTrainerAbilitiesIncludeUnobtainable.Checked = config.TrainerAbilitiesIncludeUnobtainable;
+            //btnDistEncountersTrainerAbilities.SetCurrent(config.TrainerAbilitiesDist);
+
+            checkDistEncountersTrainerIVs.Checked = config.TrainerIVs;
+            //grpDistEncountersTrainerIVs.SetCurrent(config.TrainerIVsDist);
+
+            checkDistEncountersTrainerEVs.Checked = config.TrainerEVs;
+            //grpDistEncountersTrainerEVs.SetCurrent(config.TrainerEVsDist);
+        }
+
+        private void SetupFormFromConfigMisc(RandomizerSetupConfig.MiscConfig config)
+        {
+            checkMiscTypeMatchupsRandom.Checked = config.TypeMatchups;
+            //btnDistMiscTypeMatchups.SetCurrent(config.TypeMatchupsDist);
+
+            checkMiscShuffleText.Checked = config.ShuffleText;
+            checkMiscShuffleTextKeepStrLength.Checked = config.ShuffleTextPreserveStringLength;
+            checkMiscShuffleBGM.Checked = config.ShuffleBGM;
+
+            checkMiscScriptsPokemonRandom.Checked = config.RandomScriptedPokemon;
+            //btnDistMiscScriptsPokemon.SetCurrent(config.RandomScriptedPokemonDist);
+
+            checkMiscScriptsItemsRandom.Checked = config.RandomScriptedItems;
+            //btnDistMiscScriptsItems.SetCurrent(config.RandomScriptedItemsDist);
+
+            checkMiscLevelMultEvoLevels.Checked = config.LevelMultiplierEvolutionLevels;
+            checkMiscLevelMultLevelMoves.Checked = config.LevelMultiplierLevelUpMoves;
+            checkMiscLevelMultWild.Checked = config.LevelMultiplierWildEncounters;
+            checkMiscLevelMultTrainer.Checked = config.LevelMultiplierTrainerLevels;
+            numMiscLevelMultMult.Value = (decimal)config.LevelMultiplierCoefficient;
         }
 
         private void UpdateConfigFromForm()
         {
-            // TODO: Update config from form
+            UpdateConfigFromFormPokemon(rsc.Pokemon);
+            UpdateConfigFromFormMovesAndItems(rsc.MovesAndItems);
+            UpdateConfigFromFormEncounters(rsc.Encounters);
+            UpdateConfigFromFormMisc(rsc.Misc);
+        }
+
+        private void UpdateConfigFromFormPokemon(RandomizerSetupConfig.PokemonConfig config)
+        {
+            config.EvolutionRandomDestinations = checkPokemonEvolutionRandomDest.Checked;
+            config.EvolutionBSTLogic = checkPokemonEvolutionBSTLogic.Checked;
+            config.EvolutionDestinationPokemonDist = btnDistPokemonEvolutionDest.Get();
+            config.EvolutionLevel = checkDistPokemonEvolutionLevel.Checked;
+            config.EvolutionLevelDist = grpDistPokemonEvolutionLevel.Get();
+
+            config.BaseStatsShuffle = checkPokemonBaseStatsShuffle.Checked;
+            config.BaseStatsBSTLogic = checkPokemonBaseStatsBSTLogic.Checked;
+            config.BaseStats = checkDistPokemonBaseStats.Checked;
+            config.BaseStatsDist = grpDistPokemonBaseStats.Get();
+
+            config.PokemonTyping = checkPokemonTypingRandom.Checked;
+            config.PokemonTypingEvoLogic = checkPokemonTypingEvoLogic.Checked;
+            config.PokemonTypingDist = btnDistPokemonTyping.Get();
+            config.DoubleTypingP = (double)numPokemonTypingDouble.Value;
+
+            config.TMCompatibility = checkPokemonTMCompatRandom.Checked;
+            config.TMCompatibilityEvoLogic = checkPokemonTMCompatEvoLogic.Checked;
+            config.TMCompatibilityP = (double)numPokemonTMCompatPercent.Value;
+            config.TMCompatibilityTypeBiasP = (double)numPokemonTMCompatTypeBias.Value;
+
+            config.WildHeldItems = checkPokemonWildHeldItemsRandom.Checked;
+            config.WildHeldItemsDist = btnDistPokemonWildHeldItems.Get();
+
+            config.GrowthRate = checkPokemonGrowthRandom.Checked;
+            config.GrowthRateDist = btnDistPokemonGrowth.Get();
+
+            config.Abilities = checkPokemonAbilities.Checked;
+            config.AbilitiesDist = btnDistPokemonAbilities.Get();
+
+            config.CatchRate = checkDistPokemonMiscCatchRate.Checked;
+            config.CatchRateDist = grpDistPokemonMiscCatchRate.Get();
+
+            config.EVYield = checkDistPokemonMiscEVs.Checked;
+            config.EVYieldDist = grpDistPokemonMiscEVs.Get();
+
+            config.InitialFriendship = checkDistPokemonMiscInitFriendship.Checked;
+            config.InitialFriendshipDist = grpDistPokemonMiscInitFriendship.Get();
+
+            config.ExpYield = checkDistPokemonMiscExp.Checked;
+            config.ExpYieldDist = grpDistPokemonMiscExp.Get();
+
+            config.EggMoves = checkPokemonEggMovesRandom.Checked;
+            config.EggMovesDist = btnDistPokemonEggMoves.Get();
+            config.EggMoveTypeBiasP = (double)numPokemonEggMovesTypeBias.Value;
+            config.EggMovesCount = checkDistPokemonEggMovesCount.Checked;
+            config.EggMovesCountDist = grpDistPokemonEggMovesCount.Get();
+
+            config.LevelUpMoves = checkPokemonLevelMovesRandom.Checked;
+            config.LevelUpMovesSortByPower = checkPokemonLevelMovesSortPower.Checked;
+            config.LevelUpMovesDist = btnDistPokemonLevelMovesMoves.Get();
+            config.LevelUpMovesTypeBiasP = (double)numPokemonLevelMovesTypeBias.Value;
+            config.LevelUpMovesLevel = checkDistPokemonLevelMovesLearnLevels.Checked;
+            config.LevelUpMovesLevelDist = grpDistPokemonLevelMovesLearnLevels.Get();
+            config.LevelUpMovesCount = checkDistPokemonLevelMovesCount.Checked;
+            config.LevelUpMovesCountDist = grpDistPokemonLevelMovesCount.Get();
+        }
+
+        private void UpdateConfigFromFormMovesAndItems(RandomizerSetupConfig.MovesAndItemsConfig config)
+        {
+            config.MoveTyping = checkMovesAndItemsMoveTypingRandom.Checked;
+            config.MoveTypingDist = btnDistMovesAndItemsMoveTyping.Get();
+
+            config.DamageCategory = checkMovesAndItemsMoveCategoryRandom.Checked;
+            config.DamageCategoryDist = btnDistMovesAndItemsMoveCategory.Get();
+
+            config.TMMoves = checkMovesAndItemsTMMovesRandom.Checked;
+            config.TMMovesDist = btnDistMovesAndItemsTMMoves.Get();
+
+            config.MovePower = checkDistMovesAndItemsPower.Checked;
+            config.MovePowerDist = grpDistMovesAndItemsPower.Get();
+
+            config.MoveAccuracy = checkDistMovesAndItemsAccuracy.Checked;
+            config.MoveAccuracyDist = grpDistMovesAndItemsAccuracy.Get();
+
+            config.MovePP = checkDistMovesAndItemsPP.Checked;
+            config.MovePPDist = grpDistMovesAndItemsPP.Get();
+
+            config.ItemPrices = checkDistMovesAndItemsItemPrices.Checked;
+            config.ItemPricesDist = grpDistMovesAndItemsItemPrices.Get();
+
+            config.PickupItems = checkMovesAndItemsPickupRandom.Checked;
+            config.PickupItemsDist = btnDistMovesAndItemsPickup.Get();
+
+            config.ShopItems = checkMovesAndItemsShopItemsRandom.Checked;
+            config.ShopItemsPreserveRegularMart = checkMovesAndItemsShopItemsKeepMart.Checked;
+            config.ShopItemsDist = btnDistMovesAndItemsShopItems.Get();
+        }
+
+        private void UpdateConfigFromFormEncounters(RandomizerSetupConfig.EncountersConfig config)
+        {
+            config.WildEncountersRandomPokemon = checkEncountersWildRandom.Checked;
+            config.WildEncountersHighLevelLegends = checkEncountersWildHighLevelLegends.Checked;
+            config.WildEncountersEvolutionLogic = checkEncountersWildEvoLogic.Checked;
+            config.WildEncountersWildPokemonDist = btnDistEncountersWild.Get();
+            config.WildEncountersWildPokemonLevels = checkDistEncountersWildLevels.Checked;
+            config.WildEncountersWildPokemonLevelsDist = grpDistEncountersWildLevels.Get();
+
+            config.TrainerItems = checkEncountersTrainerItemsRandom.Checked;
+            config.TrainerItemsDist = btnDistEncountersTrainerItems.Get();
+            config.TrainerItemCount = checkDistEncountersTrainerItemsCount.Checked;
+            config.TrainerItemCountDist = grpDistEncountersTrainerItemsCount.Get();
+
+            config.TrainerRandomPokemon = checkEncountersTrainerSpeciesRandom.Checked;
+            config.TrainerHighLevelLegends = checkEncountersTrainerSpeciesHighLevelLegends.Checked;
+            config.TrainerTypeThemes = checkEncountersTrainerSpeciesTypeThemes.Checked;
+            config.TrainerEvolutionLogic = checkEncountersTrainerSpeciesEvoLogic.Checked;
+            config.TrainerSpeciesDist = btnDistEncountersTrainerSpecies.Get();
+
+            config.TrainerMovesMode = comboEncountersTrainerMovesRandom.SelectedIndex;
+            config.TrainerMoveTypeBiasP = (double)numEncountersTrainerMovesTypeBias.Value;
+            config.TrainerMovesDist = btnDistEncountersTrainerMoves.Get();
+
+            config.TrainerPokemonCount = checkDistEncountersTrainerPokemonCount.Checked;
+            config.TrainerPokemonCountDist = grpDistEncountersTrainerPokemonCount.Get();
+
+            config.TrainerLevels = checkDistEncountersTrainerLevels.Checked;
+            config.TrainerLevelsDist = grpDistEncountersTrainerLevels.Get();
+
+            config.TrainerHeldItems = checkEncountersTrainerHeldItemsRandom.Checked;
+            config.TrainerHighLevelHeldItems = checkEncountersTrainerHeldItemsHighLevel.Checked;
+            config.TrainerHeldItemsDist = btnDistEncountersTrainerHeldItems.Get();
+
+            config.TrainerShiny = checkEncountersTrainerShinyRandom.Checked;
+            config.TrainerShinyP = (double)numEncountersTrainerShiny.Value;
+
+            config.TrainerNatures = checkEncountersTrainerNaturesRandom.Checked;
+            config.TrainerNaturesDist = btnDistEncountersTrainerNatures.Get();
+
+            config.TrainerAbilities = checkEncountersTrainerAbilitiesRandom.Checked;
+            config.TrainerAbilitiesIncludeUnobtainable = checkEncountersTrainerAbilitiesIncludeUnobtainable.Checked;
+            config.TrainerAbilitiesDist = btnDistEncountersTrainerAbilities.Get();
+
+            config.TrainerIVs = checkDistEncountersTrainerIVs.Checked;
+            config.TrainerIVsDist = grpDistEncountersTrainerIVs.Get();
+
+            config.TrainerEVs = checkDistEncountersTrainerEVs.Checked;
+            config.TrainerEVsDist = grpDistEncountersTrainerEVs.Get();
+        }
+
+        private void UpdateConfigFromFormMisc(RandomizerSetupConfig.MiscConfig config)
+        {
+            config.TypeMatchups = checkMiscTypeMatchupsRandom.Checked;
+            config.TypeMatchupsDist = btnDistMiscTypeMatchups.Get();
+
+            config.ShuffleText = checkMiscShuffleText.Checked;
+            config.ShuffleTextPreserveStringLength = checkMiscShuffleTextKeepStrLength.Checked;
+            config.ShuffleBGM = checkMiscShuffleBGM.Checked;
+
+            config.RandomScriptedPokemon = checkMiscScriptsPokemonRandom.Checked;
+            config.RandomScriptedPokemonDist = btnDistMiscScriptsPokemon.Get();
+
+            config.RandomScriptedItems = checkMiscScriptsItemsRandom.Checked;
+            config.RandomScriptedItemsDist = btnDistMiscScriptsItems.Get();
+
+            config.LevelMultiplierEvolutionLevels = checkMiscLevelMultEvoLevels.Checked;
+            config.LevelMultiplierLevelUpMoves = checkMiscLevelMultLevelMoves.Checked;
+            config.LevelMultiplierWildEncounters = checkMiscLevelMultWild.Checked;
+            config.LevelMultiplierTrainerLevels = checkMiscLevelMultTrainer.Checked;
+            config.LevelMultiplierCoefficient = (double)numMiscLevelMultMult.Value;
         }
 
         /// <summary>
@@ -160,8 +493,8 @@ namespace ImpostersOrdeal
             SetupConfig(controller.GetInitialDistributionConfig(), new RandomizerSetupConfig());
             loadingForm.Finish();
 
-            absoluteBoundaryDataGridView.DataSource = controller.GetAbsoluteBoundariesTable();
-            foreach (DataGridViewColumn c in absoluteBoundaryDataGridView.Columns)
+            gridMiscAbsoluteBoundaries.DataSource = controller.GetAbsoluteBoundariesTable();
+            foreach (DataGridViewColumn c in gridMiscAbsoluteBoundaries.Columns)
             {
                 if (c.Name == "Value")
                     c.FillWeight = 300;

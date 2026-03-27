@@ -40,7 +40,7 @@ namespace ImpostersOrdeal
             List<Control> l = new();
             for (int i = 0; i < Controls.Count; i++)
                 l.Add(Controls[i]);
-            l.Find(c => c.Name.Contains("textBox")).Text = Get().GetString();
+            l.Find(c => c is TextBox).Text = Get().GetString();
         }
     }
 }

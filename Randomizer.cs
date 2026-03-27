@@ -85,7 +85,7 @@ namespace ImpostersOrdeal
             if (config.Pokemon.EggMoves)
                 RandomizeEggMoves(gameData, config.Pokemon.EggMovesDist, config.Pokemon.EggMoveTypeBiasP, config.Pokemon.EggMovesCount, config.Pokemon.EggMovesCountDist);
             if (config.Pokemon.LevelUpMoves || config.Pokemon.LevelUpMovesLevel)
-                RandomizeLevelUpMoves(gameData, config.Pokemon.LevelUpMoves, config.Pokemon.LevelUpMovesDist, config.Pokemon.LevelUpMovesLevel, config.Pokemon.LevelUpMovesLevelDist, config.Pokemon.LevelUpMovesTypeBiasP, config.Pokemon.LevelUpMovesCount, config.Pokemon.LevelUpMovesCountDist, config.Pokemon.LevelUpMovesSortByPower, config.Pokemon.LevelUpMovesCountDist);
+                RandomizeLevelUpMoves(gameData, config.Pokemon.LevelUpMoves, config.Pokemon.LevelUpMovesDist, config.Pokemon.LevelUpMovesLevel, config.Pokemon.LevelUpMovesLevelDist, config.Pokemon.LevelUpMovesTypeBiasP, config.Pokemon.LevelUpMovesCount, config.Pokemon.LevelUpMovesCountDist, config.Pokemon.LevelUpMovesSortByPower, config.Pokemon.EvoMovesCountDist);
 
             if (config.Encounters.WildEncountersRandomPokemon || config.Encounters.WildEncountersWildPokemonLevels)
                 RandomizeWildEncounters(gameData, config.Encounters.WildEncountersRandomPokemon, config.Encounters.WildEncountersWildPokemonDist, config.Encounters.WildEncountersWildPokemonLevels, config.Encounters.WildEncountersWildPokemonLevelsDist, config.Encounters.WildEncountersHighLevelLegends, config.Encounters.WildEncountersEvolutionLogic);
@@ -537,7 +537,9 @@ namespace ImpostersOrdeal
             var legendaries = gameData.encounterTableFiles[0].legendpoke;
             foreach (var trainer in gameData.trainerTable.TrainerData)
             {
-                var typing = gameData.trainerTable.TrainerType[trainer.TypeID].GetTypeTheme();
+                int typing = -1;
+                if (trainer.TypeID >= 0 && trainer.TypeID < gameData.trainerTable.TrainerType.Count)
+                    typing = gameData.trainerTable.TrainerType[trainer.TypeID].GetTypeTheme();
 
                 foreach (var trainerPokemon in trainer.Pokes)
                 {
