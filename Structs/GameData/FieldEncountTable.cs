@@ -54,12 +54,11 @@ namespace ImpostersOrdeal
 
             public List<List<MonsLv>> GetAllTables()
             {
-                return new List<List<MonsLv>>()
-                {
+                return [
                     ground_mons, tairyo, day, night, swayGrass,
                     gbaRuby, gbaSapp, gbaEme, gbaFire, gbaLeaf,
                     water_mons, boro_mons, ii_mons, sugoi_mons
-                };
+                ];
             }
 
             public double GetAvgLevel()

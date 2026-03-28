@@ -91,6 +91,15 @@ namespace ImpostersOrdeal
                     }
                 }
 
+                public int[] CompatibleTMs
+                {
+                    get
+                    {
+                        var tmFlags = TMFlags;
+                        return Enumerable.Range(0, tmFlags.Length).Where(i => tmFlags[i]).ToArray();
+                    }
+                }
+
                 public byte[] EVYields
                 {
                     get => Enumerable.Range(0, 6)
@@ -147,6 +156,17 @@ namespace ImpostersOrdeal
                     {
                         type1 = value[0];
                         type2 = value.Length >= 2 ? value[1] : value[0];
+                    }
+                }
+
+                public ushort[] HeldItems
+                {
+                    get => [item1, item2, item3];
+                    set
+                    {
+                        item1 = value[0];
+                        item2 = value[1];
+                        item3 = value[2];
                     }
                 }
             }

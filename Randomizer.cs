@@ -342,12 +342,14 @@ namespace ImpostersOrdeal
             foreach (var evScript in gameData.evScriptFiles)
                 foreach (var script in evScript.Scripts)
                     foreach (var command in script.Commands)
-                        if (command.Arg[0].data == 187 &&
-                            command.Arg[1].data >= 0 && command.Arg[1].data < gameData.itemTable.Item.Count &&
-                            gameData.itemTable.Item[command.Arg[1].data].Enabled)
+                        if (command.Arg.Count > 0 && command.Arg[0].data == 187)
                         {
-                            command.Arg[1].argType = EvData.ArgType.Float;
-                            command.Arg[1].data = distribution.Next(command.Arg[1].data);
+                            var itemNo = FloatHelper.ConvertToRoundedFloat(command.Arg[1].data);
+                            if (itemNo >= 0 && itemNo < gameData.itemTable.Item.Count && gameData.itemTable.Item[itemNo].Enabled)
+                            {
+                                command.Arg[1].argType = EvData.ArgType.Float;
+                                command.Arg[1].data = FloatHelper.ConvertToInt(distribution.Next(itemNo));
+                            }
                         }
 
             gameData.SetModified(gameData.evScriptFiles.GetType());
@@ -358,10 +360,11 @@ namespace ImpostersOrdeal
             foreach (var evScript in gameData.evScriptFiles)
                 foreach (var script in evScript.Scripts)
                     foreach(var command in script.Commands)
-                        if (command.Arg[0].data == 322)
+                        if (command.Arg.Count > 0 && command.Arg[0].data == 322)
                         {
+                            var monsNo = FloatHelper.ConvertToRoundedFloat(command.Arg[2].data);
                             command.Arg[2].argType = EvData.ArgType.Float;
-                            command.Arg[2].data = distribution.Next(command.Arg[2].data);
+                            command.Arg[2].data = FloatHelper.ConvertToInt(distribution.Next(monsNo));
                         }
 
             gameData.SetModified(gameData.evScriptFiles.GetType());

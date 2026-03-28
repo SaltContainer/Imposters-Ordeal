@@ -77,9 +77,9 @@ namespace ImpostersOrdeal
         /// <summary>
         /// Generates item distribution objects.
         /// </summary>
-        public static (IDistribution[], List<string>, int) GetItemDistributionConfig<T, E>(this IEnumerable<T> self, Func<T, int> idFunc, IList<E> entities, Func<E, bool> validityFunc, Func<E, string> nameFunc)
+        public static (IDistribution[], List<string>, int) GetItemDistributionConfig<T, E>(this IEnumerable<T> self, Func<T, int> idFunc, IEnumerable<E> entities, Func<E, bool> validityFunc, Func<E, string> nameFunc)
         {
-            int[] instances = new int[entities.Count];
+            int[] instances = new int[entities.Count()];
             foreach (var item in self)
                 instances[idFunc.Invoke(item)]++;
             return ToItemDistributionConfig(instances, entities, validityFunc, nameFunc);
@@ -88,7 +88,7 @@ namespace ImpostersOrdeal
         /// <summary>
         /// Generates item distribution objects from an array of instances.
         /// </summary>
-        private static (IDistribution[], List<string>, int) ToItemDistributionConfig<E>(int[] instances, IList<E> entities, Func<E, bool> validityFunc, Func<E, string> nameFunc)
+        private static (IDistribution[], List<string>, int) ToItemDistributionConfig<E>(int[] instances, IEnumerable<E> entities, Func<E, bool> validityFunc, Func<E, string> nameFunc)
         {
             IDistribution[] distributions = new IDistribution[]
             {

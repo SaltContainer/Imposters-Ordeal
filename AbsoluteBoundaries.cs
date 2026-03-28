@@ -48,23 +48,26 @@ namespace ImpostersOrdeal
 
         public static DataRow GetBoundaries(Boundary a)
         {
-            if ((int)a == -1)
+            if (a == Boundary.None)
                 return null;
+
             return table.Rows[(int)a];
         }
 
         public static bool IsWithin(Boundary a, int x)
         {
-            if ((int)a == -1)
+            if (a == Boundary.None)
                 return true;
+
             DataRow b = GetBoundaries(a);
             return x >= (int)b[1] && x <= (int)b[2];
         }
 
         public static int Conform(Boundary a, int x)
         {
-            if ((int)a == -1)
+            if (a == Boundary.None)
                 return x;
+
             DataRow b = GetBoundaries(a);
             x = (int)(Math.Round((double)x / (int)b[3]) * (int)b[3]);
             return Math.Clamp(x, (int)b[1], (int)b[2]);

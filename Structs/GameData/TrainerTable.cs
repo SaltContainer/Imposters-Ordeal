@@ -121,6 +121,33 @@ namespace ImpostersOrdeal
                 public byte EffortSpDef;
                 public byte EffortAgi;
 
+                public byte[] IVs
+                {
+                    get => [TalentHp, TalentAtk, TalentDef, TalentSpAtk, TalentSpDef, TalentAgi];
+                    set
+                    {
+                        TalentHp = value[0];
+                        TalentAtk = value[1];
+                        TalentDef = value[2];
+                        TalentSpAtk = value[3];
+                        TalentSpDef = value[4];
+                        TalentAgi = value[5];
+                    }
+                }
+                public byte[] EVs
+                {
+                    get => [EffortHp, EffortAtk, EffortDef, EffortSpAtk, EffortSpDef, EffortAgi];
+                    set
+                    {
+                        EffortHp = value[0];
+                        EffortAtk = value[1];
+                        EffortDef = value[2];
+                        EffortSpAtk = value[3];
+                        EffortSpDef = value[4];
+                        EffortAgi = value[5];
+                    }
+                }
+
                 public int TotalIVs => TalentHp + TalentAtk + TalentDef + TalentSpAtk + TalentSpDef + TalentAgi;
                 public int TotalEVs => EffortHp + EffortAtk + EffortDef + EffortSpAtk + EffortSpDef + EffortAgi;
 

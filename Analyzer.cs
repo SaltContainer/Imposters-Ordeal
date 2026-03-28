@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using static ImpostersOrdeal.GlobalData;
-using static ImpostersOrdeal.Distributions;
 
 namespace ImpostersOrdeal
 {
@@ -36,9 +34,9 @@ namespace ImpostersOrdeal
             // Pokémon Typing
             distributionsSetupConfig.Pokemon.PokemonTypingDists = gameData.pokemonDataTable.Data.Skip(1).SelectMany(p => p.personal.Types)
                 .GetItemDistributionConfig(p => p,
-                    Enumerable.Range(0, 18).ToList(),
+                    gameData.GetAllLabels(Constants.TYPE_MESSAGEFILE_NAME),
                     e => true,
-                    e => gameData.GetLabelByIndex(Constants.TYPE_MESSAGEFILE_NAME, e));
+                    e => e);
 
             // Pokémon Typing
             distributionsSetupConfig.Pokemon.DoubleTypingP = gameData.pokemonDataTable.Data.GetOccurrencePercent(p => p.personal.type1 != p.personal.type2);
@@ -50,392 +48,274 @@ namespace ImpostersOrdeal
                     e => e.personal.Valid,
                     e => string.Empty).Item1[0]; // Only Empirical
 
-            //TM Compatibility
-            /*instances = new int[gameData.tms.Count];
-            entities = gameData.tms.Select(o => (INamedEntity)o).ToList();
-            for (int personalID = 1; personalID < gameData.personalEntries.Count; personalID++)
-            {
-                bool[] tmCompatibility = gameData.personalEntries[personalID].GetTMCompatibility();
-                for (int tmID = 0; tmID < tmCompatibility.Length; tmID++)
-                    if (tmCompatibility[tmID])
-                        instances[tmID]++;
-            }
-            List<int> validInstances = new();
-            for (int tmID = 0; tmID < instances.Length; tmID++)
-                if (gameData.tms[tmID].IsValid())
-                    validInstances.Add(instances[tmID]);
-            randomizerSetupConfig.tmCompatibilityP = 100 * validInstances.Average() / gameData.personalEntries.Count;
+            // TM Compatibility
+            distributionsSetupConfig.Pokemon.TMCompatibilityP = gameData.pokemonDataTable.Data.Skip(1).Select(p => p.personal.TMFlags.GetOccurrencePercent(f => f)).Average();
 
-            //TM Type Bias
-            List<(Pokemon, Move)> movePairing = gameData.personalEntries.SelectMany(p => p.GetCompatibleTMs().Select(t => (p, gameData.moves[gameData.tms[t].moveID]))).ToList();
-            double sameTypePercent = GetOccurrencePercent(movePairing, pm => pm.Item1.GetTyping().Contains(pm.Item2.typingID));
-            double unbiasedSameTypePercent = (100 + randomizerSetupConfig.doubleTypingP) / gameData.typings.Count;
-            randomizerSetupConfig.tmCompatibilityTypeBiasP = 100 * (sameTypePercent - unbiasedSameTypePercent) / (100 - unbiasedSameTypePercent);
-            if (randomizerSetupConfig.tmCompatibilityTypeBiasP < 0)
-                randomizerSetupConfig.tmCompatibilityTypeBiasP = 0;
+            // TM Type Bias (NOTE: logic changed)
+            distributionsSetupConfig.Pokemon.TMCompatibilityTypeBiasP = gameData.pokemonDataTable.Data.Skip(1).SelectMany(p => p.personal.CompatibleTMs
+                    .Select(t => (p, gameData.moveTable.Waza[gameData.itemTable.WazaMachine[t].wazaNo­])))
+                .GetOccurrencePercent(pm => pm.Item1.personal.Types.Contains(pm.Item2.type));
 
-            //Wild Held Items
-            instances = new int[gameData.items.Count];
-            entities = gameData.items.Select(o => (INamedEntity)o).ToList();
-            for (int personalID = 1; personalID < gameData.personalEntries.Count; personalID++)
-            {
-                int[] wildHeldItems = gameData.personalEntries[personalID].GetWildHeldItems();
-                for (int i = 0; i < wildHeldItems.Length; i++)
-                    instances[wildHeldItems[i]]++;
-            }
-            randomizerSetupConfig.wildHeldItems = ToItemDistributionConfig(instances, entities);
+            // Wild Held Items
+            distributionsSetupConfig.Pokemon.WildHeldItemsDists = gameData.pokemonDataTable.Data.Skip(1).SelectMany(p => p.personal.HeldItems)
+                .GetItemDistributionConfig(p => p,
+                    gameData.itemTable.Item,
+                    e => e.Enabled,
+                    e => gameData.GetLabelByIndex(Constants.ITEM_MESSAGEFILE_NAME, e.no));
 
-            //Growth Rate
-            randomizerSetupConfig.growthRate = GetItemDistributionConfig(gameData.personalEntries, p => p.grow, gameData.growthRates.Select(o => (INamedEntity)o).ToList());
+            // Growth Rate
+            distributionsSetupConfig.Pokemon.GrowthRateDists = gameData.pokemonDataTable.Data.Select(p => p.personal.grow)
+                .GetItemDistributionConfig(g => g,
+                    gameData.growthRateTable.Rates,
+                    e => e.id > 0 && e.id < 6,
+                    e => string.Empty); // TODO: Growth Rate names
 
-            //Abilities
-            instances = new int[gameData.abilities.Count];
-            entities = gameData.abilities.Select(o => (INamedEntity)o).ToList();
-            for (int personalID = 1; personalID < gameData.personalEntries.Count; personalID++)
-            {
-                int[] abilities = gameData.personalEntries[personalID].GetAbilities();
-                for (int i = 0; i < abilities.Length; i++)
-                    instances[abilities[i]]++;
-            }
-            randomizerSetupConfig.abilities = ToItemDistributionConfig(instances, entities);
-            
-            //Catch Rate
-            randomizerSetupConfig.catchRate = GetNumericDistributionConfig(gameData.personalEntries, p => p.getRate, AbsoluteBoundary.CatchRate);
+            // Abilities
+            distributionsSetupConfig.Pokemon.AbilitiesDists = gameData.pokemonDataTable.Data.Skip(1).SelectMany(p => p.personal.Abilities)
+                .GetItemDistributionConfig(a => a,
+                    gameData.GetAllLabels(Constants.ABILITY_MESSAGEFILE_NAME),
+                    e => true,
+                    e => e);
 
-            //Ev Yield
-            randomizerSetupConfig.evYields = GetNumericDistributionConfig(gameData.personalEntries, p => p.GetEvYield().Sum(), AbsoluteBoundary.EvYieldTotal);
+            // Catch Rate
+            distributionsSetupConfig.Pokemon.CatchRateDists = gameData.pokemonDataTable.Data.GetNumericDistributionConfig(p => p.personal.get_rate, AbsoluteBoundaries.Boundary.CatchRate);
 
-            //Initial Friendship
-            randomizerSetupConfig.initialFriendship = GetNumericDistributionConfig(gameData.personalEntries, p => p.initialFriendship, AbsoluteBoundary.InitialFriendship);
+            // EV Yield
+            distributionsSetupConfig.Pokemon.EVYieldDists = gameData.pokemonDataTable.Data.GetNumericDistributionConfig(p => p.personal.EVYieldTotal, AbsoluteBoundaries.Boundary.EvYieldTotal);
 
-            //Exp Yield
-            randomizerSetupConfig.expYield = GetNumericDistributionConfig(gameData.personalEntries, p => p.giveExp, AbsoluteBoundary.ExpYield);
+            // Initial Friendship
+            distributionsSetupConfig.Pokemon.InitialFriendshipDists = gameData.pokemonDataTable.Data.GetNumericDistributionConfig(p => p.personal.initial_friendship, AbsoluteBoundaries.Boundary.InitialFriendship);
 
-            //Egg Moves
-            instances = new int[gameData.moves.Count];
-            entities = gameData.moves.Select(o => (INamedEntity)o).ToList();
-            for (int personalID = 1; personalID < gameData.personalEntries.Count; personalID++)
-                for (int i = 0; i < gameData.personalEntries[personalID].eggMoves.Count; i++)
-                    instances[gameData.personalEntries[personalID].eggMoves[i]]++;
-            randomizerSetupConfig.eggMoves = ToItemDistributionConfig(instances, entities);
+            // Exp Yield
+            distributionsSetupConfig.Pokemon.ExpYieldDists = gameData.pokemonDataTable.Data.GetNumericDistributionConfig(p => p.personal.give_exp, AbsoluteBoundaries.Boundary.ExpYield);
 
-            //Egg Move Type Bias
-            movePairing = gameData.personalEntries.SelectMany(p => p.eggMoves.Select(i => (p, gameData.moves[i]))).ToList();
-            sameTypePercent = GetOccurrencePercent(movePairing, pm => pm.Item1.GetTyping().Contains(pm.Item2.typingID));
-            unbiasedSameTypePercent = (100 + randomizerSetupConfig.doubleTypingP) / gameData.typings.Count;
-            randomizerSetupConfig.eggMoveTypeBiasP = 100 * (sameTypePercent - unbiasedSameTypePercent) / (100 - unbiasedSameTypePercent);
-            if (randomizerSetupConfig.eggMoveTypeBiasP < 0)
-                randomizerSetupConfig.eggMoveTypeBiasP = 0;
+            // Egg Moves
+            distributionsSetupConfig.Pokemon.EggMovesDists = gameData.pokemonDataTable.Data.Skip(1).SelectMany(p => p.eggMoves.wazaNo)
+                .GetItemDistributionConfig(m => m,
+                    gameData.moveTable.Waza,
+                    e => e.isValid,
+                    e => gameData.GetLabelByIndex(Constants.MOVE_MESSAGEFILE_NAME, e.wazaNo));
 
-            //Egg Move Count
-            randomizerSetupConfig.eggMoveCount = GetNumericDistributionConfig(gameData.personalEntries, p => p.eggMoves.Count, AbsoluteBoundary.EggMoveCount);
+            // Egg Move Type Bias (NOTE: logic changed)
+            distributionsSetupConfig.Pokemon.EggMoveTypeBiasP = gameData.pokemonDataTable.Data.SelectMany(p => p.eggMoves.wazaNo
+                    .Select(m => (p, gameData.moveTable.Waza[m])))
+                .GetOccurrencePercent(pm => pm.Item1.personal.Types.Contains(pm.Item2.type));
 
-            //Level Up Moves
-            instances = new int[gameData.moves.Count];
-            entities = gameData.moves.Select(o => (INamedEntity)o).ToList();
-            for (int personalID = 1; personalID < gameData.personalEntries.Count; personalID++)
-                for (int i = 0; i < gameData.personalEntries[personalID].levelUpMoves.Count; i++)
-                    instances[gameData.personalEntries[personalID].levelUpMoves[i].moveID]++;
-            randomizerSetupConfig.levelUpMoves = ToItemDistributionConfig(instances, entities);
+            // Egg Move Count
+            distributionsSetupConfig.Pokemon.EggMovesCountDists = gameData.pokemonDataTable.Data.GetNumericDistributionConfig(p => p.eggMoves.wazaNo.Count, AbsoluteBoundaries.Boundary.EggMoveCount);
 
-            //Level Up Move Type Bias
-            movePairing = gameData.personalEntries.SelectMany(p => p.levelUpMoves.Select(l => (p, gameData.moves[l.moveID]))).ToList();
-            sameTypePercent = GetOccurrencePercent(movePairing, pm => pm.Item1.GetTyping().Contains(pm.Item2.typingID));
-            unbiasedSameTypePercent = (100 + randomizerSetupConfig.doubleTypingP) / gameData.typings.Count;
-            randomizerSetupConfig.levelUpMoveTypeBiasP = 100 * (sameTypePercent - unbiasedSameTypePercent) / (100 - unbiasedSameTypePercent);
-            if (randomizerSetupConfig.levelUpMoveTypeBiasP < 0)
-                randomizerSetupConfig.levelUpMoveTypeBiasP = 0;
+            // Level Up Moves
+            distributionsSetupConfig.Pokemon.LevelUpMovesDists = gameData.pokemonDataTable.Data.Skip(1).SelectMany(p => p.levelUpMoves.moves)
+                .GetItemDistributionConfig(m => m.move,
+                    gameData.moveTable.Waza,
+                    e => e.isValid,
+                    e => gameData.GetLabelByIndex(Constants.MOVE_MESSAGEFILE_NAME, e.wazaNo));
 
-            //Level Up Move Levels
-            observations = new();
-            for (int personalID = 1; personalID < gameData.personalEntries.Count; personalID++)
-                for (int i = 0; i < gameData.personalEntries[personalID].levelUpMoves.Count; i++)
-                    if (IsWithin(AbsoluteBoundary.Level, gameData.personalEntries[personalID].levelUpMoves[i].level))
-                        observations.Add(gameData.personalEntries[personalID].levelUpMoves[i].level);
-            randomizerSetupConfig.levelUpMoveLevels = ToNumericDistributionConfig(observations);
+            // Level Up Move Type Bias
+            distributionsSetupConfig.Pokemon.LevelUpMovesTypeBiasP = gameData.pokemonDataTable.Data.SelectMany(p => p.levelUpMoves.moves
+                    .Select(m => (p, gameData.moveTable.Waza[m.move])))
+                .GetOccurrencePercent(pm => pm.Item1.personal.Types.Contains(pm.Item2.type));
 
-            //Evolution Move Count
-            (IDistribution[], int) emcc = GetNumericDistributionConfig(gameData.personalEntries.Where(p => p.pastPokemon.Count > 0).ToList(), p => p.levelUpMoves.Where(l => l.level == 0).Count(), AbsoluteBoundary.LevelUpMoveCount);
-            randomizerSetupConfig.evolutionMoveCount = emcc.Item1[3];
+            // Level Up Move Levels
+            distributionsSetupConfig.Pokemon.EggMovesCountDists = gameData.pokemonDataTable.Data.Skip(1).SelectMany(p => p.levelUpMoves.moves)
+                .GetNumericDistributionConfig(m => m.level, AbsoluteBoundaries.Boundary.Level);
 
-            //Level Up Move Count
-            randomizerSetupConfig.levelUpMoveCount = GetNumericDistributionConfig(gameData.personalEntries, p => p.levelUpMoves.Count, AbsoluteBoundary.LevelUpMoveCount);
+            // Evolution Move Count
+            distributionsSetupConfig.Pokemon.EvoMovesCountDist = gameData.pokemonDataTable.Data.Where(p => p.pastPokemon.Count > 0)
+                .GetNumericDistributionConfig(p => p.levelUpMoves.moves.Where(m => m.level == 0).Count(), AbsoluteBoundaries.Boundary.LevelUpMoveCount).Item1[3]; // Only NormalConstant
 
-            //Move Typing
-            randomizerSetupConfig.moveTyping = GetItemDistributionConfig(gameData.moves, m => m.typingID, gameData.typings.Select(o => (INamedEntity)o).ToList());
+            // Level Up Move Count
+            distributionsSetupConfig.Pokemon.LevelUpMovesCountDists = gameData.pokemonDataTable.Data
+                .GetNumericDistributionConfig(p => p.levelUpMoves.moves.Count, AbsoluteBoundaries.Boundary.LevelUpMoveCount);
 
-            //Move Damage Category
-            randomizerSetupConfig.damageCategory = GetItemDistributionConfig(gameData.moves.Where(m => m.damageCategoryID != 0).ToList(), m => m.damageCategoryID, gameData.damageCategories.Select(o => (INamedEntity)o).ToList());
+            // Move Typing
+            distributionsSetupConfig.MovesAndItems.MoveTypingDists = gameData.moveTable.Waza.Where(m => m.isValid)
+                .GetItemDistributionConfig(m => m.type,
+                    gameData.GetAllLabels(Constants.TYPE_MESSAGEFILE_NAME),
+                    e => true,
+                    e => e);
 
-            //TM Moves
-            randomizerSetupConfig.tmMoves = GetItemDistributionConfig(gameData.tms, t => t.moveID, gameData.moves.Select(o => (INamedEntity)o).ToList());
+            // Move Damage Category
+            distributionsSetupConfig.MovesAndItems.DamageCategoryDists = gameData.moveTable.Waza.Where(m => m.isValid && m.damageType != 0)
+                .GetItemDistributionConfig(m => m.damageType,
+                    Enumerable.Range(0, 3).ToList(),
+                    e => e >= 0 && e < 3,
+                    e => string.Empty); // TODO: Damage Category names
 
-            //Move Power
-            randomizerSetupConfig.movePower = GetNumericDistributionConfig(gameData.moves, m => m.power, AbsoluteBoundary.Power);
+            // TM Moves
+            distributionsSetupConfig.MovesAndItems.TMMovesDists = gameData.itemTable.WazaMachine.Where(gameData.itemTable.IsTMValid)
+                .GetItemDistributionConfig(t => t.wazaNo,
+                    gameData.moveTable.Waza,
+                    e => e.isValid,
+                    e => gameData.GetLabelByIndex(Constants.MOVE_MESSAGEFILE_NAME, e.wazaNo));
 
-            //Move Accuracy
-            randomizerSetupConfig.moveAccuracy = GetNumericDistributionConfig(gameData.moves, m => m.hitPer, AbsoluteBoundary.Accuracy);
+            // Move Power
+            distributionsSetupConfig.MovesAndItems.MovePowerDists = gameData.moveTable.Waza.Where(m => m.isValid)
+                .GetNumericDistributionConfig(m => m.power, AbsoluteBoundaries.Boundary.Power);
 
-            //Move PP
-            randomizerSetupConfig.movePp = GetNumericDistributionConfig(gameData.moves, m => m.basePP, AbsoluteBoundary.Pp);
+            // Move Accuracy
+            distributionsSetupConfig.MovesAndItems.MoveAccuracyDists = gameData.moveTable.Waza.Where(m => m.isValid)
+                .GetNumericDistributionConfig(m => m.hitPer, AbsoluteBoundaries.Boundary.Accuracy);
 
-            //Item Prices
-            randomizerSetupConfig.itemPrices = GetNumericDistributionConfig(gameData.items, i => i.price, AbsoluteBoundary.Price);
+            // Move PP
+            distributionsSetupConfig.MovesAndItems.MovePPDists = gameData.moveTable.Waza.Where(m => m.isValid)
+                .GetNumericDistributionConfig(m => m.basePP, AbsoluteBoundaries.Boundary.Pp);
 
-            //Pickup Items
-            randomizerSetupConfig.pickupItems = GetItemDistributionConfig(gameData.pickupTable, p => p.itemID, gameData.items.Select(o => (INamedEntity)o).ToList());
+            // Item Prices
+            distributionsSetupConfig.MovesAndItems.ItemPricesDists = gameData.itemTable.Item.Where(i => i.Enabled && i.Purchasable)
+                .GetNumericDistributionConfig(i => i.price, AbsoluteBoundaries.Boundary.Price);
 
-            //Shop Items
-            instances = new int[gameData.items.Count];
-            entities = gameData.items.Select(o => (INamedEntity)o).ToList();
-            for (int i = 0; i < gameData.shopTable.martItems.Count; i++)
-                instances[gameData.shopTable.martItems[i].itemID]++;
-            for (int i = 0; i < gameData.shopTable.fixedShopItems.Count; i++)
-                instances[gameData.shopTable.fixedShopItems[i].itemID]++;
-            randomizerSetupConfig.shopItems = ToItemDistributionConfig(instances, entities);
-            
-            //Wild Pokémon
-            instances = new int[gameData.dexEntries.Count];
-            entities = gameData.dexEntries.Select(o => (INamedEntity)o).ToList();
-            for (int version = 0; version < gameData.encounterTableFiles.Length; version++)
-            {
-                for (int zone = 0; zone < gameData.encounterTableFiles[version].encounterTables.Count; zone++)
-                {
-                    EncounterTable e = gameData.encounterTableFiles[version].encounterTables[zone];
-                    for (int i = 0; i < e.day.Count; i++)
-                        if ((ushort)e.day[i].dexID > 0)
-                            instances[(ushort)e.day[i].dexID]++;
-                    for (int i = 0; i < e.goodRodMons.Count; i++)
-                        if ((ushort)e.goodRodMons[i].dexID > 0)
-                            instances[(ushort)e.goodRodMons[i].dexID]++;
-                    for (int i = 0; i < e.groundMons.Count; i++)
-                        if ((ushort)e.groundMons[i].dexID > 0)
-                            instances[(ushort)e.groundMons[i].dexID]++;
-                    for (int i = 0; i < e.night.Count; i++)
-                        if ((ushort)e.night[i].dexID > 0)
-                            instances[(ushort)e.night[i].dexID]++;
-                    for (int i = 0; i < e.oldRodMons.Count; i++)
-                        if ((ushort)e.oldRodMons[i].dexID > 0)
-                            instances[(ushort)e.oldRodMons[i].dexID]++;
-                    for (int i = 0; i < e.superRodMons.Count; i++)
-                        if ((ushort)e.superRodMons[i].dexID > 0)
-                            instances[(ushort)e.superRodMons[i].dexID]++;
-                    for (int i = 0; i < e.swayGrass.Count; i++)
-                        if ((ushort)e.swayGrass[i].dexID > 0)
-                            instances[(ushort)e.swayGrass[i].dexID]++;
-                    for (int i = 0; i < e.tairyo.Count; i++)
-                        if ((ushort)e.tairyo[i].dexID > 0)
-                            instances[(ushort)e.tairyo[i].dexID]++;
-                    for (int i = 0; i < e.waterMons.Count; i++)
-                        if ((ushort)e.waterMons[i].dexID > 0)
-                            instances[(ushort)e.waterMons[i].dexID]++;
-                }
+            // Pickup Items
+            distributionsSetupConfig.MovesAndItems.PickupItemsDists = gameData.pickupTable.PickupItems
+                .GetItemDistributionConfig(i => i.ID,
+                    gameData.itemTable.Item,
+                    e => e.Enabled,
+                    e => gameData.GetLabelByIndex(Constants.ITEM_MESSAGEFILE_NAME, e.no));
 
-                for (int i = 0; i < gameData.encounterTableFiles[version].trophyGardenMons.Count; i++)
-                    if (gameData.encounterTableFiles[version].trophyGardenMons[i] > 0)
-                        instances[gameData.encounterTableFiles[version].trophyGardenMons[i]]++;
+            // Shop Items TODO: Add more shops?
+            distributionsSetupConfig.MovesAndItems.ShopItemsDists = gameData.shopTable.FS.Select(s => s.ItemNo)
+                .Concat(gameData.shopTable.FixedShop.Select(s => s.ItemNo))
+                .GetItemDistributionConfig(i => i,
+                    gameData.itemTable.Item,
+                    e => e.Enabled,
+                    e => gameData.GetLabelByIndex(Constants.ITEM_MESSAGEFILE_NAME, e.no));
 
-                for (int i = 0; i < gameData.encounterTableFiles[version].honeyTreeEnconters.Count; i++)
-                {
-                    if (gameData.encounterTableFiles[version].honeyTreeEnconters[i].normalDexID > 0)
-                        instances[gameData.encounterTableFiles[version].honeyTreeEnconters[i].normalDexID]++;
-                    if (gameData.encounterTableFiles[version].honeyTreeEnconters[i].rareDexID > 0)
-                        instances[gameData.encounterTableFiles[version].honeyTreeEnconters[i].rareDexID]++;
-                    if (gameData.encounterTableFiles[version].honeyTreeEnconters[i].superRareDexID > 0)
-                        instances[gameData.encounterTableFiles[version].honeyTreeEnconters[i].superRareDexID]++;
-                }
-
-                for (int i = 0; i < gameData.encounterTableFiles[version].safariMons.Count; i++)
-                    if (gameData.encounterTableFiles[version].safariMons[i] > 0)
-                        instances[gameData.encounterTableFiles[version].safariMons[i]]++;
-
-            }
-            for (int file = 0; file < gameData.ugEncounterFiles.Count; file++)
+            // Wild Pokémon
+            // TODO: UG
+            /*for (int file = 0; file < gameData.ugEncounterFiles.Count; file++)
                 for (int i = 0; i < gameData.ugEncounterFiles[file].ugEncounters.Count; i++)
                     if (gameData.ugEncounterFiles[file].ugEncounters[i].dexID > 0)
-                        instances[(ushort)gameData.ugEncounterFiles[file].ugEncounters[i].dexID]++;
-            randomizerSetupConfig.wildPokemon = ToItemDistributionConfig(instances, entities);
-            
-            //Wild Pokémon Levels
-            observations = new();
-            for (int version = 0; version < gameData.encounterTableFiles.Length; version++)
-                for (int zone = 0; zone < gameData.encounterTableFiles[version].encounterTables.Count; zone++)
-                {
-                    EncounterTable e = gameData.encounterTableFiles[version].encounterTables[zone];
-                    for (int i = 0; i < e.day.Count; i++)
-                        if ((ushort)e.day[i].dexID > 0)
-                        {
-                            observations.Add(e.day[i].minLv);
-                            observations.Add(e.day[i].maxLv);
-                        }
-                    for (int i = 0; i < e.goodRodMons.Count; i++)
-                        if ((ushort)e.goodRodMons[i].dexID > 0)
-                        {
-                            observations.Add(e.goodRodMons[i].minLv);
-                            observations.Add(e.goodRodMons[i].maxLv);
-                        }
-                    for (int i = 0; i < e.groundMons.Count; i++)
-                        if ((ushort)e.groundMons[i].dexID > 0)
-                        {
-                            observations.Add(e.groundMons[i].minLv);
-                            observations.Add(e.groundMons[i].maxLv);
-                        }
-                    for (int i = 0; i < e.night.Count; i++)
-                        if ((ushort)e.night[i].dexID > 0)
-                        {
-                            observations.Add(e.night[i].minLv);
-                            observations.Add(e.night[i].maxLv);
-                        }
-                    for (int i = 0; i < e.oldRodMons.Count; i++)
-                        if ((ushort)e.oldRodMons[i].dexID > 0)
-                        {
-                            observations.Add(e.oldRodMons[i].minLv);
-                            observations.Add(e.oldRodMons[i].maxLv);
-                        }
-                    for (int i = 0; i < e.superRodMons.Count; i++)
-                        if ((ushort)e.superRodMons[i].dexID > 0)
-                        {
-                            observations.Add(e.superRodMons[i].minLv);
-                            observations.Add(e.superRodMons[i].maxLv);
-                        }
-                    for (int i = 0; i < e.swayGrass.Count; i++)
-                        if ((ushort)e.swayGrass[i].dexID > 0)
-                        {
-                            observations.Add(e.swayGrass[i].minLv);
-                            observations.Add(e.swayGrass[i].maxLv);
-                        }
-                    for (int i = 0; i < e.tairyo.Count; i++)
-                        if ((ushort)e.tairyo[i].dexID > 0)
-                        {
-                            observations.Add(e.tairyo[i].minLv);
-                            observations.Add(e.tairyo[i].maxLv);
-                        }
-                    for (int i = 0; i < e.waterMons.Count; i++)
-                        if ((ushort)e.waterMons[i].dexID > 0)
-                        {
-                            observations.Add(e.waterMons[i].minLv);
-                            observations.Add(e.waterMons[i].maxLv);
-                        }
-                }
-            for (int set = 0; set < gameData.ugEncounterLevelSets.Count; set++)
+                        instances[(ushort)gameData.ugEncounterFiles[file].ugEncounters[i].dexID]++;*/
+            distributionsSetupConfig.Encounters.WildEncountersWildPokemonDists = gameData.encounterTableFiles
+                .SelectMany(f => f.table.SelectMany(t => t.GetAllTables().SelectMany(l => l.Select(m => m.monsNo)))
+                    .Concat(f.urayama.Select(u => u.monsNo))
+                    .Concat(f.mistu.SelectMany(m => new int[] { m.Normal, m.Rare, m.SuperRare }))
+                    .Concat(f.safari.Select(s => s.MonsNo)))
+                .Where(m => m > 0)
+                .GetItemDistributionConfig(m => m,
+                    gameData.pokemonDataTable.Data.Where(p => p.formID == 0),
+                    e => e.personal.Valid,
+                    e => gameData.GetFormName(e.personal.monsno, e.formID));
+
+            // Wild Pokémon Levels
+            // TODO: UG
+            /*for (int set = 0; set < gameData.ugEncounterLevelSets.Count; set++)
             {
                 observations.Add(gameData.ugEncounterLevelSets[set].minLv);
                 observations.Add(gameData.ugEncounterLevelSets[set].maxLv);
-            }
-            randomizerSetupConfig.wildPokemonLevels = ToNumericDistributionConfig(observations);
+            }*/
+            distributionsSetupConfig.Encounters.WildEncountersWildPokemonLevelsDists = gameData.encounterTableFiles
+                .SelectMany(f => f.table.SelectMany(t => t.GetAllTables().SelectMany(l => l.SelectMany(m => new int[] { m.minlv, m.maxlv }))))
+                .Where(m => m > 0)
+                .GetNumericDistributionConfig(l => l);
 
-            //Trainer Items
-            instances = new int[gameData.items.Count];
-            entities = gameData.items.Select(o => (INamedEntity)o).ToList();
-            for (int i = 0; i < gameData.trainerTable.Count; i++)
-            {
-                List<int> items = gameData.trainerTable[i].GetItems();
-                for (int item = 0; item < items.Count; item++)
-                    instances[items[item]]++;
-            }
-            randomizerSetupConfig.trainerItems = ToItemDistributionConfig(instances, entities);
+            // Trainer Items
+            distributionsSetupConfig.Encounters.TrainerItemsDists = gameData.trainerTable.TrainerData.SelectMany(t => t.UseItem)
+                .GetItemDistributionConfig(i => i,
+                    gameData.itemTable.Item,
+                    e => e.Enabled,
+                    e => gameData.GetLabelByIndex(Constants.ITEM_MESSAGEFILE_NAME, e.no));
 
-            //Trainer Item Count
-            randomizerSetupConfig.trainerItemCount = GetNumericDistributionConfig(gameData.trainerTable, t => t.GetItems().Count);
-            
-            //Trainer Pokémon
-            List<TrainerPokemon> tps = gameData.trainerTable.SelectMany(t => t.trainerPokemon).ToList();
-            randomizerSetupConfig.trainerPokemonSpecies = GetItemDistributionConfig(tps, p => p.dexID, gameData.dexEntries.Select(o =>(INamedEntity)o).ToList());
-            
-            //Trainer Pokémon Moves
-            instances = new int[gameData.moves.Count];
-            entities = gameData.moves.Select(o => (INamedEntity)o).ToList();
-            for (int i = 0; i < tps.Count; i++)
-            {
-                List<ushort> moves = tps[i].GetMoves();
-                for (int move = 0; move < moves.Count; move++)
-                    instances[moves[move]]++;
-            }
-            randomizerSetupConfig.trainerPokemonMoves = ToItemDistributionConfig(instances, entities);
-            
-            //Trainer Pokémon Move Type Bias
-            movePairing = tps.SelectMany(p => p.GetMoves().Select(l => (gameData.GetPokemon(p.dexID, p.formID), gameData.moves[l]))).ToList();
-            sameTypePercent = GetOccurrencePercent(movePairing, pm => pm.Item1.GetTyping().Contains(pm.Item2.typingID));
-            unbiasedSameTypePercent = (100 + randomizerSetupConfig.doubleTypingP) / gameData.typings.Count;
-            randomizerSetupConfig.trainerPokemonMoveTypeBiasP = 100 * (sameTypePercent - unbiasedSameTypePercent) / (100 - unbiasedSameTypePercent);
-            if (randomizerSetupConfig.trainerPokemonMoveTypeBiasP < 0)
-                randomizerSetupConfig.trainerPokemonMoveTypeBiasP = 0;
-            
-            //Trainer Pokémon Count
-            randomizerSetupConfig.trainerPokemonCount = GetNumericDistributionConfig(gameData.trainerTable, t => t.trainerPokemon.Count, AbsoluteBoundary.TrainerPokemonCount);
+            // Trainer Item Count
+            distributionsSetupConfig.Encounters.TrainerItemCountDists = gameData.trainerTable.TrainerData.Select(t => t.UseItem.Count)
+                .GetNumericDistributionConfig(c => c);
 
-            //Trainer Pokémon Levels
-            randomizerSetupConfig.trainerPokemonLevels = GetNumericDistributionConfig(tps, p => p.level, AbsoluteBoundary.Level);
+            // Trainer Pokémon
+            distributionsSetupConfig.Encounters.TrainerSpeciesDists = gameData.trainerTable.TrainerData.SelectMany(t => t.Pokes)
+                .GetItemDistributionConfig(p => p.MonsNo,
+                    gameData.pokemonDataTable.Data.Where(p => p.formID == 0),
+                    e => e.personal.Valid,
+                    e => gameData.GetFormName(e.personal.monsno, e.formID));
 
-            //Trainer Pokémon Held Items
-            randomizerSetupConfig.trainerPokemonHeldItems = GetItemDistributionConfig(tps.Where(p => p.itemID > 0).ToList(), p => p.itemID, gameData.items.Select(o => (INamedEntity)o).ToList());
+            // Trainer Pokémon Moves (NOTE: logic changed)
+            distributionsSetupConfig.Encounters.TrainerMovesDists = gameData.trainerTable.TrainerData.SelectMany(t => t.Pokes)
+                .SelectMany(p => p.Moves)
+                .Where(m => m > 0)
+                .GetItemDistributionConfig(m => m,
+                    gameData.moveTable.Waza,
+                    e => e.isValid,
+                    e => gameData.GetLabelByIndex(Constants.MOVE_MESSAGEFILE_NAME, e.wazaNo));
 
-            //Trainer Pokémon Shininess
-            randomizerSetupConfig.trainerPokemonShinyP = GetOccurrencePercent(tps, p => p.isRare == 1);
+            // Trainer Pokémon Move Type Bias (NOTE: logic changed)
+            distributionsSetupConfig.Encounters.TrainerMoveTypeBiasP = gameData.trainerTable.TrainerData.SelectMany(t => t.Pokes)
+                .SelectMany(p => p.Moves.Select(m => (gameData.pokemonDataTable.GetDataForPokemon(p.MonsNo, p.FormNo), gameData.moveTable.Waza[m])))
+                .GetOccurrencePercent(pm => pm.Item1.personal.Types.Contains(pm.Item2.type));
 
-            //Trainer Pokémon Natures
-            randomizerSetupConfig.trainerPokemonNatures = GetItemDistributionConfig(tps, p => p.natureID, gameData.natures.Select(o => (INamedEntity)o).ToList());
+            // Trainer Pokémon Count
+            distributionsSetupConfig.Encounters.TrainerPokemonCountDists = gameData.trainerTable.TrainerData.Select(t => t.Pokes.Count)
+                .GetNumericDistributionConfig(c => c, AbsoluteBoundaries.Boundary.TrainerPokemonCount);
 
-            //Trainer Pokémon Abilities
-            randomizerSetupConfig.trainerPokemonAbilities = GetItemDistributionConfig(tps, p => p.abilityID, gameData.abilities.Select(o => (INamedEntity)o).ToList());
+            // Trainer Pokémon Levels
+            distributionsSetupConfig.Encounters.TrainerLevelsDists = gameData.trainerTable.TrainerData.SelectMany(t => t.Pokes)
+                .GetNumericDistributionConfig(p => p.Level, AbsoluteBoundaries.Boundary.Level);
 
-            //Trainer Pokémon IVs
-            observations = new();
-            for (int i = 0; i < tps.Count; i++)
-            {
-                int[] ivs = tps[i].GetIVs();
-                for (int iv = 0; iv < ivs.Length; iv++)
-                    if (IsWithin(AbsoluteBoundary.Iv, ivs[iv]))
-                        observations.Add(ivs[iv]);
-            }
-            randomizerSetupConfig.trainerPokemonIvs = ToNumericDistributionConfig(observations);
+            // Trainer Pokémon Held Items
+            distributionsSetupConfig.Encounters.TrainerHeldItemsDists = gameData.trainerTable.TrainerData.SelectMany(t => t.Pokes)
+                .Where(p => p.Item > 0)
+                .GetItemDistributionConfig(p => p.Item,
+                    gameData.itemTable.Item,
+                    e => e.Enabled,
+                    e => gameData.GetLabelByIndex(Constants.ITEM_MESSAGEFILE_NAME, e.no));
 
-            //Trainer Pokémon EVs
-            randomizerSetupConfig.trainerPokemonEvs = GetNumericDistributionConfig(tps, p => p.GetEVs().Sum(), AbsoluteBoundary.EvTotal);
+            // Trainer Pokémon Shininess
+            distributionsSetupConfig.Encounters.TrainerShinyP = gameData.trainerTable.TrainerData.SelectMany(t => t.Pokes).GetOccurrencePercent(p => p.IsRare);
 
-            //Scripted Pokémon
-            List<Command> commands = gameData.evScriptFiles.SelectMany(e => e.scripts.SelectMany(s => s.commands)).ToList();
-            randomizerSetupConfig.scriptedPokemon = GetItemDistributionConfig(commands.Where(c => c.cmdType == 322 && c.args[1].argType == 1).ToList(), c => (int)c.args[1].data, gameData.dexEntries.Select(o => (INamedEntity)o).ToList());
+            // Trainer Pokémon Natures
+            distributionsSetupConfig.Encounters.TrainerHeldItemsDists = gameData.trainerTable.TrainerData.SelectMany(t => t.Pokes)
+                .GetItemDistributionConfig(p => p.Seikaku,
+                    gameData.GetAllLabels(Constants.NATURE_MESSAGEFILE_NAME),
+                    e => true,
+                    e => e);
 
-            //Scripted Items
-            randomizerSetupConfig.scriptedItems = GetItemDistributionConfig(commands.Where(c => c.cmdType == 187 && c.args[0].argType == 1 && gameData.items[(int)c.args[0].data].IsPurchasable()).ToList(), c => (int)c.args[0].data, gameData.items.Select(o => (INamedEntity)o).ToList());
+            // Trainer Pokémon Abilities
+            distributionsSetupConfig.Encounters.TrainerAbilitiesDists = gameData.trainerTable.TrainerData.SelectMany(t => t.Pokes)
+                .GetItemDistributionConfig(p => p.Tokusei,
+                    gameData.GetAllLabels(Constants.ABILITY_MESSAGEFILE_NAME),
+                    e => true,
+                    e => e);
 
-            //Type Matchups
-            instances = new int[4];
-            int typeCount = 18;
-            for (int o = 0; o < typeCount; o++)
-                for (int d = 0; d < typeCount; d++)
-                    switch(gameData.globalMetadata.GetTypeMatchup(o, d))
-                    {
-                        case 0:
-                            instances[0]++;
-                            break;
-                        case 2:
-                            instances[1]++;
-                            break;
-                        case 4:
-                            instances[2]++;
-                            break;
-                        case 8:
-                            instances[3]++;
-                            break;
-                    }
-            List<string> affinities = new()
-            {
-                "0x",
-                "1/2x",
-                "1x",
-                "2x"
-            };
-            IDistribution[] affinityDistributions = new IDistribution[]
-            {
-                new Empirical(100, instances.ToList()),
-                new UniformSelection(100, instances.Select(i => true).ToList())
-            };
-            randomizerSetupConfig.typeMatchups = (affinityDistributions, affinities, 0);
+            // Trainer Pokémon IVs
+            distributionsSetupConfig.Encounters.TrainerIVsDists = gameData.trainerTable.TrainerData.SelectMany(t => t.Pokes)
+                .SelectMany(p => p.IVs)
+                .GetNumericDistributionConfig(i => i, AbsoluteBoundaries.Boundary.Iv);
 
-            //Level Coefficient
-            randomizerSetupConfig.levelCoefficient = 1;*/
+            // Trainer Pokémon EVs
+            distributionsSetupConfig.Encounters.TrainerEVsDists = gameData.trainerTable.TrainerData.SelectMany(t => t.Pokes)
+                .GetNumericDistributionConfig(p => p.TotalEVs, AbsoluteBoundaries.Boundary.EvTotal);
+
+            // Scripted Pokémon
+            distributionsSetupConfig.Misc.RandomScriptedPokemonDists = gameData.evScriptFiles.SelectMany(f => f.Scripts)
+                .SelectMany(s => s.Commands)
+                .Where(c => c.Arg.Count > 0 && c.Arg[0].data == 322 && c.Arg[2].argType == EvData.ArgType.Float)
+                .GetItemDistributionConfig(c => FloatHelper.ConvertToRoundedFloat(c.Arg[2].data),
+                    gameData.pokemonDataTable.Data.Where(p => p.formID == 0),
+                    e => e.personal.Valid,
+                    e => gameData.GetFormName(e.personal.monsno, e.formID));
+
+            // Scripted Items
+            distributionsSetupConfig.Misc.RandomScriptedItemsDists = gameData.evScriptFiles.SelectMany(f => f.Scripts)
+                .SelectMany(s => s.Commands)
+                .Where(c => c.Arg.Count > 0 && c.Arg[0].data == 187 && c.Arg[1].argType == EvData.ArgType.Float)
+                .GetItemDistributionConfig(c => FloatHelper.ConvertToRoundedFloat(c.Arg[1].data),
+                    gameData.itemTable.Item,
+                    e => e.Purchasable,
+                    e => gameData.GetLabelByIndex(Constants.ITEM_MESSAGEFILE_NAME, e.no));
+
+            // Type Matchups
+            List<string> affinities = ["0x", "1/2x", "1x", "2x"]; // TODO: Affinity names
+            distributionsSetupConfig.Misc.TypeMatchupsDists = Enumerable.Range(0, gameData.GetAllLabels(Constants.TYPE_MESSAGEFILE_NAME).Count)
+                .SelectMany(o => Enumerable.Range(0, gameData.GetAllLabels(Constants.TYPE_MESSAGEFILE_NAME).Count).Select(d => (o, d)))
+                .GetItemDistributionConfig(od => gameData.globalMetadata.GetTypeMatchup(od.o, od.d) switch
+                        {
+                            0 => 0,
+                            2 => 1,
+                            4 => 2,
+                            8 => 3,
+                            _ => -1
+                        },
+                    affinities,
+                    e => true,
+                    e => e);
 
             return distributionsSetupConfig;
         }
