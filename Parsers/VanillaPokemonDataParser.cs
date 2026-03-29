@@ -211,6 +211,8 @@ namespace ImpostersOrdeal
                 data.Data.Add(mon);
             }
 
+            data.SetFamilies();
+
             return data;
         }
 

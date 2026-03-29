@@ -10,6 +10,8 @@ namespace ImpostersOrdeal
         {
             public int MinLv;
             public int MaxLv;
+
+            public double AverageLevel => (MinLv + MaxLv) / 2;
         }
     }
 }

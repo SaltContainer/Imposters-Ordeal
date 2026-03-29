@@ -2,22 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static ImpostersOrdeal.Distributions;
-using static ImpostersOrdeal.ExternalJsonStructs;
-using static ImpostersOrdeal.GameDataTypes;
 using static ImpostersOrdeal.AbsoluteBoundaries;
 
 namespace ImpostersOrdeal
 {
-    // TODO: Fix randomizer
     /// <summary>
     /// Responsible for all randomization related logic and execution.
     /// </summary>
     public class Randomizer
     {
-        //private readonly MainForm m;
         private readonly Random rng;
 
         public Randomizer()
@@ -217,23 +211,22 @@ namespace ImpostersOrdeal
                 {
                     var encounters = encounterTable.GetAllTables().SelectMany(t => t);
                     foreach (var encounter in encounters)
-                        if (IsWithin(Boundary.Level, (int)encounter.GetAvgLevel()))
+                        if (IsWithin(Boundary.Level, (int)encounter.AverageLevel))
                         {
                             encounter.minlv = Conform(Boundary.Level, (int)(encounter.minlv * coefficient));
                             encounter.maxlv = Conform(Boundary.Level, (int)(encounter.maxlv * coefficient));
                         }
                 }
 
-            // TODO: UG Encounters
-            /*foreach (UgEncounterLevelSet ugEncounterLevelSet in gameData.ugEncounterLevelSets)
-                if (IsWithin(Boundary.Level, (int)ugEncounterLevelSet.GetAvgLevel()))
+            foreach (var ugEncounterLevelSet in gameData.ugEncounterLevelTable.Ranges)
+                if (IsWithin(Boundary.Level, (int)ugEncounterLevelSet.AverageLevel))
                 {
-                    ugEncounterLevelSet.minLv = Conform(Boundary.Level, (int)(ugEncounterLevelSet.minLv * coefficient));
-                    ugEncounterLevelSet.maxLv = Conform(Boundary.Level, (int)(ugEncounterLevelSet.maxLv * coefficient));
-                }*/
+                    ugEncounterLevelSet.MinLv = Conform(Boundary.Level, (int)(ugEncounterLevelSet.MinLv * coefficient));
+                    ugEncounterLevelSet.MaxLv = Conform(Boundary.Level, (int)(ugEncounterLevelSet.MaxLv * coefficient));
+                }
 
             gameData.SetModified(gameData.encounterTableFiles.GetType());
-            //gameData.SetModified(GameDataSet.DataField.UgEncounterLevelSets);
+            gameData.SetModified(gameData.ugEncounterLevelTable.GetType());
         }
 
         private void ScaleLevelUpMoves(GameDataSet gameData, double coefficient)
@@ -261,8 +254,8 @@ namespace ImpostersOrdeal
                 pokemon.superiorForms = new();
             }
 
-            // TODO: Setup lists in data
-            //DataParser.SetFamilies();
+            gameData.pokemonDataTable.SetFamilies();
+
             gameData.SetModified(gameData.pokemonDataTable.GetType());
         }
 
@@ -652,40 +645,39 @@ namespace ImpostersOrdeal
                 }
             }
 
-            // TODO: UG Encounter stuff
-            /*if (randomizeSpecies)
-                foreach (UgEncounterFile ugEncounterFile in gameData.ugEncounterFiles)
-                    for (int i = 0; i < ugEncounterFile.ugEncounters.Count; i++)
+            if (randomizeSpecies)
+                foreach (var ugEncounterFile in gameData.ugEncounterFiles)
+                    foreach (var ugEncounter in ugEncounterFile.mons)
                     {
-                        ugEncounterFile.ugEncounters[i].dexID = speciesDistribution.Next((ushort)ugEncounterFile.ugEncounters[i].dexID);
+                        ugEncounter.monsno = speciesDistribution.Next((ushort)ugEncounter.monsno);
                         if (randomizeUgEncounterTableFormIDs)
                         {
-                            ushort formID = (ushort)rng.Next(gameData.dexEntries[(ushort)ugEncounterFile.ugEncounters[i].dexID].forms.Count);
-                            if (gameData.dexEntries[(ushort)ugEncounterFile.ugEncounters[i].dexID].forms.Any(u => u.IsValid()))
-                                formID = (ushort)GetRandom(gameData.dexEntries[(ushort)ugEncounterFile.ugEncounters[i].dexID].forms.Where(p => p.IsValid()).ToList()).formID;
+                            ushort formID = (ushort)rng.Next(gameData.pokemonDataTable.GetAllFormsForPokemon(ugEncounter.monsno).Count);
+                            if (gameData.pokemonDataTable.GetAllFormsForPokemon(ugEncounter.monsno).Any(f => f.personal.Valid))
+                                formID = rng.RandomElement(gameData.pokemonDataTable.GetAllFormsForPokemon(ugEncounter.monsno).Where(f => f.personal.Valid).ToList()).formID;
                             if (ugVersionsUnbounded)
-                                ugEncounterFile.ugEncounters[i].version = formID;
+                                ugEncounter.version = formID;
                             if (uint16UgTables)
-                                ugEncounterFile.ugEncounters[i].dexID += formID << 16;
+                                ugEncounter.monsno += formID << 16;
                         }
-                    }*/
+                    }
 
-            /*if (randomizeSpecies)
-                foreach (UgSpecialEncounter ugSpecialEncounter in gameData.ugSpecialEncounters)
-                    ugSpecialEncounter.dexID = speciesDistribution.Next(ugSpecialEncounter.dexID);*/
+            if (randomizeSpecies)
+                foreach (var ugSpecialEncounter in gameData.ugHideawayTable.rareEncounterTable.rareEncounters)
+                    ugSpecialEncounter.monsno = speciesDistribution.Next(ugSpecialEncounter.monsno);
 
-            /*if (randomizeLevels)
-                foreach (UgEncounterLevelSet ugEncounterLevelSet in gameData.ugEncounterLevelSets)
-                    if (IsWithin(Boundary.Level, (int)ugEncounterLevelSet.GetAvgLevel()))
+            if (randomizeLevels)
+                foreach (var ugEncounterLevelSet in gameData.ugEncounterLevelTable.Ranges)
+                    if (IsWithin(Boundary.Level, (int)ugEncounterLevelSet.AverageLevel))
                     {
-                        ugEncounterLevelSet.minLv = Conform(Boundary.Level, levelDistribution.Next(ugEncounterLevelSet.minLv));
-                        ugEncounterLevelSet.maxLv = Conform(Boundary.Level, levelDistribution.Next(ugEncounterLevelSet.maxLv));
-                    }*/
+                        ugEncounterLevelSet.MinLv = Conform(Boundary.Level, levelDistribution.Next(ugEncounterLevelSet.MinLv));
+                        ugEncounterLevelSet.MaxLv = Conform(Boundary.Level, levelDistribution.Next(ugEncounterLevelSet.MaxLv));
+                    }
 
             gameData.SetModified(gameData.encounterTableFiles.GetType());
-            //gameData.SetModified(GameDataSet.DataField.UgEncounterFiles);
-            //gameData.SetModified(GameDataSet.DataField.UgEncounterLevelSets);
-            //gameData.SetModified(GameDataSet.DataField.UgSpecialEncounters);
+            gameData.SetModified(gameData.ugEncounterFiles.GetType());
+            gameData.SetModified(gameData.ugHideawayTable.GetType());
+            gameData.SetModified(gameData.ugEncounterLevelTable.GetType());
 
             // TODO: External JSON encounters
             /*if (gameData.externalStarters != null)
@@ -771,7 +763,7 @@ namespace ImpostersOrdeal
         {
             foreach (var encounter in encounters)
             {
-                if (randomizeLevels && IsWithin(Boundary.Level, (int)encounter.GetAvgLevel()))
+                if (randomizeLevels && IsWithin(Boundary.Level, (int)encounter.AverageLevel))
                 {
                     encounter.minlv = Conform(Boundary.Level, levelDistribution.Next(encounter.minlv));
                     encounter.maxlv = Conform(Boundary.Level, levelDistribution.Next(encounter.maxlv));
@@ -783,18 +775,18 @@ namespace ImpostersOrdeal
                     {
                         if (randomizeFormIDs)
                         {
-                            var p = FindStage(gameData.pokemonDataTable.GetDataForPokemon((ushort)encounter.monsNo, encounter.monsNo >> 16), (int)encounter.GetAvgLevel(), true);
+                            var p = FindStage(gameData.pokemonDataTable.GetDataForPokemon((ushort)encounter.monsNo, encounter.monsNo >> 16), (int)encounter.AverageLevel, true);
                             encounter.monsNo = p.personal.monsno + (p.formID << 16);
                         }
                         else
-                            encounter.monsNo = FindStage(gameData.pokemonDataTable.Data[(ushort)encounter.monsNo], (int)encounter.GetAvgLevel(), true).personal.monsno;
+                            encounter.monsNo = FindStage(gameData.pokemonDataTable.Data[(ushort)encounter.monsNo], (int)encounter.AverageLevel, true).personal.monsno;
                     }
                 }
 
                 if (randomizeSpecies)
                 {
-                    bool acceptLegendary = !legendLogic || rng.Percent(encounter.GetAvgLevel());
-                    Func<PokemonDataTable.PokemonData, PokemonDataTable.PokemonData> resolveStage = evolveLogic ? p => FindStage(p, (int)encounter.GetAvgLevel(), true) : p => p;
+                    bool acceptLegendary = !legendLogic || rng.Percent(encounter.AverageLevel);
+                    Func<PokemonDataTable.PokemonData, PokemonDataTable.PokemonData> resolveStage = evolveLogic ? p => FindStage(p, (int)encounter.AverageLevel, true) : p => p;
 
                     do
                     {
@@ -1310,7 +1302,6 @@ namespace ImpostersOrdeal
         /// </summary>
         private void EnsureBSTLogic(PokemonDataTable.PokemonData pokemon)
         {
-            // TODO: Remove other forms?
             List<PokemonDataTable.PokemonData> next = new();
             List<PokemonDataTable.PokemonData> past = new();
             next.AddRange(pokemon.nextPokemon);
@@ -1380,8 +1371,7 @@ namespace ImpostersOrdeal
                 pokemon.superiorForms = new();
             }
 
-            // TODO: Set Families
-            //DataParser.SetFamilies();
+            gameData.pokemonDataTable.SetFamilies();
 
             gameData.SetModified(gameData.pokemonDataTable.GetType());
         }
@@ -1412,8 +1402,7 @@ namespace ImpostersOrdeal
                 pokemon.superiorForms = new();
             }
 
-            // TODO: Set Families
-            //DataParser.SetFamilies();
+            gameData.pokemonDataTable.SetFamilies();
 
             gameData.SetModified(gameData.pokemonDataTable.GetType());
         }

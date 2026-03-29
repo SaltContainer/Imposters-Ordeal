@@ -46,10 +46,7 @@ namespace ImpostersOrdeal
                 public int minlv;
                 public int monsNo;
 
-                public double GetAvgLevel()
-                {
-                    return (minlv + maxlv) / 2.0;
-                }
+                public double AverageLevel => (minlv + maxlv) / 2.0;
             }
 
             public List<List<MonsLv>> GetAllTables()
@@ -67,7 +64,7 @@ namespace ImpostersOrdeal
                     .Take(5)
                     .SelectMany(l => l)
                     .Where(e => e.monsNo != 0)
-                    .Select(e => e.GetAvgLevel())
+                    .Select(e => e.AverageLevel)
                     .DefaultIfEmpty()
                     .Average();
             }

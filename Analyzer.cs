@@ -117,7 +117,7 @@ namespace ImpostersOrdeal
                 .GetOccurrencePercent(pm => pm.Item1.personal.Types.Contains(pm.Item2.type));
 
             // Level Up Move Levels
-            distributionsSetupConfig.Pokemon.EggMovesCountDists = gameData.pokemonDataTable.Data.Skip(1).SelectMany(p => p.levelUpMoves.moves)
+            distributionsSetupConfig.Pokemon.LevelUpMovesLevelDists = gameData.pokemonDataTable.Data.Skip(1).SelectMany(p => p.levelUpMoves.moves)
                 .GetNumericDistributionConfig(m => m.level, AbsoluteBoundaries.Boundary.Level);
 
             // Evolution Move Count
@@ -181,16 +181,12 @@ namespace ImpostersOrdeal
                     e => gameData.GetLabelByIndex(Constants.ITEM_MESSAGEFILE_NAME, e.no));
 
             // Wild Pokémon
-            // TODO: UG
-            /*for (int file = 0; file < gameData.ugEncounterFiles.Count; file++)
-                for (int i = 0; i < gameData.ugEncounterFiles[file].ugEncounters.Count; i++)
-                    if (gameData.ugEncounterFiles[file].ugEncounters[i].dexID > 0)
-                        instances[(ushort)gameData.ugEncounterFiles[file].ugEncounters[i].dexID]++;*/
             distributionsSetupConfig.Encounters.WildEncountersWildPokemonDists = gameData.encounterTableFiles
                 .SelectMany(f => f.table.SelectMany(t => t.GetAllTables().SelectMany(l => l.Select(m => m.monsNo)))
                     .Concat(f.urayama.Select(u => u.monsNo))
                     .Concat(f.mistu.SelectMany(m => new int[] { m.Normal, m.Rare, m.SuperRare }))
                     .Concat(f.safari.Select(s => s.MonsNo)))
+                .Concat(gameData.ugEncounterFiles.SelectMany(f => f.mons.Select(m => m.monsno)))
                 .Where(m => m > 0)
                 .GetItemDistributionConfig(m => m,
                     gameData.pokemonDataTable.Data.Where(p => p.formID == 0),
@@ -198,14 +194,9 @@ namespace ImpostersOrdeal
                     e => gameData.GetFormName(e.personal.monsno, e.formID));
 
             // Wild Pokémon Levels
-            // TODO: UG
-            /*for (int set = 0; set < gameData.ugEncounterLevelSets.Count; set++)
-            {
-                observations.Add(gameData.ugEncounterLevelSets[set].minLv);
-                observations.Add(gameData.ugEncounterLevelSets[set].maxLv);
-            }*/
             distributionsSetupConfig.Encounters.WildEncountersWildPokemonLevelsDists = gameData.encounterTableFiles
                 .SelectMany(f => f.table.SelectMany(t => t.GetAllTables().SelectMany(l => l.SelectMany(m => new int[] { m.minlv, m.maxlv }))))
+                .Concat(gameData.ugEncounterLevelTable.Ranges.SelectMany(r => new int[] { r.MinLv, r.MaxLv }))
                 .Where(m => m > 0)
                 .GetNumericDistributionConfig(l => l);
 
@@ -261,7 +252,7 @@ namespace ImpostersOrdeal
             distributionsSetupConfig.Encounters.TrainerShinyP = gameData.trainerTable.TrainerData.SelectMany(t => t.Pokes).GetOccurrencePercent(p => p.IsRare);
 
             // Trainer Pokémon Natures
-            distributionsSetupConfig.Encounters.TrainerHeldItemsDists = gameData.trainerTable.TrainerData.SelectMany(t => t.Pokes)
+            distributionsSetupConfig.Encounters.TrainerNaturesDists = gameData.trainerTable.TrainerData.SelectMany(t => t.Pokes)
                 .GetItemDistributionConfig(p => p.Seikaku,
                     gameData.GetAllLabels(Constants.NATURE_MESSAGEFILE_NAME),
                     e => true,

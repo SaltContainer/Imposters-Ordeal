@@ -1,4 +1,5 @@
 ﻿using ImpostersOrdeal.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -209,6 +210,121 @@ namespace ImpostersOrdeal
                     public ushort level;
                 }
             }
+
+            // TODO: clean this up a bit?
+            /// <summary>
+            /// Finds the levels the specified pokemon is likely to evolve: (wildLevel, trainerLevel).
+            /// </summary>
+            public (ushort, ushort) GetEvoLvs()
+            {
+                (ushort, ushort) evoLvs = (0, 0);
+                for (int evolutionIdx = 0; evolutionIdx < evolutionPaths.paths.Count; evolutionIdx++)
+                {
+                    var evo = evolutionPaths.paths[evolutionIdx];
+                    if (personal.monsno == evo.toMonsno)
+                        continue;
+
+                    switch (evo.method)
+                    {
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 21:
+                        case 29:
+                        case 43:
+                            for (int pastEvos = 0; pastEvos < pastPokemon.Count; pastEvos++)
+                            {
+                                (ushort, ushort) pastPokemonEvoLvs = pastPokemon[pastEvos].GetEvoLvs();
+                                evoLvs.Item1 = Math.Max(evoLvs.Item1, pastPokemonEvoLvs.Item1);
+                                evoLvs.Item2 = Math.Max(evoLvs.Item2, pastPokemonEvoLvs.Item2);
+                            }
+                            if (evoLvs == (0, 0))
+                                evoLvs = (1, 1);
+                            evoLvs.Item1 += 16;
+                            evoLvs.Item2 += 16;
+                            break;
+                        case 4:
+                        case 9:
+                        case 10:
+                        case 11:
+                        case 12:
+                        case 13:
+                        case 14:
+                        case 23:
+                        case 24:
+                        case 28:
+                        case 32:
+                        case 33:
+                        case 34:
+                        case 36:
+                        case 37:
+                        case 38:
+                        case 40:
+                        case 41:
+                        case 46:
+                        case 47:
+                            evoLvs.Item1 = evo.level;
+                            evoLvs.Item2 = evo.level;
+                            break;
+                        case 5:
+                        case 8:
+                        case 17:
+                        case 18:
+                        case 22:
+                        case 25:
+                        case 26:
+                        case 27:
+                        case 39:
+                        case 42:
+                        case 44:
+                        case 45:
+                            for (int pastEvos = 0; pastEvos < pastPokemon.Count; pastEvos++)
+                            {
+                                (ushort, ushort) pastPokemonEvoLvs = pastPokemon[pastEvos].GetEvoLvs();
+                                evoLvs.Item1 = Math.Max(evoLvs.Item1, pastPokemonEvoLvs.Item1);
+                                evoLvs.Item2 = Math.Max(evoLvs.Item2, pastPokemonEvoLvs.Item2);
+                            }
+                            if (evoLvs == (0, 0))
+                                evoLvs = (1, 1);
+                            evoLvs.Item1 += 32;
+                            evoLvs.Item2 += 16;
+                            break;
+                        case 6:
+                        case 7:
+                            for (int pastEvos = 0; pastEvos < pastPokemon.Count; pastEvos++)
+                            {
+                                (ushort, ushort) pastPokemonEvoLvs = pastPokemon[pastEvos].GetEvoLvs();
+                                evoLvs.Item1 = Math.Max(evoLvs.Item1, pastPokemonEvoLvs.Item1);
+                                evoLvs.Item2 = Math.Max(evoLvs.Item2, pastPokemonEvoLvs.Item2);
+                            }
+                            if (evoLvs == (0, 0))
+                                evoLvs = (1, 1);
+                            evoLvs.Item1 += 48;
+                            evoLvs.Item2 += 16;
+                            break;
+                        case 16:
+                            for (int pastEvos = 0; pastEvos < pastPokemon.Count; pastEvos++)
+                            {
+                                (ushort, ushort) pastPokemonEvoLvs = pastPokemon[pastEvos].GetEvoLvs();
+                                evoLvs.Item1 = Math.Max(evoLvs.Item1, pastPokemonEvoLvs.Item1);
+                                evoLvs.Item2 = Math.Max(evoLvs.Item2, pastPokemonEvoLvs.Item2);
+                            }
+                            if (evoLvs == (0, 0))
+                                evoLvs = (1, 1);
+                            evoLvs.Item1 += 48;
+                            evoLvs.Item2 += 32;
+                            break;
+                        case 19:
+                        case 20:
+                        case 30:
+                        case 31:
+                            evoLvs.Item1 = (ushort)(evo.level + 16);
+                            evoLvs.Item2 = evo.level;
+                            break;
+                    }
+                }
+                return evoLvs;
+            }
         }
 
         public PokemonData GetDataForPokemon(int monsno, int formno)
@@ -227,6 +343,63 @@ namespace ImpostersOrdeal
                 return Data.Skip(baseForm.personal.form_index).Take(baseForm.personal.form_max - 1).Prepend(baseForm).ToList();
             else
                 return new List<PokemonData>() { baseForm };
+        }
+
+        /// <summary>
+        /// Overwrites and updates all Pokémon's evolution info for easier BST logic.
+        /// </summary>
+        public void SetFamilies()
+        {
+            foreach (var basePokemon in Data.Where(p => p.formID == 0))
+            {
+                var forms = GetAllFormsForPokemon(basePokemon.personal.monsno);
+                foreach (var form in forms)
+                {
+                    foreach (var evoPath in form.evolutionPaths.paths)
+                    {
+                        var next = GetDataForPokemon(evoPath.toMonsno, evoPath.toFormno);
+
+                        if (form.personal.monsno == next.personal.monsno)
+                            continue;
+
+                        form.nextPokemon.Add(next);
+                        next.pastPokemon.Add(form);
+                    }
+
+                    foreach (var otherForm in forms)
+                    {
+                        if (otherForm.personal.BST - form.personal.BST >= 30)
+                        {
+                            otherForm.inferiorForms.Add(form);
+                            form.superiorForms.Add(otherForm);
+                        }
+                    }
+                }
+            }
+
+            foreach (var basePokemon in Data.Where(p => p.formID == 0))
+            {
+                var forms = GetAllFormsForPokemon(basePokemon.personal.monsno);
+                foreach (var form in forms)
+                {
+                    (ushort, ushort) evoLvs = form.GetEvoLvs();
+                    if (evoLvs == (0, 0))
+                        continue;
+
+                    form.nextEvoLvs = evoLvs;
+
+                    foreach (var evoPath in form.evolutionPaths.paths)
+                    {
+                        var next = GetDataForPokemon(evoPath.toMonsno, evoPath.toFormno);
+
+                        if (form.personal.monsno == next.personal.monsno)
+                            continue;
+
+                        next.pastEvoLvs.Item1 = Math.Max(next.pastEvoLvs.Item1, evoLvs.Item1);
+                        next.pastEvoLvs.Item2 = Math.Max(next.pastEvoLvs.Item2, evoLvs.Item2);
+                    }
+                }
+            }
         }
     }
 }
