@@ -27,7 +27,7 @@ namespace ImpostersOrdeal
             "HP", "Atk", "Def", "SpA", "SpD", "Spe"
         };
 
-        private readonly Dictionary<string, int[]> monForms = PokemonFormes.monForms;
+        private readonly Dictionary<string, int[]> monForms;
 
 
         public void SetBTP(BattleTowerTable.TowerTrainerTable.SheetTrainerPoke btp)

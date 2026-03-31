@@ -31,120 +31,125 @@ namespace ImpostersOrdeal
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrainerShowdownEditorForm));
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
-            this.Save = new System.Windows.Forms.Button();
-            this.Preview = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
-            this.SuspendLayout();
+            rtxtInput = new System.Windows.Forms.RichTextBox();
+            rtxtPreview = new System.Windows.Forms.RichTextBox();
+            btnSave = new System.Windows.Forms.Button();
+            btnPreview = new System.Windows.Forms.Button();
+            panelText = new System.Windows.Forms.TableLayoutPanel();
+            panelButtons = new System.Windows.Forms.TableLayoutPanel();
+            panelText.SuspendLayout();
+            panelButtons.SuspendLayout();
+            SuspendLayout();
             // 
-            // richTextBox1
+            // rtxtInput
             // 
-            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.Location = new System.Drawing.Point(3, 3);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(402, 374);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "Paste Showdown Here";
-            this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
+            rtxtInput.DetectUrls = false;
+            rtxtInput.Dock = System.Windows.Forms.DockStyle.Fill;
+            rtxtInput.Location = new System.Drawing.Point(3, 2);
+            rtxtInput.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            rtxtInput.Name = "rtxtInput";
+            rtxtInput.Size = new System.Drawing.Size(351, 281);
+            rtxtInput.TabIndex = 0;
+            rtxtInput.Text = "Paste Showdown Here";
+            rtxtInput.WordWrap = false;
+            rtxtInput.TextChanged += richTextBox1_TextChanged;
             // 
-            // richTextBox2
+            // rtxtPreview
             // 
-            this.richTextBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox2.Location = new System.Drawing.Point(411, 3);
-            this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.ReadOnly = true;
-            this.richTextBox2.Size = new System.Drawing.Size(402, 374);
-            this.richTextBox2.TabIndex = 1;
-            this.richTextBox2.Text = "Preview";
+            rtxtPreview.DetectUrls = false;
+            rtxtPreview.Dock = System.Windows.Forms.DockStyle.Fill;
+            rtxtPreview.Location = new System.Drawing.Point(360, 2);
+            rtxtPreview.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            rtxtPreview.Name = "rtxtPreview";
+            rtxtPreview.ReadOnly = true;
+            rtxtPreview.Size = new System.Drawing.Size(351, 281);
+            rtxtPreview.TabIndex = 1;
+            rtxtPreview.Text = "Preview";
+            rtxtPreview.WordWrap = false;
             // 
-            // Save
+            // btnSave
             // 
-            this.Save.Location = new System.Drawing.Point(3, 3);
-            this.Save.Name = "Save";
-            this.Save.Size = new System.Drawing.Size(100, 29);
-            this.Save.TabIndex = 2;
-            this.Save.Text = "Save";
-            this.Save.UseVisualStyleBackColor = true;
-            this.Save.Click += new System.EventHandler(this.Save_Click);
+            btnSave.Location = new System.Drawing.Point(3, 2);
+            btnSave.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new System.Drawing.Size(88, 22);
+            btnSave.TabIndex = 2;
+            btnSave.Text = "Save";
+            btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += Save_Click;
             // 
-            // Preview
+            // btnPreview
             // 
-            this.Preview.Location = new System.Drawing.Point(109, 3);
-            this.Preview.Name = "Preview";
-            this.Preview.Size = new System.Drawing.Size(100, 29);
-            this.Preview.TabIndex = 3;
-            this.Preview.Text = "Preview";
-            this.Preview.UseVisualStyleBackColor = true;
-            this.Preview.Click += new System.EventHandler(this.Preview_Click);
+            btnPreview.Location = new System.Drawing.Point(97, 2);
+            btnPreview.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnPreview.Name = "btnPreview";
+            btnPreview.Size = new System.Drawing.Size(88, 22);
+            btnPreview.TabIndex = 3;
+            btnPreview.Text = "Preview";
+            btnPreview.UseVisualStyleBackColor = true;
+            btnPreview.Click += Preview_Click;
             // 
-            // tableLayoutPanel1
+            // panelText
             // 
-            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.richTextBox1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.richTextBox2, 1, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(9, 9);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 467F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(816, 380);
-            this.tableLayoutPanel1.TabIndex = 4;
+            panelText.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            panelText.ColumnCount = 2;
+            panelText.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            panelText.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            panelText.Controls.Add(rtxtInput, 0, 0);
+            panelText.Controls.Add(rtxtPreview, 1, 0);
+            panelText.Location = new System.Drawing.Point(8, 7);
+            panelText.Margin = new System.Windows.Forms.Padding(0);
+            panelText.Name = "panelText";
+            panelText.RowCount = 1;
+            panelText.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            panelText.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 285F));
+            panelText.Size = new System.Drawing.Size(714, 285);
+            panelText.TabIndex = 4;
             // 
-            // tableLayoutPanel2
+            // panelButtons
             // 
-            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel2.AutoSize = true;
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Controls.Add(this.Save, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.Preview, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(613, 389);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(212, 35);
-            this.tableLayoutPanel2.TabIndex = 5;
+            panelButtons.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            panelButtons.AutoSize = true;
+            panelButtons.ColumnCount = 2;
+            panelButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            panelButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            panelButtons.Controls.Add(btnSave, 0, 0);
+            panelButtons.Controls.Add(btnPreview, 1, 0);
+            panelButtons.Location = new System.Drawing.Point(534, 292);
+            panelButtons.Margin = new System.Windows.Forms.Padding(0);
+            panelButtons.Name = "panelButtons";
+            panelButtons.RowCount = 1;
+            panelButtons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            panelButtons.Size = new System.Drawing.Size(188, 26);
+            panelButtons.TabIndex = 5;
             // 
             // TrainerShowdownEditorForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(834, 433);
-            this.Controls.Add(this.tableLayoutPanel2);
-            this.Controls.Add(this.tableLayoutPanel1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "TrainerShowdownEditorForm";
-            this.Text = "TrainerShowdownEditorForm";
-            this.Load += new System.EventHandler(this.OnLoad);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(730, 325);
+            Controls.Add(panelButtons);
+            Controls.Add(panelText);
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            Margin = new System.Windows.Forms.Padding(2);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "TrainerShowdownEditorForm";
+            Text = "TrainerShowdownEditorForm";
+            Load += OnLoad;
+            panelText.ResumeLayout(false);
+            panelButtons.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.RichTextBox richTextBox2;
-        private System.Windows.Forms.Button Save;
-        private System.Windows.Forms.Button Preview;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.RichTextBox rtxtInput;
+        private System.Windows.Forms.RichTextBox rtxtPreview;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnPreview;
+        private System.Windows.Forms.TableLayoutPanel panelText;
+        private System.Windows.Forms.TableLayoutPanel panelButtons;
     }
 }

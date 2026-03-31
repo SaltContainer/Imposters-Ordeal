@@ -19,7 +19,6 @@ namespace ImpostersOrdeal
         public List<string> items;
         public TrainerTable.SheetTrainerData t;
         private TrainerPokemonEditorForm tpef;
-        private TrainerShowdownEditorForm tsef;
         private TrainerTable.SheetTrainerData trainerClipboard;
         private List<TrainerTable.SheetTrainerData.TrainerPoke> tpClipboard;
 
@@ -30,6 +29,8 @@ namespace ImpostersOrdeal
             "Sort by level"
         };
         private readonly Comparison<TrainerTable.SheetTrainerData>[] sortComparisons;
+
+        public string FullTrainerName => string.Format("{0} {1}", trainerTypeNames[t.TypeID], gameData.GetLabelByName(Constants.TRAINERNAME_MESSAGEFILE_NAME, t.NameLabel));
 
         public TrainerEditorForm(GameDataSet gameData)
         {
@@ -59,7 +60,6 @@ namespace ImpostersOrdeal
 
             InitializeComponent();
             tpef = new(this, gameData);
-            tsef = new(this, gameData);
 
             trainers = new();
             trainers.AddRange(gameData.trainerTable.TrainerData);
@@ -253,7 +253,15 @@ namespace ImpostersOrdeal
             partyDataGridView.Rows.Clear();
             foreach (var tp in t.Pokes)
             {
-                var name = string.Format("Lv. {0} {1}", tp.Level, gameData.GetFormName(tp.MonsNo, tp.FormNo));
+                var speciesName = gameData.GetLabelByIndex(Constants.POKEMONSPECIES_MESSAGEFILE_NAME, tp.MonsNo);
+                var formName = gameData.GetFormName(tp.MonsNo, tp.FormNo).Replace(speciesName, string.Empty).Trim();
+
+                string name;
+                if (string.IsNullOrEmpty(formName))
+                    name = string.Format("Lv. {0} {1}", tp.Level, speciesName);
+                else
+                    name = string.Format("Lv. {0} {1} ({2})", tp.Level, speciesName, formName);
+
                 partyDataGridView.Rows.Add(new object[] { name, "Configure" });
             }
         }
@@ -336,8 +344,10 @@ namespace ImpostersOrdeal
 
         private void ShowdownButtonClick(object sender, EventArgs e)
         {
-            tsef.SetTP(t);
-            tsef.ShowDialog();
+            var tsef = new TrainerShowdownEditorForm(t, gameData, FullTrainerName);
+            if (tsef.ShowDialog() == DialogResult.OK)
+                t.Pokes = tsef.TrainerPokesResult;
+
             PopulatePartyDataGridView();
         }
 

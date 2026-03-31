@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImpostersOrdeal.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -150,15 +151,84 @@ namespace ImpostersOrdeal
         /// <summary>
         /// Gets the form name of a specific Pokémon species in a specific language.
         /// </summary>
-        public string GetFormName(int dexID, int formID, MessageEnumData.MsgLangId language = MessageEnumData.MsgLangId.USA, bool isKanji = false)
+        public string GetFormName(int dexID, int formID, MessageEnumData.MsgLangId language = MessageEnumData.MsgLangId.USA, bool isKanji = false, bool checkShowdown = false)
         {
             if (messageFileTable == null)
                 return string.Empty;
 
-            if (formID == 0)
-                return messageFileTable.GetLabelByIndex(Constants.POKEMONSPECIES_MESSAGEFILE_NAME, dexID, language, isKanji)?.ToString() ?? string.Empty;
+            var baseFormName = messageFileTable.GetLabelByIndex(Constants.POKEMONSPECIES_MESSAGEFILE_NAME, dexID, language, isKanji)?.ToString() ?? string.Empty;
 
-            return GetLabelByName(Constants.POKEMONFORM_MESSAGEFILE_NAME, string.Format("ZKN_FORM_{0:D3}_{1:D3}", dexID, formID), language, isKanji);
+            if (formID == 0)
+                return baseFormName;
+
+            var foundLabel = GetLabelByName(Constants.POKEMONFORM_MESSAGEFILE_NAME, string.Format("ZKN_FORM_{0:D3}_{1:D3}", dexID, formID), language, isKanji);
+
+            if (!string.IsNullOrEmpty(foundLabel) && foundLabel != baseFormName)
+                return foundLabel;
+
+            if (checkShowdown)
+            {
+                var showdownName = ShowdownFormConverter.FindNameByIndices(dexID, formID).formName;
+                if (!string.IsNullOrEmpty(showdownName))
+                    return showdownName;
+            }
+
+            return IntHelper.ConvertToString(formID);
+        }
+
+        /// <summary>
+        /// Gets the index of a specific form of a Pokémon species in a specific language.
+        /// </summary>
+        public (int monsno, int formno) GetFormIndex(string fullSpeciesName, MessageEnumData.MsgLangId language = MessageEnumData.MsgLangId.USA, bool isKanji = false, bool checkShowdown = false)
+        {
+            var allSpecies = GetAllLabels(Constants.POKEMONSPECIES_MESSAGEFILE_NAME, language, isKanji);
+            var hyphenSplits = fullSpeciesName.Split('-');
+
+            int speciesIndex = -1;
+            string speciesName = string.Empty;
+            string formName = string.Empty;
+            for (int i=0; i<hyphenSplits.Length; i++)
+            {
+                var hyphenSplit = hyphenSplits[i];
+
+                if (i == 0)
+                    speciesName += hyphenSplit;
+                else
+                    speciesName += "-" + hyphenSplit;
+
+                speciesIndex = allSpecies.FindIndex(s => s == speciesName);
+                if (speciesIndex != -1 && i < hyphenSplits.Length - 1)
+                {
+                    formName = fullSpeciesName[(speciesName.Length+1)..];
+                    break;
+                }
+            }
+
+            if (speciesIndex != -1)
+            {
+                var formNames = GetAllFormNames(speciesIndex);
+                var formIndex = formNames.Select(f => f.Replace(speciesName, string.Empty).Trim()).ToList().FindIndex(f => f == formName);
+
+                if (formIndex != -1)
+                    return (speciesIndex, formIndex);
+
+                if (int.TryParse(formName, out formIndex))
+                    return (speciesIndex, formIndex);
+            }
+
+            if (checkShowdown)
+                return ShowdownFormConverter.FindIndicesByName(speciesName, formName);
+            else
+                return (0, 0);
+        }
+
+        /// <summary>
+        /// Find the index of a label from its value.
+        /// </summary>
+        public int GetLabelIndexByValue(string fileName, string value, MessageEnumData.MsgLangId language = MessageEnumData.MsgLangId.USA, bool isKanji = false)
+        {
+            var allMoves = GetAllLabels(fileName, language, isKanji);
+            return allMoves.FindIndex(m => m == value);
         }
 
         protected readonly Dictionary<Type, bool> fieldStates = new Dictionary<Type, bool>();
