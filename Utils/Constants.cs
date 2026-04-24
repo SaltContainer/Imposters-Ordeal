@@ -29,6 +29,12 @@ namespace ImpostersOrdeal
         private static readonly string MD_FOLDER = "md";
         private static readonly string SCRIPTABLEOBJECTS_FOLDER = "scriptableobjects";
 
+        private static readonly string ASSETS_FOLDER = "Assets";
+
+        private static readonly string EVSCRIPTDATA_FOLDER = "evscriptdata";
+
+        private static readonly string EVENTASSET_FOLDER = "eventasset";
+
         public static readonly string OUTPUT_FOLDER = "Output";
         public static readonly string TEMP_FOLDER = "Temp";
 
@@ -73,6 +79,9 @@ namespace ImpostersOrdeal
         public static readonly string PERSONALMASTERDATAS_PATH =        Path.Combine(ROMFS_FOLDER, DATA_FOLDER, STREAMINGASSETS_FOLDER, ASSETASSISTANT_FOLDER, PML_FOLDER,         PERSONALMASTERDATAS_BUNDLE);
         public static readonly string UIMASTERDATAS_PATH =              Path.Combine(ROMFS_FOLDER, DATA_FOLDER, STREAMINGASSETS_FOLDER, ASSETASSISTANT_FOLDER, UIS_FOLDER,         MASTERDATAS_FOLDER, UIMASTERDATAS_BUNDLE);
         public static readonly string UGDATA_PATH =                     Path.Combine(ROMFS_FOLDER, DATA_FOLDER, STREAMINGASSETS_FOLDER, ASSETASSISTANT_FOLDER, UNDERGROUND_FOLDER, LOWERCASE_DATA_FOLDER, UGDATA_BUNDLE);
+
+        // YAML folder paths
+        public static readonly string YAML_EVENTASSET_PATH = Path.Combine(ASSETS_FOLDER, EVSCRIPTDATA_FOLDER, EVENTASSET_FOLDER);
 
         // Binary file names
         private static readonly string DELPHISMAIN_FILE = "Delphis_Main.bnk";

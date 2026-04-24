@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace ImpostersOrdeal
 {
@@ -90,11 +91,15 @@ namespace ImpostersOrdeal
 
         public bool AddMod()
         {
-            var result = fileManager.AddMod(out List<Type> updatedSourceTypes);
+            // TODO: Remove these when done testing yaml
+            parserCollection.RemoveParserForType<EvDataCollection>();
+            parserCollection.AddParserForType(new YamlVanillaEvDataParser());
+
+            var result = fileManager.AddMod(out HashSet<Type> updatedSourceTypes);
 
             if (result)
             {
-                var gameDataToReparse = parserCollection.GetAllGameDataTypesUsingSourceTypes(updatedSourceTypes);
+                var gameDataToReparse = parserCollection.GetAllGameDataTypesUsingSourceTypes(updatedSourceTypes.ToList());
                 parserCollection.ParseSpecificDataForSet(gameData, gameDataToReparse);
                 foreach (var reparsedType in gameDataToReparse)
                     gameData.SetModified(reparsedType);

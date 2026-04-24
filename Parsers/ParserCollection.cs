@@ -63,7 +63,7 @@ namespace ImpostersOrdeal
             parsers[typeof(T)] = parser;
         }
 
-        public void RemoveParserForType<T>(IParser<T> parser)
+        public void RemoveParserForType<T>()
         {
             parsers.Remove(typeof(T));
         }

@@ -19,6 +19,33 @@ namespace ImpostersOrdeal
     /// </summary>
     public class FileManager
     {
+        private Dictionary<string, Type> knownSources = new Dictionary<string, Type>()
+        {
+            { Constants.BATTLEMASTERDATAS_PATH,          typeof(BattleMasterdatasBundle) },
+            { Constants.CONTESTMASTERDATAS_PATH,         typeof(ContestMasterdatasBundle) },
+            { Constants.EVSCRIPT_PATH,                   typeof(EvScriptBundle) },
+            { Constants.DPRMASTERDATAS_PATH,             typeof(DprMasterdatasBundle) },
+            { Constants.GAMESETTINGS_PATH,               typeof(GameSettingsBundle) },
+            { Constants.COMMONMSBT_PATH,                 typeof(CommonMsbtBundle) },
+            { Constants.ENGLISH_MESSAGE_PATH,            typeof(EnglishMessageBundle) },
+            { Constants.FRENCH_MESSAGE_PATH,             typeof(FrenchMessageBundle) },
+            { Constants.GERMAN_MESSAGE_PATH,             typeof(GermanMessageBundle) },
+            { Constants.ITALIAN_MESSAGE_PATH,            typeof(ItalianMessageBundle) },
+            { Constants.JAPANESE_MESSAGE_PATH,           typeof(JapaneseMessageBundle) },
+            { Constants.JAPANESEKANJI_MESSAGE_PATH,      typeof(JapaneseKanjiMessageBundle) },
+            { Constants.KOREAN_MESSAGE_PATH,             typeof(KoreanMessageBundle) },
+            { Constants.SIMPLIFIEDCHINESE_MESSAGE_PATH,  typeof(SimplifiedChineseMessageBundle) },
+            { Constants.SPANISH_MESSAGE_PATH,            typeof(SpanishMessageBundle) },
+            { Constants.TRADITIONALCHINESE_MESSAGE_PATH, typeof(TraditionalChineseMessageBundle) },
+            { Constants.PERSONALMASTERDATAS_PATH,        typeof(PersonalMasterdatasBundle) },
+            { Constants.UIMASTERDATAS_PATH,              typeof(UIMasterdatasBundle) },
+            { Constants.UGDATA_PATH,                     typeof(UGDataBundle) },
+            { Constants.DELPHISMAIN_PATH,                typeof(DelphisMainBank) },
+            { Constants.GLOBALMETADATA_PATH,             typeof(GlobalMetadataFile) },
+            { Constants.DPRBIN_PATH,                     typeof(DprBinABDM) },
+
+            { Constants.YAML_EVENTASSET_PATH,            typeof(EventAssetYamlFolder) },
+        };
         private Dictionary<string, DataSource> sources = new Dictionary<string, DataSource>();
 
         public string DumpPath { get; set; } = string.Empty;
@@ -158,6 +185,12 @@ namespace ImpostersOrdeal
             GetDataSourceOfTypeAtPath<DprBinABDM>(Constants.DPRBIN_PATH);
 
         /// <summary>
+        /// Obtains a reference to the Assets\evscriptdata\eventasset YAML folder data source.
+        /// </summary>
+        public EventAssetYamlFolder GetEventAssetYamlFolder() =>
+            GetDataSourceOfTypeAtPath<EventAssetYamlFolder>(Constants.YAML_EVENTASSET_PATH);
+
+        /// <summary>
         /// Obtains a reference to a specific subclass of a data source, to a specific path.
         /// </summary>
         private T GetDataSourceOfTypeAtPath<T>(string path) where T : DataSource
@@ -187,6 +220,25 @@ namespace ImpostersOrdeal
             var newSource = Activator.CreateInstance(type, new object[] { path, rootPath }) as DataSource;
             sources[path] = newSource;
             return newSource;
+        }
+
+        /// <summary>
+        /// Replaces a data source by path in the internal dictionary.
+        /// </summary>
+        private DataSource UpdateDataSourceAtPath(string path, string rootPath, Type type = null)
+        {
+            DataSource source;
+
+            // This source is already loaded, replace it
+            if (sources.ContainsKey(path))
+                source = ReplaceDataSourceAtPath(path, rootPath);
+            else
+            {
+                source = Activator.CreateInstance(type, new object[] { path, rootPath }) as DataSource;
+                AddDataSourceAtPath(path, source);
+            }
+
+            return source;
         }
 
         /// <summary>
@@ -336,11 +388,11 @@ namespace ImpostersOrdeal
         }
 
         /// <summary>
-        ///  Gets a mod directory from user and loads all the files it contains into fileArchive.
+        /// Gets a mod directory from user and loads all the files it contains into data sources.
         /// </summary>
-        public bool AddMod(out List<Type> updatedSourceTypes)
+        public bool AddMod(out HashSet<Type> updatedSourceTypes)
         {
-            updatedSourceTypes = new List<Type>();
+            updatedSourceTypes = new HashSet<Type>();
 
             //Get the dump path from user.
             FolderBrowserDialog fbd = new();
@@ -349,27 +401,47 @@ namespace ImpostersOrdeal
                 return false;
 
             //Check that it's a game directory
-            if (!IsGameDirectory(fbd.SelectedPath, true))
+            /*if (!IsGameDirectory(fbd.SelectedPath, true))
             {
                 MessageBox.Show("Path does not contain a romfs folder.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
-            }
+            }*/
 
             //Loads all files
             var modFilePaths = Directory.GetFiles(fbd.SelectedPath, "*", SearchOption.AllDirectories);
-            List<(int, string)> conflicts = new();
+            //List<(int, string)> conflicts = new();
+
+            List<string> folderPaths = new List<string>();
+
             foreach (var modFilePath in modFilePaths)
             {
                 string rootPath = fbd.SelectedPath;
                 string path = modFilePath.Substring(rootPath.Length + 1, modFilePath.Length - rootPath.Length - 1);
+                string folderPath = Path.GetDirectoryName(path);
 
-                if (sources.ContainsKey(path))
+                // File is a known Data Source
+                if (knownSources.ContainsKey(path))
                 {
-                    updatedSourceTypes.Add(ReplaceDataSourceAtPath(path, rootPath).GetType());
+                    var source = UpdateDataSourceAtPath(path, rootPath, knownSources[path]);
+                    updatedSourceTypes.Add(source.GetType());
                 }
+                // Folder this file is in is a known Data Source
+                else if (knownSources.ContainsKey(folderPath))
+                {
+                    // Not a folder we've already looked at
+                    if (!folderPaths.Contains(folderPath))
+                    {
+                        var source = UpdateDataSourceAtPath(folderPath, rootPath, knownSources[folderPath]);
+                        updatedSourceTypes.Add(source.GetType());
+
+                        folderPaths.Add(folderPath);
+                    }
+                }
+                // Unknown file, keep it in an UnknownFile Data Source so we can copy it
                 else
                 {
-                    AddDataSourceAtPath(path, new UnknownFile(path, rootPath));
+                    var source = UpdateDataSourceAtPath(folderPath, rootPath, typeof(UnknownFile));
+                    updatedSourceTypes.Add(source.GetType());
                 }
 
                 /*if (!fileArchive.ContainsKey(gamePath))

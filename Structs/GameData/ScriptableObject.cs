@@ -4,5 +4,6 @@
     {
         public string m_Name;
         public long pathID;
+        public string fileName;
     }
 }

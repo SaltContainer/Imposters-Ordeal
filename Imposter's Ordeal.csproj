@@ -16,8 +16,9 @@
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AssetsTools.NET" Version="3.0.2" />
+    <PackageReference Include="AssetsTools.NET" Version="3.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="SharpYaml" Version="3.7.0" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="AssetAssistant">
